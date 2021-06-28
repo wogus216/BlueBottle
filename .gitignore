@@ -5,7 +5,7 @@
 *.log
 
 # Package Files #
-#*.jar
+*.jar
 *.war
 *.nar
 *.ear
@@ -27,9 +27,9 @@ tmp/
 local.properties
 
 ### first not include this ignore ###
-#.settings/
-#.classpath
-#.project
+.settings/
+.classpath
+.project
 
 ### Project file ###
-#CommonProperties.*
+CommonProperties.*
