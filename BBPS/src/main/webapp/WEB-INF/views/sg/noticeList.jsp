@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>카테고리등록</title>
+<meta charset= "UTF-8">
+
+<title>본사공지사항리스트</title>
 <style type="text/css">
 /* 상단 바 */
 .top {
@@ -10,6 +11,7 @@
    padding: 0;
    margin: 0;
    background-color: white;
+   
    display: inline-block;
    min-width: 1820px;
    height: 62px;
@@ -125,19 +127,11 @@ h1 {
  font-size: 30px;
 }
 
-.row_add, .row_del{
-	background-color: #01a1dd;
-	float: right;
-}
-.row_del{
-	background-color: #bf4040;
-}
-
 table {
-    width: 800px;
+    width: 100%;
     table-layout: fixed;
     background: #ffffff;
-	margin: 10px 0  0 220px;
+	margin: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
 	text-align: center;
@@ -158,6 +152,7 @@ td{
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
+	cursor: pointer;
 }
 
  td:first-child{
@@ -168,28 +163,46 @@ input{
 	height:40px;
 
 }
-.selectBox, .tot_price li{
-	float:right;
-}
-.ord_info li, .tot_price li{
-	font-size:19px;
-	margin:10px;
-	
-}
-.ord_info ul, .tot_price ul{
-	max-width: 1000px; 
-   
+
+.input_btn_area{
+display: inline-block;
+text-align: left;
 }
 
-.apv_info, .send{
-	float:right;
-	font-size:19px;
+.filter_area{
+float : right;
+	text-align: right;
+	margin-bottom: 20px;
+}
+[name=r]{
+	margin: 0;
+	height: 20px;
+	width: 30px;
+	vertical-align: middle;
 }
 
-.apv_stat{
-	 color:red;
+label{
+	vertical-align: middle;
 }
-/* 이게일반 */
+.search_btn, .input_btn{
+	height: 40px;
+	margin: 0 ;
+	padding: 0;
+	vertical-align: bottom;
+}
+
+select{
+	font-size: 15px;	
+	height: 40px;
+	width : 100px;
+}
+
+.start_date, .end_date{
+	width: 150px;
+	font-size: 15px;
+	height: 36px;
+}
+/* 일반버튼 */
 button{
 	color: white;
 	width: 100px;
@@ -203,56 +216,43 @@ button{
 	background-color: #01a1dd;
 	outline:none;
 }
-.submit_area{
+/* 검색 과 페이지 */
+
+.search_info,.page_area, .page_btn{
 	text-align: center;
 }
 
-.submit{
-	width:100px;
-	height: 45px;
-	background-color: #01a1dd;
-	font-weight: bold;
-	 font-size: 20px;
-	 vertical-align: middle;
+.page_btn button{
+	color: black;
+	width: 40px;
+	height: 40px;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:40px 3px;
+	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
 
-button:focus{outline:none;}
-/* 카테고리 */
-.cate_add{
-	text-align: center;
-	margin-bottom: 80px;
+.page_btn button:hover{
+	color: #01a1dd;
 }
 
-.cate_name{
-	font-size: 20px;
-	font-weight: bold;
-	margin-right: 10px;
+.page_btn button:focus{
+	outline:none;
 }
 
-.edit_btn, .del_btn{
-	width: 80px;
-	color: white;
-    height: 40px;
-    text-align: center;
-    border: 0;
-    border-radius: 3px;
-    font-size: 18px;
-    margin: 10px;
-    cursor: pointer;
-    background-color: #01a1dd;
-    outline: none;
-    font-weight: bold;
- 
-}
-.edit_btn{
- 	background-color: #01a1dd;
-}
-.del_btn{
-	background-color: #bf4040;
+.search_filter{
+	width : 120px;
+	vertical-align: middle;
 }
 
+.search_input{
+	height: 34px;
+	vertical-align: middle;
+	width : 280px;
+	outline:none;
+}
 </style>
-
 <script type="text/javascript"
 	src="../script/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript">
@@ -411,69 +411,155 @@ $(document).ready(function(){
       </ul>
    </div>
 
+
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
-<h1>공지카테고리</h1>
+<h1>공지사항</h1>
+<div class="input_btn_area">
+<button class="input_btn">글쓰기</button>
+</div>
 
-<div class="cate_add">
-		<span class="cate_name">카테고리명</span>
-		<input type="text" maxlength="10" style="font-size: 15px;">
-		<button class="submit">등록</button>
+	<div class="filter_area">
+			<select class="cate">
+				<option value="0" selected="selected">전체</option>
+				<option value="1">이벤트</option>
+				<option value="2">주문관련</option>
+				<option value="3">재고관련</option>
+				<option value="4">시스템</option>
+				<option value="4">기타</option>
+			</select>
+			<input type = "date" value="2021-01-01" class="start_date" />
+			<input type = "date" value="2021-01-01" class="end_date"/>
+			<button class="search_btn">검색</button>
+		</div>
+	
+<table>
+	<colgroup>
+		<col width="15%">
+		<col width="45%">
+		<col width="20%">
+		<col width="20%">
+	</colgroup>
+	<thead>
+	<tr>
+			<th>NO.</th>
+			<th>제목</th>
+			<th>날짜</th>
+			<th>작성자</th>
+		</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<th scope="col" style="border-left: none;">No.</th>
+		<th scope="col">제목</th>
+		<th scope="col">날짜</th>
+		<th scope="col">작성자</th>
+	</tr>
+	<tr>
+		<td>160</td>
+		<td><a href="#">5월 9일 새벽 시스템 오류 관련 공지사항</a></td>
+		<td>2021.5.9</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>159</td>
+		<td><a href="#">여의도 카페점 이벤트 유의사항</a></td>
+		<td>2021.5.9</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>158</td>
+		<td><a href="#">자재 출고일 변경사항 관련 안내</a></td>
+		<td>2021.5.8</td>		
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>157</td>
+		<td><a href="#">전 지점 대상 이벤트 예정</a></td>
+		<td>2021.5.8</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>156</td>
+		<td><a href="#">994</a></td>
+		<td>2021.5.8</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>155</td>
+		<td><a href="#">993</a></td>
+		<td>2021.5.8</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>154</td>
+		<td><a href="#">992</a></td>
+		<td>2021.5.7</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>153</td>
+		<td><a href="#">991</a></td>
+		<td>2021.5.7</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>152</td>
+		<td><a href="#">990</a></td>
+		<td>2021.5.6</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>151</td>
+		<td><a href="#">989</a></td>
+		<td>2021.5.6</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>150</td>
+		<td><a href="#">988</a></td>
+		<td>2021.5.6</td>
+		<td>admin</td>
+	</tr>
+	<tr>
+		<td>149</td>
+		<td><a href="#">987</a></td>
+		<td>2021.5.6</td>
+		<td>admin</td>
+	</tr>
+
+	</tbody>
+</table>
+	<div class="search_area" style = "margin-top : 30px;">
+		<div class="search_info">
+		<form action="#" id="actionForm" method="post">
+	<input type="hidden" id="sNo" name="sNo"/>
+	<input type="hidden" id="page" name="page" value="${page}">
+			<select class="search_filter">
+				<option value="0" selected="selected">제목+내용</option>
+				<option value="1">제목</option>
+				<option value="2">내용</option>
+				<option value="3">작성자</option>
+			</select>
+			<input type="hidden" id="searchOldTxt" value="${param.searchTxt}"/>
+			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
+			<button class="search_btn" id="searchBtn">검색</button>
+			</form>
+		</div>
+	</div>
+	<div class="page_area">
+		<div class="page_btn">
+		<button style="background-color: white"><</button>
+		<button style="background-color: white">1</button>
+		<button style="background-color: white">2</button>
+		<button style="background-color: white">3</button>
+		<button style="background-color: white">></button>
+		</div>
+	</div>
+	
+	</div>
 </div>
-	<table cellspacing="0">
-			<colgroup>
-				<col width="5%">
-				<col width="10%">
-				<col width="10%">
-			</colgroup>
-			<tbody>
-			<tr>
-				<th scope="col" style="border-left: none;">No.</th>
-				<th scope="col">카테고리명</th>
-				<th scope="col"></th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>이벤트</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>주문</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>재고</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>시스템</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>5</td>
-				<td>기타</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-</div>
-</div>
+
 </body>
 </html>
