@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>본사로그인페이지</title>
+<title>지점로그인페이지</title>
 <style type="text/css">
 /*
   css 색깔
@@ -84,7 +84,7 @@ body{
 	padding: 0;
 }
 
-#hId{
+#bId{
 	text-transform: uppercase;
 }
 
@@ -116,6 +116,7 @@ body{
 }
 .inquiry_Btn{
 	margin: 0;
+
 }
 
 .submit:hover,.inquiry_Btn:hover{
@@ -196,17 +197,18 @@ button:focus{outline:none;}
 $(document).ready(function(){
 	//다시 로그인 페이지
 	$("#HQ").on("click",function(){
-		location.href = "logIn";
+		location.href = "hq_Login";
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
-		location.href = "b_Login";
+		location.href = "logIn";
 	});
 	
 	//포스 로그인 페이지
 	$("#POS").on("click",function(){
 		location.href = "pos_Login";
 	});
+	
 	
 	//팝업
 	$(".inquiry_Btn").on("click",function(){
@@ -225,28 +227,26 @@ $(document).ready(function(){
 	
 	//로그인버튼
 	$(".submit").on("click",function(){
-		if($.trim($("#hId").val()) == ""){
-			  $(this).val($(this).val().toUpperCase());
+		if($.trim($("#bId").val()) == ""){
 			makePopup("", "아이디를 입력해주세요",function(){
 		});
-			$("#hId").focus();
-		} else if($.trim($("#hPw").val()) =="") {
+			$("#bId").focus();
+		} else if($.trim($("#bPw").val()) =="") {
 				makePopup("", "비밀번호를 입력해주세요",function(){
 					
 				});
-				$("#hPw").focus();	
+				$("#bPw").focus();	
 		} else{
-			$("#hId").val($("#hId").val().toUpperCase()); //대문자처리
+			$("#bId").val($("#bId").val().toUpperCase()); //대문자처리
 			var params = $("#loginForm").serialize();
-			
 			$.ajax({
-				url: "hq_Logins",
+				url: "b_Logins",
 				type: "post", 
 				dataType: "json", 
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						location.href = "hq_Menu";
+						location.href = "b_Menu";
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							
@@ -344,8 +344,8 @@ function closePopup() {
 		<div class="info">이용할 시스템을 클릭하세요</div>
 		<form action="#" id="loginForm" method="post">
 			<ul class=log_Input>
-				<li><input type="text" id="hId" name="hId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
-				<li><input type="password" id="hPw" name="hPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
+				<li><input type="text" id="bId" name="bId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
+				<li><input type="password" id="bPw" name="bPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
 				<li><input type="button" value="로그인" class="submit"></li>
 			</ul>
 			<input type="button" value="문의" class="inquiry_Btn"/>

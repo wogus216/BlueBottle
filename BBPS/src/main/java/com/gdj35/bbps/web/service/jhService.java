@@ -18,4 +18,9 @@ public class jhService implements IjhService {
 		return ijhDao.getHQ(params);
 	}
 
+	@Override
+	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getB(params);
+	}
+
 }

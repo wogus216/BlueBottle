@@ -14,9 +14,15 @@ public class jhDao implements IjhDao {
 	
 	@Override
 	public HashMap<String, String> getHQ(HashMap<String, String> params) throws Throwable {
-		System.out.println("db돌았습니다.");
+		System.out.println("본사db돌았습니다.");
 		
 		return sqlsession.selectOne("B.getHQ", params);
+	}
+
+	@Override
+	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점db돌았습니다.");
+		return sqlsession.selectOne("B.getB", params);
 	}
 
 }

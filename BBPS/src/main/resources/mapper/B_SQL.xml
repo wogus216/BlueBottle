@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="B"><!-- namespace: 클래스명과동일 -->
 	
-	<!-- 로그인 -->
+	<!-- 본사로그인 -->
 	<select id="getHQ" parameterType="hashmap" resultType="hashmap">
 		SELECT USER_NO,AUTH_NO,DEP_NO,ID,PW
 		FROM HQ_USER
 		WHERE ID = #{hId}
 		AND PW = #{hPw}
+	</select>
+	
+	<!-- 지점로그인 -->
+	<select id="getB" parameterType="hashmap" resultType="hashmap">
+		SELECT BRCH_NO,ID,BRCH_NAME
+		FROM BRCH
+		WHERE ID = #{bId}
+		AND PW = #{bPw}
 	</select>
 	
 	

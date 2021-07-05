@@ -145,7 +145,10 @@ $(document).ready(function(){
 		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
 	});
 	
-	
+	//로그아웃
+	$(".log_out").on("click",function(){
+		location.href = "b_LogOut";
+	});
 
 	
 }); //ready end
