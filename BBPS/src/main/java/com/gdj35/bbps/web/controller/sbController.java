@@ -25,6 +25,7 @@ public class sbController {
 	@Autowired
 	public IPagingService iPagingServcie;
 	
+	//첫 페이지 지정
 	@RequestMapping(value = "/H_product_list")
 	public ModelAndView HPList (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
 		
@@ -40,6 +41,7 @@ public class sbController {
 		return mav;
 	}
 	
+	//리스트 그리기 (페이징과 같이)
 	@RequestMapping(value = "/H_product_lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String HPLists(@RequestParam HashMap<String,String> params) throws Throwable{
@@ -65,4 +67,15 @@ public class sbController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	//품목조회 상세보기
+	@RequestMapping(value = "/H_product_detail")
+	public ModelAndView HPDetail (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
+		
+		HashMap<String,String> data = isbservice.getPDetail(params);
+		
+		mav.addObject("data",data);
+		mav.setViewName("sb/H_product_detail");
+		
+		return mav;
+	}
 }

@@ -24,6 +24,11 @@ public class sbService implements IsbService{
 		return isbdao.getPList(params);
 	}
 
+	@Override
+	public HashMap<String, String> getPDetail(HashMap<String, String> params) throws Throwable {
+		return isbdao.getPDetail(params);
+	}
+
 	
 
 }

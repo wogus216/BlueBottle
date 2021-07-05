@@ -19,4 +19,11 @@
 	WHERE A.RNK BETWEEN  #{startCnt} AND #{endCnt}
 	</select>
 	
+	<!-- 품목 상세보기 -->
+	<select id = "getPDetail" parameterType="hashmap" resultType="hashmap">
+	SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FALG
+	FROM ITEM I INNER JOIN ITEM_PRICE IP
+     ON I.ITEM_NO = IP.ITEM_NO
+	WHERE I.ITEM_NO = #{itemNo}
+	</select>
 </mapper> 

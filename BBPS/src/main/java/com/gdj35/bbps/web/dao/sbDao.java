@@ -22,5 +22,10 @@ public class sbDao implements IsbDao{
 	public List<HashMap<String, String>> getPList(HashMap<String, String> params) throws Throwable {
 		return sqlsession.selectList("sb.getPList",params);
 	}
+
+	@Override
+	public HashMap<String, String> getPDetail(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getPDetail",params);
+	}
 	
 }

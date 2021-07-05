@@ -239,8 +239,10 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
-	$("tr").on("click",function(){
-		location.href = "H_stock_detail.html";
+	$("tbody").on("click","tr",function(){
+		$("#itemNo").val($(this).attr("itemNo"));
+		$("#actionForm").attr("action","H_product_detail");
+		$("#actionForm").submit();
 	});
 	
 	$(".add_btn").on("click",function(){
@@ -271,7 +273,7 @@ function drawproductList(list){
 	var html ="";
 	
 	for(var d of list){
-		html += "<tr itemNO = \""+d.ITEM_NO+"\">";
+		html += "<tr itemNo = \""+d.ITEM_NO+"\">";
 		html += "<td>"+d.ITEM_NO+"</td>";
 		html += "<td>"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.PRICE+"</th>";
@@ -305,7 +307,7 @@ function drawproductPaging(pb){
 	if($("#page").val() == pb.maxPcount){
 		html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">></button>";
 	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";;/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
 	}
 	
 	
@@ -414,7 +416,7 @@ function drawproductPaging(pb){
       </ul>
    </div>
 <form action = "#" id = "actionForm" method = "post">
-<input type = "hidden" id = "itemNO" name = "itemNO"/>
+<input type = "hidden" id = "itemNo" name = "itemNo"/>
 <input type = "hidden" id = "page" name = "page" value = "${page}"/>
 </form>
 
@@ -445,16 +447,7 @@ function drawproductPaging(pb){
 		<th scope=col>최소주문단위</th>
 	</tr>
 	</thead>
-	<tbody>
-	<c:forEach var= "d" items = "${list}">
-			<tr name = "${d.ITEM_NO}">
-				<td>${d.ITEM_NO}</td>
-				<td>${d.ITEM_NAME}</td>
-				<td>${d.PRICE}</td>
-				<td>${d.MIN_ORD_UNIT}</td>
-			</tr>
-		</c:forEach>
-	</tbody>
+	<tbody></tbody>
 </table>
 <div class="search_area" style = "margin-top : 30px;">
 		<div class="search_info">
