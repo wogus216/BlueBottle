@@ -264,14 +264,17 @@ $(document).ready(function(){
 		$(".top_menu a").attr("style","color: black");
 		$(this).css("color", "#01a1dd");
 		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
+	}); //top menu click end
+	
 	$(".sub").hover(function(){
 		$("li").css("background-color","white");
 		$(this).parent("li").css("background-color","#f1f1f1");
 	
 	},function(){
 			$("li").css("background-color","white");
-	});
+	}); //sub menu hover end
+	
+	
 	
 	
 }); //ready end
