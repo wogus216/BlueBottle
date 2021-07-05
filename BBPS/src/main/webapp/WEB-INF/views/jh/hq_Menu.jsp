@@ -145,6 +145,11 @@ $(document).ready(function(){
 		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
 	});
 	
+	
+	//로그아웃
+	$(".log_out").on("click",function(){
+		location.href = "hq_LogOut";
+	});
 }); //ready end
 </script>
 

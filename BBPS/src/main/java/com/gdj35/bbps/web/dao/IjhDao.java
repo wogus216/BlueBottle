@@ -6,4 +6,6 @@ public interface IjhDao {
 
 	public HashMap<String, String> getHQ(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable;
+
 }
