@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sb"><!-- namespace: 클래스명과동일 -->
+	
+	<!-- 품목리스트 -->
+	<select id ="getproductlist" resultType="hashmap">
+	SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT
+	FROM ITEM I INNER JOIN ITEM_PRICE IP
+     ON I.ITEM_NO = IP.ITEM_NO
+	</select>
+	
+</mapper> 
