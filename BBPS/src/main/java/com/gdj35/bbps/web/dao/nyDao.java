@@ -9,4 +9,6 @@ public class nyDao implements INyDao{
 
 	@Autowired
 	public SqlSession sqlSession;
+	
+	
 }
