@@ -6,17 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.gdj35.bbps.web.dao.sbDao;
+import com.gdj35.bbps.web.dao.IsbDao;
 
 @Service
 public class sbService implements IsbService{
 
 	@Autowired
-	public sbDao sbdao;
+	public IsbDao isbdao;
 	
 	@Override
-	public List<HashMap<String, String>> getproductlist() throws Throwable {
-		return sbdao.getproductlist();
+	public int getPCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getPCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getPList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getPList(params);
 	}
 
 	

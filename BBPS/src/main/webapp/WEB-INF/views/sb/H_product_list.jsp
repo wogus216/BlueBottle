@@ -211,12 +211,16 @@ button{
 	width : 280px;
 	outline:none;
 }
+
+.on{
+	color : black;
+}
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	//drawproductlist();
+	reloadList();
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
 		$(this).css("color", "#01a1dd");
@@ -229,7 +233,12 @@ $(document).ready(function(){
 	},function(){
 			$("li").css("background-color","white");
 	});
-
+	
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		reloadList();
+	});
+	
 	$("tr").on("click",function(){
 		location.href = "H_stock_detail.html";
 	});
@@ -240,22 +249,71 @@ $(document).ready(function(){
 	
 }); //ready end
 
-/*function drawproductlist(list){
+function reloadList(){
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url : "H_product_lists",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawproductList(res.list);
+			drawproductPaging(res.pb);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawproductList(list){
 	var html ="";
 	
-	console.log(list);
-	
 	for(var d of list){
-		html += "<tr>";
-		html += "<td>"+d.I.ITEM_NO+"</td>";
-		html += "<td>"+d.I.ITEM_NAME+"</td>";
-		html += "<td>"+d.IP.PRICE+"</th>";
-		html += "<td>"+d.I.MIN_ORD_UNIT+"</td>";
+		html += "<tr itemNO = \""+d.ITEM_NO+"\">";
+		html += "<td>"+d.ITEM_NO+"</td>";
+		html += "<td>"+d.ITEM_NAME+"</td>";
+		html += "<td>"+d.PRICE+"</th>";
+		html += "<td>"+d.MIN_ORD_UNIT+"</td>";
 		html += "</tr>";	
 	}
 	
 	$("tbody").html(html);
-}*/
+}
+
+function drawproductPaging(pb){
+	var html = "";
+	                                    
+	html += "<button page = \"1\" style=\"background-color: white\">|<</button>";
+	if($("#page").val()=="1"){
+		html += "<button page = \"1\" style=\"background-color: white\"><</button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()-1) + "\" style=\"background-color: white\"><</button>";
+		
+	}
+	
+	for(var i = pb.startPcount; i <= pb.endPcount; i++){
+		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
+			html += "<button class = \"on\" page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
+		}else{
+			html += "<button  page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
+		}
+		
+	}
+	
+	if($("#page").val() == pb.maxPcount){
+		html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">></button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";;/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+	}
+	
+	
+	
+	html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">>|</button>";
+	
+	$(".page_btn").html(html);
+}
 
 </script>
 </head>
@@ -264,7 +322,7 @@ $(document).ready(function(){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="src/main/webapp/resources/images/bb/logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -355,6 +413,11 @@ $(document).ready(function(){
       	</div>
       </ul>
    </div>
+<form action = "#" id = "actionForm" method = "post">
+<input type = "hidden" id = "itemNO" name = "itemNO"/>
+<input type = "hidden" id = "page" name = "page" value = "${page}"/>
+</form>
+
 <div class="content_area">
 <div class="content">
 <h1>품목조회</h1>
@@ -405,11 +468,7 @@ $(document).ready(function(){
 	</div>
 <div class="page_area">
 		<div class="page_btn">
-		<button style="background-color: white"><</button>
-		<button style="background-color: white">1</button>
-		<button style="background-color: white">2</button>
-		<button style="background-color: white">3</button>
-		<button style="background-color: white">></button>
+		
 		</div>
 	</div>
 </div>

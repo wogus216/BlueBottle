@@ -12,9 +12,15 @@ public class sbDao implements IsbDao{
 	
 	@Autowired
 	public SqlSession sqlsession;
-	
-	public List<HashMap<String, String>> getproductlist() throws Throwable{
-		return sqlsession.selectList("sb.getproductlist");
+
+	@Override
+	public int getPCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getPCnt",params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getPList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getPList",params);
+	}
+	
 }
