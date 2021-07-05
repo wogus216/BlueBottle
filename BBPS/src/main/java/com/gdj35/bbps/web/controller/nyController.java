@@ -12,7 +12,7 @@ import com.gdj35.bbps.web.service.InyService;
 public class nyController {
 
 	@Autowired
-	public InyService iNyService;
+	public  InyService iNyService;
 	
 	@Autowired
 	public IPagingService iPagingService;
