@@ -255,7 +255,7 @@ function reloadList(){
 	var params = $("#actionForm").serialize();
 	
 	$.ajax({
-		url : "H_product_lists",
+		url : "Item_Lists",
 		type : "post",  
 		dataType :"json",
 		data : params,
