@@ -24,8 +24,8 @@ public class sgController {
 	@Autowired
 	public IPagingService ipagingService;
 	
-	@RequestMapping(value="/noticeList")
-	public ModelAndView noticeList(
+	@RequestMapping(value="/Notice")
+	public ModelAndView Notice(
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) {
 		
@@ -36,15 +36,15 @@ public class sgController {
 		}
 		
 		mav.addObject("page", page);
-		mav.setViewName("sg/noticeList");
+		mav.setViewName("sg/Notice");
 		
 		return mav;
 	}
-	@RequestMapping(value="/noticeLists",
+	@RequestMapping(value="/Notices",
 			method=RequestMethod.POST,
 			produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String noticeLists(
+	public String Notices(
 			@RequestParam HashMap<String, String> params) throws Throwable{
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();

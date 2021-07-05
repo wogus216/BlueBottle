@@ -280,7 +280,8 @@ $(document).ready(function(){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png
+         " width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -450,12 +451,6 @@ $(document).ready(function(){
 		</tr>
 	</thead>
 	<tbody>
-	<tr>
-		<th scope="col" style="border-left: none;">No.</th>
-		<th scope="col">제목</th>
-		<th scope="col">날짜</th>
-		<th scope="col">작성자</th>
-	</tr>
 	<tr>
 		<td>160</td>
 		<td><a href="#">5월 9일 새벽 시스템 오류 관련 공지사항</a></td>
