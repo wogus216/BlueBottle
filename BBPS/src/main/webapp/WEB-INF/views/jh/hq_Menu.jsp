@@ -204,8 +204,9 @@ function drawMenu(menu){
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 				}
-		}
+	
 			for(var j = 0; j < menu.length;	j++){
+				if(menu[i].SITE_MENU_NO == $("#menuno").val()){
 					if(menu[j].DEPTH == 2){
 						html +="<div class=menu2_wrap>";
 						html +=		"<div class=menu2_title>";
@@ -216,14 +217,13 @@ function drawMenu(menu){
 						html +=	  "</div>";
 						html +="</div>";
 					}
-			
+				}
 			}
+		}
 			html +="</div>";
 		html +="<input type=\"button\" value=\"로그아웃\" class=\"log_out\"/>";
 	$(".top_Menu").html(html);
-	
-		
-	}
+}
 </script>
 
 </head>
