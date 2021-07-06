@@ -1,6 +1,7 @@
 package com.gdj35.bbps.web.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,11 @@ public class jhService implements IjhService {
 	@Override
 	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable {
 		return ijhDao.getB(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHMenu(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getHMenu(params);
 	}
 
 }

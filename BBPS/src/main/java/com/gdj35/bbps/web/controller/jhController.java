@@ -1,6 +1,7 @@
 package com.gdj35.bbps.web.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -23,37 +24,7 @@ public class jhController {
 	@Autowired
 	public IjhService ijhService;
 	
-	@RequestMapping(value="/hq_Menu")
-	public ModelAndView Menu(ModelAndView mav) {
-			
-		mav.setViewName("jh/hq_Menu");
-		
-		return mav;
-}
-	
-	@RequestMapping(value="/b_Menu")
-		
-		public ModelAndView b_Menu(
-				ModelAndView mav) {
-			
-			mav.setViewName("jh/b_Menu");
-			
-			return mav;
-			
-		}
-	
-	@RequestMapping(value="/pos")
-	
-	public ModelAndView pos(
-			ModelAndView mav) {
-		
-		mav.setViewName("jh/pos");
-		
-		return mav;
-		
-	}
 
-	
 
 //로그인 페이지
 	
@@ -97,13 +68,13 @@ public class jhController {
 	
 	HashMap<String, String> data = ijhService.getHQ(params);
 	
-	System.out.println("data :"+ data);
+	System.out.println("로그인data :"+ data);
 	if(data != null) { //사용자 정보가 있음
 		session.setAttribute("sUSERNo", data.get("USER_NO"));
 		session.setAttribute("sAUTHNo", data.get("AUTH_NO"));
 		session.setAttribute("sDEPNo", data.get("DEP_NO"));
-		session.setAttribute("sID", data.get("ID"));
-		System.out.println(session.getAttribute("sDEPNo"));
+		session.setAttribute("sId", data.get("ID"));
+		System.out.println(session.getAttribute("sUSERNo"));
 		
 		modelMap.put("resMsg", "success");
 	} else { // 사용자 정보가 없음
@@ -120,7 +91,6 @@ public class jhController {
 			ModelAndView mav) {
 		System.out.println(session.getAttribute("sDEPNo"));
 		session.invalidate();
-		
 		
 		mav.setViewName("redirect:hq_Login");
 		return mav;
@@ -158,7 +128,7 @@ public class jhController {
 	System.out.println("data :"+ data);
 	if(data != null) { //사용자 정보가 있음
 		session.setAttribute("sBRCHNo", data.get("BRCH_NO"));
-		session.setAttribute("sID", data.get("ID"));
+		session.setAttribute("sId", data.get("ID"));
 		session.setAttribute("sBRCHNm", data.get("BRCH_NAME"));
 		System.out.println(session.getAttribute("sBRCHNm"));
 		
@@ -215,7 +185,7 @@ public class jhController {
 		System.out.println("data :"+ data);
 		if(data != null) { //사용자 정보가 있음
 			session.setAttribute("sBRCHNo", data.get("BRCH_NO"));
-			session.setAttribute("sID", data.get("ID"));
+			session.setAttribute("sId", data.get("ID"));
 			session.setAttribute("sBRCHNm", data.get("BRCH_NAME"));
 			System.out.println(session.getAttribute("sBRCHNm"));
 			
@@ -228,16 +198,77 @@ public class jhController {
 		
 		}
 		
-		//로그아웃
-			@RequestMapping(value="/pos_LogOut")
-			public ModelAndView pos_LogOut(HttpSession session,
+	//로그아웃
+		@RequestMapping(value="/pos_LogOut")
+		public ModelAndView pos_LogOut(HttpSession session,
+				ModelAndView mav) {
+			System.out.println(session.getAttribute("sBRCHNm"));
+			session.invalidate();
+				
+				
+			mav.setViewName("redirect:pos_Login");
+			return mav;
+		}	
+			
+		//본사메뉴
+		@RequestMapping(value="/hq_Menu")
+	
+		public ModelAndView hq_Menu(
+				HttpSession session,
+				@RequestParam HashMap<String, String> params,
+				ModelAndView mav) {
+			System.out.println("hq_menu파람:"+params);
+			System.out.println("본사유저번호:"+session.getAttribute("sUSERNo"));
+			mav.setViewName("jh/hq_Menu");
+				
+			return mav;
+		}
+		
+		@RequestMapping(value="/hq_Menus",
+		method = RequestMethod.POST,
+		produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String hq_Menus(
+	HttpSession session,
+	@RequestParam HashMap<String, String> params) throws Throwable{
+	System.out.println("hq_menus파람:"+params);
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	params.put("hUserNo", String.valueOf(session.getAttribute("sUSERNo")));
+	params.put("hDt", "1");
+	System.out.println("hq_menus에서본사유저번호:"+session.getAttribute("sUSERNo"));
+	// 메뉴 취득
+	List<HashMap<String, String>>menu= ijhService.getHMenu(params);
+	
+	modelMap.put("menu:", menu);
+	
+	System.out.println("menu :"+menu);
+	System.out.println("모델맵"+modelMap);
+	return mapper.writeValueAsString(modelMap);
+	}
+			
+		@RequestMapping(value="/b_Menu")
+				
+			public ModelAndView b_Menu(
 					ModelAndView mav) {
-				System.out.println(session.getAttribute("sBRCHNm"));
-				session.invalidate();
 				
-				
-				mav.setViewName("redirect:pos_Login");
+				mav.setViewName("jh/b_Menu");
+					
 				return mav;
-			}	
+					
+		}
+			
+		@RequestMapping(value="/pos")
+			
+		public ModelAndView pos(
+				ModelAndView mav) {
+			
+			mav.setViewName("jh/pos");
+				
+				return mav;
+				
+			}
+
+			
 		
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,10 +98,10 @@ html,body{
 	color: black;
 }
 
-.menu_depth2, .menu_depth2_1{
+.menu_depth2{
 	padding: 10px;
 }
-.menu_depth2:hover, .menu_depth2_1:hover{
+.menu_depth2:hover{
 	background-color: #f2f2f2;
 }
 /* 로그아웃 */
@@ -129,6 +130,9 @@ html,body{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	//메뉴 그리기
+	reLoadMenu();
+	
 	//1뎁스 클릭시 효과 변화
 	$(".menu1_wrap").on("click",".menu_depth1",function(){
 		$(".menu1_wrap_on").attr("class","menu1_wrap");
@@ -151,16 +155,65 @@ $(document).ready(function(){
 		location.href = "hq_LogOut";
 	});
 }); //ready end
+
+function reLoadMenu(){
+	var params = $("#actionForm").serialize();
+	
+	//ajax
+	$.ajax({
+		url: "hq_Menus",
+		type: "post",
+		data : params, 
+		success: function(res){
+			console.log(res);
+			drawMenu(res.menu);
+		},
+		error : function(request, status, error){
+			console.log(error);
+			console.log(request);
+			console.log(status);
+		}
+	});
+}
+
+
+function drawMenu(menu){
+	var html = "";
+	//	" +  + "
+	for(var i = 0; i < menu.length; i++){
+	
+	html +="<div class=\"menu1_title\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+	html +="<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
+	html +="<div class=menu2_wrap>";
+	html +="<div class=menu2_title>";
+	html +="<div class=menu_depth2_area>";
+	html +="<div class=\"menu_depth2\">품목목록</div>";
+	html +="<div class=\"menu_depth2\">폐기목록</div>";
+	html +="</div>";
+	html +="</div>";
+	html +="</div>";
+	html +="</div>";
+	}
+	$(".menu1_wrap").html(html);
+	
+}
 </script>
 
 </head>
 <body>
+<form action="#" id="actionForm" method="post">
+		<input type="hidden"  id="hUserNo" name="hUserNo" value="${hUserNo}">
+		<input type="hidden"  id="hDt" name="hDt" value="${hDt}">
+</form>
+
          	<!-- 탑메뉴 -->
  	<div class="top_menu">
     
 	       		<div class="logo_area">
 		         	<img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px">
 		        </div>
+		         <div class="menu1_wrap"></div>
+		<!-- 
 		  <div class="menu1_wrap">	  
 	          <div class="menu1_title">
 		         	<div class="menu_depth1">주문관리</div>
@@ -224,8 +277,9 @@ $(document).ready(function(){
 	        		 <div class="menu_depth1">마이페이지</div>
 		      </div>
 	      </div>
-	         	
-	      <input type="button" value="로그아웃" class="log_out"/>
+	       -->
+			${sId}님 어서오슈.
+	     	<input type="button" value="로그아웃" class="log_out"/>
 	 </div>
 	 
 <!--컨텐츠 -->

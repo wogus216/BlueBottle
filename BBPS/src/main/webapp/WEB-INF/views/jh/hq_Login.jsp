@@ -246,7 +246,8 @@ $(document).ready(function(){
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						location.href = "hq_Menu";
+						$("#loginForm").attr("action","hq_Menu");
+						$("#loginForm").submit();
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							
@@ -349,6 +350,7 @@ function closePopup() {
 				<li><input type="button" value="로그인" class="submit"></li>
 			</ul>
 			<input type="button" value="문의" class="inquiry_Btn"/>
+			<input type="hidden"  id="hUserNo" name="hUserNo">
 		</form>
 	</div>
 </div>
