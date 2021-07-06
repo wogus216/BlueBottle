@@ -14,14 +14,12 @@ public class shDao implements IshDao{
 
 	@Override
 	public int getOCnt(HashMap<String, String> params) throws Throwable {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne("SH.getOCnt", params);
 	}
 
 	@Override
 	public List<HashMap<String, String>> getOList(HashMap<String, String> params) throws Throwable {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList("SH.getOList", params);
 	}
 }
 
