@@ -1,6 +1,7 @@
 package com.gdj35.bbps.web.dao;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class jhDao implements IjhDao {
 	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable {
 		System.out.println("지점db돌았습니다.");
 		return sqlsession.selectOne("B.getB", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHMenu(HashMap<String, String> params) throws Throwable {
+		System.out.println("메뉴db돌았습니다.");
+		return sqlsession.selectList("B.getHMenu", params);
 	}
 
 }
