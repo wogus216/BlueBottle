@@ -212,15 +212,31 @@ button{
 	outline:none;
 }
 
+.page_btn button{
+	background-color: white;
+}
+
 .on{
-	color : black;
+	background-color: blue;
 }
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	if("${param.search_filter}" != ""){
+		$("#search_filter").val("${param.search_filter}");
+	}
+	
 	reloadList();
+	
+	$(".search_btn").on("click",function(){
+		$("#page").val(1);
+		$("#Old_search_input").val($(".search_input").val());
+		reloadList();	
+	});
+	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
 		$(this).css("color", "#01a1dd");
@@ -236,17 +252,28 @@ $(document).ready(function(){
 	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
+		$(".search_input").val($("#Old_search_input").val());
 		reloadList();
 	});
 	
+	$("tbody").on("click","a",function(){
+		$("#itemNo").val($(this).attr("itemNo"));
+		$(".search_input").val($("#Old_search_input").val());
+		$("#actionForm").attr("action","Item_Dtl");
+		$("#actionForm").submit();
+	}); //품목코드 내 a태그 클릭 시에는 품목 상세조회 페이지로 이동
+	
 	$("tbody").on("click","tr",function(){
 		$("#itemNo").val($(this).attr("itemNo"));
-		$("#actionForm").attr("action","H_product_detail");
+		$(".search_input").val($("#Old_search_input").val());
+		$("#actionForm").attr("action","Item_Dtl");
 		$("#actionForm").submit();
-	});
+	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
 	
 	$(".add_btn").on("click",function(){
-		location.href = "H_product_add.html";
+		$(".search_input").val($("#Old_search_input").val());
+		$("#actionForm").attr("action","Item_Add");
+		$("#actionForm").submit();
 	});
 	
 }); //ready end
@@ -274,7 +301,7 @@ function drawproductList(list){
 	
 	for(var d of list){
 		html += "<tr itemNo = \""+d.ITEM_NO+"\">";
-		html += "<td>"+d.ITEM_NO+"</td>";
+		html += "<td><a href = \"#\" itemNo = \""+d.ITEM_NO+"\">"+d.ITEM_NO+"</a></td>";
 		html += "<td>"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.PRICE+"</th>";
 		html += "<td>"+d.MIN_ORD_UNIT+"</td>";
@@ -287,32 +314,32 @@ function drawproductList(list){
 function drawproductPaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\" style=\"background-color: white\">|<</button>";
+	html += "<button page = \"1\">|<</button>";
 	if($("#page").val()=="1"){
-		html += "<button page = \"1\" style=\"background-color: white\"><</button>";
+		html += "<button page = \"1\"><</button>";
 	}else{
-		html += "<button page = \""+ ($("#page").val()-1) + "\" style=\"background-color: white\"><</button>";
+		html += "<button page = \""+ ($("#page").val()-1) + "\" ><</button>";
 		
 	}
 	
 	for(var i = pb.startPcount; i <= pb.endPcount; i++){
 		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
-			html += "<button class = \"on\" page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
+			html += "<button class = \"on\" page = \""+ i +"\" >"+ i +"</button>";	
 		}else{
-			html += "<button  page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
+			html += "<button  page = \""+ i +"\" >"+ i +"</button>";	
 		}
 		
 	}
 	
 	if($("#page").val() == pb.maxPcount){
-		html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">></button>";
+		html += "<button page = \""+ pb.maxPcount +"\" >></button>";
 	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
 	}
 	
 	
 	
-	html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
 	
 	$(".page_btn").html(html);
 }
@@ -415,20 +442,17 @@ function drawproductPaging(pb){
       	</div>
       </ul>
    </div>
-<form action = "#" id = "actionForm" method = "post">
-<input type = "hidden" id = "itemNo" name = "itemNo"/>
-<input type = "hidden" id = "page" name = "page" value = "${page}"/>
-</form>
-
 <div class="content_area">
 <div class="content">
 <h1>품목조회</h1>
 <div class="filter_area">
-<select class="cate">
-	<option value="0" selected="selected">카테고리명</option>
-	<option value="1">음료</option>
-	<option value="2">빵</option>
-	<option value="3">기타</option>
+<select class="cate" name = "cate">
+	<option selected="selected">카테고리명</option>
+	<option value="0">음료재료</option>
+	<option value="1">제과</option>
+	<option value="2">원두</option>
+	<option value="3">굿즈</option>
+	<option value="4">기타</option>
 </select>
 <button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
 </div>
@@ -451,18 +475,21 @@ function drawproductPaging(pb){
 </table>
 <div class="search_area" style = "margin-top : 30px;">
 		<div class="search_info">
-			<select class="search_filter">
-				<option value="0" selected="selected">품목번호</option>
-				<option value="1">본문 내용</option>
+		<form action = "#" id = "actionForm" method = "post">
+			<input type = "hidden" id = "Old_search_input" name = "Old_search_input" value ="${param.search_input}" />
+			<input type = "hidden" id = "itemNo" name = "itemNo"/>
+			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
+		<select id="search_filter" name = "search_filter">
+				<option value="0" selected="selected">품목코드</option>
+				<option value="1">품목명</option>
 			</select>
-			<input type="text" class="search_input"/>
+			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
 			<button class="search_btn">검색</button>
+			</form>
 		</div>
 	</div>
 <div class="page_area">
-		<div class="page_btn">
-		
-		</div>
+		<div class="page_btn"></div>
 	</div>
 </div>
 </div>

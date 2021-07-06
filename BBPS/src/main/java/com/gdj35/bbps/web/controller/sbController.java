@@ -78,4 +78,28 @@ public class sbController {
 		
 		return mav;
 	}
+	
+	//품목 상세조회 내 가격 변동 테이블 불러오기
+	@RequestMapping(value = "/Item_Dtl_Price_History",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HPDetailPHis(@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> pricehistorylist = isbservice.getPHList(params);
+		
+		modelMap.put("pricehistorylist", pricehistorylist);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	//품목추가  (기능x 화면전환)
+	@RequestMapping(value = "/Item_Add")
+	public ModelAndView HPAdd (ModelAndView mav) throws Throwable{
+			
+		mav.setViewName("sb/Item_Add");
+			
+		return mav;
+	}
 }

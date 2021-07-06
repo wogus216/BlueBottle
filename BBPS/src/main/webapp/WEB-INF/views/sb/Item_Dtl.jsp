@@ -200,11 +200,47 @@ button{
 .page_btn button:focus{
 	outline:none;
 }
+
+/* 가격 히스토리 테이블 스크롤 생성*/
+.price_history thead{
+	display : table;
+	table-layout : fixed;
+	width : 1250px;
+}
+
+.price_history tbody{
+	display : block;
+	max-height : 287px;
+	width : 1250px;
+	overflow : auto;
+	overflow-x : hidden;
+}
+
+.price_history tr{
+	display : table;
+	table-layout : fixed;
+	width : 1250px;
+}
+
+/* 최하단 목록 버튼*/
+.list_btn{
+	text-align:center;
+}
+
+.list_btn button{
+	width:200px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	font-size: 22px;
+}
+
 </style>
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	drawhistoryList();
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
 		$(this).css("color", "#01a1dd");
@@ -219,10 +255,73 @@ $(document).ready(function(){
 	});
 
 	$(".edit_btn").on("click",function(){
-		location.href = "H_product_edit.html";
+		$("#goForm").attr("action","Item_edit");
+		$("#goForm").submit();
+	});
+	
+	$(".list_btn").on("click","button",function(){
+		$("#goForm").submit();
+	});
+	
+	$(".del_btn").on("click",function(){
+		if(confirm("삭제하시겠습니까?")){
+		var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url : "psb_testGDeletes",
+				type : "post",  
+				dataType :"json",
+				data : params,
+				success : function(res){
+					if(res.msg == "success"){
+						location.href = "Item_List";
+					}else if (res.msg == "failed"){
+						alert("삭제에 실패하였습니다.");
+					}else {
+						alert("삭제 중 문제가 발생하였습니다.")
+					}
+				},
+				error : function(request,status,error){
+					console.log(error);
+				}
+			});
+		}
 	});
 	
 }); //ready end
+
+function drawhistoryList(){
+	var params = $("#goForm").serialize();
+	
+	$.ajax({
+		url : "Item_Dtl_Price_History",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawpricehistory(res.pricehistorylist);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+	
+}
+
+function drawpricehistory(pricehistorylist){
+	var html = "";
+	
+	for(var d of pricehistorylist){
+		html += "<tr>";
+		html += "<td>"+d.ENROLL_DATE+"</td>";
+		html += "<td>"+d.OLD_PRICE+"</td>";
+		html += "<td>"+d.NEW_PRICE+"</td>";
+		html += "<td>"+d.ID+"</td>";
+		html += "</tr>";
+	}
+	
+	$(".price_history tbody").html(html);
+}
 </script>
 </head>
 <body>
@@ -230,7 +329,7 @@ $(document).ready(function(){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -321,9 +420,11 @@ $(document).ready(function(){
       	</div>
       </ul>
    </div>
-<form action = "H_product_list" id = "goForm" method = "post">
+<form action = "Item_List" id = "goForm" method = "post">
 <input type = "hidden" name ="itemNo" value = "${data.ITEM_NO}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
+<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
+<input type = "hidden" name = "search_input" value = "${param.search_input}"/>
 </form>
 <div class="content_area">
 <div class="content">
@@ -364,32 +465,25 @@ $(document).ready(function(){
 <h3>가격변동내역</h3>
 <table cellspacing="0">
 	<colgroup>
-		<col width="33%" />
-		<col width="33%" />
-		<col width="33%" />
+		<col width="25%" />
+		<col width="25%" />
+		<col width="25%" />
+		<col width="25%" />
 	</colgroup>
+	<thead>
 	<tr>
 		<th scope=col style= "border-left: none;">변동날짜</th>
 		<th scope=col>변동전 가격</th>
 		<th scope=col>변동후 가격</th>
+		<th scope=col>변경자</th>
 	</tr>
-	<tr>
-		<td>2021-03-21</td>
-		<td>19000</td>
-		<td>20000</td>
-	</tr>
-	<tr>
-		<td>2020-01-24</td>
-		<td>17000</td>
-		<td>19000</td>
-	</tr>
-	<tr>
-		<td>2018-04-02</td>
-		<td>15000</td>
-		<td>17000</td>
-	</tr>
+	</thead>
+	<tbody></tbody>
 </table>
 </div>
+<div class="list_btn">
+<button style = "margin:50px 0 50px 0;">목록</button>
+		</div>
 </div>
 </div>
 </body>
