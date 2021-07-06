@@ -240,9 +240,9 @@ public class jhController {
 	// 메뉴 취득
 	List<HashMap<String, String>>menu= ijhService.getHMenu(params);
 	
-	modelMap.put("menu:", menu);
+	modelMap.put("menu", menu);
 	
-	System.out.println("menu :"+menu);
+	System.out.println("menu"+menu);
 	System.out.println("모델맵"+modelMap);
 	return mapper.writeValueAsString(modelMap);
 	}

@@ -9,4 +9,6 @@ public interface IsbDao {
 	public List<HashMap<String, String>> getPList(HashMap<String, String> params) throws Throwable;
 
 	public HashMap<String, String> getPDetail(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getPHList(HashMap<String, String> params) throws Throwable;
 }
