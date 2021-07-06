@@ -242,7 +242,7 @@ button{
 	outline:none;
 }
 
-.search_filter{
+#search_filter{
 	width : 120px;
 	vertical-align: middle;
 }
@@ -265,6 +265,19 @@ $(document).ready(function(){
 		$("#search_filter").val("${param.search_filter}");
 	}
 	reloadList();
+	
+	var ord_ck_arr = [];
+	var ref_ck_arr = [];
+	$("input[name=ord]:checked").each(function(){
+		var ord_ck=$(this).val();
+		ord_ck_arr.push(ord_ck);
+		console.log(ord_ck_arr);
+	});
+	$("input[name=ref]:checked").each(function(){
+		var ref_ck=$(this).val();
+		ref_ck_arr.push(ref_ck);
+		console.log(ref_ck_arr);
+	});
 	
 	$("#search_btn").on("click",function(){
 		$("#page").val(1);
@@ -570,6 +583,8 @@ function drawPaging(pb){
 		<form action = "#" id = "actionForm" method = "post">
 			<input type = "hidden" id = "ord_no" name = "ord_no"/>
 			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
+			<input type = "hidden" id = "ord_ch_arr" name = "ord_ch_arr" value = "${ord_ch_arr}"/>
+			<input type = "hidden" id = "ref_ch_arr" name = "ref_ch_arr" value = "${ref_ch_arr}"/>
 			<select id ="search_filter" name="search_filter">
 				<option value="0" selected="selected">주문번호</option>
 			</select>
