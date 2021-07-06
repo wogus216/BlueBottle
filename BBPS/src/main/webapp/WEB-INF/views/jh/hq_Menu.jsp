@@ -27,7 +27,7 @@ html,body{
 
 
 /* 상단 바 */
-.top_menu{
+.top_Menu{
 	min-width: 1680px;
 	height: 60px;
 	
@@ -40,6 +40,11 @@ html,body{
    padding: 13px 30px;
 }
 /* 상위메뉴 */
+
+.menu_Area{
+	width: 1600px;
+	height: 60px;
+}
 .menu1_wrap, .menu1_wrap_on{
 	display: inline-table;
 	width: 128px;
@@ -48,7 +53,7 @@ html,body{
 
 .menu1_title {
 	display: inline-table;
-	width: 100%;
+	/* width: 100%; */
 	height: 60px;
 	background-color: white;
 }
@@ -151,9 +156,10 @@ $(document).ready(function(){
 	
 	
 	//로그아웃
-	$(".log_out").on("click",function(){
+	$(".top_Menu .log_out").on("click","input",function(){
 		location.href = "hq_LogOut";
 	});
+	
 }); //ready end
 
 function reLoadMenu(){
@@ -174,29 +180,50 @@ function reLoadMenu(){
 			console.log(status);
 		}
 	});
+	
 }
 
 
 function drawMenu(menu){
 	var html = "";
 	//	" +  + "
-	for(var i = 0; i < menu.length; i++){
 	
-	html +="<div class=\"menu1_title\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
-	html +="<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
-	html +="<div class=menu2_wrap>";
-	html +="<div class=menu2_title>";
-	html +="<div class=menu_depth2_area>";
-	html +="<div class=\"menu_depth2\">품목목록</div>";
-	html +="<div class=\"menu_depth2\">폐기목록</div>";
-	html +="</div>";
-	html +="</div>";
-	html +="</div>";
-	html +="</div>";
+	html += "<div class=\"logo_area\">";
+	html += "	<img class=\"logo\" alt=\"logo\" src=\"resources/images/bb/logo.png\" width=\"250px\">";
+	html += "  </div>";
+	for(var i =0; i < menu.length; i++){
+		if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
+					html += "<div class=\"menu1_wrap\">";
+					html +="	<div class=\"menu1_title\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
+					html +=		"</div>";
+			} 
+		else if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
+					html += "<div class=\"menu1_wrap\">";
+					html +="	<div class=\"menu1_title\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
+					html +=		"</div>";
+				}
+		}
+			for(var j = 0; j < menu.length;	j++){
+					if(menu[j].DEPTH == 2){
+						html +="<div class=menu2_wrap>";
+						html +=		"<div class=menu2_title>";
+						html +=			"<div class=menu_depth2_area \" menuno=\"" + menu[j].SITE_MENU_NO + ">";
+						html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
+						html +=			"</div>";
+						html +=		"</div>";
+						html +=	  "</div>";
+						html +="</div>";
+					}
+			
+			}
+			html +="</div>";
+		html +="<input type=\"button\" value=\"로그아웃\" class=\"log_out\"/>";
+	$(".top_Menu").html(html);
+	
+		
 	}
-	$(".menu1_wrap").html(html);
-	
-}
 </script>
 
 </head>
@@ -207,13 +234,12 @@ function drawMenu(menu){
 </form>
 
          	<!-- 탑메뉴 -->
- 	<div class="top_menu">
+ 	<div class="top_Menu">
     
+		<!-- 
 	       		<div class="logo_area">
 		         	<img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px">
 		        </div>
-		         <div class="menu1_wrap"></div>
-		<!-- 
 		  <div class="menu1_wrap">	  
 	          <div class="menu1_title">
 		         	<div class="menu_depth1">주문관리</div>
@@ -277,9 +303,9 @@ function drawMenu(menu){
 	        		 <div class="menu_depth1">마이페이지</div>
 		      </div>
 	      </div>
-	       -->
-			${sId}님 어서오슈.
+			
 	     	<input type="button" value="로그아웃" class="log_out"/>
+	       -->
 	 </div>
 	 
 <!--컨텐츠 -->
