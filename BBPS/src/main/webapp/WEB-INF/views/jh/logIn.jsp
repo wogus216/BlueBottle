@@ -119,7 +119,7 @@ $(document).ready(function(){
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
-		location.href = "b_Login";
+		location.href = "B_Login";
 	});
 	
 	$("#POS").on("click",function(){

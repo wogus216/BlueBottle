@@ -147,7 +147,7 @@ $(document).ready(function(){
 	
 	//로그아웃
 	$(".log_out").on("click",function(){
-		location.href = "b_LogOut";
+		location.href = "B_LogOut";
 	});
 
 	
