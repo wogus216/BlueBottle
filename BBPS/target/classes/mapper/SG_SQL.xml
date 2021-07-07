@@ -51,10 +51,17 @@ WHERE 1=1
 WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 
-<insert id="addB" parameterType="hashmap">
+<insert id="addN" parameterType="hashmap">
 INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT, ATT_FILE)
 VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, #{nUser}, #{nTitle}, #{nCon}, #{nFile})
 </insert>
+
+<select id="getN" parameterType="hashmap" resultType="hashmap">
+SELECT TITLE, B_WRITER, B_CON, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') AS B_DT, 
+	ATT_FILE, SUBSTR(B_FILE, 21) AS B_UFILE
+FROM NOTICE
+where TXT_NO = #{nNo}
+</select>
 
 
 

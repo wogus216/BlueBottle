@@ -107,5 +107,18 @@ public class sgController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	
+	@RequestMapping(value="/Notice_Detail")
+	public ModelAndView Notice_Detail(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		HashMap<String, String> data = isgService.getN(params);
+		
+		mav.addObject("data", data);
+		
+		mav.setViewName("sg/Notice");
+		
+		return mav;
+	}
 
 }

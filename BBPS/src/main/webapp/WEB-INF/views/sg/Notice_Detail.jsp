@@ -173,10 +173,8 @@ width: 100%;
  
  
  
-
-
-button{
-	color: white;
+.edit_btn, .del_btn{
+color: white;
 	text-align:center;
 	border: 0;
 	border-radius: 3px;
@@ -227,7 +225,7 @@ width: 100%;
  </style>
  
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".top_menu").on("click","a",function(){
@@ -245,6 +243,44 @@ $(document).ready(function(){
 	
 	
 }); //ready end
+
+
+$(document).ready(function() {
+	$("#listBtn").on("click", function() {
+		$("#goForm").attr("action", "Notice");
+		$("#goForm").submit();
+	});
+	
+	$("#updateBtn").on("click", function () {
+		$("#goForm").attr("action", "Notice_Update");
+		$("#goForm").submit();
+	});
+	$("#deleteBtn").on("click", function () {
+		if(confirm("삭제하시겠습니까?")){
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url:"Notice_Deletes", //접속주소
+				type:"post", //전송방식 : get, post
+				dataType:"json",//받아올데이터형식
+				data:params, //보낼 데이터(문자열 형태)
+				success : function (res) {//성공 시 다음함수 실행
+					if (res.msg == "success") {
+						location.href = "Notice";
+					} else if(res.msg == "failed") {
+						alert("작성에 실패하였습니다.")
+					} else {
+						alert("작성중 문제가 발생하였습니다.");
+					}
+				},
+				error : function (request, status, error) { //실패 시 다음함수 실행
+					console.log(error); //값이 돌아오지 않던지 애초에 터졌든지에 대한 에러
+				}
+			});
+		}
+	});
+});
+
 </script>
 
 </head>
@@ -389,8 +425,13 @@ $(document).ready(function(){
 <div class="content_area">
 <div class="content">
 <h1>공지사항</h1>
-
-<div class="titile"><h2>제목</h2></div>
+<form action="#" id="goForm" method="post">
+	<input type="hidden" name="nNo" value="${data.TXT_NO}" />
+	<input type="hidden" name="page" value="${param.page}" />
+	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
+	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+</form>
+<div class="titile"><h2>${data.TITLE}</h2></div>
 <div class="top_tb">
 <table class="tb1">
 <tbody>
@@ -399,9 +440,9 @@ $(document).ready(function(){
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
-<td>admin</td>
-<td>2021-05-09</td>
-<td>597&nbsp;</td>
+<td>${data.USER_NO}</td>
+<td>${data.SYSDATE}</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -409,23 +450,7 @@ $(document).ready(function(){
 
 
 <div class="txt_content">
-<p>그들은 피가 더운지라 실현에 대한 자신과 용기가 있다 그러므로 그들은 이상의 보배를 능히 품으며 그들의 이상은 아름답고 소담스러운 열매를 맺어 우리 인생을 풍부하게 하는 것이다 보라 청춘을 ! 그들의 몸이 얼마나 튼튼하며 그들의 피부가 얼마나 생생하며 그들의 눈에 무엇이 타오르고 있는가? 우리 눈이 그것을 보는 때에 우리의 귀는 생의 찬미를 듣는다 그것은 웅대한 관현악이며 미묘한 교향악이다 뼈 끝에 스며들어 가는 열락의 소리다이것은 피어나기 전인 유소년에게서 구하지 못할 바이며 시들어 가는 노년에게서 구하지 못할 바이며 오직 우리 청춘에서만 구할 수 있는 것이다 청춘은 인생의 황금시대다 우리는 이 황금시대의 가치를
-</p>
-<p>
-것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기 위하여서 그리하였는가? 아니다 그들은 커다란 이상 곧 만천하의 대중을 품에 안고 그들에게 밝은 길을 찾아
-</p>
-<p>
-이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다
-</p>
-<p>
-것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기 위하여서 그리하였는가? 아니다 그들은 커다란 이상 곧 만천하의 대중을 품에 안고 그들에게 밝은 길을 찾아
-</p>
-<p>
-것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기 위하여서 그리하였는가? 아니다 그들은 커다란 이상 곧 만천하의 대중을 품에 안고 그들에게 밝은 길을 찾아
-</p>
-<p>
-것이다 이상의 꽃이 없으면 쓸쓸한 인간에 남는 것은 영락과 부패 뿐이다 낙원을 장식하는 천자만홍이 어디 있으며 인생을 풍부하게 하는 온갖 과실이 어디 있으랴? 이상! 우리의 청춘이 가장 많이 품고 있는 이상! 이것이야말로 무한한 가치를 가진 것이다 사람은 크고 작고 간에 이상이 있음으로써 용감하고 굳세게 살 수 있는 것이다 석가는 무엇을 위하여 설산에서 고행을 하였으며 예수는 무엇을 위하여 광야에서 방황하였으며 공자는 무엇을 위하여 천하를 철환하였는가? 밥을 위하여서 옷을 위하여서 미인을 구하기 위하여서 그리하였는가? 아니다 그들은 커다란 이상 곧 만천하의 대중을 품에 안고 그들에게 밝은 길을 찾아
-</p>
+
 <br/>
 </div>
 
@@ -434,8 +459,8 @@ $(document).ready(function(){
 <div class="btm_btn_area" style = "margin-top : 30px;">
 	<button class="list_btn">목록</button>
 		<div class="edit_info">
-<button class="edit_btn">수정</button>
-<button class="del_btn">삭제</button>
+<input type="button" value="수정" class="edit_btn" id="updateBtn" />
+<input type="button" value="삭제" class="del_btn" id="deleteBtn" />
 		</div>
 	</div>
 
