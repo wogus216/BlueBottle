@@ -108,18 +108,19 @@ body{
 		border-radius: 15px;
 	}
 }
+.btn_Area{
+	margin-left: 10px;
+}
 
 .submit,.inquiry_Btn{
-	font-size: 30px;
-    margin: 30px 120px 0 120px;
+    width: 90px;
+    font-size: 20px;
+    margin-top: 20px;
     border-radius: 10px;
 }
-.inquiry_Btn{
-	margin: 0;
-}
 
-.submit:hover,.inquiry_Btn:hover{
-	background-color: #1bc1fe;
+.submit:hover, .inquiry_Btn:hover{
+	background-color: white;
 }
 
  /* 팝업메시지 */
@@ -200,7 +201,7 @@ $(document).ready(function(){
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
-		location.href = "b_Login";
+		location.href = "B_Login";
 	});
 	
 	//포스 로그인 페이지
@@ -347,9 +348,11 @@ function closePopup() {
 			<ul class=log_Input>
 				<li><input type="text" id="hId" name="hId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
 				<li><input type="password" id="hPw" name="hPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
-				<li><input type="button" value="로그인" class="submit"></li>
+				<li class="btn_Area">
+					<input type="button" value="문의" class="inquiry_Btn"/>
+					<input type="button" value="로그인" class="submit">
+				</li>
 			</ul>
-			<input type="button" value="문의" class="inquiry_Btn"/>
 			<input type="hidden"  id="hUserNo" name="hUserNo">
 		</form>
 	</div>

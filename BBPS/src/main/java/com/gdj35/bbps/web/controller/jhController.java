@@ -97,18 +97,18 @@ public class jhController {
 	}
 	//지점 로그인
 	
-	@RequestMapping(value="/b_Login")
+	@RequestMapping(value="/B_Login")
 	public ModelAndView b_Login(HttpSession session, ModelAndView mav) {
 			if(session.getAttribute("sBRCHNo") != null	) { //로그인상태
-				mav.setViewName("redirect:b_Menu");
+				mav.setViewName("redirect:B_Menu");
 			} else { // 비 로그인 상태
-				mav.setViewName("jh/b_Login");
+				mav.setViewName("jh/B_Login");
 			}
 			
 			return mav;
 	}
 	
-	@RequestMapping(value="/b_Logins",
+	@RequestMapping(value="/B_Logins",
 			method = RequestMethod.POST,
 			produces = "text/json;charset=UTF-8")
 	@ResponseBody
@@ -142,14 +142,14 @@ public class jhController {
 	}
 	
 	//로그아웃
-		@RequestMapping(value="/b_LogOut")
+		@RequestMapping(value="/B_LogOut")
 		public ModelAndView b_LogOut(HttpSession session,
 				ModelAndView mav) {
 			System.out.println(session.getAttribute("sBRCHNm"));
 			session.invalidate();
 			
 			
-			mav.setViewName("redirect:b_Login");
+			mav.setViewName("redirect:B_Logins");
 			return mav;
 		}
 		
@@ -247,17 +247,17 @@ public class jhController {
 	return mapper.writeValueAsString(modelMap);
 	}
 			
-		@RequestMapping(value="/b_Menu")
+		@RequestMapping(value="/B_Menu")
 				
 			public ModelAndView b_Menu(
 					ModelAndView mav) {
 				
-				mav.setViewName("jh/b_Menu");
+				mav.setViewName("jh/B_Menu");
 					
 				return mav;
 					
 		}
-			
+		//포스
 		@RequestMapping(value="/pos")
 			
 		public ModelAndView pos(
@@ -268,7 +268,16 @@ public class jhController {
 				return mav;
 				
 			}
-
+		//POS메뉴관리
+		@RequestMapping(value="/Menu_List")
+		public ModelAndView Menu_List(
+				ModelAndView mav) {
+			
+			mav.setViewName("jh/Menu_List");
+			
+			return mav;
+			
+		}
 			
 		
 }
