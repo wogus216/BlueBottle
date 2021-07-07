@@ -30,11 +30,13 @@ html,body{
 .top_Menu{
 	min-width: 1680px;
 	height: 60px;
+	text-align: end;
 	
 }
 .logo_area{
 	display: inline-block;
 	cursor: pointer;
+	float: left;
 }
 .logo {
    padding: 13px 30px;
@@ -47,13 +49,12 @@ html,body{
 }
 .menu1_wrap, .menu1_wrap_on{
 	display: inline-table;
-	width: 128px;
 	cursor: pointer;
 }
 
 .menu1_title {
 	display: inline-table;
-	/* width: 100%; */
+	width: 128px;
 	height: 60px;
 	background-color: white;
 }
@@ -110,17 +111,18 @@ html,body{
 	background-color: #f2f2f2;
 }
 /* 로그아웃 */
-.log_out{
-	width: 120px;
-	height: 50px;
-	color: white;
-	font-size: 25px;
-	background-color: #01a1dd;
-	border: none;
-	cursor: pointer;
-	float: right;
-	margin-top: 5px;
-	font-weight: bold;
+.log_Out{
+	width: 90px;
+    height: 35px;
+    color: white;
+    font-size: 15px;
+    background-color: #01a1dd;
+    border: none;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 12px;
 }
 
 .content_area{
@@ -137,8 +139,13 @@ html,body{
 $(document).ready(function(){
 	//메뉴 그리기
 	reLoadMenu();
-	
 	//1뎁스 클릭시 효과 변화
+
+	
+	
+	
+}); //ready end
+function menuFunction(){
 	$(".menu1_wrap").on("click",".menu_depth1",function(){
 		$(".menu1_wrap_on").attr("class","menu1_wrap");
 		$(this).parent().parent().attr("class","menu1_wrap_on");
@@ -156,11 +163,12 @@ $(document).ready(function(){
 	
 	
 	//로그아웃
-	$(".top_Menu .log_out").on("click","input",function(){
+	$("#log_Out").on("click",function(){
 		location.href = "hq_LogOut";
 	});
 	
-}); //ready end
+}
+
 
 function reLoadMenu(){
 	var params = $("#actionForm").serialize();
@@ -173,6 +181,7 @@ function reLoadMenu(){
 		success: function(res){
 			console.log(res);
 			drawMenu(res.menu);
+			menuFunction();
 		},
 		error : function(request, status, error){
 			console.log(error);
@@ -193,37 +202,56 @@ function drawMenu(menu){
 	html += "  </div>";
 	for(var i =0; i < menu.length; i++){
 		if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
-					html += "<div class=\"menu1_wrap\">";
-					html +="	<div class=\"menu1_title\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
-			} 
+		}
+		
 		else if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
-					html += "<div class=\"menu1_wrap\">";
-					html +="	<div class=\"menu1_title\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
-				}
-	
-			for(var j = 0; j < menu.length;	j++){
-				if(menu[i].SITE_MENU_NO == $("#menuno").val()){
-					if(menu[j].DEPTH == 2){
-						html +="<div class=menu2_wrap>";
-						html +=		"<div class=menu2_title>";
-						html +=			"<div class=menu_depth2_area \" menuno=\"" + menu[j].SITE_MENU_NO + ">";
-						html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
-						html +=			"</div>";
-						html +=		"</div>";
-						html +=	  "</div>";
-						html +="</div>";
+					
+			for(var j = menu.length -1; j > i;	j--){
+				if(menu[i].SITE_MENU_NO == menu[j].TOP){
+					//if(menu[j].SITE_MENU_NO == $("#menuno").val()){
+						if(menu[j].DEPTH == 2){
+							html +="<div class=menu2_wrap " + menu[j].SITE_MENU_NO + "\">";
+							}
+							html +=		"<div class=menu2_title>";
+							html +=			"<div class=menu_depth2_area \" >";
+									if(menu[i].SITE_MENU_NO == 2){
+							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+									} 
+									else if(menu[i].SITE_MENU_NO == 5){
+							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\">" + menu[j-2].SITE_MENU_NAME + "</div>";
+									}
+									 else if(menu[i].SITE_MENU_NO == 5){
+												html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
+												html +=			"<div class=\"menu_depth2\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+												html +=			"<div class=\"menu_depth2\">" + menu[j-2].SITE_MENU_NAME + "</div>";
+											}
+							html +=			"</div>";
+							html +=		"</div>";
+							html +=	  "</div>";
+							html +="</div>";
+					//}
+						}
 					}
 				}
-			}
-		}
 			html +="</div>";
-		html +="<input type=\"button\" value=\"로그아웃\" class=\"log_out\"/>";
+		}
+			
+		html +="<input type=\"button\" value=\"로그아웃\" class=\"log_Out\"/ id=\"log_Out\">";
 	$(".top_Menu").html(html);
 }
+
+
 </script>
 
 </head>
