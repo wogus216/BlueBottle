@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -248,9 +249,41 @@ $(document).ready(function(){
 		del_tb();
 	});
 	
-	
 	$(".submit").on("click",function(){
-		aa();
+		if($.trim($(".itemName").val()) == ""){
+		   alert("품목명을 입력해주세요.")
+		   $(".itemName").focus;
+		}else if($.trim($(".itemPrice").val()) == ""){
+		   alert("가격을 입력해주세요.")
+		   $(".itemPrice").focus;
+		}else if($.trim($(".itemMinOrdUnit").val()) == ""){
+		   alert("최소주문단위를 입력해주세요.")
+		   $(".itemMinOrdUnit").focus;
+		}else if($.trim($(".itemComProdFlag").val()) == ""){
+		   alert("완제품여부를 입력해주세요.")
+		   $(".itemComProdFlag").focus;
+		}else{
+		   var params = $("#tb_Form").serialize();
+		   
+		   $.ajax({
+		      url : "Item_Adds",//접속주소
+		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+		      dataType :"json", //받아올 데이터 형식
+		      data : params,///보낼데이터(문자열 형태)
+		      success : function(res){
+		         if(res.msg == "success"){
+		            location.href = "testAMList";
+		         }else if (res.msg == "failed"){
+		            alert("사용자 등록에 실패하였습니다.");
+		         }else {
+		            alert("사용자 등록 중 문제가 발생하였습니다.")
+		         }
+		      },
+		      error : function(request,status,error){
+		         console.log(error);
+		      }
+		   });
+		}
 	});
 	
 }); //ready end
@@ -259,25 +292,7 @@ var cnt_tr = 1;
 
 function aa(){
 	
-	$(".tb_area tr").each(function () {
-		var cellItem = $(this).find(":input");
-		var itemObj = new Object();
-		itemObj.name = cellItem.eq(0).val();
-		itemObj.price = cellItem.eq(1).val();
-		itemObj.mou = cellItem.eq(2).val();
-		
-		if($(".itemComProdFlagY").is(":checked") == true){
-			itemObj.flag = cellItem.eq(3).val();
-			console.log("Y");
-		}else if ($(".itemComProdFlagN").is(":checked") == true){
-			itemObj.flag = cellItem.eq(4).val();
-			console.log("N");
-		}
-		
-		
-		console.log(itemObj);
-	});
-	
+	console.log($("#tb_Form").serialize());
 	
 }
 
@@ -292,8 +307,8 @@ function add_tb(){
 		insertTr += "<td><input class = \"itemName\"type=\"text\" name = \"itemName\" maxlength=\"30\"></td>";
 		insertTr += "<td><input class = \"itemPrice\"type=\"text\" name = \"itemPrice\" maxlength=\"10\"></td>";
 		insertTr += "<td><input class = \"itemMinOrdUnit\"type=\"number\" name = \"itemMinOrdUnit\" maxlength=\"10\"></td>";
-		insertTr += "<td><input class = \"itemComProdFlagY\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"0\"><label style= \"padding-right: 20px;\">Y</label>";
-		insertTr += "<input class = \"itemComProdFlagN\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"1\"><label>N</label></td>";
+		insertTr += "<td><input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"0\"><label style= \"padding-right: 20px;\">Y</label>";
+		insertTr += "<input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"1\"><label>N</label></td>";
 		insertTr += "</tr>";
 		
 		$("tbody").append(insertTr);
