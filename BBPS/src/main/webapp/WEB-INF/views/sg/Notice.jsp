@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -271,7 +274,108 @@ $(document).ready(function(){
 	});
 	
 	
+	
+	
+	
+	
+	if("${param.searchGbn}" != ""){
+		$("#searchGbn").val("${param.searchGbn}");
+	}
+	reloadList();
+	
+	$("tbody").on("click", "tr", function(){
+		$("#sNo").val($(this).attr("name"));
+		$("#searchTxt").val($("#searchOldTxt").val());
+		$("#actionForm").attr("action", "testSDetail");
+		$("#goForm").submit();
+	}); 
+	
+	$("#addBtn").on("click",function(){
+		$("#searchTxt").val($("#searchOldTxt").val());
+		$("#actionForm").attr("action", "testSWrite");
+		$("#actionForm").submit();
+	});
+	
+	$("#searchBtn").on("click",function(){
+		$("#page").val(1);
+		$("#searchOldTxt").val($("#searchTxt").val());
+		reloadList();
+	});
+	
+	$("#paging_Wrap").on("click","span",function(){
+		$("#page").val($(this).attr("name"));
+		$("#searchTxt").val($("#searchOldTxt").val());
+		reloadList();
+	});
+	
+	
+	
+	
 }); //ready end
+
+function reloadList() {
+	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
+	
+	$.ajax({
+		url:"testSLists", //접속주소
+		type:"post", //전송방식 : get, post
+		dataType:"json",//받아올데이터형식
+		data:params, //보낼 데이터(문자열 형태)
+		success : function (res) {//성공 시 다음함수 실행
+			drawList(res.list);
+			drawPaging(res.pb);
+		},
+		error : function (request, status, error) { //실패 시 다음함수 실행
+			console.log(error);
+		}
+	});
+}
+function drawList(list) {
+	var html = "";
+	for(var d of list){
+		html += "<tr name=\"" + d.SELL_NO + "\">";
+		html += "<td>" + d.SELL_NO+ "</td>";
+		html += "<td>" + d.ITEM_NAME + "</td>";
+		html += "<td>" + d.COUNT + "</td>";
+		html += "<td>" + d.S_DT + "</td>";
+		html += "</tr>";
+		
+	}
+	
+	$("tbody").html(html);
+}
+
+function drawPaging(pb) {
+	var html="";
+	
+	html += "<span name=\"1\">처음</span>";
+	
+	if($("#page").val() == "1"){
+		html += "<span name=\"1\">이전</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() -1) + "\">이전</span>";
+	}
+	
+	for(var i = pb.startPcount; i<=pb.endPcount; i++){
+		if($("#page").val() == i){
+			html += "<span class=\"" + i + "\"><b>" + i + "</b></span>";		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}
+	
+	if($("#page").val() == pb.maxPCount){
+		html += "<span name=\"" + pb.maxPCount + "\">다음</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
+	}
+	
+	
+	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
+	
+	$("#paging_Wrap").html(html);
+}
+
+
 </script>
 </head>
 <body>
@@ -418,7 +522,7 @@ $(document).ready(function(){
 <div class="content">
 <h1>공지사항</h1>
 <div class="input_btn_area">
-<button class="input_btn">글쓰기</button>
+<button class="input_btn" id="addBtn">글쓰기</button>
 </div>
 
 	<div class="filter_area">
@@ -451,79 +555,6 @@ $(document).ready(function(){
 		</tr>
 	</thead>
 	<tbody>
-	<tr>
-		<td>160</td>
-		<td><a href="#">5월 9일 새벽 시스템 오류 관련 공지사항</a></td>
-		<td>2021.5.9</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>159</td>
-		<td><a href="#">여의도 카페점 이벤트 유의사항</a></td>
-		<td>2021.5.9</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>158</td>
-		<td><a href="#">자재 출고일 변경사항 관련 안내</a></td>
-		<td>2021.5.8</td>		
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>157</td>
-		<td><a href="#">전 지점 대상 이벤트 예정</a></td>
-		<td>2021.5.8</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>156</td>
-		<td><a href="#">994</a></td>
-		<td>2021.5.8</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>155</td>
-		<td><a href="#">993</a></td>
-		<td>2021.5.8</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>154</td>
-		<td><a href="#">992</a></td>
-		<td>2021.5.7</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>153</td>
-		<td><a href="#">991</a></td>
-		<td>2021.5.7</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>152</td>
-		<td><a href="#">990</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>151</td>
-		<td><a href="#">989</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>150</td>
-		<td><a href="#">988</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>149</td>
-		<td><a href="#">987</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-
 	</tbody>
 </table>
 	<div class="search_area" style = "margin-top : 30px;">
