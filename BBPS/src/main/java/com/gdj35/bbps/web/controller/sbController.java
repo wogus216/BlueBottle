@@ -1,5 +1,6 @@
 package com.gdj35.bbps.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,4 +103,53 @@ public class sbController {
 			
 		return mav;
 	}
+	
+	//품목추가 (기능)
+	@RequestMapping(value = "/Item_Adds",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HPAdds(@RequestParam ArrayList<String> itemCate,@RequestParam ArrayList<String> itemName,@RequestParam ArrayList<String> itemPrice,@RequestParam ArrayList<String> itemMinOrdUnit,@RequestParam ArrayList<String> itemComProdFlag) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+			
+			for(int i = 0; i < itemName.size(); i++) {
+				insertMap.put("itemCate", itemCate.get(i));
+				insertMap.put("itemName", itemName.get(i));
+				insertMap.put("itemPrice", itemPrice.get(i));
+				insertMap.put("itemMinOrdUnit", itemMinOrdUnit.get(i));
+				insertMap.put("itemComProdFlag", itemComProdFlag.get(i));
+				
+			
+				int cnt = isbservice.AddItem(insertMap);
+				
+				int cnt2 = isbservice.AddItemPrice(insertMap);
+				
+				if(cnt > 0 && cnt2 > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+					}
+				}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	//품목수정  (기능x 화면전환)
+		@RequestMapping(value = "/Item_Edit")
+		public ModelAndView HPEdit (ModelAndView mav) throws Throwable{
+				
+			mav.setViewName("sb/Item_Edit");
+				
+			return mav;
+		}
 }
