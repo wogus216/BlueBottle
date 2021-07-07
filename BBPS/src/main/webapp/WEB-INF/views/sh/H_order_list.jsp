@@ -164,7 +164,7 @@ input{
 	text-align: right;
 	margin-bottom: 10px;
 }
-[name=ref], [name=order]{
+[name=ref], [name=ord]{
 	margin: 0;
 	height: 20px;
 	width: 30px;
@@ -238,66 +238,98 @@ button{
 .page_btn button:hover{
 	color: #01a1dd;
 }
-
 .page_btn button:focus{
 	outline:none;
 }
 
-.search_filter{
+#search_filter{
 	width : 120px;
 	vertical-align: middle;
 }
 
-.search_input{
+#search_input{
 	height: 34px;
 	vertical-align: middle;
 	width : 280px;
 	outline:none;
 }
+.page_btn .on{
+	color: #01a1dd;
+}
 </style>
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if("${param.search_filter}" != ""){
+		$("#search_filter").val("${param.search_filter}");
+	}
 	reloadList();
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
+	
+	var ord_ck_arr = [];
+	var ref_ck_arr = [];
+	$("input[name=ord]:checked").each(function(){
+		var ord_ck=$(this).val();
+		ord_ck_arr.push(ord_ck);
+		console.log(ord_ck_arr);
 	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-
-	},function(){
-		$("li").css("background-color","white");
+	$("input[name=ref]:checked").each(function(){
+		var ref_ck=$(this).val();
+		ref_ck_arr.push(ref_ck);
+		console.log(ref_ck_arr);
 	});
-
-	$(".page_btn").on("click","button",function(){
+	
+	$("#search_btn").on("click",function(){
+		$("#page").val(1);
+		$("#search_old_txt").val($("#search_input").val());
+		reloadList();
+	});
+	$(".paging_area").on("click", "div", function(){
+		$("#search_input").val($("#search_old_txt").val());
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
-
-	$("tr").on("click",function(){
-		location.href = "H_stock_detail.html";
+	$("#ck1").on("click",function(){
+		if($("input:checkbox[id='ck1']").prop("checked")){
+			$("input[name=ord]").prop("checked", true);
+		}else{
+			$("input[name=ord]").prop("checked", false);
+		}
 	});
-
-	$(".add_btn").on("click",function(){
-		location.href = "H_product_add.html";
+	$("#ck6").on("click",function(){
+		if($("input:checkbox[id='ck6']").prop("checked")){
+			$("input[name=ref]").prop("checked", true);
+		}else{
+			$("input[name=ref]").prop("checked", false);
+		}
 	});
+	$(".ord").click(function(){ 
+		   if($("input[class=ord]:checked").length==4){ 
+		       $("#ck1").prop("checked",true); 
+		    }else{ 
+		       $("#ck1").prop("checked",false); 
+		    } 
+		});
+	$(".ref").click(function(){ 
+		   if($("input[class=ref]:checked").length==4){ 
+		       $("#ck6").prop("checked",true); 
+		    }else{ 
+		       $("#ck6").prop("checked",false); 
+		    } 
+		});
 }); //ready end
 
 function reloadList(){
 	var params = $("#actionForm").serialize();
-
+	
 	$.ajax({
 		url : "H_order_lists",
 		type : "post",  
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawproductList(res.list);
-			drawproductPaging(res.pb);
+			drawList(res.list);
+			drawPaging(res.pb);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -305,25 +337,29 @@ function reloadList(){
 	});
 }
 
-function drawproductList(list){
+function drawList(list){
 	var html ="";
 
 	for(var d of list){
 		html += "<tr ord_no = \""+d.ORD_NO+"\">";
 		html += "<td>"+d.ORD_NO+"</td>";
+		html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
 		html += "<td>"+d.BRCH_NAME+"</td>";
-		html += "<td>"+d.STAT_NAME+"</th>";
-		html += "<td>"+d.PROCESS_DATE+"</td>";
+		html += "<td>"+d.CODE_NAME+"</th>";
+		if(d.PROCESS_DATE == null){
+			html += "<td></td>"
+		}else{
+		html += "<td>"+d.PROCESS_DATE+"</td>"
+		}
 		html += "</tr>";	
 	}
 
 	$("tbody").html(html);
 }
-
-function drawproductPaging(pb){
+function drawPaging(pb){
 	var html = "";
                                     
-	html += "<button page = \"1\" style=\"background-color: white\"<<<</button>";
+	html += "<button page = \"1\" style=\"background-color: white\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\" style=\"background-color: white\"><</button>";
 	}else{
@@ -331,7 +367,7 @@ function drawproductPaging(pb){
 	}
 
 	for(var i = pb.startPcount; i <= pb.endPcount; i++){
-		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
+		if($("#page").val() == i){
 			html += "<button class = \"on\" page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
 		}else{
 			html += "<button  page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
@@ -342,7 +378,7 @@ function drawproductPaging(pb){
 	if($("#page").val() == pb.maxPcount){
 		html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">></button>";
 	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";;/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";;
 	}
 
 
@@ -359,7 +395,7 @@ function drawproductPaging(pb){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -508,20 +544,20 @@ function drawproductPaging(pb){
 	<button class="search_btn">검색</button>
 </div>
 <fieldset style = "margin-right:10px;">
-		<legend>주문선택</legend>
-		<input type = "checkbox" id="ck1" name="order" checked="checked"/><label id="l1" for="ck1">전체</label>
-		<input type = "checkbox" id="ck2" name="order"/><label id="ck2" for="r2">주문요청</label>
-		<input type = "checkbox" id="ck3" name="order"/><label id="ck3" for="r3">주문요청취소</label>
-		<input type = "checkbox" id="ck4" name="order"/><label id="ck4" for="r4">주문승인</label>
-		<input type = "checkbox" id="ck5" name="order"/><label id="ck5" for="r5">주문승인거부</label>
+				<legend>주문선택</legend>
+		<input type = "checkbox" id="ck1" name="ord" checked="checked"/><label id="ck1" for="ck1">전체</label>
+		<input type = "checkbox" id="ck2" class="ord" name="ord" checked="checked"/><label for="ck2">주문요청</label>
+		<input type = "checkbox" id="ck3" class="ord" name="ord" checked="checked"/><label for="ck3">주문요청취소</label>
+		<input type = "checkbox" id="ck4" class="ord" name="ord" checked="checked"/><label for="ck4">주문승인</label>
+		<input type = "checkbox" id="ck5" class="ord" name="ord" checked="checked"/><label for="ck5">주문승인거부</label>
 	</fieldset>
 	<fieldset style =  "float:right; margin-bottom: 20px;">
 		<legend>환불선택</legend>
-		<input type = "checkbox" id="ck6" name="ref" checked="checked"/><label id="l6" for="ck6">전체</label>
-		<input type = "checkbox" id="ck7" name="ref"/><label id="l6" for="ck7">환불요청</label>
-		<input type = "checkbox" id="ck8" name="ref"/><label id="l7" for="ck8">환불요청취소</label>
-		<input type = "checkbox" id="ck9" name="ref"/><label id="l8" for="ck9">환불승인</label>
-		<input type = "checkbox" id="ck10" name="ref"/><label id="l9" for="rck0">환불승인거부</label>
+		<input type = "checkbox" id="ck6" name="ref" checked="checked"/><label id="ck6" for="ck6">전체</label>
+		<input type = "checkbox" id="ck7" class="ref" name="ref" checked="checked"/><label for="ck7">환불요청</label>
+		<input type = "checkbox" id="ck8" class="ref" name="ref" checked="checked"/><label for="ck8">환불요청취소</label>
+		<input type = "checkbox" id="ck9" class="ref" name="ref" checked="checked"/><label for="ck9">환불승인</label>
+		<input type = "checkbox" id="ck10" class="ref" name="ref" checked="checked"/><label for="ck10">환불승인거부</label>
 	</fieldset>
 <table cellspacing="0">
 	<colgroup>
@@ -543,19 +579,25 @@ function drawproductPaging(pb){
 	<tbody></tbody>
 </table>
 <div class="search_area" style = "margin-top : 30px;">
-		<div class="search_info">
-			<select class="search_filter">
+	<div class="search_info">
+		<form action = "#" id = "actionForm" method = "post">
+			<input type = "hidden" id = "ord_no" name = "ord_no"/>
+			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
+			<input type = "hidden" id = "ord_ch_arr" name = "ord_ch_arr" value = "${ord_ch_arr}"/>
+			<input type = "hidden" id = "ref_ch_arr" name = "ref_ch_arr" value = "${ref_ch_arr}"/>
+			<select id ="search_filter" name="search_filter">
 				<option value="0" selected="selected">주문번호</option>
-				<option value="1">본문 내용</option>
 			</select>
-			<input type="text" class="search_input"/>
-			<button class="search_btn">검색</button>
-		</div>
+			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
+			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
+			<button class="search_btn" id="search_btn">검색</button>
+		</form>
 	</div>
+</div>
 <div class="page_area">
 		<div class="page_btn"></div>
-	</div>
-	</div>
+</div>
+</div>
 </div>
 </body>
 </html>
