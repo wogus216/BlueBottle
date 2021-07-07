@@ -30,6 +30,12 @@ public class nyDao implements InyDao{
 
 		return sqlSession.update("NY.updateCate", params);
 	}
+
+	@Override
+	public int deleteCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.deleteCate", params);
+	}
 	
 	
 }

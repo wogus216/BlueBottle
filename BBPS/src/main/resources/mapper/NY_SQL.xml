@@ -20,4 +20,11 @@
 	CATE_NAME = #{cateName}
 	WHERE CATE_NO = #{cateNo}
 	</update>
+	
+	<update id="deleteCate" parameterType="hashmap">
+	UPDATE NOTICE_CATE
+	SET
+	DEL_FLAG = 0
+	WHERE CATE_NO = #{cateNo}
+	</update>
 </mapper> 

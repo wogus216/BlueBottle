@@ -11,4 +11,6 @@ public interface InyDao {
 
 	int updateCate(HashMap<String, String> params) throws Throwable;
 
+	int deleteCate(HashMap<String, String> params) throws Throwable;
+
 }

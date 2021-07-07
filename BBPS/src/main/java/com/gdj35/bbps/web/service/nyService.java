@@ -32,5 +32,11 @@ public class nyService implements InyService{
 		return iNyDao.updateCate(params);
 	}
 
+	@Override
+	public int deleteCate(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.deleteCate(params);
+	}
+
 
 }

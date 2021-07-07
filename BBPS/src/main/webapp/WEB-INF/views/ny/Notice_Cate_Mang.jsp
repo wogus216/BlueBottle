@@ -275,7 +275,8 @@ $(document).ready(function(){
 	
 	$("tbody").on("click", ".edit_com_btn", function() {
 		$("#cateNo").val($(this).parent().parent().attr("cateNo"));
-		$("#cateName").val($(this).parent().parent().nth-child(1).children("#name").val());
+		$("#cateName").val($(this).parent().parent().children().eq(1).children().val());
+		
 		
 		var params = $("#actionForm").serialize();
 		
@@ -298,12 +299,32 @@ $(document).ready(function(){
 			}
 		}); //ajax end
 		
-		$(this).parent().parent().attr("class", "view_tr");
-		$(this).attr("class","edit_btn");
-		$(this).val("수정");
-		$(this).parent().children(".del_btn").css("display", "show");
 	}); //edit_com_btn click end
 	
+	$("tbody").on("click",".del_btn", function() {
+		$("#cateNo").val($(this).parent().parent().attr("cateNo"));
+		
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "cateDelete",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				if(res.msg == "success") {
+					location.href = "Notice_Cate_Mang";
+				}else if(res.msg == "failed") {
+					alert("수정에 실패하였습니다.");
+				}else {
+					alert("수정 중 문제가 발생하였습니다.");
+				}
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		}); //ajax end
+	}); //del_btn_click end
 }); //ready end
 
 function reloadList() {
@@ -325,7 +346,7 @@ function drawList(list) {
 	var html = "";
 	
 	for(var d of list) {
-		html += "<tr class=\"view_tr\" cateNo=\"" + d.CATE_NO + "cateName=\"" + d.CATE_NAME + ">";
+		html += "<tr class=\"view_tr\" cateNo=\"" + d.CATE_NO + "\"cateName=\"" + d.CATE_NAME + "\">";
 		html += "<td>" + d.CATE_NO + "</td>";
 		html += "<td><input type=\"text\" id=\"name\" value=\"" + d.CATE_NAME + "\" /></td>";
 		html += "<td><input class=\"edit_btn\" type=\"button\" value=\"수정\"><input class=\"del_btn\" type=\"button\" value=\"삭제\"></td>";   
