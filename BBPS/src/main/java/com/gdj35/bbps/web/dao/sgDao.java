@@ -14,13 +14,26 @@ public class sgDao implements IsgDao {
 	public SqlSession sqlSession;
 
 	@Override
-	public int getSCnt(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("", params);
+	public int getNCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SG.getNCnt", params);
 	}
 
 	@Override
-	public List<HashMap<String, String>> getSList(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectList("", params);
+	public List<HashMap<String, String>> getNList(HashMap<String, String> params) throws Throwable {
+		System.out.println("리스트db받아옴");
+		return sqlSession.selectList("SG.getNList", params);
 	}
+	
+	@Override
+	public HashMap<String, String> getN(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SG.getN", params);
+	}
+
+	@Override
+	public int addN(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("SG.addN", params);
+	}
+
+	
 	
 }
