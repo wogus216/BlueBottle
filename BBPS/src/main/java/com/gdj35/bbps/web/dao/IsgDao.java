@@ -5,8 +5,12 @@ import java.util.List;
 
 public interface IsgDao {
 
-	int getSCnt(HashMap<String, String> params) throws Throwable;
+	int getNCnt(HashMap<String, String> params) throws Throwable;
 
-	List<HashMap<String, String>> getSList(HashMap<String, String> params) throws Throwable;
+	List<HashMap<String, String>> getNList(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getN(HashMap<String, String> params) throws Throwable;
+	
+	int addN(HashMap<String, String> params) throws Throwable;
 
 }
