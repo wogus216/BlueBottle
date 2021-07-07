@@ -221,7 +221,7 @@ button{
 }
 /* 검색 과 페이지 */
 
-.search_info,.page_area, .page_btn{
+.search_area,.paing_wrap, .page_btn{
 	text-align: center;
 }
 
@@ -257,7 +257,7 @@ button{
 }
 </style>
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".top_menu").on("click","a",function(){
@@ -283,32 +283,30 @@ $(document).ready(function(){
 	}
 	reloadList();
 	
-	$("tbody").on("click", "tr", function(){
-		$("#sNo").val($(this).attr("name"));
-		$("#searchTxt").val($("#searchOldTxt").val());
-		$("#actionForm").attr("action", "testSDetail");
-		$("#goForm").submit();
-	}); 
-	
-	$("#addBtn").on("click",function(){
-		$("#searchTxt").val($("#searchOldTxt").val());
-		$("#actionForm").attr("action", "testSWrite");
-		$("#actionForm").submit();
-	});
-	
 	$("#searchBtn").on("click",function(){
 		$("#page").val(1);
 		$("#searchOldTxt").val($("#searchTxt").val());
 		reloadList();
 	});
 	
-	$("#paging_Wrap").on("click","span",function(){
+	$(".paging_Wrap").on("click","span",function(){
 		$("#page").val($(this).attr("name"));
 		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 	});
 	
+	$("#writeBtn").on("click", function () {
+		location.href = "NoticeWrite";
+		$("#actionForm").attr("action", "NoticeWrite");
+		$("#actionForm").submit();
+	});
 	
+	$(".list_wrap tbody").on("click","td", function () {
+		$("#nNo").val($(this).attr("nno"));
+		
+		$("#actionForm").attr("action", "Notice");
+		$("#actionForm").submit();
+	});
 	
 	
 }); //ready end
@@ -317,7 +315,7 @@ function reloadList() {
 	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
 	
 	$.ajax({
-		url:"testSLists", //접속주소
+		url:"Notices", //접속주소
 		type:"post", //전송방식 : get, post
 		dataType:"json",//받아올데이터형식
 		data:params, //보낼 데이터(문자열 형태)
@@ -332,13 +330,15 @@ function reloadList() {
 }
 function drawList(list) {
 	var html = "";
+	
 	for(var d of list){
-		html += "<tr name=\"" + d.SELL_NO + "\">";
-		html += "<td>" + d.SELL_NO+ "</td>";
-		html += "<td>" + d.ITEM_NAME + "</td>";
-		html += "<td>" + d.COUNT + "</td>";
+		html += "<tr name=\"" + d.TXT_NO + "\">";
+		html += "<td>" + d.TXT_NO+ "</td>";
+		html += "<td>" + d.TITLE + "</td>";
 		html += "<td>" + d.S_DT + "</td>";
+		html += "<td>" + d.USER_NO + "</td>";
 		html += "</tr>";
+		
 		
 	}
 	
@@ -522,7 +522,7 @@ function drawPaging(pb) {
 <div class="content">
 <h1>공지사항</h1>
 <div class="input_btn_area">
-<button class="input_btn" id="addBtn">글쓰기</button>
+<button class="input_btn" id="writeBtn">작성</button>
 </div>
 
 	<div class="filter_area">
@@ -538,7 +538,7 @@ function drawPaging(pb) {
 			<input type = "date" value="2021-01-01" class="end_date"/>
 			<button class="search_btn">검색</button>
 		</div>
-	
+<div class="list_wrap">
 <table>
 	<colgroup>
 		<col width="15%">
@@ -547,7 +547,7 @@ function drawPaging(pb) {
 		<col width="20%">
 	</colgroup>
 	<thead>
-	<tr>
+		<tr>
 			<th>NO.</th>
 			<th>제목</th>
 			<th>날짜</th>
@@ -557,24 +557,22 @@ function drawPaging(pb) {
 	<tbody>
 	</tbody>
 </table>
+</div>
 	<div class="search_area" style = "margin-top : 30px;">
-		<div class="search_info">
 		<form action="#" id="actionForm" method="post">
-	<input type="hidden" id="sNo" name="sNo"/>
+	<input type="hidden" id="nNo" name="nNo"/>
 	<input type="hidden" id="page" name="page" value="${page}">
-			<select class="search_filter">
+			<select id="searchGbn" name="searchGbn" class="search_filter">
 				<option value="0" selected="selected">제목+내용</option>
 				<option value="1">제목</option>
 				<option value="2">내용</option>
 				<option value="3">작성자</option>
 			</select>
-			<input type="hidden" id="searchOldTxt" value="${param.searchTxt}"/>
 			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
 			<button class="search_btn" id="searchBtn">검색</button>
 			</form>
-		</div>
 	</div>
-	<div class="page_area">
+<div class="paging_wrap">
 		<div class="page_btn">
 		<button style="background-color: white"><</button>
 		<button style="background-color: white">1</button>
@@ -582,10 +580,8 @@ function drawPaging(pb) {
 		<button style="background-color: white">3</button>
 		<button style="background-color: white">></button>
 		</div>
-	</div>
-	
+</div>
 	</div>
 </div>
-
 </body>
 </html>

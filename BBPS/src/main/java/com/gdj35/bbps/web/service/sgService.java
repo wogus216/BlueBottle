@@ -14,13 +14,25 @@ public class sgService implements IsgService {
 	public IsgDao isgDao;
 
 	@Override
-	public int getSCnt(HashMap<String, String> params) throws Throwable {
-		return isgDao.getSCnt(params);
+	public int getNCnt(HashMap<String, String> params) throws Throwable {
+		return isgDao.getNCnt(params);
 	}
 
 	@Override
-	public List<HashMap<String, String>> getSList(HashMap<String, String> params) throws Throwable {
-		return isgDao.getSList(params);
+	public List<HashMap<String, String>> getNList(HashMap<String, String> params) throws Throwable {
+		return isgDao.getNList(params);
 	}
+	
+	@Override
+	public HashMap<String, String> getN(HashMap<String, String> params) throws Throwable {
+		return isgDao.getN(params);
+	}
+
+	@Override
+	public int addN(HashMap<String, String> params) throws Throwable {
+		return isgDao.addN(params);
+	}
+
+	
 
 }

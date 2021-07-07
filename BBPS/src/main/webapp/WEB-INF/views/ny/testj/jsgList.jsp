@@ -44,7 +44,7 @@ function reloadList() {
 	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
 	
 	$.ajax({
-		url:"jsgLists", //접속주소
+	url:"jsgLists", //접속주소
 		type:"post", //전송방식 : get, post
 		dataType:"json",//받아올데이터형식
 		data:params, //보낼 데이터(문자열 형태)

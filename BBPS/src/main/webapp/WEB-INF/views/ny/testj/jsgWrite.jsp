@@ -49,7 +49,7 @@ $(document).ready(function(){
 					}else if(res.msg == "failed"){
 						alert("등록에 실패하였습니다.");
 					}else {
-						alert("등록 중 문제가 발생하였습니다.")
+						alert("등록 중 문제가 발생하였습니다.");
 					}
 					
 					},
