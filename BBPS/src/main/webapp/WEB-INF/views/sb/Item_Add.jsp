@@ -226,6 +226,9 @@ input[type=radio]{
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+
+var cnt_tr = 1;
+
 $(document).ready(function(){
 	
 	$(".top_menu").on("click","a",function(){
@@ -251,18 +254,16 @@ $(document).ready(function(){
 	
 	$(".submit").on("click",function(){
 		if($.trim($(".itemName").val()) == ""){
-		   alert("품목명을 입력해주세요.")
+			alert("품목명을 입력해주세요.")
 		   $(".itemName").focus;
 		}else if($.trim($(".itemPrice").val()) == ""){
-		   alert("가격을 입력해주세요.")
+			alert("가격을 입력해주세요.")
 		   $(".itemPrice").focus;
 		}else if($.trim($(".itemMinOrdUnit").val()) == ""){
-		   alert("최소주문단위를 입력해주세요.")
+			alert("최소주문단위를 입력해주세요.")
 		   $(".itemMinOrdUnit").focus;
-		}else if($.trim($(".itemComProdFlag").val()) == ""){
-		   alert("완제품여부를 입력해주세요.")
-		   $(".itemComProdFlag").focus;
 		}else{
+			
 		   var params = $("#tb_Form").serialize();
 		   
 		   $.ajax({
@@ -272,11 +273,11 @@ $(document).ready(function(){
 		      data : params,///보낼데이터(문자열 형태)
 		      success : function(res){
 		         if(res.msg == "success"){
-		            location.href = "testAMList";
+		            location.href = "Item_List";
 		         }else if (res.msg == "failed"){
-		            alert("사용자 등록에 실패하였습니다.");
+		            alert("등록에 실패하였습니다."); // 팝업 변경 필요
 		         }else {
-		            alert("사용자 등록 중 문제가 발생하였습니다.")
+		            alert("등록 중 문제가 발생하였습니다."); // 팝업 변경 필요
 		         }
 		      },
 		      error : function(request,status,error){
@@ -286,15 +287,11 @@ $(document).ready(function(){
 		}
 	});
 	
+	$("tbody").on("click", "[type='radio']", function() {
+		$(this).parent().children("#itemComProdFlag").val($(this).val());
+	});
+	
 }); //ready end
-
-var cnt_tr = 1;
-
-function aa(){
-	
-	console.log($("#tb_Form").serialize());
-	
-}
 
 function add_tb(){
 	
@@ -304,16 +301,25 @@ function add_tb(){
 		var insertTr = "";
 		
 		insertTr += "<tr>";
+		insertTr += "<td><select name = \"itemCate\" id = \"itemCate\">";
+		insertTr += "<option value = \"0\">음료재료</option>";
+		insertTr += "<option value = \"1\">제과</option>";
+		insertTr += "<option value = \"2\">원두</option>";
+		insertTr += "<option value = \"3\">굿즈</option>";
+		insertTr += "<option value = \"4\">기타</option>";
+		insertTr += "</select></td>";
 		insertTr += "<td><input class = \"itemName\"type=\"text\" name = \"itemName\" maxlength=\"30\"></td>";
-		insertTr += "<td><input class = \"itemPrice\"type=\"text\" name = \"itemPrice\" maxlength=\"10\"></td>";
+		insertTr += "<td><input class = \"itemPrice\"type=\"number\" name = \"itemPrice\" maxlength=\"10\"></td>";
 		insertTr += "<td><input class = \"itemMinOrdUnit\"type=\"number\" name = \"itemMinOrdUnit\" maxlength=\"10\"></td>";
-		insertTr += "<td><input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"0\"><label style= \"padding-right: 20px;\">Y</label>";
-		insertTr += "<input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"1\"><label>N</label></td>";
+		insertTr += "<td><input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" checked=\"checked\" value = \"0\"><label style= \"padding-right: 20px;\">Y</label>";
+		insertTr += "<input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"1\"><label>N</label>";
+		insertTr += "<input type=\"hidden\" id=\"itemComProdFlag\" name=\"itemComProdFlag\" value=\"0\" />";
+		insertTr += "</td>";
 		insertTr += "</tr>";
 		
 		$("tbody").append(insertTr);
 	}else{
-		alert("최대 행입니다.");
+		alert("최대 행입니다."); // 팝업 변경 필요
 	}
 }
 
@@ -324,7 +330,7 @@ function del_tb(){
 		$("tbody tr:last").remove();
 	}else{
 		cnt_tr = 1;
-		alert("첫 번째 행입니다. ");
+		alert("첫 번째 행입니다. "); // 팝업 변경 필요
 	}
 }
 
@@ -439,15 +445,11 @@ function del_tb(){
 <form action = "#" id = "tb_Form" method = "post"><!-- tbody에 있는 내용 넘기기위해 -->
 <div class = "tb_area">
 <table cellspacing="0">
-	<colgroup>
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
-	</colgroup>
+	
 	<thead>
 	<tr>
-		<th scope=col style= "border-left: none;">품목명</th>
+		<th scope=col style= "border-left: none;">카테고리</th>
+		<th scope=col>품목명</th>
 		<th scope=col>가격(원)</th>
 		<th scope=col>최소주문단위</th>
 		<th scope=col>완제품여부</th>
@@ -456,11 +458,19 @@ function del_tb(){
 	
 	<tbody>	
 	<tr>
+	<td><select name = "itemCate" id = "itemCate">
+		<option value = "0">음료재료</option>
+		<option value = "1">제과</option>
+		<option value = "2">원두</option>
+		<option value = "3">굿즈</option>
+		<option value = "4">기타</option>
+		</select></td>
 	<td><input type="text" class = "itemName" name = "itemName" maxlength="30"></td>
-	<td><input type="text" class = "itemPrice" name = "itemPrice" maxlength="10"></td>
+	<td><input type="number" class = "itemPrice" name = "itemPrice" maxlength="10"></td>
 	<td><input type="number" class = "itemMinOrdUnit" name = "itemMinOrdUnit" maxlength="10"></td>
-	<td><input type="radio" class = "itemComProdFlagY" name = "itemComProdFlag" value = "0"><label style= "padding-right: 20px;">Y</label>
-		<input type="radio" class = "itemComProdFlagN" name = "itemComProdFlag" value = "1"><label>N</label></td>	
+	<td><input type="radio" class = "itemComProdFlag" name = "itemComProdFlag1" checked="checked" value = "0"><label style= "padding-right: 20px;">Y</label>
+		<input type="radio" class = "itemComProdFlag" name = "itemComProdFlag1" value = "1"><label>N</label>
+		<input type="hidden" id="itemComProdFlag" name="itemComProdFlag" value="0" /></td>	
 	</tr>
 	</tbody>
 </table>

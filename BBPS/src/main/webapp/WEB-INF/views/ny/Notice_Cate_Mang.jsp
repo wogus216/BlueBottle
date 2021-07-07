@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -120,23 +119,14 @@ li {
     margin-left: 30px;
      width: 1250px;
 }
-/* 품목등록 */
 
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
 }
 
-.row_add, .row_del{
-	background-color: #01a1dd;
-	float: right;
-}
-.row_del{
-	background-color: #bf4040;
-}
-
 table {
-    width: 800px;
+    width:800px;
     table-layout: fixed;
     background: #ffffff;
 	margin: 10px 0  0 220px;
@@ -144,7 +134,6 @@ table {
 	border-bottom: 2px solid #d9d9d9;
 	text-align: center;
 }
-
 
 tr {
     display: table-row;
@@ -165,99 +154,72 @@ td{
  td:first-child{
 	border-left: none;
 }
-input{
+
+input[type=text]{
 	width:200px;
-	height:40px;
-
-}
-.selectBox, .tot_price li{
-	float:right;
-}
-.ord_info li, .tot_price li{
-	font-size:19px;
-	margin:10px;
-	
-}
-.ord_info ul, .tot_price ul{
-	max-width: 1000px; 
-   
+	height:35px;
+	font-size: 16px;
+	padding-left: 5px;
 }
 
-.apv_info, .send{
-	float:right;
-	font-size:19px;
-}
-
-.apv_stat{
-	 color:red;
-}
-/* 이게일반 */
-button{
-	color: white;
-	width: 100px;
-	height: 40px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:10px;
-	cursor: pointer;
-	background-color: #01a1dd;
+input[type=text]:focus{
 	outline:none;
 }
-.submit_area{
-	text-align: center;
-}
 
-.submit{
-	width:100px;
-	height: 45px;
-	background-color: #01a1dd;
-	font-weight: bold;
-	 font-size: 20px;
-	 vertical-align: middle;
-}
-
-button:focus{outline:none;}
 /* 카테고리 */
 .cate_add{
 	text-align: center;
-	margin-bottom: 80px;
+	vertical-align: top;
+	margin-bottom: 70px;
+	height: 55px;
 }
 
 .cate_name{
 	font-size: 20px;
-	font-weight: bold;
+	font-weight: 900;
 	margin-right: 10px;
 }
 
-.edit_btn, .del_btn{
+.edit_btn, .del_btn, .add_btn, .edit_com_btn{
 	width: 80px;
 	color: white;
     height: 40px;
     text-align: center;
     border: 0;
     border-radius: 3px;
-    font-size: 18px;
+    font-size: 16px;
     margin: 10px;
     cursor: pointer;
     background-color: #01a1dd;
     outline: none;
     font-weight: bold;
- 
+
 }
 .edit_btn{
  	background-color: #01a1dd;
 }
+
 .del_btn{
 	background-color: #bf4040;
+	display: show;
 }
- 
+
+.add_btn{
+	width: 100px;
+	height: 47px;
+	font-size: 18px;
+}
+.edit_com_btn{
+	background-color: #01a1dd;
+}
+.view_tr input[type='text'] {
+	border: none;
+	pointer-events: none;
+}
 
 </style>
 
-<script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".top_menu").on("click","a",function(){
@@ -274,10 +236,127 @@ $(document).ready(function(){
 			$("li").css("background-color","white");
 	}); //sub menu hover end
 	
+	reloadList();
 	
+	$(".add_btn").on("click",function() {
+		if($.trim($("#inputTxt").val()) == "") {
+			alert("추가할 카테고리명을 입력하세요.");
+		}
+		else{
+			var params = $("#actionForm").serialize();
+			
+			$.ajax({
+				url: "cateAdd",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					if(res.msg == "success") {
+						location.href = "Notice_Cate_Mang";
+					}else if(res.msg == "failed") {
+						alert("등록에 실패하였습니다.");
+					}else {
+						alert("등록 중 문제가 발생하였습니다.");
+					}
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+			});
+		}
+	}); // add_btn click end 
 	
+	$("tbody").on("click", ".edit_btn", function(){
+		$(this).parent().parent().attr("class", "edit_tr");
+		$(this).attr("class","edit_com_btn");
+		$(this).val("등록");
+		$(this).parent().children(".del_btn").css("display", "none");
+	}); //edit_btn click end
 	
+	$("tbody").on("click", ".edit_com_btn", function() {
+		$("#cateNo").val($(this).parent().parent().attr("cateNo"));
+		$("#cateName").val($(this).parent().parent().children().eq(1).children().val());
+		
+		
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "cateUpdate",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				if(res.msg == "success") {
+					location.href = "Notice_Cate_Mang";
+				}else if(res.msg == "failed") {
+					alert("수정에 실패하였습니다.");
+				}else {
+					alert("수정 중 문제가 발생하였습니다.");
+				}
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		}); //ajax end
+		
+	}); //edit_com_btn click end
+	
+	$("tbody").on("click",".del_btn", function() {
+		$("#cateNo").val($(this).parent().parent().attr("cateNo"));
+		
+		var params = $("#actionForm").serialize();
+		
+		$.ajax({
+			url: "cateDelete",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res) {
+				if(res.msg == "success") {
+					location.href = "Notice_Cate_Mang";
+				}else if(res.msg == "failed") {
+					alert("수정에 실패하였습니다.");
+				}else {
+					alert("수정 중 문제가 발생하였습니다.");
+				}
+			},
+			error: function(request, status, error) {
+				console.log(error);
+			}
+		}); //ajax end
+	}); //del_btn_click end
 }); //ready end
+
+function reloadList() {
+	
+	$.ajax({
+		url: "cateList",
+		type: "post",
+		dataType: "json",
+		success : function(res) {
+			drawList(res.list);
+		},
+		error : function(request, status, error) {
+			console.log(error);
+		}
+	});	
+}
+
+function drawList(list) {
+	var html = "";
+	
+	for(var d of list) {
+		html += "<tr class=\"view_tr\" cateNo=\"" + d.CATE_NO + "\"cateName=\"" + d.CATE_NAME + "\">";
+		html += "<td>" + d.CATE_NO + "</td>";
+		html += "<td><input type=\"text\" id=\"name\" value=\"" + d.CATE_NAME + "\" /></td>";
+		html += "<td><input class=\"edit_btn\" type=\"button\" value=\"수정\"><input class=\"del_btn\" type=\"button\" value=\"삭제\"></td>";   
+		html += "</tr>";
+	}
+	
+	$("table tbody").html(html);
+}
+
+
 </script>
 </head>
 <body>
@@ -286,7 +365,7 @@ $(document).ready(function(){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -421,64 +500,26 @@ $(document).ready(function(){
 <div class="content_area">
 <div class="content">
 <h1>공지카테고리</h1>
-
 <div class="cate_add">
+	<form action="#" id="actionForm" method="post">
 		<span class="cate_name">카테고리명</span>
-		<input type="text" maxlength="10" style="font-size: 15px;">
-		<button class="submit">등록</button>
+		<input type="text" name="inputTxt" id="inputTxt" />		
+		<input type="button" class="add_btn" value="등록" />
+		<input type="hidden" id="cateNo" name="cateNo" />
+		<input type="hidden" id="cateName" name="cateName" />
+	</form> 
 </div>
-	<table cellspacing="0">
-			<colgroup>
-				<col width="5%">
-				<col width="10%">
-				<col width="10%">
-			</colgroup>
-			<tbody>
-			<tr>
-				<th scope="col" style="border-left: none;">No.</th>
-				<th scope="col">카테고리명</th>
-				<th scope="col"></th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>이벤트</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>주문</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>재고</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>시스템</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>5</td>
-				<td>기타</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
+<table>
+	<thead>
+		<tr>
+			<th>NO.</th>
+			<th>카테고리명</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
 </div>
 </div>
 </body>

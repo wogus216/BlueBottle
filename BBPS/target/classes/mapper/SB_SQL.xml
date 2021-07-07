@@ -68,4 +68,13 @@
                                    ON OI.RNUM = NI.RNUM - 1
 	ORDER BY PRICE_NO DESC
 	</select>
+	
+	<!-- 품목추가 --><!-- 사용자 번호는 로그인된  대상으로 수정 필요  및 현재 시퀀스는 테스트용으로 만든 시퀀스로 쓴 것이므로 나중에 진짜 시퀀스로 바꿔야함-->
+	<insert id="AddItem" parameterType="hashmap">	
+	INSERT INTO ITEM VALUES (TEST_SEQ.NEXTVAL,#{itemCate},4,#{itemName},#{itemMinOrdUnit},SYSDATE,#{itemComProdFlag})
+	</insert>
+	<insert id="AddItemPrice" parameterType="hashmap">	
+	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,TEST_SEQ.CURRVAL,4,#{itemPrice},SYSDATE)
+	</insert>
+	
 </mapper> 

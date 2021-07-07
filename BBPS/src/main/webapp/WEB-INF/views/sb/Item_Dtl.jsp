@@ -255,7 +255,7 @@ $(document).ready(function(){
 	});
 
 	$(".edit_btn").on("click",function(){
-		$("#goForm").attr("action","Item_edit");
+		$("#goForm").attr("action","Item_Edit");
 		$("#goForm").submit();
 	});
 	
