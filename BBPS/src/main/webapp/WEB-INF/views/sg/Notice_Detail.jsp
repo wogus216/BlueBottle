@@ -244,7 +244,6 @@ $(document).ready(function(){
 	
 }); //ready end
 
-
 $(document).ready(function() {
 	$("#listBtn").on("click", function() {
 		$("#goForm").attr("action", "Notice");
