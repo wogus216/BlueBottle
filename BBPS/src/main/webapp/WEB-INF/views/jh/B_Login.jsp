@@ -240,13 +240,13 @@ $(document).ready(function(){
 			$("#bId").val($("#bId").val().toUpperCase()); //대문자처리
 			var params = $("#loginForm").serialize();
 			$.ajax({
-				url: "b_Logins",
+				url: "B_Logins",
 				type: "post", 
 				dataType: "json", 
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						location.href = "b_Menu";
+						location.href = "B_Menu";
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							
