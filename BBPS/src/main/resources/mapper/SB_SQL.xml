@@ -22,13 +22,14 @@
 	
 	<!-- 품목리스트 -->
 	<select id ="getPList" parameterType="hashmap" resultType="hashmap">
-	SELECT ITEM_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT
+	SELECT ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT
 	FROM(
-		SELECT ITEM_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,ROW_NUMBER() OVER(ORDER BY ITEM_NO DESC) AS RNK
+		SELECT ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,ROW_NUMBER() OVER(ORDER BY ITEM_NO DESC) AS RNK
         FROM(
-        SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,ROW_NUMBER() OVER(partition by I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC) AS RNK
+        SELECT I.ITEM_NO,I.CATE_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,ROW_NUMBER() OVER(partition by I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC) AS RNK
 		FROM ITEM I INNER JOIN ITEM_PRICE IP
-    	 ON I.ITEM_NO = IP.ITEM_NO)
+    	 ON I.ITEM_NO = IP.ITEM_NO
+    	 AND I.DEL_FLAG = 1)
          WHERE RNK = 1
    		 <if test = "search_input != null and search_input != ''">
 		<choose>
@@ -46,9 +47,9 @@
 	
 	<!-- 품목 상세보기 -->
 	<select id = "getPDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT ITEM_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,COM_PROD_FALG
+	SELECT ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,COM_PROD_FLAG
 	FROM(
-	SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FALG,ROW_NUMBER() OVER(ORDER BY IP.ENROLL_DATE DESC) AS RNK
+	SELECT I.ITEM_NO,I.CATE_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FLAG,ROW_NUMBER() OVER(ORDER BY IP.ENROLL_DATE DESC) AS RNK
 			FROM ITEM I INNER JOIN ITEM_PRICE IP
     		 ON I.ITEM_NO = IP.ITEM_NO
 			AND I.ITEM_NO = #{itemNo}) A
@@ -77,4 +78,18 @@
 	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,TEST_SEQ.CURRVAL,4,#{itemPrice},SYSDATE)
 	</insert>
 	
+	<!-- 품목수정 -->
+	<update id="EditItem" parameterType="hashmap">
+	UPDATE ITEM SET CATE_NO = #{itemCate},ITEM_NAME = #{itemName}, MIN_ORD_UNIT = #{itemMinOrdUnit}, COM_PROD_FLAG = #{itemComProdFlag}
+	WHERE ITEM_NO = #{itemNo}
+	</update>
+	<!-- 수정 시 가격변동이 있는 경우 품목_가격 테이블에 해당 이력(변경가격) 추가 --><!-- 테스트 시퀀스로 시퀀스 변경 필요 -->
+	<insert id="EditItemPrice" parameterType="hashmap">	
+	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,#{itemNo},4,#{itemPrice},SYSDATE)
+	</insert>
+	
+	<!-- 품목 삭제  / 삭제여부 변경-->
+	<update id="DelItem" parameterType="hashmap">
+	UPDATE ITEM SET DEL_FLAG = 0 WHERE ITEM_NO = #{itemNo}
+	</update>
 </mapper> 

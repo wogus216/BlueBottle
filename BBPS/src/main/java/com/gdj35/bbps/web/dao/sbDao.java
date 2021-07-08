@@ -36,14 +36,27 @@ public class sbDao implements IsbDao{
 
 	@Override
 	public int AddItem(HashMap<String, Object> insertMap) throws Throwable {
-		//
 		return sqlsession.insert("sb.AddItem",insertMap);
 	}
 
 	@Override
 	public int AddItemPrice(HashMap<String, Object> insertMap) throws Throwable {
-		//
 		return sqlsession.insert("sb.AddItemPrice",insertMap);
+	}
+
+	@Override
+	public int EditItem(HashMap<String, String> params) throws Throwable {
+		return sqlsession.update("sb.EditItem",params);
+	}
+
+	@Override
+	public int EditItemPrice(HashMap<String, String> params) throws Throwable {
+		return sqlsession.insert("sb.EditItemPrice",params);
+	}
+
+	@Override
+	public int DelItem(HashMap<String, String> params) throws Throwable {
+		return sqlsession.update("sb.DelItem",params);
 	}
 
 
