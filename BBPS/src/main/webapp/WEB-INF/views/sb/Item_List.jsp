@@ -261,14 +261,14 @@ $(document).ready(function(){
 		$(".search_input").val($("#Old_search_input").val());
 		$("#actionForm").attr("action","Item_Dtl");
 		$("#actionForm").submit();
-	}); //품목코드 내 a태그 클릭 시에는 품목 상세조회 페이지로 이동
+	}); //품목코드 클릭 시에는 품목 상세조회 페이지로 이동
 	
-	$("tbody").on("click","tr",function(){
+	$("tbody").on("click","td:nth-child(3)",function(){
 		$("#itemNo").val($(this).attr("itemNo"));
 		$(".search_input").val($("#Old_search_input").val());
 		$("#actionForm").attr("action","Stock_Dtl");
 		$("#actionForm").submit();
-	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
+	}); //품목명 클릭 시에는 재고 상세조회 페이지로 이동
 	
 	$(".add_btn").on("click",function(){
 		$(".search_input").val($("#Old_search_input").val());
