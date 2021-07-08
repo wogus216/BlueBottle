@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>본사로그인페이지</title>
+<title>본사 로그인 페이지</title>
 <style type="text/css">
 /*
   css 색깔
@@ -197,7 +197,7 @@ button:focus{outline:none;}
 $(document).ready(function(){
 	//다시 로그인 페이지
 	$("#HQ").on("click",function(){
-		location.href = "logIn";
+		location.href = "Login";
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
@@ -206,7 +206,7 @@ $(document).ready(function(){
 	
 	//포스 로그인 페이지
 	$("#POS").on("click",function(){
-		location.href = "pos_Login";
+		location.href = "Pos_Login";
 	});
 	
 	//팝업
@@ -241,13 +241,13 @@ $(document).ready(function(){
 			var params = $("#loginForm").serialize();
 			
 			$.ajax({
-				url: "hq_Logins",
+				url: "H_Logins",
 				type: "post", 
 				dataType: "json", 
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						$("#loginForm").attr("action","hq_Menu");
+						$("#loginForm").attr("action","H_Menu");
 						$("#loginForm").submit();
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){

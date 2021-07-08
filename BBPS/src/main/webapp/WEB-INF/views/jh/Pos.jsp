@@ -347,7 +347,7 @@ function makePopup(title, contents, func) {
 		closePopup();
 		});
 	$(".confirm_Btn").on("click",function(){
-		location.href = "pos_LogOut";
+		location.href = "Pos_LogOut";
 	});
 	}
 

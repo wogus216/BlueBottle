@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>지점로그인페이지</title>
+<title>지점 로그인 페이지</title>
 <style type="text/css">
 /*
   css 색깔
@@ -197,16 +197,16 @@ button:focus{outline:none;}
 $(document).ready(function(){
 	//다시 로그인 페이지
 	$("#HQ").on("click",function(){
-		location.href = "hq_Login";
+		location.href = "H_Login";
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
-		location.href = "logIn";
+		location.href = "Login";
 	});
 	
 	//포스 로그인 페이지
 	$("#POS").on("click",function(){
-		location.href = "pos_Login";
+		location.href = "Pos_Login";
 	});
 	
 	
