@@ -1,19 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
+/* 상단 바 */
 .top {
    width: 100%;
    padding: 0;
    margin: 0;
    background-color: white;
    display: inline-block;
-   min-width: 1400px;
+   min-width: 1820px;
     height: 62px;
 }
 
@@ -21,7 +20,7 @@
 	display: inline-block;
 	vertical-align: top;
 	float: right ;
-	width: 1050px;
+	width: 1500px;
 }
 
 body {
@@ -45,6 +44,7 @@ ul:after {
 
 li {
    float: left;
+    height: 62px;
 }
 
 .main_menu{
@@ -54,6 +54,10 @@ li {
    text-decoration: none;
    font-weight: bold;
    font-size: 17px;
+}
+
+.menu_f li .sub {
+	width: 162px;
 }
 
 .main_menu:hover {
@@ -79,7 +83,7 @@ li {
 }
 .sub a{
 	color: black;
-    padding: 12px 16px;
+    padding: 10px 16px;
     text-decoration: none;
     display: block;
     
@@ -101,6 +105,7 @@ li {
 .menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
     display: block;
 }
+/* 미들 부분 */
 .content_area{
 	width: 1250px;
 	height: 900px;
@@ -114,41 +119,39 @@ li {
     margin-left: 30px;
      width: 1250px;
 }
-.filter_area{
-	text-align: right;
-	margin-bottom: 10px;
-}
-.search_btn{
-	height: 40px;
-	margin: 0 ;
-	padding: 0;
-	vertical-align: bottom;
-}
-select{
-	font-size: 15px;	
-	height: 40px;
-	width : 100px;
-}
-.add_btn{
-	height: 40px;
-	padding: 0;
-	vertical-align: bottom;
-}
+/* 품목등록 */
+
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
 }
+
+.btn_area{
+	text-align: right;
+	margin-bottom: 20px;
+}
+
+.row_add, .row_del{
+	background-color: #01a1dd;
+	float: right;
+	margin:10px 5px 10px 5px;
+}
+.row_del{
+	background-color: #bf4040;
+	float: right;
+}
+
 table {
     width: 100%;
     table-layout: fixed;
     background: #ffffff;
-	margin: 10px 0 0 1px;
-	border-top: 2px solid #3498db;
+	margin: 10px 0;
+	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
+	text-align: center;
 }
-tbody td{
-	cursor: pointer;
-}
+
+
 tr {
     display: table-row;
 }
@@ -164,6 +167,21 @@ td{
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 }
+
+ td:first-child{
+	border-left: none;
+}
+input{
+	width:200px;
+	height:40px;
+
+}
+.start_date{ /* 수정필요 메타명 */
+	width: 200px;
+	font-size: 15px;
+	height: 40px;
+}
+/* 이게일반 */
 button{
 	color: white;
 	width: 100px;
@@ -177,50 +195,28 @@ button{
 	background-color: #01a1dd;
 	outline:none;
 }
-.search_info,.page_area, .page_btn{
+.submit_area{
 	text-align: center;
 }
-.page_area, .page_btn{
-	text-align: center;
-}
-.page_btn button{
-	color: black;
-	width: 40px;
-	height: 40px;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:40px 3px;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
-}
-.page_btn button:hover{
-	color: #01a1dd;
+
+.submit{
+	width:200px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	 font-size: 22px;
 }
 
-.page_btn button:focus{
-	outline:none;
-}
-.search_filter{
-	width : 120px;
-	vertical-align: middle;
-}
+button:focus{outline:none;}
 
-.search_input{
-	height: 34px;
-	vertical-align: middle;
-	width : 280px;
-	outline:none;
-}
-
-.on{
-	color : black;
-}
 </style>
 <script type="text/javascript"
-	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+	src="../script/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	reloadList();
+	
+	draw_stock_add_tb();
+	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
 		$(this).css("color", "#01a1dd");
@@ -234,97 +230,71 @@ $(document).ready(function(){
 			$("li").css("background-color","white");
 	});
 	
-	$(".page_btn").on("click","button",function(){
-		$("#page").val($(this).attr("page"));
-		reloadList();
+	$(".row_add").on("click",function(){
+		add_tb();
 	});
 	
-	$("tbody").on("click","tr",function(){
-		$("#itemNo").val($(this).attr("itemNo"));
-		$("#actionForm").attr("action","H_product_detail");
-		$("#actionForm").submit();
-	});
-	
-	$(".add_btn").on("click",function(){
-		location.href = "H_product_add.html";
+	$(".row_del").on("click",function(){
+		del_tb();
 	});
 	
 }); //ready end
 
-function reloadList(){
-	var params = $("#actionForm").serialize();
-	
-	$.ajax({
-		url : "H_product_lists",
-		type : "post",  
-		dataType :"json",
-		data : params,
-		success : function(res){
-			drawproductList(res.list);
-			drawproductPaging(res.pb);
-		},
-		error : function(request,status,error){
-			console.log(error);
-		}
-	});
-}
+var cnt_tr = 0;
 
-function drawproductList(list){
-	var html ="";
+function draw_stock_add_tb(){
 	
-	for(var d of list){
-		html += "<tr itemNo = \""+d.ITEM_NO+"\">";
-		html += "<td>"+d.ITEM_NO+"</td>";
-		html += "<td>"+d.ITEM_NAME+"</td>";
-		html += "<td>"+d.PRICE+"</th>";
-		html += "<td>"+d.MIN_ORD_UNIT+"</td>";
-		html += "</tr>";	
-	}
+	cnt_tr ++;
+	
+	var html = "";
+	
+	html += "<tr class = \"first_tr\">";
+	html += "<td>D-011</td>";
+	html += "<td>우유</td>";
+	html += "<td><input type=\"number\" min = 0 maxlength=\"10\"></td>";
+	html += "<td><input type=\"date\" value=\"2021-01-01\" class=\"start_date\" /></td>";
+	html += "</tr>";
 	
 	$("tbody").html(html);
 }
 
-function drawproductPaging(pb){
-	var html = "";
-	                                    
-	html += "<button page = \"1\" style=\"background-color: white\">|<</button>";
-	if($("#page").val()=="1"){
-		html += "<button page = \"1\" style=\"background-color: white\"><</button>";
+function add_tb(){
+	
+	cnt_tr ++;
+	
+	var insertTr = "";
+	
+	insertTr += "<tr>";
+	insertTr += "<td>D-011</td>";
+	insertTr += "<td>우유</td>";
+	insertTr += "<td><input type=\"number\" min = 0 maxlength=\"10\"></td>";
+	insertTr += "<td><input type=\"date\" value=\"2021-01-01\" class=\"start_date\" /></td>";
+	insertTr += "</tr>";
+	
+	
+	$("tbody").append(insertTr);
+}
+
+function del_tb(){
+	
+	if(cnt_tr > 1){
+		cnt_tr --;
+		$("tbody tr:last").remove();
 	}else{
-		html += "<button page = \""+ ($("#page").val()-1) + "\" style=\"background-color: white\"><</button>";
-		
+		cnt_tr = 1;
+		alert("첫 번째 행입니다. ");
 	}
-	
-	for(var i = pb.startPcount; i <= pb.endPcount; i++){
-		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
-			html += "<button class = \"on\" page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
-		}else{
-			html += "<button  page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
-		}
-		
-	}
-	
-	if($("#page").val() == pb.maxPcount){
-		html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">></button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
-	}
-	
-	
-	
-	html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">>|</button>";
-	
-	$(".page_btn").html(html);
 }
 
 </script>
 </head>
 <body>
-<div class="top">
+<!-- 상단 -->
+   <div class="top">
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -364,7 +334,7 @@ function drawproductPaging(pb){
            <div class="menu_c">
          <li>
 		<a class="main_menu" href="#"> 
-	        		품목관리</a>
+	        		픔목관리</a>
 	          	<div class="sub">
 				<a href="#">
 	            	품목조회</a>
@@ -415,23 +385,16 @@ function drawproductPaging(pb){
       	</div>
       </ul>
    </div>
-<form action = "#" id = "actionForm" method = "post">
-<input type = "hidden" id = "itemNo" name = "itemNo"/>
-<input type = "hidden" id = "page" name = "page" value = "${page}"/>
-</form>
 
+<!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
-<h1>품목조회</h1>
-<div class="filter_area">
-<select class="cate">
-	<option value="0" selected="selected">카테고리명</option>
-	<option value="1">음료</option>
-	<option value="2">빵</option>
-	<option value="3">기타</option>
-</select>
-<button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
+<h1>재고등록</h1>
+<div class="btn_area" style = "height:40px;">
+<button class="row_del" style= "margin:0px 0px 0px 10px;">행삭제</button>
+<button class="row_add" style= "margin:0px 0px 0px 10px;">행추가</button>
 </div>
+
 <table cellspacing="0">
 	<colgroup>
 		<col width="25%" />
@@ -440,31 +403,20 @@ function drawproductPaging(pb){
 		<col width="25%" />
 	</colgroup>
 	<thead>
-	<tr>
+	<tr >
 		<th scope=col style= "border-left: none;">품목코드</th>
 		<th scope=col>품목명</th>
-		<th scope=col>가격(원)</th>
-		<th scope=col>최소주문단위</th>
+		<th scope=col>추가수량</th>
+		<th scope=col>유통기한</th>
 	</tr>
 	</thead>
-	<tbody></tbody>
+	<tbody>	</tbody>
 </table>
-<div class="search_area" style = "margin-top : 30px;">
-		<div class="search_info">
-			<select class="search_filter">
-				<option value="0" selected="selected">품목번호</option>
-				<option value="1">본문 내용</option>
-			</select>
-			<input type="text" class="search_input"/>
-			<button class="search_btn">검색</button>
-		</div>
-	</div>
-<div class="page_area">
-		<div class="page_btn">
-		
-		</div>
+	<div class="submit_area">
+	<button class="submit">완료</button>
 	</div>
 </div>
 </div>
+
 </body>
 </html>

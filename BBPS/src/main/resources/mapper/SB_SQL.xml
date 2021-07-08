@@ -7,23 +7,74 @@
 	SELECT COUNT(*)
 	FROM ITEM I INNER JOIN ITEM_PRICE IP
      ON I.ITEM_NO = IP.ITEM_NO
+    WHERE 1=1
+    <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
 	</select>
 	
 	<!-- 품목리스트 -->
 	<select id ="getPList" parameterType="hashmap" resultType="hashmap">
 	SELECT ITEM_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT
 	FROM(
-		SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,ROW_NUMBER() OVER(ORDER BY I.ITEM_NO DESC) AS RNK
+		SELECT ITEM_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,ROW_NUMBER() OVER(ORDER BY ITEM_NO DESC) AS RNK
+        FROM(
+        SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,ROW_NUMBER() OVER(partition by I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC) AS RNK
 		FROM ITEM I INNER JOIN ITEM_PRICE IP
-    	 ON I.ITEM_NO = IP.ITEM_NO)A 
+    	 ON I.ITEM_NO = IP.ITEM_NO)
+         WHERE RNK = 1
+   		 <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+    	 )A 
 	WHERE A.RNK BETWEEN  #{startCnt} AND #{endCnt}
 	</select>
 	
 	<!-- 품목 상세보기 -->
 	<select id = "getPDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FALG
-	FROM ITEM I INNER JOIN ITEM_PRICE IP
-     ON I.ITEM_NO = IP.ITEM_NO
-	WHERE I.ITEM_NO = #{itemNo}
+	SELECT ITEM_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,COM_PROD_FALG
+	FROM(
+	SELECT I.ITEM_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FALG,ROW_NUMBER() OVER(ORDER BY IP.ENROLL_DATE DESC) AS RNK
+			FROM ITEM I INNER JOIN ITEM_PRICE IP
+    		 ON I.ITEM_NO = IP.ITEM_NO
+			AND I.ITEM_NO = #{itemNo}) A
+	WHERE A.RNK = 1  
 	</select>
+	
+	<!-- 품목 상세보기 내 가격 히스토리  -->
+	<select id ="getPHList" parameterType="hashmap" resultType="hashmap">
+	SELECT NI.ITEM_NO, NVL(OI.PRICE, 0) AS OLD_PRICE, NI.PRICE AS NEW_PRICE,NI.ID,TO_CHAR(NI.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM (SELECT IP.ITEM_NO, ROW_NUMBER() OVER(ORDER BY IP.PRICE_NO ASC) AS RNUM, IP.PRICE,HU.ID,IP.ENROLL_DATE
+    	  FROM ITEM_PRICE IP INNER JOIN HQ_USER HU
+       	  ON IP.USER_NO = HU.USER_NO
+    	  WHERE IP.ITEM_NO = #{itemNo}) OI RIGHT OUTER JOIN (SELECT IP.ITEM_NO, IP.PRICE_NO, ROW_NUMBER() OVER(ORDER BY IP.PRICE_NO ASC) AS RNUM, IP.PRICE,HU.ID,IP.ENROLL_DATE
+                                             FROM ITEM_PRICE IP INNER JOIN HQ_USER HU
+                                             ON IP.USER_NO = HU.USER_NO
+                                              WHERE IP.ITEM_NO = #{itemNo}) NI
+                                   ON OI.RNUM = NI.RNUM - 1
+	ORDER BY PRICE_NO DESC
+	</select>
+	
+	<!-- 품목추가 --><!-- 사용자 번호는 로그인된  대상으로 수정 필요  및 현재 시퀀스는 테스트용으로 만든 시퀀스로 쓴 것이므로 나중에 진짜 시퀀스로 바꿔야함-->
+	<insert id="AddItem" parameterType="hashmap">	
+	INSERT INTO ITEM VALUES (TEST_SEQ.NEXTVAL,#{itemCate},4,#{itemName},#{itemMinOrdUnit},SYSDATE,#{itemComProdFlag})
+	</insert>
+	<insert id="AddItemPrice" parameterType="hashmap">	
+	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,TEST_SEQ.CURRVAL,4,#{itemPrice},SYSDATE)
+	</insert>
+	
 </mapper> 

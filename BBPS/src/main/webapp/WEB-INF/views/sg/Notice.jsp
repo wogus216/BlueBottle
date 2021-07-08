@@ -1,18 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>본사주문조회</title>
+<meta charset= "UTF-8">
+
+<title>본사공지사항리스트</title>
 <style type="text/css">
-/*상단바*/
+/* 상단 바 */
 .top {
    width: 100%;
    padding: 0;
    margin: 0;
    background-color: white;
+   
    display: inline-block;
    min-width: 1820px;
    height: 62px;
@@ -104,7 +106,7 @@ li {
 }
 
 .menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub, .menu_h:hover .sub , .menu_i:hover .sub {
+.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
     display: block;
 }
 /* 미들 부분 */
@@ -121,11 +123,13 @@ li {
     margin-left: 30px;
      width: 1250px;
 }
+/* 품목등록 */
 
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
 }
+
 table {
     width: 100%;
     table-layout: fixed;
@@ -133,10 +137,10 @@ table {
 	margin: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
+	text-align: center;
 }
-tbody td{
-	cursor: pointer;
-}
+
+
 tr {
     display: table-row;
 }
@@ -151,6 +155,7 @@ td{
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
+	cursor: pointer;
 }
 
  td:first-child{
@@ -159,36 +164,30 @@ td{
 input{
 	width:200px;
 	height:40px;
+
 }
+
+.input_btn_area{
+display: inline-block;
+text-align: left;
+}
+
 .filter_area{
+float : right;
 	text-align: right;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
-[name=ref], [name=ord]{
+[name=r]{
 	margin: 0;
 	height: 20px;
 	width: 30px;
 	vertical-align: middle;
-	cursor: pointer;
 }
-fieldset{
-	display:inline;
-	border:1px solid;
-	margin:0;
-	padding-right:20px;
-	padding-left:20px;
-}
-legend{
-	font-size:15px;
-}
-label{
-	margin-right:10px;
-	vertical-align: middle;
-	cursor: pointer;
-}
-button:focus{outline:none;}
 
-.search_btn{
+label{
+	vertical-align: middle;
+}
+.search_btn, .input_btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
@@ -200,6 +199,7 @@ select{
 	height: 40px;
 	width : 100px;
 }
+
 .start_date, .end_date{
 	width: 150px;
 	font-size: 15px;
@@ -219,8 +219,9 @@ button{
 	background-color: #01a1dd;
 	outline:none;
 }
-/*검색영역*/
-.search_info,.page_area, .page_btn{
+/* 검색 과 페이지 */
+
+.search_area,.paing_wrap, .page_btn{
 	text-align: center;
 }
 
@@ -238,155 +239,143 @@ button{
 .page_btn button:hover{
 	color: #01a1dd;
 }
+
 .page_btn button:focus{
 	outline:none;
 }
 
-#search_filter{
+.search_filter{
 	width : 120px;
 	vertical-align: middle;
 }
 
-#search_input{
+.search_input{
 	height: 34px;
 	vertical-align: middle;
 	width : 280px;
 	outline:none;
-}
-.page_btn .on{
-	color: #01a1dd;
 }
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	if("${param.search_filter}" != ""){
-		$("#search_filter").val("${param.search_filter}");
+	$(".top_menu").on("click","a",function(){
+		$(".top_menu a").attr("style","color: black");
+		$(this).css("color", "#01a1dd");
+		$(this).parent().parent().children(1).css("color", "#01a1dd");
+	});
+	$(".sub").hover(function(){
+		$("li").css("background-color","white");
+		$(this).parent("li").css("background-color","#f1f1f1");
+	
+	},function(){
+			$("li").css("background-color","white");
+	});
+	
+	
+	
+	
+	
+	
+	if("${param.searchGbn}" != ""){
+		$("#searchGbn").val("${param.searchGbn}");
 	}
 	reloadList();
 	
-	var ord_ck_arr = [];
-	var ref_ck_arr = [];
-	$("input[name=ord]:checked").each(function(){
-		var ord_ck=$(this).val();
-		ord_ck_arr.push(ord_ck);
-		console.log(ord_ck_arr);
-	});
-	$("input[name=ref]:checked").each(function(){
-		var ref_ck=$(this).val();
-		ref_ck_arr.push(ref_ck);
-		console.log(ref_ck_arr);
+	$("#searchBtn").on("click",function(){
+		$("#page").val(1);
+		$("#searchOldTxt").val($("#searchTxt").val());
+		reloadList();
 	});
 	
-	$("#search_btn").on("click",function(){
-		$("#page").val(1);
-		$("#search_old_txt").val($("#search_input").val());
+	$(".paging_Wrap").on("click","span",function(){
+		$("#page").val($(this).attr("name"));
+		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 	});
-	$(".paging_area").on("click", "div", function(){
-		$("#search_input").val($("#search_old_txt").val());
-		$("#page").val($(this).attr("page"));
-		reloadList();
+	
+	$("#writeBtn").on("click", function () {
+		location.href = "NoticeWrite";
+		$("#actionForm").attr("action", "NoticeWrite");
+		$("#actionForm").submit();
 	});
-	$("#ck1").on("click",function(){
-		if($("input:checkbox[id='ck1']").prop("checked")){
-			$("input[name=ord]").prop("checked", true);
-		}else{
-			$("input[name=ord]").prop("checked", false);
-		}
+	
+	$(".list_wrap tbody").on("click","td", function () {
+		$("#nNo").val($(this).attr("nno"));
+		
+		$("#actionForm").attr("action", "Notice");
+		$("#actionForm").submit();
 	});
-	$("#ck6").on("click",function(){
-		if($("input:checkbox[id='ck6']").prop("checked")){
-			$("input[name=ref]").prop("checked", true);
-		}else{
-			$("input[name=ref]").prop("checked", false);
-		}
-	});
-	$(".ord").click(function(){ 
-		   if($("input[class=ord]:checked").length==4){ 
-		       $("#ck1").prop("checked",true); 
-		    }else{ 
-		       $("#ck1").prop("checked",false); 
-		    } 
-		});
-	$(".ref").click(function(){ 
-		   if($("input[class=ref]:checked").length==4){ 
-		       $("#ck6").prop("checked",true); 
-		    }else{ 
-		       $("#ck6").prop("checked",false); 
-		    } 
-		});
+	
+	
 }); //ready end
 
-function reloadList(){
-	var params = $("#actionForm").serialize();
+function reloadList() {
+	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
 	
 	$.ajax({
-		url : "H_order_lists",
-		type : "post",  
-		dataType :"json",
-		data : params,
-		success : function(res){
+		url:"Notices", //접속주소
+		type:"post", //전송방식 : get, post
+		dataType:"json",//받아올데이터형식
+		data:params, //보낼 데이터(문자열 형태)
+		success : function (res) {//성공 시 다음함수 실행
 			drawList(res.list);
 			drawPaging(res.pb);
 		},
-		error : function(request,status,error){
+		error : function (request, status, error) { //실패 시 다음함수 실행
 			console.log(error);
 		}
 	});
 }
-
-function drawList(list){
-	var html ="";
-
+function drawList(list) {
+	var html = "";
+	
 	for(var d of list){
-		html += "<tr ord_no = \""+d.ORD_NO+"\">";
-		html += "<td>"+d.ORD_NO+"</td>";
-		html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
-		html += "<td>"+d.BRCH_NAME+"</td>";
-		html += "<td>"+d.CODE_NAME+"</th>";
-		if(d.PROCESS_DATE == null){
-			html += "<td></td>"
-		}else{
-		html += "<td>"+d.PROCESS_DATE+"</td>"
-		}
-		html += "</tr>";	
+		html += "<tr name=\"" + d.TXT_NO + "\">";
+		html += "<td>" + d.TXT_NO+ "</td>";
+		html += "<td>" + d.TITLE + "</td>";
+		html += "<td>" + d.S_DT + "</td>";
+		html += "<td>" + d.USER_NO + "</td>";
+		html += "</tr>";
+		
+		
 	}
-
+	
 	$("tbody").html(html);
 }
-function drawPaging(pb){
-	var html = "";
-                                    
-	html += "<button page = \"1\" style=\"background-color: white\"><<</button>";
-	if($("#page").val()=="1"){
-		html += "<button page = \"1\" style=\"background-color: white\"><</button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()-1) + "\" style=\"background-color: white\"><</button>";
-	}
 
-	for(var i = pb.startPcount; i <= pb.endPcount; i++){
-		if($("#page").val() == i){
-			html += "<button class = \"on\" page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
-		}else{
-			html += "<button  page = \""+ i +"\" style=\"background-color: white\">"+ i +"</button>";	
-		}
+function drawPaging(pb) {
+	var html="";
 	
+	html += "<span name=\"1\">처음</span>";
+	
+	if($("#page").val() == "1"){
+		html += "<span name=\"1\">이전</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() -1) + "\">이전</span>";
 	}
-
-	if($("#page").val() == pb.maxPcount){
-		html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">></button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" style=\"background-color: white\">></button>";;
+	
+	for(var i = pb.startPcount; i<=pb.endPcount; i++){
+		if($("#page").val() == i){
+			html += "<span class=\"" + i + "\"><b>" + i + "</b></span>";		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
 	}
-
-
-
-	html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">>></button>";
-
-	$(".page_btn").html(html);
+	
+	if($("#page").val() == pb.maxPCount){
+		html += "<span name=\"" + pb.maxPCount + "\">다음</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
+	}
+	
+	
+	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
+	
+	$("#paging_Wrap").html(html);
 }
+
+
 </script>
 </head>
 <body>
@@ -395,7 +384,8 @@ function drawPaging(pb){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png
+         " width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -525,79 +515,73 @@ function drawPaging(pb){
       	</div>
       </ul>
    </div>
+
+
+<!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
-<h1>주문조회</h1>
-
-<div class="filter_area">
-	<select class="brch">
-		<option value="0" selected="selected">지점명</option>
-		<option value="1">가산디지털단지역점</option>
-		<option value="2">건대점</option>
-		<option value="3">구로점</option>
-		<option value="3">롯데타워점</option>
-		<option value="3">성신여대점</option>
-		<option value="3">잠실점</option>
-	</select>
-	<input class="start_date" type = "date" value="2021-01-01"/>
-	<input class="end_date" type = "date" value="2021-01-01"/>
-	<button class="search_btn">검색</button>
+<h1>공지사항</h1>
+<div class="input_btn_area">
+<button class="input_btn" id="writeBtn">작성</button>
 </div>
-<fieldset style = "margin-right:10px;">
-				<legend>주문선택</legend>
-		<input type = "checkbox" id="ck1" name="ord" checked="checked"/><label id="ck1" for="ck1">전체</label>
-		<input type = "checkbox" id="ck2" class="ord" name="ord" checked="checked"/><label for="ck2">주문요청</label>
-		<input type = "checkbox" id="ck3" class="ord" name="ord" checked="checked"/><label for="ck3">주문요청취소</label>
-		<input type = "checkbox" id="ck4" class="ord" name="ord" checked="checked"/><label for="ck4">주문승인</label>
-		<input type = "checkbox" id="ck5" class="ord" name="ord" checked="checked"/><label for="ck5">주문승인거부</label>
-	</fieldset>
-	<fieldset style =  "float:right; margin-bottom: 20px;">
-		<legend>환불선택</legend>
-		<input type = "checkbox" id="ck6" name="ref" checked="checked"/><label id="ck6" for="ck6">전체</label>
-		<input type = "checkbox" id="ck7" class="ref" name="ref" checked="checked"/><label for="ck7">환불요청</label>
-		<input type = "checkbox" id="ck8" class="ref" name="ref" checked="checked"/><label for="ck8">환불요청취소</label>
-		<input type = "checkbox" id="ck9" class="ref" name="ref" checked="checked"/><label for="ck9">환불승인</label>
-		<input type = "checkbox" id="ck10" class="ref" name="ref" checked="checked"/><label for="ck10">환불승인거부</label>
-	</fieldset>
-<table cellspacing="0">
+
+	<div class="filter_area">
+			<select class="cate">
+				<option value="0" selected="selected">전체</option>
+				<option value="1">이벤트</option>
+				<option value="2">주문관련</option>
+				<option value="3">재고관련</option>
+				<option value="4">시스템</option>
+				<option value="4">기타</option>
+			</select>
+			<input type = "date" value="2021-01-01" class="start_date" />
+			<input type = "date" value="2021-01-01" class="end_date"/>
+			<button class="search_btn">검색</button>
+		</div>
+<div class="list_wrap">
+<table>
 	<colgroup>
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
+		<col width="15%">
+		<col width="45%">
+		<col width="20%">
+		<col width="20%">
 	</colgroup>
 	<thead>
-	<tr>
-		<th scope=col style= "border-left: none;" scope=col>주문번호</th>
-		<th scope=col>주문날짜</th>
-		<th scope=col>지점명</th>
-		<th scope=col>처리상태</th>
-		<th scope=col>처리날짜</th>
-	</tr>
+		<tr>
+			<th>NO.</th>
+			<th>제목</th>
+			<th>날짜</th>
+			<th>작성자</th>
+		</tr>
 	</thead>
-	<tbody></tbody>
+	<tbody>
+	</tbody>
 </table>
-<div class="search_area" style = "margin-top : 30px;">
-	<div class="search_info">
-		<form action = "#" id = "actionForm" method = "post">
-			<input type = "hidden" id = "ord_no" name = "ord_no"/>
-			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
-			<input type = "hidden" id = "ord_ch_arr" name = "ord_ch_arr" value = "${ord_ch_arr}"/>
-			<input type = "hidden" id = "ref_ch_arr" name = "ref_ch_arr" value = "${ref_ch_arr}"/>
-			<select id ="search_filter" name="search_filter">
-				<option value="0" selected="selected">주문번호</option>
+</div>
+	<div class="search_area" style = "margin-top : 30px;">
+		<form action="#" id="actionForm" method="post">
+	<input type="hidden" id="nNo" name="nNo"/>
+	<input type="hidden" id="page" name="page" value="${page}">
+			<select id="searchGbn" name="searchGbn" class="search_filter">
+				<option value="0" selected="selected">제목+내용</option>
+				<option value="1">제목</option>
+				<option value="2">내용</option>
+				<option value="3">작성자</option>
 			</select>
-			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
-			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-			<button class="search_btn" id="search_btn">검색</button>
-		</form>
+			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
+			<button class="search_btn" id="searchBtn">검색</button>
+			</form>
 	</div>
+<div class="paging_wrap">
+		<div class="page_btn">
+		<button style="background-color: white"><</button>
+		<button style="background-color: white">1</button>
+		<button style="background-color: white">2</button>
+		<button style="background-color: white">3</button>
+		<button style="background-color: white">></button>
+		</div>
 </div>
-<div class="page_area">
-		<div class="page_btn"></div>
-</div>
-</div>
+	</div>
 </div>
 </body>
 </html>

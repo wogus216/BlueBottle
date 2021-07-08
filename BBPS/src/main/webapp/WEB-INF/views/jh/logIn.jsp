@@ -113,9 +113,17 @@ body{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	//본사 로그인 페이지
 	$("#HQ").on("click",function(){
 		location.href = "hq_Login";
-		
+	});
+	//지점 로그인 페이지
+	$("#B").on("click",function(){
+		location.href = "B_Login";
+	});
+	
+	$("#POS").on("click",function(){
+		location.href = "pos_Login";
 	});
 	
 }); //ready end

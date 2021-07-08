@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지카테고리등록</title>
+<title>본사공지사항추가</title>
 <style type="text/css">
 /* 상단 바 */
 .top {
@@ -106,6 +106,7 @@ li {
 .menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
     display: block;
 }
+
 /* 미들 부분 */
 .content_area{
 	width: 1250px;
@@ -120,164 +121,182 @@ li {
     margin-left: 30px;
      width: 1250px;
 }
-/* 품목등록 */
+
+/* 타이틀 */
 
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
 }
+ 
+ .cate{
+  position :relative;
+	margin: 10px 0;
+ width: 100px;
+ height: 30px;
+ }
+ 
+ .title_input{
+  width: 100%;
+ height: 50px;
+margin: 10px 0;
+ }
+ 
+ .txt_content_input{
+position: relative;
+    margin: 10px 0;
+    width: 100%;
+ overflow: scroll;
+ resize: none;
+ }
 
-.row_add, .row_del{
-	background-color: #01a1dd;
-	float: right;
+.file_add{
+margin : 20px 0px;
 }
-.row_del{
-	background-color: #bf4040;
-}
-
-table {
-    width: 800px;
-    table-layout: fixed;
-    background: #ffffff;
-	margin: 10px 0  0 220px;
-	border-top: 2px solid #01a1dd;
-	border-bottom: 2px solid #d9d9d9;
-	text-align: center;
-}
-
-
-tr {
-    display: table-row;
-}
-th{
-	background: #e8e8e8;
-    padding: 10px;
-    border-bottom: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
-}
-td{
-	font-size:15px;
-	padding:10px;
-	border-top: 1px solid #eaeaea;
-	border-left: 1px solid #eaeaea;
-}
-
- td:first-child{
-	border-left: none;
-}
-input{
-	width:200px;
-	height:40px;
-
-}
-.selectBox, .tot_price li{
-	float:right;
-}
-.ord_info li, .tot_price li{
-	font-size:19px;
-	margin:10px;
-	
-}
-.ord_info ul, .tot_price ul{
-	max-width: 1000px; 
-   
-}
-
-.apv_info, .send{
-	float:right;
-	font-size:19px;
-}
-
-.apv_stat{
-	 color:red;
-}
-/* 이게일반 */
-button{
-	color: white;
-	width: 100px;
-	height: 40px;
+.submit {
 	text-align:center;
-	border:0;
+}
+.submit_btn{
+	width:200px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	 font-size: 22px;
+	 color: white;
+	text-align:center;
+	border: 0;
 	border-radius: 3px;
-	font-size:18px;
 	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
 }
-.submit_area{
-	text-align: center;
-}
-
-.submit{
-	width:100px;
-	height: 45px;
-	background-color: #01a1dd;
-	font-weight: bold;
-	 font-size: 20px;
-	 vertical-align: middle;
-}
-
 button:focus{outline:none;}
-/* 카테고리 */
-.cate_add{
-	text-align: center;
-	margin-bottom: 80px;
+
+#att {
+	display: none;
+}
+#listBtn {
+float: right;
 }
 
-.cate_name{
-	font-size: 20px;
-	font-weight: bold;
-	margin-right: 10px;
-}
-
-.edit_btn, .del_btn{
-	width: 80px;
-	color: white;
-    height: 40px;
-    text-align: center;
-    border: 0;
-    border-radius: 3px;
-    font-size: 18px;
-    margin: 10px;
-    cursor: pointer;
-    background-color: #01a1dd;
-    outline: none;
-    font-weight: bold;
- 
-}
-.edit_btn{
- 	background-color: #01a1dd;
-}
-.del_btn{
-	background-color: #bf4040;
-}
- 
-
-</style>
-
+ </style>
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript"
+src= "resources/script/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
 		$(this).css("color", "#01a1dd");
 		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	}); //top menu click end
-	
+	});
 	$(".sub").hover(function(){
 		$("li").css("background-color","white");
 		$(this).parent("li").css("background-color","#f1f1f1");
 	
 	},function(){
 			$("li").css("background-color","white");
-	}); //sub menu hover end
-	
-	
+	});
 	
 	
 }); //ready end
+
+$(document).ready(function () {
+	CKEDITOR.replace("nCon", {
+		resize_enabled : false,
+		languge : "ko",
+		enterMode : "2",
+		width : "1255",
+		height : "500"
+	});
+	
+	$("#fileBtn").on("click", function () {
+		$("#att").click();
+	});
+	
+	$("#att").on("change", function () {
+		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\")+1));
+	});
+	
+	$("#listBtn").on("click", function () {
+		$("#goForm").submit();
+	});
+	
+	$("#addForm").on("keypress", "input", function (event) {
+		if(event.keyCode == 13){
+			return false;
+		}
+	});
+	
+	
+	$("#addBtn").on("click", function () {
+		var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+			beforeSubmit : function () {
+				$("#nCon").val(CKEDITOR.instances['nCon'].getData());
+				
+				if($.trim($("#nCate").val()) == ""){
+					alert("카테고리를 선택해 주세요.");
+					$("#nCate").focus();
+					return false; //ajaxForm 실행 불가
+				}else if ($.trim($("#nTitle").val()) == ""){
+					alert("제목을 입력해 주세요.");
+					$("#nTitle").focus();
+					return false;
+				} else if ($.trim($("#nCon").val()) == ""){
+					alert("내용을 입력해 주세요.");
+					$("#nCon").focus();
+					return false;
+				}
+				
+			},
+			success : function (res) {
+				if(res.result == "SUCCESS"){
+					//올라간 파일명 저장
+					if(res.fileName.length > 0){
+						$("#nFile").val(res.fileName[0]);
+					}
+					//글저장
+					var params = $("#addForm").serialize();
+					
+					$.ajax({
+						url:"NoticeWrites", //접속주소
+						type:"post", //전송방식 : get, post
+						dataType:"json",//받아올데이터형식
+						data:params, //보낼 데이터(문자열 형태)
+						success : function (res) {//성공 시 다음함수 실행
+							if (res.msg == "success") {
+								location.href = "Notice";
+							} else if(res.msg == "failed") {
+								alert("작성에 실패하였습니다.")
+							} else {
+								alert("작성중 문제가 발생하였습니다.");
+							}
+						},
+						error : function (request, status, error) { //실패 시 다음함수 실행
+							console.log(error); //값이 돌아오지 않던지 애초에 터졌든지에 대한 에러
+						}
+					});
+					
+				} else {
+					alert("파일업로드 중 문제 발생")
+				}
+			},
+			error : function () {
+				alert("파일업로드 중 문제 발생")
+			}
+		}); //ajaxForm end
+		
+		fileForm.submit();
+	}); //addBtn click end
+}); //document ready end
+
+
 </script>
 </head>
 <body>
@@ -416,69 +435,40 @@ $(document).ready(function(){
       	</div>
       </ul>
    </div>
-
+   
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
-<h1>공지카테고리</h1>
+<h1>공지사항</h1>
 
-<div class="cate_add">
-		<span class="cate_name">카테고리명</span>
-		<input type="text" maxlength="10" style="font-size: 15px;">
-		<button class="submit">등록</button>
+<select class="cate" id="nCate" name="nCate">
+	<option value="카테고리">전체</option>
+	<option>이벤트</option>
+	<option>주문</option>
+	<option>재고</option>
+	<option>시스템</option>
+	<option>기타</option>
+</select>
+<form id="fileForm" action="fileUploadAjax" 
+	method="post" enctype="multipart/form-data">
+	<input type="file" name="att" id="att" />
+</form>
+<form action="Notice" id="goForm" method="post">
+	<input type="hidden" name="page" value="${param.page}" />
+	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
+	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+</form>
+<form action="#" id="addForm" method="post">
+<input type="text" id="nTitle" name="nTitle" class="title_input" placeholder="제목을 입력하시오.">
+<textarea class="txt_content_input" rows="40" cols="40" id="nCon" name="nCon"></textarea>
+<input type="button" value="첨부파일" id="fileBtn" class="file_add"/>
+<span id="fileName"></span>
+<input type="hidden" name="nFile" id="nFile"/>
+</form>
+<div class="submit">
+<input type="button" value="등록" id="addBtn" class="submit_btn" />
 </div>
-	<table cellspacing="0">
-			<colgroup>
-				<col width="5%">
-				<col width="10%">
-				<col width="10%">
-			</colgroup>
-			<tbody>
-			<tr>
-				<th scope="col" style="border-left: none;">No.</th>
-				<th scope="col">카테고리명</th>
-				<th scope="col"></th>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>이벤트</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>2</td>
-				<td>주문</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>3</td>
-				<td>재고</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>4</td>
-				<td>시스템</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
-			<tr>
-				<td>5</td>
-				<td>기타</td>
-				<td>
-						<input  class="edit_btn"type="button" value="수정"/>
-						<input class="del_btn" type="button" value="삭제"/>
-				</td>
-			</tr>
+<input type="button" value="목록으로" id="listBtn" />
 </div>
 </div>
 </body>

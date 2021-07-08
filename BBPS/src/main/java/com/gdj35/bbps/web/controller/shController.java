@@ -25,19 +25,20 @@ public class shController {
 	
 	@Autowired
 	public IPagingService iPagingService;
-	@RequestMapping(value="/H_order_list")
+	
+	@RequestMapping(value = "/H_order_list")
 	public ModelAndView H_order_list(
 			@RequestParam HashMap<String, String> params,
-			ModelAndView mav) {
+			ModelAndView mav) throws Throwable{
 		int page=1;
 		
-		 if(params.get("page")!= null) {
-			   page=Integer.parseInt(params.get("page"));
-		   }
+		if(params.get("page") != null) {
+			  page=Integer.parseInt(params.get("page"));
+		}
 		   
-		   mav.addObject("page", page);
-		   mav.setViewName("sh/H_order_list");
-		   return mav;   
+		mav.addObject("page", page);
+		mav.setViewName("sh/H_order_list");
+		return mav;   
 	}
 	@RequestMapping(value = "/H_order_lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody

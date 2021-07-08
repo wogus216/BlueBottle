@@ -1,5 +1,6 @@
 package com.gdj35.bbps.web.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +28,21 @@ public class sbService implements IsbService{
 	@Override
 	public HashMap<String, String> getPDetail(HashMap<String, String> params) throws Throwable {
 		return isbdao.getPDetail(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getPHList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getPHList(params);
+	}
+
+	@Override
+	public int AddItem(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.AddItem(insertMap);
+	}
+
+	@Override
+	public int AddItemPrice(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.AddItemPrice(insertMap);
 	}
 
 	

@@ -1,9 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset= "UTF-8">
-
-<title>본사공지사항리스트</title>
+<meta charset="UTF-8">
+<title>본사공지사항상세조회</title>
 <style type="text/css">
 /* 상단 바 */
 .top {
@@ -11,7 +12,6 @@
    padding: 0;
    margin: 0;
    background-color: white;
-   
    display: inline-block;
    min-width: 1820px;
    height: 62px;
@@ -106,6 +106,7 @@ li {
 .menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
     display: block;
 }
+
 /* 미들 부분 */
 .content_area{
 	width: 1250px;
@@ -120,141 +121,111 @@ li {
     margin-left: 30px;
      width: 1250px;
 }
-/* 품목등록 */
+
+/* 타이틀 */
 
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
 }
+ 
 
-table {
+ 
+
+.top_tb{
+position: relative;
     width: 100%;
+    height: 35px;
+}
+
+ table{
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
     table-layout: fixed;
-    background: #ffffff;
-	margin: 10px 0;
-	border-top: 2px solid #01a1dd;
-	border-bottom: 2px solid #d9d9d9;
-	text-align: center;
-}
-
-
-tr {
-    display: table-row;
-}
-th{
-	background: #e8e8e8;
-    padding: 10px;
-    border-bottom: 1px solid #ffffff;
-    border-left: 1px solid #ffffff;
-}
-td{
-	font-size:15px;
-	padding:10px;
-	border-top: 1px solid #eaeaea;
-	border-left: 1px solid #eaeaea;
-	cursor: pointer;
-}
-
- td:first-child{
-	border-left: none;
-}
-input{
-	width:200px;
-	height:40px;
-
-}
-
-.input_btn_area{
-display: inline-block;
-text-align: left;
-}
-
-.filter_area{
-float : right;
-	text-align: right;
-	margin-bottom: 20px;
-}
-[name=r]{
-	margin: 0;
-	height: 20px;
-	width: 30px;
-	vertical-align: middle;
-}
-
-label{
-	vertical-align: middle;
-}
-.search_btn, .input_btn{
-	height: 40px;
-	margin: 0 ;
-	padding: 0;
-	vertical-align: bottom;
-}
-
-select{
-	font-size: 15px;	
-	height: 40px;
-	width : 100px;
-}
-
-.start_date, .end_date{
-	width: 150px;
-	font-size: 15px;
-	height: 36px;
-}
-/* 일반버튼 */
-button{
-	color: white;
-	width: 100px;
-	height: 40px;
+ }
+.tb1{
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+ }
+.tb1 > .tbody{
+     display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+ }
+ .tb1 > .td{
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+ }
+ .tb1 > .tr{
+     display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+ }
+ 
+ 
+  .txt_content{
+ position: relative;
+width: 100%;
+ }
+ 
+ 
+ 
+.edit_btn, .del_btn{
+color: white;
 	text-align:center;
-	border:0;
+	border: 0;
 	border-radius: 3px;
-	font-size:18px;
-	margin:10px;
+	margin:10px 0px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
-}
-/* 검색 과 페이지 */
-
-.search_info,.page_area, .page_btn{
-	text-align: center;
-}
-
-.page_btn button{
-	color: black;
-	width: 40px;
+	width:100px;
 	height: 40px;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:40px 3px;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+	font-weight: bold;
+	 font-size: 15px;
 }
 
-.page_btn button:hover{
-	color: #01a1dd;
+
+button:focus{
+outline:none;
 }
 
-.page_btn button:focus{
-	outline:none;
+ 
+ .edit_info
+ {
+ 	float: right;
+ 	display : inline-block;
+	text-align: center;
+	margin : 10px 0px;
 }
-
-.search_filter{
-	width : 120px;
-	vertical-align: middle;
+ 
+ .btm_tb{
+ position: relative;
+width: 100%;
+  height: 30px;
+ }
+ .tb2{
+    text-align: center;
+    border: 2px solid #ccc;
 }
-
-.search_input{
-	height: 34px;
-	vertical-align: middle;
-	width : 280px;
-	outline:none;
-}
-</style>
+ .tb2 > .tbody{
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+ }
+ .tb2 > .tr{
+    border-bottom: 1px solid #ccc;
+ }
+ .tb2 > .th{
+ background-color: #000000;
+ }
+ </style>
+ 
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".top_menu").on("click","a",function(){
@@ -272,7 +243,45 @@ $(document).ready(function(){
 	
 	
 }); //ready end
+
+$(document).ready(function() {
+	$("#listBtn").on("click", function() {
+		$("#goForm").attr("action", "Notice");
+		$("#goForm").submit();
+	});
+	
+	$("#updateBtn").on("click", function () {
+		$("#goForm").attr("action", "Notice_Update");
+		$("#goForm").submit();
+	});
+	$("#deleteBtn").on("click", function () {
+		if(confirm("삭제하시겠습니까?")){
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url:"Notice_Deletes", //접속주소
+				type:"post", //전송방식 : get, post
+				dataType:"json",//받아올데이터형식
+				data:params, //보낼 데이터(문자열 형태)
+				success : function (res) {//성공 시 다음함수 실행
+					if (res.msg == "success") {
+						location.href = "Notice";
+					} else if(res.msg == "failed") {
+						alert("작성에 실패하였습니다.")
+					} else {
+						alert("작성중 문제가 발생하였습니다.");
+					}
+				},
+				error : function (request, status, error) { //실패 시 다음함수 실행
+					console.log(error); //값이 돌아오지 않던지 애초에 터졌든지에 대한 에러
+				}
+			});
+		}
+	});
+});
+
 </script>
+
 </head>
 <body>
 <!-- 상단 -->
@@ -411,155 +420,66 @@ $(document).ready(function(){
       </ul>
    </div>
 
-
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
 <h1>공지사항</h1>
-<div class="input_btn_area">
-<button class="input_btn">글쓰기</button>
-</div>
-
-	<div class="filter_area">
-			<select class="cate">
-				<option value="0" selected="selected">전체</option>
-				<option value="1">이벤트</option>
-				<option value="2">주문관련</option>
-				<option value="3">재고관련</option>
-				<option value="4">시스템</option>
-				<option value="4">기타</option>
-			</select>
-			<input type = "date" value="2021-01-01" class="start_date" />
-			<input type = "date" value="2021-01-01" class="end_date"/>
-			<button class="search_btn">검색</button>
-		</div>
-	
-<table>
-	<colgroup>
-		<col width="15%">
-		<col width="45%">
-		<col width="20%">
-		<col width="20%">
-	</colgroup>
-	<thead>
-	<tr>
-			<th>NO.</th>
-			<th>제목</th>
-			<th>날짜</th>
-			<th>작성자</th>
-		</tr>
-	</thead>
-	<tbody>
-	<tr>
-		<th scope="col" style="border-left: none;">No.</th>
-		<th scope="col">제목</th>
-		<th scope="col">날짜</th>
-		<th scope="col">작성자</th>
-	</tr>
-	<tr>
-		<td>160</td>
-		<td><a href="#">5월 9일 새벽 시스템 오류 관련 공지사항</a></td>
-		<td>2021.5.9</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>159</td>
-		<td><a href="#">여의도 카페점 이벤트 유의사항</a></td>
-		<td>2021.5.9</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>158</td>
-		<td><a href="#">자재 출고일 변경사항 관련 안내</a></td>
-		<td>2021.5.8</td>		
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>157</td>
-		<td><a href="#">전 지점 대상 이벤트 예정</a></td>
-		<td>2021.5.8</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>156</td>
-		<td><a href="#">994</a></td>
-		<td>2021.5.8</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>155</td>
-		<td><a href="#">993</a></td>
-		<td>2021.5.8</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>154</td>
-		<td><a href="#">992</a></td>
-		<td>2021.5.7</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>153</td>
-		<td><a href="#">991</a></td>
-		<td>2021.5.7</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>152</td>
-		<td><a href="#">990</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>151</td>
-		<td><a href="#">989</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>150</td>
-		<td><a href="#">988</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-	<tr>
-		<td>149</td>
-		<td><a href="#">987</a></td>
-		<td>2021.5.6</td>
-		<td>admin</td>
-	</tr>
-
-	</tbody>
+<form action="#" id="goForm" method="post">
+	<input type="hidden" name="nNo" value="${data.TXT_NO}" />
+	<input type="hidden" name="page" value="${param.page}" />
+	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
+	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+</form>
+<div class="titile"><h2>${data.TITLE}</h2></div>
+<div class="top_tb">
+<table class="tb1">
+<tbody>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>${data.USER_NO}</td>
+<td>${data.SYSDATE}</td>
+<td></td>
+</tr>
+</tbody>
 </table>
-	<div class="search_area" style = "margin-top : 30px;">
-		<div class="search_info">
-		<form action="#" id="actionForm" method="post">
-	<input type="hidden" id="sNo" name="sNo"/>
-	<input type="hidden" id="page" name="page" value="${page}">
-			<select class="search_filter">
-				<option value="0" selected="selected">제목+내용</option>
-				<option value="1">제목</option>
-				<option value="2">내용</option>
-				<option value="3">작성자</option>
-			</select>
-			<input type="hidden" id="searchOldTxt" value="${param.searchTxt}"/>
-			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
-			<button class="search_btn" id="searchBtn">검색</button>
-			</form>
-		</div>
-	</div>
-	<div class="page_area">
-		<div class="page_btn">
-		<button style="background-color: white"><</button>
-		<button style="background-color: white">1</button>
-		<button style="background-color: white">2</button>
-		<button style="background-color: white">3</button>
-		<button style="background-color: white">></button>
-		</div>
-	</div>
-	
-	</div>
 </div>
 
+
+<div class="txt_content">
+
+<br/>
+</div>
+
+
+
+<div class="btm_btn_area" style = "margin-top : 30px;">
+	<button class="list_btn">목록</button>
+		<div class="edit_info">
+<input type="button" value="수정" class="edit_btn" id="updateBtn" />
+<input type="button" value="삭제" class="del_btn" id="deleteBtn" />
+		</div>
+	</div>
+
+<div class="btm_tb">
+<table class="tb2">
+<tbody>
+<tr>
+<th>&nbsp;윗글</th>
+<td>&nbsp;해당 글이 없습니다.</td>
+</tr>
+<tr>
+<th>&nbsp;아랫글</th>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+</div>
+</div>
 </body>
 </html>

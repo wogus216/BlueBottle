@@ -24,8 +24,8 @@ public class sgController {
 	@Autowired
 	public IPagingService ipagingService;
 	
-	@RequestMapping(value="/noticeList")
-	public ModelAndView noticeList(
+	@RequestMapping(value="/Notice")
+	public ModelAndView Notice(
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) {
 		
@@ -36,24 +36,26 @@ public class sgController {
 		}
 		
 		mav.addObject("page", page);
-		mav.setViewName("sg/noticeList");
+		mav.setViewName("sg/Notice");
 		
 		return mav;
 	}
-	@RequestMapping(value="/noticeLists",
+	@RequestMapping(value="/Notices",
 			method=RequestMethod.POST,
 			produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String noticeLists(
+	public String Notices(
 			@RequestParam HashMap<String, String> params) throws Throwable{
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
+		
 		// 현재 페이지
+		
 		int page = Integer.parseInt(params.get("page"));
 		
 		// 총 게시글 수
-		int cnt = isgService.getSCnt(params);
+		int cnt = isgService.getNCnt(params);
 
 		// 페이징 정보 취득
 		PagingBean pb = ipagingService.getPagingBean(page, cnt);
@@ -62,13 +64,61 @@ public class sgController {
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 		// 목록 취득
-		List<HashMap<String, String>> list = isgService.getSList(params);
+		List<HashMap<String, String>> list = isgService.getNList(params);
 		
 		modelMap.put("list", list);
 		modelMap.put("pb", pb);
+		System.out.println("list"+list);
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	
+	@RequestMapping(value="/NoticeWrite")
+	public ModelAndView NoticeWrite(ModelAndView mav) { //db붙을 거 아니라 throws~~필요없음
+		
+		mav.setViewName("sg/NoticeWrite");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/NoticeWrites",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String NoticeWrites(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.addN(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		} //addObjec가 modelMap으로 바뀐 거 빼고는 똑같다
 		
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	
+	@RequestMapping(value="/Notice_Detail")
+	public ModelAndView Notice_Detail(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		HashMap<String, String> data = isgService.getN(params);
+		
+		mav.addObject("data", data);
+		
+		mav.setViewName("sg/Notice");
+		
+		return mav;
+	}
 
 }
