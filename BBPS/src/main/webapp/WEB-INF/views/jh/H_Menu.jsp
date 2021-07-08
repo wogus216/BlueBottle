@@ -18,12 +18,13 @@
  */
 
 html,body{
-	font-size: 0px;
+	/*font-size: 0px; 필요 시 다시 살리기*/
     margin: 0px;
     position: relative;
     width: 100%;
     height: 100%;
     min-width: 1280px;
+    background-color: #f2f2f2;
 }
 
 
@@ -32,6 +33,7 @@ html,body{
 	min-width: 1280px;
 	height: 60px;
 	text-align: end;
+	background-color: white;
 	
 }
 .logo_area{
@@ -209,14 +211,14 @@ function drawMenu(menu){
 	html += "	<img class=\"logo\" alt=\"logo\" src=\"resources/images/bb/logo.png\" width=\"250px\">";
 	html += "  </div>";
 	for(var i =0; i < menu.length; i++){
-		if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
+		if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
 					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
 					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 		}
 		
-		else if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
+		else if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
 					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
 					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";

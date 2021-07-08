@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>전체 로그인페이지</title>
+<title>전체 로그인 페이지</title>
 <style type="text/css">
 
 body{

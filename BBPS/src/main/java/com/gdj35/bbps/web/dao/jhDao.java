@@ -32,4 +32,17 @@ public class jhDao implements IjhDao {
 		return sqlsession.selectList("B.getHMenu", params);
 	}
 
+	@Override
+	public int getMbCnt(HashMap<String, String> params) throws Throwable {
+		System.out.println("메뉴 게시글 개수db돌았습니다.");
+		return sqlsession.selectOne("B.getMbCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMbList(HashMap<String, String> params) throws Throwable {
+		System.out.println("메뉴 게시글 db돌았습니다.");
+		return sqlsession.selectList("B.getMbList", params);
+		
+	}
+
 }

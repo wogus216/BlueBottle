@@ -11,5 +11,9 @@ public HashMap<String, String> getB(HashMap<String, String> params) throws Throw
 
 public List<HashMap<String, String>> getHMenu(HashMap<String, String> params) throws Throwable;
 
+public int getMbCnt(HashMap<String, String> params) throws Throwable;
+
+public List<HashMap<String, String>> getMbList(HashMap<String, String> params)  throws Throwable;
+
 
 }
