@@ -286,7 +286,7 @@ $(document).ready(function(){
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
