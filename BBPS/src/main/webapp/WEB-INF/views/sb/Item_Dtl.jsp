@@ -127,8 +127,12 @@ h1 {
 	background-color: #bf4040;
 	float: right;
 }
+
+.Item_Name,.del_btn,.edit_btn{
+	vertical-align: middle;
+}
+
 .btn_area{
-	text-align: right;
 	margin-bottom: 20px;
 }
 table {
@@ -264,11 +268,11 @@ $(document).ready(function(){
 	});
 	
 	$(".del_btn").on("click",function(){
-		if(confirm("삭제하시겠습니까?")){
+		if(confirm("삭제하시겠습니까?")){ //팝업 변경 필요
 		var params = $("#goForm").serialize();
 			
 			$.ajax({
-				url : "psb_testGDeletes",
+				url : "Item_Del",
 				type : "post",  
 				dataType :"json",
 				data : params,
@@ -430,6 +434,7 @@ function drawpricehistory(pricehistorylist){
 <div class="content">
 <h1>품목조회</h1>
 <div class="btn_area">
+<span class = "Item_Name">품목번호 : ${data.ITEM_NO}</span>
 <button class="del_btn" style="margin-right: 0px;">삭제</button>
 <button class="edit_btn">수정</button>
 </div>
@@ -442,21 +447,27 @@ function drawpricehistory(pricehistorylist){
 		<col width="20%" />
 	</colgroup>
 	<tr>
-		<th scope=col style= "border-left: none;">품목코드</th>
+		<th scope=col style= "border-left: none;">카테고리</th>
 		<th scope=col>품목명</th>
 		<th scope=col>가격(원)</th>
 		<th scope=col>최소주문단위</th>
 		<th scope=col>완제품여부</th>
 	</tr>
 	<tr>
-		<td>${data.ITEM_NO}</td>
+		<td><c:choose>
+		<c:when test = "${data.CATE_NO eq 0}">음료재료</c:when>
+				<c:when test = "${data.CATE_NO eq 1}">제과</c:when>
+				<c:when test = "${data.CATE_NO eq 2}">원두</c:when>
+				<c:when test = "${data.CATE_NO eq 3}">굿즈</c:when>
+				<c:when test = "${data.CATE_NO eq 4}">기타</c:when>
+		</c:choose></td>
 		<td>${data.ITEM_NAME}</td>
 		<td>${data.PRICE}</td>
 		<td>${data.MIN_ORD_UNIT}</td>
 		<td>
 			<c:choose>
-				<c:when test = "${data.COM_PROD_FALG eq 0}">Y</c:when>
-				<c:when test = "${data.COM_PROD_FALG eq 1}">N</c:when>
+				<c:when test = "${data.COM_PROD_FLAG eq 0}">Y</c:when>
+				<c:when test = "${data.COM_PROD_FLAG eq 1}">N</c:when>
 			</c:choose>
 		</td>
 	</tr><!-- 완제품인 상품은 Y로 출력 -->

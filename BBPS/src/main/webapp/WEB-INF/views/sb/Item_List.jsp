@@ -266,7 +266,7 @@ $(document).ready(function(){
 	$("tbody").on("click","tr",function(){
 		$("#itemNo").val($(this).attr("itemNo"));
 		$(".search_input").val($("#Old_search_input").val());
-		$("#actionForm").attr("action","Item_Dtl");
+		$("#actionForm").attr("action","Stock_Dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
 	
@@ -302,6 +302,19 @@ function drawproductList(list){
 	for(var d of list){
 		html += "<tr itemNo = \""+d.ITEM_NO+"\">";
 		html += "<td><a href = \"#\" itemNo = \""+d.ITEM_NO+"\">"+d.ITEM_NO+"</a></td>";
+		
+		if(d.CATE_NO == 0){
+			html += "<td>음료재료</td>";
+		} else if(d.CATE_NO == 1){
+			html += "<td>제과</td>";	
+		} else if(d.CATE_NO == 2){
+			html += "<td>원두</td>";	
+		} else if(d.CATE_NO == 3){
+			html += "<td>굿즈</td>";		
+		} else if(d.CATE_NO == 4){
+			html += "<td>기타</td>";
+		}
+		
 		html += "<td>"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.PRICE+"</th>";
 		html += "<td>"+d.MIN_ORD_UNIT+"</td>";
@@ -458,14 +471,16 @@ function drawproductPaging(pb){
 </div>
 <table cellspacing="0">
 	<colgroup>
-		<col width="25%" />
-		<col width="25%" />
-		<col width="25%" />
-		<col width="25%" />
+		<col width="20%" />
+		<col width="20%" />
+		<col width="20%" />
+		<col width="20%" />
+		<col width="20%" />
 	</colgroup>
 	<thead>
 	<tr>
 		<th scope=col style= "border-left: none;">품목코드</th>
+		<th scope=col>카테고리</th>
 		<th scope=col>품목명</th>
 		<th scope=col>가격(원)</th>
 		<th scope=col>최소주문단위</th>

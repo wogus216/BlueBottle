@@ -80,7 +80,7 @@ public class sbController {
 		return mav;
 	}
 	
-	//품목 상세조회 내 가격 변동 테이블 불러오기
+	//품목 상세조회 내 가격 변동 테이블 불러오기 (품목수정 페이지에도 노출)
 	@RequestMapping(value = "/Item_Dtl_Price_History",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String HPDetailPHis(@RequestParam HashMap<String,String> params) throws Throwable{
@@ -145,11 +145,91 @@ public class sbController {
 	}
 	
 	//품목수정  (기능x 화면전환)
-		@RequestMapping(value = "/Item_Edit")
-		public ModelAndView HPEdit (ModelAndView mav) throws Throwable{
+	@RequestMapping(value = "/Item_Edit")
+	public ModelAndView HPEdit (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
+			
+		HashMap<String,String> data = isbservice.getPDetail(params);
+			
+		mav.addObject("data",data);
+		mav.setViewName("sb/Item_Edit");
 				
-			mav.setViewName("sb/Item_Edit");
+		return mav;
+	}
+	
+	//품목수정 (기능)
+	@RequestMapping(value = "/Item_Edits",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HPEidts(@RequestParam int OlditemPrice,@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		try {
 				
-			return mav;
+				
+				if(Integer.parseInt(params.get("itemPrice")) != OlditemPrice) { //가격 변동이 일어났을 때 가격 테이블 데이터 인서트
+					
+					int cnt = isbservice.EditItem(params);
+					
+					int cnt2 = isbservice.EditItemPrice(params);
+					
+					if(cnt > 0 && cnt2 > 0) {
+						modelMap.put("msg", "success");
+					} else {
+						modelMap.put("msg", "failed");
+					}
+				} else { //가격 변동 없이 수정이 이루어진 경우
+					
+					int cnt = isbservice.EditItem(params);
+					
+					if(cnt > 0) {
+						modelMap.put("msg", "success");
+					} else {
+						modelMap.put("msg", "failed");
+					}
+				}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
 		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	//품목삭제 (기능)
+	@RequestMapping(value = "/Item_Del",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HPDel(@RequestParam HashMap<String,String> params) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		try {
+				int cnt = isbservice.DelItem(params);
+					
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+				
+			modelMap.put("msg", "error");
+		}
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+		
+	//재고 상세(품목 tr 선택 시 노출)
+	@RequestMapping(value = "/Stock_Dtl")
+	public ModelAndView HSDetail(ModelAndView mav) throws Throwable {
+		
+		mav.setViewName("sb/Stock_Dtl");
+		
+		return mav;
+	}
 }
