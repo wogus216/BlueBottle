@@ -21,5 +21,10 @@ public class shDao implements IshDao{
 	public List<HashMap<String, String>> getOList(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectList("SH.getOList", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> getO(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getO", params);
+	}
 }
 

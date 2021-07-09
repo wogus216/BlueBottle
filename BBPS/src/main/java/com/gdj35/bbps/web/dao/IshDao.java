@@ -9,4 +9,6 @@ public interface IshDao {
 
 	public List<HashMap<String, String>> getOList(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getO(HashMap<String, String> params) throws Throwable;
+
 }
