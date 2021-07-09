@@ -17,31 +17,31 @@ public class jhDao implements IjhDao {
 	public HashMap<String, String> getHQ(HashMap<String, String> params) throws Throwable {
 		System.out.println("본사db돌았습니다.");
 		
-		return sqlsession.selectOne("B.getHQ", params);
+		return sqlsession.selectOne("JH.getHQ", params);
 	}
 
 	@Override
 	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable {
 		System.out.println("지점db돌았습니다.");
-		return sqlsession.selectOne("B.getB", params);
+		return sqlsession.selectOne("JH.getB", params);
 	}
 
 	@Override
 	public List<HashMap<String, String>> getHMenu(HashMap<String, String> params) throws Throwable {
 		System.out.println("메뉴db돌았습니다.");
-		return sqlsession.selectList("B.getHMenu", params);
+		return sqlsession.selectList("JH.getHMenu", params);
 	}
 
 	@Override
 	public int getMbCnt(HashMap<String, String> params) throws Throwable {
 		System.out.println("메뉴 게시글 개수db돌았습니다.");
-		return sqlsession.selectOne("B.getMbCnt", params);
+		return sqlsession.selectOne("JH.getMbCnt", params);
 	}
 
 	@Override
 	public List<HashMap<String, String>> getMbList(HashMap<String, String> params) throws Throwable {
 		System.out.println("메뉴 게시글 db돌았습니다.");
-		return sqlsession.selectList("B.getMbList", params);
+		return sqlsession.selectList("JH.getMbList", params);
 		
 	}
 
