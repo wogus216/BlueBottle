@@ -166,7 +166,7 @@ input[type=text]:focus{
 	outline:none;
 }
 
-/* 카테고리 */
+/*카테고리 등록*/
 .cate_add{
 	text-align: center;
 	vertical-align: top;
@@ -180,6 +180,7 @@ input[type=text]:focus{
 	margin-right: 10px;
 }
 
+/*등록, 수정, 삭제 버튼*/
 .edit_btn, .del_btn, .add_btn, .edit_com_btn{
 	width: 80px;
 	color: white;
@@ -217,6 +218,73 @@ input[type=text]:focus{
 	pointer-events: none;
 }
 
+/* 팝업 */
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_Area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_Head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_Btn{
+	text-align:center;
+}
+.popup_Btn button{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_Content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+button:focus{outline:none;}
+
+.close_Btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
 </style>
 
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -246,7 +314,7 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "cateAdd",
+				url: "",
 				type: "post",
 				dataType: "json",
 				data: params,
@@ -302,31 +370,40 @@ $(document).ready(function(){
 	}); //edit_com_btn click end
 	
 	$("tbody").on("click",".del_btn", function() {
+	
 		$("#cateNo").val($(this).parent().parent().attr("cateNo"));
 		
-		var params = $("#actionForm").serialize();
-		
-		$.ajax({
-			url: "cateDelete",
-			type: "post",
-			dataType: "json",
-			data: params,
-			success: function(res) {
-				if(res.msg == "success") {
-					location.href = "Notice_Cate_Mang";
-				}else if(res.msg == "failed") {
-					alert("수정에 실패하였습니다.");
-				}else {
-					alert("수정 중 문제가 발생하였습니다.");
+		makePopup("삭제", "해당 카테고리를 삭제하시겠습니까?", function() {
+			
+			var params = $("#actionForm").serialize();
+			
+			$.ajax({
+				url: "cateDelete",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					if(res.msg == "success") {
+						location.href = "Notice_Cate_Mang";
+					}else if(res.msg == "failed") {
+						alert("삭제에 실패하였습니다.");
+					}else {
+						alert("삭제 중 문제가 발생하였습니다.");
+					}
+				},
+				error: function(request, status, error) {
+					console.log(error);
 				}
-			},
-			error: function(request, status, error) {
-				console.log(error);
-			}
-		}); //ajax end
+			}); //ajax end
+			
+		}); // makePopup end
+		
 	}); //del_btn_click end
+	
+	
 }); //ready end
 
+//리스트 데이터 불러오기
 function reloadList() {
 	
 	$.ajax({
@@ -342,6 +419,7 @@ function reloadList() {
 	});	
 }
 
+//불러온 리스트 출력
 function drawList(list) {
 	var html = "";
 	
@@ -356,6 +434,43 @@ function drawList(list) {
 	$("table tbody").html(html);
 }
 
+//팝업
+function makePopup(title, contents, func) {
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_Area\">";	
+	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= 		"<button class=\"close_Btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_Btn\">";	
+	html+= 			"<button class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">확인</button>";
+	html+= "</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_Area").hide().show();
+	
+	//팝업창 닫기
+	$(".close_Btn").on("click",function(){
+		closePopup();
+	}); 
+	
+	//확인버튼 
+	$(".confirm_Btn").on("click", function() {
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+	});
+
+}
+
+function closePopup() {
+	$(".bg, .popup_Area").fadeOut(function(){
+		$(".bg, .popup_Area").remove();
+	}); //popup_Btn end
+}
 
 </script>
 </head>

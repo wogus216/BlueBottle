@@ -15,27 +15,27 @@ public class nyService implements InyService{
 	public InyDao iNyDao;
 
 	@Override
-	public List<HashMap<String, String>> getCateList() throws Throwable {
+	public List<HashMap<String, String>> getNoticeCate() throws Throwable {
 
-		return iNyDao.getCateList();
+		return iNyDao.getNoticeCate();
 	}
 
 	@Override
-	public int addCate(HashMap<String, String> params) throws Throwable {
+	public int addNoticeCate(HashMap<String, String> params) throws Throwable {
 
-		return iNyDao.addCate(params);
+		return iNyDao.addNoticeCate(params);
 	}
 
 	@Override
-	public int updateCate(HashMap<String, String> params) throws Throwable {
+	public int updateNoticeCate(HashMap<String, String> params) throws Throwable {
 
-		return iNyDao.updateCate(params);
+		return iNyDao.updateNoticeCate(params);
 	}
 
 	@Override
-	public int deleteCate(HashMap<String, String> params) throws Throwable {
+	public int deleteNoticeCate(HashMap<String, String> params) throws Throwable {
 
-		return iNyDao.deleteCate(params);
+		return iNyDao.deleteNoticeCate(params);
 	}
 
 

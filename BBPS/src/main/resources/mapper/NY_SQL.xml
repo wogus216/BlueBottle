@@ -2,26 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="NY">
 	<!-- 공지 카테고리 목록 불러오기 -->
-	<select id="getCateList" resultType="hashmap">
+	<select id="getNoticeCate" resultType="hashmap">
 	SELECT CATE_NO, CATE_NAME
 	FROM NOTICE_CATE
 	WHERE CATE_NO > 0 
-	AND DEL_FLAG = 1		
+	AND DEL_FLAG = 1
+	ORDER BY CATE_NO		
 	</select>
 	
-	<insert id="addCate" parameterType="hashmap">
+	<insert id="addNoticeCate" parameterType="hashmap">
 	INSERT INTO NOTICE_CATE(CATE_NO, CATE_NAME, DEL_FLAG)
 	VALUES(NOTICE_CATE_SEQ.NEXTVAL,#{inputTxt},1)
 	</insert>
 	
-	<update id="updateCate" parameterType="hashmap">
+	<update id="updateNoticeCate" parameterType="hashmap">
 	UPDATE NOTICE_CATE
 	SET
 	CATE_NAME = #{cateName}
 	WHERE CATE_NO = #{cateNo}
 	</update>
 	
-	<update id="deleteCate" parameterType="hashmap">
+	<update id="deleteNoticeCate" parameterType="hashmap">
 	UPDATE NOTICE_CATE
 	SET
 	DEL_FLAG = 0
