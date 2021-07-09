@@ -137,7 +137,7 @@ button{
 	outline:none;
 }
 
-.search_Filter{
+#search_Filter{
 	width : 120px;
 	vertical-align: middle;
 }
@@ -154,19 +154,28 @@ button{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+		if("${param.search_Filter}" != ""){
+			$("#search_Filter").val("${param.search_Filter}");
+		}
 
 		reloadList();
-	
+	//페이지 변경	
 	$(".page_Btn").on("click","button",function(){
-		
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
- 	
+ 	//카테고리 변경 시 value 값 넣어주기
  	$(".cate").change(function(){
  		$("#cateNo").val($(".cate").val());
  		reloadList();
  	});
+ 	
+ 	//검색
+ 	$(".search_Btn").on("click",function(){
+ 		$("#page").val(1);
+ 		reloadList();
+ 	});
+ 	
  		
 	
 }); //ready end
@@ -288,12 +297,12 @@ function drawPaging(pb){
 				<input type="hidden" id="cateNo" name="cateNo"/>
 				<input type="hidden" id="page" name="page" value="${page}"/>
 			<div class="search_Info">
-				<select class="search_Filter">
+				<select id="search_Filter" name="search_Filter">
 					<option value="0" selected="selected">메뉴이름</option>
 					<option value="1">카테고리</option>
 					<option value="2">가격</option>
 				</select>
-				<input type="text" class="search_input" value="${param.search_input}"/>
+				<input type="text" class="search_input" name="search_input" value="${param.search_input}"/>
 				<button class="search_Btn">검색</button>
 			</div>
 		</form>
