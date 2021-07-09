@@ -314,7 +314,7 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "cateAdd",
+				url: "",
 				type: "post",
 				dataType: "json",
 				data: params,

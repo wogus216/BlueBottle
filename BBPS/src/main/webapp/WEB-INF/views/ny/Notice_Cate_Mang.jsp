@@ -314,7 +314,7 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "cateAdd",
+				url: "noticeCateAdd",
 				type: "post",
 				dataType: "json",
 				data: params,
@@ -349,7 +349,7 @@ $(document).ready(function(){
 		var params = $("#actionForm").serialize();
 		
 		$.ajax({
-			url: "cateUpdate",
+			url: "noticeCateUpdate",
 			type: "post",
 			dataType: "json",
 			data: params,
@@ -378,7 +378,7 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "cateDelete",
+				url: "noticeCateDelete",
 				type: "post",
 				dataType: "json",
 				data: params,
@@ -407,7 +407,7 @@ $(document).ready(function(){
 function reloadList() {
 	
 	$.ajax({
-		url: "cateList",
+		url: "noticeCateList",
 		type: "post",
 		dataType: "json",
 		success : function(res) {
