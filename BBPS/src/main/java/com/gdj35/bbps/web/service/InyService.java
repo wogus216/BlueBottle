@@ -17,4 +17,8 @@ public interface InyService {
 
 	int addItemCate(HashMap<String, String> params) throws Throwable;
 
+	int updateItemCate(HashMap<String, String> params) throws Throwable;
+
+	int deleteItemCate(HashMap<String, String> params) throws Throwable;
+
 }

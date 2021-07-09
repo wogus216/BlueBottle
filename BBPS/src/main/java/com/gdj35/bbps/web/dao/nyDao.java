@@ -48,6 +48,18 @@ public class nyDao implements InyDao{
 
 		return sqlSession.insert("NY.addItemCate", params);
 	}
+
+	@Override
+	public int updateItemCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.updateItemCate", params);
+	}
+
+	@Override
+	public int deleteItemCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.deleteItemCate", params);
+	}
 	
 	
 }

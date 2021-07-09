@@ -47,4 +47,17 @@
 	VALUES(NOTICE_CATE_SEQ.NEXTVAL,#{inputTxt},1)
 	</insert>
 	
+	<update id="updateItemCate" parameterType="hashmap">
+	UPDATE ITEM_CATE
+	SET
+	CATE_NAME = #{cateName}
+	WHERE CATE_NO = #{cateNo}
+	</update>
+	
+	<update id="deleteItemCate" parameterType="hashmap">
+	UPDATE ITEM_CATE
+	SET
+	DEL_FLAG = 0
+	WHERE CATE_NO = #{cateNo}
+	</update>
 </mapper> 

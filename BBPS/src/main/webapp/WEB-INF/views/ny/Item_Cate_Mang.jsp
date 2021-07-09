@@ -181,7 +181,7 @@ input[type=text]:focus{
 }
 
 /*등록, 수정, 삭제 버튼*/
-.edit_btn, .del_btn, .add_btn, .edit_com_btn{
+.edit_btn, .del_btn, .add_btn, .edit_com_btn, .cnl_btn{
 	width: 80px;
 	color: white;
     height: 40px;
@@ -213,6 +213,11 @@ input[type=text]:focus{
 .edit_com_btn{
 	background-color: #01a1dd;
 }
+
+.cnl_btn{
+	background-color: #8c8c8c;
+}
+
 .view_tr input[type='text'] {
 	border: none;
 	pointer-events: none;
@@ -320,13 +325,15 @@ $(document).ready(function(){
 				data: params,
 				success: function(res) {
 					if(res.msg == "success") {
-						location.href = "Item_Cate_Mang";
+						reloadList();
 					}else if(res.msg == "failed") {
 						makePopup("오류", "등록에 실패했습니다.", null);
 						$("#inputTxt").val("");
+						reloadList();
 					}else {
 						makePopup("오류", "등록 중 문제가 발생했습니다.", null);
 						$("#inputTxt").val("");
+						reloadList();
 					}
 				},
 				error: function(request, status, error) {
@@ -340,8 +347,18 @@ $(document).ready(function(){
 		$(this).parent().parent().attr("class", "edit_tr");
 		$(this).attr("class","edit_com_btn");
 		$(this).val("등록");
-		$(this).parent().children(".del_btn").css("display", "none");
+		$(this).parent().children(".del_btn").attr("class","cnl_btn");
+		$(this).parent().children(".cnl_btn").val("취소");
 	}); //edit_btn click end
+	
+	$("tbody").on("click", ".cnl_btn", function() {
+		$(this).parent().parent().attr("class", "view_tr");
+		$(this).attr("class","del_btn");
+		$(this).val("삭제");
+		$(this).parent().children(".edit_com_btn").attr("class","edit_btn");
+		$(this).parent().children(".edit_btn").val("수정");
+		reloadList();
+	}); //cnl_btn click end
 	
 	$("tbody").on("click", ".edit_com_btn", function() {
 		$("#cateNo").val($(this).parent().parent().attr("cateNo"));
@@ -351,17 +368,19 @@ $(document).ready(function(){
 		var params = $("#actionForm").serialize();
 		
 		$.ajax({
-			url: "",
+			url: "itemCateUpdate",
 			type: "post",
 			dataType: "json",
 			data: params,
 			success: function(res) {
 				if(res.msg == "success") {
-					location.href = "Notice_Cate_Mang";
+					reloadList();
 				}else if(res.msg == "failed") {
 					makePopup("오류", "수정에 실패했습니다.", null);
+					reloadList();
 				}else {
 					makePopup("오류", "수정 중 문제가 발생했습니다.", null);
+					reloadList();
 				}
 			},
 			error: function(request, status, error) {
@@ -380,17 +399,19 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "",
+				url: "itemCateDelete",
 				type: "post",
 				dataType: "json",
 				data: params,
 				success: function(res) {
 					if(res.msg == "success") {
-						location.href = "Notice_Cate_Mang";
+						reloadList();
 					}else if(res.msg == "failed") {
 						makePopup("오류", "삭제에 실패했습니다.", null);
+						reloadList();
 					}else {
 						makePopup("오류", "삭제 중 문제가 발생했습니다.", null);
+						reloadList();
 					}
 				},
 				error: function(request, status, error) {
