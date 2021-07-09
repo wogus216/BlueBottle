@@ -205,11 +205,19 @@ button{
 }
 
 .submit{
-	width:200px;
+	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
 	font-weight: bold;
 	 font-size: 22px;
+}
+
+.cnl_btn{
+	background-color: #b3b3b3;
+    width: 180px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 22px;
 }
 
 button:focus{outline:none;}
@@ -221,6 +229,7 @@ input[type=radio]{
 	width: 30px;
 	vertical-align: middle;
 }
+
 
 </style>
 <script type="text/javascript"
@@ -250,6 +259,10 @@ $(document).ready(function(){
 	
 	$(".row_del").on("click",function(){
 		del_tb();
+	});
+	
+	$(".cnl_btn").on("click",function(){
+		location.href = "Item_List";
 	});
 	
 	$(".submit").on("click",function(){
@@ -477,7 +490,8 @@ function del_tb(){
 </div>
 </form>
 	<div class="submit_area">
-	<button class="submit">등록완료</button>
+	<button class="submit">등록</button>
+	<button class="cnl_btn">취소</button>
 	</div>
 </div>
 </div>

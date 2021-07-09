@@ -22,5 +22,11 @@ public interface IsbService {
 
 	public int DelItem(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getSDetail(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getSRelList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getSDList(HashMap<String, String> params) throws Throwable;
+
 	
 }

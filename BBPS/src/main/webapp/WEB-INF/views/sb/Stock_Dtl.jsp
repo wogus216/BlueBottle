@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -219,7 +220,7 @@ label{
 	max-width: 1000px; 
 }
 
-.search_btn,.stock_add_btn,.discard_btn,.discard_cnl_btn,.discard_submit_btn{
+.stock_add_btn,.discard_btn,.discard_cnl_btn,.discard_submit_btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
@@ -274,42 +275,21 @@ button{
 	font-size: 22px;
 }
 
-/* 검색 과 페이지 */
 
-.search_info,.page_area, .page_btn{
+/*입고이력버튼*/
+.stor_history_btn{ 
+	background-color: #b5b5b5;
+	width: 80px;
+	height: 30px;
+	font-size:15px;
+	margin: 0px;
+}
+
+.stock_tb td:nth-child(4),.stock_tb td:nth-child(5){
+	padding : 0px;
 	text-align: center;
 }
 
-.page_btn button{
-	color: black;
-	width: 40px;
-	height: 40px;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:40px 3px;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
-}
-
-.page_btn button:hover{
-	color: #01a1dd;
-}
-
-.page_btn button:focus{
-	outline:none;
-}
-
-.search_filter{
-	width : 120px;
-	vertical-align: middle;
-}
-
-.search_input{
-	height: 34px;
-	vertical-align: middle;
-	width : 280px;
-	outline:none;
-}
 
 </style>
 
@@ -319,7 +299,9 @@ button{
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	draw_stock_tb();
+	stockloadList(); //유통기한별 재고 리스트 그리기
+	relloadList(); // 재고 출고 리스트 그리기
+	discardloadList(); //폐기 리스트 그리기
 	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
@@ -339,7 +321,7 @@ $(document).ready(function(){
 	});
 	
 	$(".discard_btn").on("click",function(){
-		draw_discard_tb();
+		stockdiscardloadList();
 		$(".discard_btn").hide();
 		$(".stock_add_btn").hide();
 		$(".discard_cnl_btn").show();
@@ -347,7 +329,7 @@ $(document).ready(function(){
 	});
 	
 	$(".discard_cnl_btn").on("click",function(){
-		draw_stock_tb();
+		stockloadList();
 		$(".discard_btn").show();
 		$(".stock_add_btn").show();
 		$(".discard_cnl_btn").hide();
@@ -355,7 +337,7 @@ $(document).ready(function(){
 	});
 	
 	$(".discard_submit_btn").on("click",function(){
-		draw_stock_tb();
+		stockloadList();
 		$(".discard_btn").show();
 		$(".stock_add_btn").show();
 		$(".discard_cnl_btn").hide();
@@ -364,34 +346,120 @@ $(document).ready(function(){
 	
 }); //ready end
 
-function draw_stock_tb(){//재고 테이블 그리기
+//유통기한 별 재고 리스트 그리기
+function stockloadList(){
+	var params = $("#goForm").serialize();
 	
+	$.ajax({
+		url : "Item_Stock_List",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawstockList(res.stocklist);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawstockList(stocklist){
 	var html ="";
 	
 	html += "<tr>";
 	html += "<th style=\"border-left: none;\">품목명</th>";
 	html += "<th>재고수량</th>";
 	html += "<th>유통기한</th>";
-	html += "<th>입고날짜</th>";
+	html += "<th>입고이력</th>";
 	html += "</tr>";
 	
 	$(".stock_tb thead").html(html);
 	
 	html ="";
 	
-	html += "<tr>";
-	html += "<td>우유</td>";
-	html += "<td>4</td>";
-	html += "<td>2021-05-08</td>";
-	html += "<td>2021-05-01</td>";
-	html += "</tr>";
-	
+	for(var d of stocklist){
+		html += "<tr>";
+		html += "<td>"+d.ITEM_NAME+"</td>";
+		html += "<td>"+d.SUM_CNT+"</td>";
+		html += "<td>"+d.EXPIRY_DATE+"</td>";
+		html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
+		html += "</tr>";	
+	}
 	
 	$(".stock_tb tbody").html(html);
 }
 
-function draw_discard_tb(){
+//출고재고리스트 그리기
+function relloadList(){
+	var params = $("#goForm").serialize();
 	
+	$.ajax({
+		url : "Item_Rel_List",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawrelList(res.Rellist);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawrelList(Rellist){
+	var html ="";
+	
+	html += "<tr>";
+	html += "<th style=\"border-left: none;\">주문번호</th>";
+	html += "<th>품목코드</th>";
+	html += "<th>품목명</th>";
+	html += "<th>수량</th>";
+	html += "<th>유통기한</th>";
+	html += "<th>등록일</th>";
+	html += "<th>지점명</th>";
+	html += "</tr>";
+	
+	
+	$(".stock_rel_history thead").html(html);
+	
+	html ="";
+	
+	for(var d of Rellist){
+		html += "<tr>";
+		html += "<td><a href = \"#\" ordNo = \""+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
+		html += "<td>"+d.ITEM_NO+"</td>";
+		html += "<td>"+d.ITEM_NAME+"</th>";
+		html += "<td>"+d.CNT+"</td>";
+		html += "<td>"+d.EXPIRY_DATE+"</td>";
+		html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
+		html += "<td>"+d.BRCH_NAME+"</td>";
+		html += "</tr>";	
+	}
+	
+	$(".stock_rel_history tbody").html(html);
+}
+
+//폐기기능 리스트 그리기
+function stockdiscardloadList(){
+	var params = $("#goForm").serialize();
+	
+	$.ajax({
+		url : "Item_Stock_Discard_List",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawstockdiscardList(res.stockdiscardlist);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawstockdiscardList(stockdiscardlist){
 	var html ="";
 	
 	html += "<tr>";
@@ -399,22 +467,73 @@ function draw_discard_tb(){
 	html += "<th>재고수량</th>";
 	html += "<th>폐기수량</th>";
 	html += "<th>유통기한</th>";
-	html += "<th>입고날짜</th>";
+	html += "<th>입고이력</th>";
 	html += "</tr>";
 	
 	$(".stock_tb thead").html(html);
 	
 	html ="";
 	
-	html += "<tr>";
-	html += "<td>우유</td>";
-	html += "<td>4</td>";
-	html += "<td style = \"padding : 0px; text-align: center;\"><input type=\"number\" min = 0 maxlength=\"10\"></td>";
-	html += "<td>2021-05-08</td>";
-	html += "<td>2021-05-01</td>";
-	html += "</tr>";
+	for(var d of stockdiscardlist){
+		html += "<tr>";
+		html += "<td>"+d.ITEM_NAME+"</td>";
+		html += "<td>"+d.SUM_CNT+"</td>";
+		html += "<td><input type = \"number\" id = \"discard_cnt\" name = \"discard_cnt\"/></td>";
+		html += "<td>"+d.EXPIRY_DATE+"</td>";
+		html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
+		html += "</tr>";	
+	}
 	
 	$(".stock_tb tbody").html(html);
+}
+
+
+//폐기 목록 리스트(기능xx) @@@@@@@여기가 폐기 목록임@@@@@@@
+function discardloadList(){
+	var params = $("#goForm").serialize();
+	
+	$.ajax({
+		url : "Item_Discard_List",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawdiscardList(res.discardlist);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawdiscardList(discardlist){
+	var html ="";
+	
+	html += "<tr>";
+	html += "<th style=\"border-left: none;\">폐기날짜</th>";
+	html += "<th>폐기수량</th>";
+	html += "<th>유통기한</th>";
+	html += "<th>비고</th>";
+	html += "<th>변경자</th>";
+	html += "<th></th>";
+	html += "</tr>";
+	
+	$(".stock_discard_history thead").html(html);
+	
+	html ="";
+	
+	for(var d of discardlist){
+		html += "<tr>";
+		html += "<td>"+d.ENROLL_DATE+"</td>";
+		html += "<td>"+d.CNT+"</td>";
+		html += "<td>"+d.EXPIRY_DATE+"</td>";
+		html += "<td>"+d.NOTE+"</td>";
+		html += "<td>"+d.ID+"</td>";
+		html += "<th></th>";
+		html += "</tr>";	
+	}
+	
+	$(".stock_discard_history tbody").html(html);
 }
 
 </script>
@@ -518,9 +637,15 @@ function draw_discard_tb(){
   <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
+<form action = "#" id = "goForm" method = "post">
+<input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
+<input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
+<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
+<input type = "hidden" name = "search_input" value = "${param.search_input}"/>
+</form>
 <h1>재고상세조회</h1>
 <ul class="item_info">
-<li><strong>품목번호 : </strong>D-011</li>
+<li><strong>품목번호 : </strong>${param.itemNo}</li>
 </ul>
 <div class="button_area">
 			<button class="stock_add_btn">추가</button>
@@ -533,243 +658,21 @@ function draw_discard_tb(){
 <table cellspacing="0">
 	
 	<thead></thead>
-	<tbody>
-	
-	</tbody>
+	<tbody></tbody>
 </table>
 </div>
 <div class = "stock_rel_history">
 <h2 style ="padding-top: 50px;">재고출고이력</h2>
 <table cellspacing="0">
-	<colgroup>
-		<col width="10%">
-		<col width="10%">
-		<col width="10%">
-		<col width="10%">
-		<col width="10%">
-		<col width="10%">
-		<col width="10%">
-	</colgroup>
-	<thead>
-	<tr>
-		<th scope="col" style="border-left: none;">주문번호</th>
-		<th scope="col">품목코드</th>
-		<th scope="col">품목명</th>
-		<th scope="col">수량</th>
-		<th scope="col">유통기한</th>
-		<th scope="col">등록일</th>
-		<th scope="col">지점명</th><!-- 사용자번호와 fk관계이기에 테이블 합쳐서 불러오기 가능  -->
-	</tr>
-	</thead>
-	<tbody>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	<tr>
-		<td><a href = "#">2021062868315</a></td>
-		<td>D-011</td>
-		<td>우유</td>
-		<td>5</td>
-		<td>2021-10-30</td>
-		<td>2021-06-28</td>
-		<td>망원점</td>
-	</tr>
-	</tbody>
+	<thead></thead>
+	<tbody></tbody>
 </table>
 </div>
 <div class = "stock_discard_history">
 <h2 style ="padding-top: 50px;">재고폐기이력</h2>
 <table cellspacing="0">
-	<colgroup>
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-	</colgroup>
-	<thead>
-	<tr>
-			<th scope = "col" style="border-left: none;">품목코드</th>
-			<th scope = "col">품목명</th>
-			<th scope = "col">폐기날짜</th>
-			<th scope = "col">수량</th>
-			<th scope = "col">유통기한</th>
-			<th scope = "col">비고</th>
-			<th scope = "col"></th>
-	</tr>
-	</thead>
-	<tbody>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-08</td>
-			<td >5</td>
-			<td >2021-05-07</td>
-			<td></td>
-			<td><button class = "discard_cnl2_btn">원복</button></td><!-- 원복 클래스 명 아직 못지음 -->
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td><button class = "discard_cnl2_btn">원복</button></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-03</td>
-			<td >5</td>
-			<td >2021-05-03</td>
-			<td></td>
-			<td><button class = "discard_cnl2_btn">원복</button></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-02</td>
-			<td >5</td>
-			<td >2021-05-02</td>
-			<td></td>
-			<td></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td></td>
-	</tr>
-	<tr >
-			<td >D-011</td>
-			<td >우유</td>
-			<td >2021-05-06</td>
-			<td >5</td>
-			<td >2021-05-06</td>
-			<td></td>
-			<td></td>
-	</tr>
-	</tbody>
+	<thead></thead>
+	<tbody></tbody>
 </table>
 </div>
 <div class="list_btn">

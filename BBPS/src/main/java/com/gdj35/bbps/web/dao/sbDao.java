@@ -1,6 +1,5 @@
 package com.gdj35.bbps.web.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +56,21 @@ public class sbDao implements IsbDao{
 	@Override
 	public int DelItem(HashMap<String, String> params) throws Throwable {
 		return sqlsession.update("sb.DelItem",params);
+	}
+
+	@Override
+	public  List<HashMap<String, String>> getSDetail(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getSDetail",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getSRelList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getSRelList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getSDList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getSDList",params);
 	}
 
 
