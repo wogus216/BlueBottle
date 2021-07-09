@@ -274,40 +274,35 @@ button:focus{outline:none;}
 $(document).ready(function(){
 	reloadList();
 }); //ready end
-
 function reloadList(){
 	var params = $("#goForm").serialize();
 	
 	$.ajax({
-		url : "Ord_Mang_dtls",
+		url : "Ord_Mang_RDtl",
 		type : "post",  
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawList(res.list);
+			drawList(res.list2);
 		},
 		error : function(request,status,error){
 			console.log(error);
 		}
 	});
 }
-function drawList(list){
+function drawList(list2){
 	var html ="";
-	for(var d of list){
+	for(var d of list2){
 		html += "<tr>";
 		html += "<td>"+d.ITEM_NO+"</td>";
 		html += "<td>"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.CNT+"</td>";
 		html += "<td>"+d.PRICE+"</th>";
-		if(d.EXPIRY_DATE == null){
-			html += "<td></td>"
-		}else{
-			html += "<td>"+d.EXPIRY_DATE+"</td>"
-		}
+		html += "<td>"+d.RCNT+"</th>";
+		html += "<td>"+d.RSN+"</th>";
 		html += "</tr>";
-		
-	}
-	$("tbody").html(html);
+		}
+	$(".ref_area tbody").html(html);
 }
 </script>
 <style type="text/css"></style>
@@ -449,7 +444,7 @@ function drawList(list){
       </ul>
    </div>
 <form action = "#" id = "goForm" method = "post">
-	<input type = "hidden" id = "oNo" name = "oNo" value="${param.oNo}"/>
+	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
@@ -457,16 +452,15 @@ function drawList(list){
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-<div class="ord_area">
 <button class="history_btn">전체이력</button>
-<h2>주문서</h2>
+<div class="ord_area">
 <ul class="ord_info">
-<li><strong>주문번호 : </strong>${param.oNo}</li>
-<li><strong>주문날짜 : </strong>${param.oEd}</li>
-<li><strong>지점명 : </strong>${param.bN}</li>
-<li class="apv_info"><strong>처리상태 : </strong><span class="apv_stat" style="color:red">${param.cN}</span></li>
+<li><strong>주문번호 : </strong>${data.ORD_NO}</li>
+<li><strong>주문날짜 : </strong>${data.ENROLL_DATE}</li>
+<li><strong>지점명 : </strong>${data.BRCH_NAME}</li>
+<li class="apv_info"><strong>처리상태 : </strong><span class="apv_stat" style="color:red">${data.CODE_NAME}</span></li>
 <c:choose>
-<c:when test ="${param.pD ne 'undefined'}"><li class="apv_date_info"><strong>처리날짜 : </strong>${param.pD}</li></c:when>
+<c:when test ="${data.PROCESS_DATE ne 'undefined'}"><li class="apv_date_info"><strong>처리날짜 : </strong>${data.PROCESS_DATE}</li></c:when>
 </c:choose>
 </ul>
 <table cellspacing="0">
@@ -477,7 +471,8 @@ function drawList(list){
 		<col width="20%">
 		<col width="20%">
 	</colgroup>
-	<thead><tr>
+<thead>
+	<tr>
 		<th scope="col" style="border-left: none;">품목코드</th>
 		<th scope="col">품목명</th>
 		<th scope="col">수량(개)</th>
@@ -485,7 +480,22 @@ function drawList(list){
 		<th scope="col">유통기한</th>
 	</tr>
 </thead>
-<tbody></tbody>
+<tbody>
+ 	<c:forEach var="data" items="${list}">
+ 		<tr>
+		<td>${data.ITEM_NO}</td>
+		<td>${data.ITEM_NAME}</td>
+		<td>${data.CNT}</td>
+		<td>${data.PRICE}</td>
+		<c:choose>
+			<c:when test="${data.EXPIRY_DATE eq null}">
+				<td></td></c:when>
+			<c:otherwise>
+				<td>${data.EXPIRY_DATE}</td>
+			</c:otherwise>
+		</c:choose>
+		</tr>
+	</c:forEach>
 </table>
 <ul class="tot_price">
 <li><strong>전체 상품 금액 : </strong>158000원</li>
@@ -494,9 +504,10 @@ function drawList(list){
 	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
 	<div class="rsn_content_area">
 	<c:choose>
-	<c:when test="${param.nAr eq 'undefined'}"><textarea class="rsn_content"></textarea></c:when>
+	<c:when test="${data.NON_APV_RSN eq null}"><textarea class="rsn_content"></textarea>
+	</c:when>
 	<c:otherwise>
-	<textarea class="rsn_content" disabled=disabled>${param.nAr}</textarea>
+	<textarea class="rsn_content" disabled=disabled>${data.NON_APV_RSN}</textarea>
 	</c:otherwise>
 	</c:choose>
 </div>
@@ -509,57 +520,48 @@ function drawList(list){
 <div class="ref_area">
 <h2>환불요청서</h2>
 <ul class="ref_info">
-<li><strong>접수번호 : </strong>2021042868313</li>
-<li><strong>접수날짜 : </strong>2021-04-28</li>
-<li class="apv_info"><strong>처리상태 : </strong><span class="apv_stat" style="color:red">승인대기</span></li>
-<li class="apv_date_info"><strong>처리날짜 : </strong>2021-04-29</li>
+<li><strong>접수번호 : </strong>${data2.REF_NO}</li>
+<li><strong>접수날짜 : </strong>${data2.ENROLL_DATE}</li>
+<li class="apv_info"><strong>처리상태 : </strong><span class="apv_stat" style="color:red">${data2.CODE_NAME}</span></li>
+<c:choose>
+<c:when test ="${data2.PROCESS_DATE ne 'undefined'}"><li class="apv_date_info"><strong>처리날짜 : </strong>${data2.PROCESS_DATE}</li></c:when>
+</c:choose>
 </ul>
 <table cellspacing="0">
 	<colgroup>
-		<col width="10%">
-		<col width="20%">
-		<col width="10%">
 		<col width="15%">
 		<col width="15%">
-		<col width="10%">
-		<col width="20%">
+		<col width="15%">
+		<col width="15%">
+		<col width="15%">
+		<col width="25%">
 	</colgroup>
-	<tbody>
+	<thead>
 	<tr>
 		<th scope="col" style="border-left: none;">품목코드</th>
 		<th scope="col">품목명</th>
 		<th scope="col">주문수량(개)</th>
 		<th scope="col">가격(원)</th>
-		<th scope="col">유통기한</th>
 		<th scope="col">환불요청수량</th>
 		<th scope="col">환불사유</th>
 	</tr>
-	<tr>
-		<td><a href="#">A-2134</a></td>
-		<td>유자청</td>
-		<td>1</td>
-		<td>5,000</td>
-		<td>2022-03-01</td>
-		<td>1</td>
-		<td>배송상태 불량</td>
-	</tr>
-	<tr>
-		<td><a href="#">D-103</a></td>
-		<td>초코칩쿠키</td>
-		<td>15</td>
-		<td>30,000</td>
-		<td>2021-05-30</td>
-		<td>3</td>
-		<td>일부 깨진 채 배송</td>
-	</tr>
-	</tbody>
+	</thead>
+	<tbody></tbody>
 </table>
 	<ul class="tot_price">
 		<li><strong>총 환불예상 금액 : </strong>11,000원</li>
 </ul>
 <div class="rsn_area">
 	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
-	<div class="rsn_content_area"><textarea class="rsn_content"></textarea></div>
+	<div class="rsn_content_area">
+	<c:choose>
+	<c:when test="${data2.NON_APV_RSN eq null}"><textarea class="rsn_content"></textarea>
+	</c:when>
+	<c:otherwise>
+	<textarea class="rsn_content" disabled=disabled>${data2.NON_APV_RSN}</textarea>
+	</c:otherwise>
+	</c:choose>
+</div>
 </div>
 <div class="btn_area">
 	<button class="apv_btn">승인</button>

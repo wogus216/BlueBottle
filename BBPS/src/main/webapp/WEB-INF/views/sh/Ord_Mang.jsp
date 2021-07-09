@@ -320,11 +320,6 @@ $(document).ready(function(){
 		});
 	$("tbody").on("click","tr",function(){
 		$("#oNo").val($(this).attr("ord_no"));
-		$("#oEd").val($(this).attr("ord_enroll_date"));
-		$("#bN").val($(this).attr("brch_name"));
-		$("#pD").val($(this).attr("process_date"));
-		$("#cN").val($(this).attr("code_name"));
-		$("#nAr").val($(this).attr("non_apv_rsn"));
 		$("#search_input").val($("#search_old_txt").val());
 		$("#actionForm").attr("action","Ord_Mang_dtl");
 		$("#actionForm").submit();
@@ -368,11 +363,9 @@ function drawList(list){
 	for(var d of list){
 		for(var i=0; i<ord_ck_arr.length; i++){
 			if(d.CODE_S_CATE == ord_ck_arr[i]){
-				html += "<tr ord_no = \""+d.ORD_NO+"\" ord_enroll_date = \""+d.ORD_ENROLL_DATE+
-				"\"brch_name = \""+d.BRCH_NAME+"\"process_date = \""+d.PROCESS_DATE+
-				"\"code_name = \""+d.CODE_NAME+"\"non_apv_rsn = \""+d.NON_APV_RSN+"\">";
+				html += "<tr ord_no = \""+d.ORD_NO+"\">";
 				html += "<td>"+d.ORD_NO+"</td>";
-				html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
+				html += "<td>"+d.ENROLL_DATE+"</td>";
 				html += "<td>"+d.BRCH_NAME+"</td>";
 				html += "<td>"+d.CODE_NAME+"</th>";
 				if(d.PROCESS_DATE == null){
@@ -385,10 +378,9 @@ function drawList(list){
 		}
 		for(var i=0; i<ref_ck_arr.length; i++){
 			if(d.CODE_S_CATE == ref_ck_arr[i]){
-				html += "<tr ord_no = \""+d.ORD_NO+"\" ord_enroll_date = \""+d.ORD_ENROLL_DATE+
-				"\"brch_name = \""+d.BRCH_NAME+"\"process_date = \""+d.PROCESS_DATE+
-				"\"code_name = \""+d.CODE_NAME+"\"non_apv_rsn = \""+d.NON_APV_RSN+"\">";				html += "<td>"+d.ORD_NO+"</td>";
-				html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
+				html += "<tr ord_no = \""+d.ORD_NO+"\">";
+				html += "<td>"+d.ORD_NO+"</td>";
+				html += "<td>"+d.ENROLL_DATE+"</td>";
 				html += "<td>"+d.BRCH_NAME+"</td>";
 				html += "<td>"+d.CODE_NAME+"</th>";
 				if(d.PROCESS_DATE == null){
@@ -630,11 +622,6 @@ function drawPaging(pb){
 	<div class="search_info">
 		<form action = "#" id = "actionForm" method = "post">
 			<input type = "hidden" id = "oNo" name = "oNo"/>
-			<input type = "hidden" id = "oEd" name = "oEd"/>
-			<input type = "hidden" id = "bN" name = "bN"/>
-			<input type = "hidden" id = "cN" name = "cN"/>
-			<input type = "hidden" id = "pD" name = "pD"/>
-			<input type = "hidden" id = "nAr" name = "nAr"/>
 			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
 			<select id ="search_filter" name="search_filter">
 				<option value="0" selected="selected">주문번호</option>

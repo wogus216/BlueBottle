@@ -8,6 +8,11 @@ public interface IshService {
 
 	public List<HashMap<String, String>> getOList(HashMap<String, String> params) throws Throwable;
 
-	public List<HashMap<String, String>> getO(HashMap<String, String> params) throws Throwable;
+	public List<HashMap<String, String>> getODtlList(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getODtl(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getRDtlList(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable;
 }

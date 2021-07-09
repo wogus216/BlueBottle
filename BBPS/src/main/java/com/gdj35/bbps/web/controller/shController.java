@@ -67,22 +67,29 @@ public class shController {
 	public ModelAndView Ord_Mang_dtl(
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) throws Throwable {
-		
-		   mav.setViewName("sh/Ord_Mang_dtl");
-		   return mav;
+		HashMap<String,String> data = ishService.getODtl(params);
+		List<HashMap<String,String>> list = ishService.getODtlList(params);
+
+		mav.addObject("list",list);
+		mav.addObject("data",data);
+		mav.setViewName("sh/Ord_Mang_dtl");
+		return mav;
 	   }
-	@RequestMapping(value = "/Ord_Mang_dtls",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String Ord_Mang_dtls(@RequestParam HashMap<String,String> params) throws Throwable{
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String,Object> modelMap = new HashMap<String,Object>();
-		
-		List<HashMap<String,String>> list = ishService.getO(params);
-		
-		modelMap.put("list", list);
-		
-		return mapper.writeValueAsString(modelMap);
-	}
+	@RequestMapping(value = "/Ord_Mang_RDtl",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	   @ResponseBody
+	   public String Ord_Mang_RDtl(@RequestParam HashMap<String,String> params) throws Throwable{
+	      
+	      ObjectMapper mapper = new ObjectMapper();
+	      Map<String,Object> modelMap = new HashMap<String,Object>();
+	      
+	      HashMap<String,String> data2 = ishService.getRDtl(params);
+	      List<HashMap<String,String>> list2 = ishService.getRDtlList(params);
+	      
+	      modelMap.put("list2", list2);
+	      modelMap.put("data2", data2);
+	      
+	      return mapper.writeValueAsString(modelMap);
+	   }
+
 	
 }

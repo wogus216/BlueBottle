@@ -24,7 +24,22 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getO(HashMap<String, String> params) throws Throwable {
-		return ishDao.getO(params);
+	public List<HashMap<String, String>> getODtlList(HashMap<String, String> params) throws Throwable {
+		return ishDao.getODtlList(params);
+	}
+
+	@Override
+	public HashMap<String, String> getODtl(HashMap<String, String> params) throws Throwable {
+		return ishDao.getODtl(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRDtlList(HashMap<String, String> params) throws Throwable {
+		return ishDao.getRDtlList(params);
+	}
+
+	@Override
+	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable {
+		return ishDao.getRDtl(params);
 	}
 }
