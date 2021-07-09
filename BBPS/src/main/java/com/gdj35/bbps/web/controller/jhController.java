@@ -275,44 +275,23 @@ public class jhController {
 				
 			}
 	//POS메뉴관리
-	@RequestMapping(value="/Menu_List")
-	public ModelAndView Menu_List(
-			@RequestParam HashMap<String, String> params,
-			ModelAndView mav) throws Throwable {
-		
-		//현재 페이지
-		int page = 1;
-		
-		if(params.get("page") != null) {
-				page = Integer.parseInt(params.get("page"));
-				}
-		//총 게시글 수 
-		int cnt = ijhService.getMbCnt(params);
-			
-		// 페이징 정보 취득
-		PagingBean pb= iPagingService.getPagingBean(page, cnt, 10, 5);
-		
-		//글번호 P 없으면 글번호
-		//게시글 시작번호, 종료번호 할당
-		params.put("startCnt", Integer.toString(pb.getStartCount()));
-		params.put("endCnt", Integer.toString(pb.getEndCount()));
-		
-		// 목록 취득
-		List<HashMap<String, String>>list= ijhService.getMbList(params);
-		
-		System.out.println("메뉴관리에서params의 값은?"+params);
-		mav.addObject("list", list);
-		mav.addObject("pb", pb);
-		mav.addObject("page", page);
-		mav.addObject("cnt", cnt);
-		System.out.println("현재 페이지 체크:"+page);
-		System.out.println("현재 페이지 체크:"+params.get("page"));
-		System.out.println("pb:"+pb);
-		mav.setViewName("jh/Menu_List");
-			
-		return mav;
-			
-		}
+	 @RequestMapping(value="/Menu_List")
+	 public ModelAndView Menu_List(
+			 @RequestParam HashMap<String, String> params,
+			 ModelAndView mav) {
+
+		 int page = 1;
+
+		 if(params.get("page") != null) {
+			 page = Integer.parseInt(params.get("page"));
+		 }
+
+		 mav.addObject("page", page);
+		 mav.setViewName("jh/Menu_List");
+
+		 return mav;
+
+	 }
 	
 	@RequestMapping(value="/Menu_Lists",
 					method = RequestMethod.POST,
