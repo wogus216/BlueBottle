@@ -45,6 +45,21 @@ public class sbService implements IsbService{
 		return isbdao.AddItemPrice(insertMap);
 	}
 
+	@Override
+	public int EditItem(HashMap<String, String> params) throws Throwable {
+		return isbdao.EditItem(params);
+	}
+
+	@Override
+	public int EditItemPrice(HashMap<String, String> params) throws Throwable {
+		return isbdao.EditItemPrice(params);
+	}
+
+	@Override
+	public int DelItem(HashMap<String, String> params) throws Throwable {
+		return isbdao.DelItem(params);
+	}
+
 	
 
 }

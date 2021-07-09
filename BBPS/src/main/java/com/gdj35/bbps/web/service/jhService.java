@@ -29,4 +29,14 @@ public class jhService implements IjhService {
 		return ijhDao.getHMenu(params);
 	}
 
+	@Override
+	public int getMbCnt(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getMbCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMbList(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getMbList(params);
+	}
+
 }

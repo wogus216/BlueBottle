@@ -4,16 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>pos</title>
+<title>Pos</title>
 <style type="text/css">
 body {
 	font-size: 0pt;
 	margin: 0;
 	padding: 0;
 	
-
 }
-
 /* 레이아웃 */
 .top {
 	min-width: 1980px;
@@ -21,31 +19,25 @@ body {
 	background-color: #01a1dd;
 	border-bottom: 2px solid white;
 }
-
 .content{
 	margin: 30px auto;
 	width: 1500px;
 	
 }
-
 .mid {
 	min-width: 1400px;
 	height: 450px;
-
 	
 }
-
 .btm{
 	min-width: 1400px;
 	
 }
-
 /* 중간 부분 */
 .ord_area {
 	display: inline-block;
 	height: 450px;
 }
-
 .menu_area {
 	display: inline-block;
 	vertical-align: top;
@@ -54,13 +46,9 @@ body {
 	overflow-y: auto;  
 	
 }
-
 .table_menu  input{
 	cursor: pointer;
 }
-
-
-
 /* 탑부분 */
 .now_ord, .date,.brch,.pos_uesr{
 	display: inline-block;
@@ -85,24 +73,18 @@ body {
 	color: black;
 	font-size: 18px;
 }
-
 /* 왼쪽 부분 */
-
 .left{
 	width: 700px;
 	display: inline-block;
 }
 .table_ord {
    list-style-type: none;
-
-
 }
-
 .table_ord li {
    float: left;
    margin-bottom: 10px;
 }
-
 .choice_img{
 	width: 60px;
 	height: 60px;
@@ -119,32 +101,26 @@ body {
 	width: 30px;
 	font-size: 20.5px;
 }
-
 .table_pay {
 	display: inline-block;
 	text-align: center;
 	font-size: 20px;
 	height: 208.4px;
 }
-
 .pay{
 	height: 82px;
     font-size: 20px;
     width: 100%;
     cursor: pointer;
 }
-
 .ta2-1, .ta2-2, .ta2-3 {
 	height: 66px;
 }
-
 /* 오른쪽부분 */
 .right{
 	width: 700px;
 	float: right;
-
 }
-
 /* 카테고리 */
 .menu_Cate{
 	width: 700px;
@@ -160,7 +136,6 @@ body {
 	display: inline-block;
 	height: 100%;
 }
-
 .menu_Cate > div > input {
 	width: 175px;
 	height: 100%;
@@ -169,8 +144,6 @@ body {
 	background-color: #1bc1fe;
 	border-color: white;
 }
-
-
 .table_menu{
 	border-collapse:collapse;
     width: 650px;
@@ -192,10 +165,8 @@ body {
 	font-size: 20px;
 	margin-top: 10px;
 }
-
 .menu_Btn{
     text-align: right;
-
 }
 .menu_Btn > input[type=button]{
 	background-color: #cc6600;
@@ -203,25 +174,19 @@ body {
 	color: white;
     line-height: 30px;
 }
-
-
 /* 버튼효과 */
-
 .menu_name:active{
  	background-color: #1bc1fe;
  	box-shadow: 1px 1px 0px 1px #000000;
  }
-
 .pay-5 input:active{
  	background-color: #1bc1fe;
  } 
 .table_num input:active{
  	background-color: #1bc1fe;
  } 
-
  
  /* 팝업메시지 */
-
 .bg{
 	display: inline-block;
 	width: 100%;
@@ -274,7 +239,6 @@ body {
 	font-size:18px;
 }
 button:focus{outline:none;}
-
 .close_Btn{
 	width: 25px;
 	height: 25px;
@@ -287,7 +251,6 @@ button:focus{outline:none;}
 	border: none;
 }
 /* 계산기 */
-
 .table_num{
 	display:none;
 	position: absolute;
@@ -295,7 +258,6 @@ button:focus{outline:none;}
 	height: 250px;
 	
 }
-
 .num, .confirm {
 	width: 100%;
 	height: 100%;
@@ -322,7 +284,6 @@ $(document).ready(function(){
 	}); // 계산기
 	
 });//ready end
-
 function makePopup(title, contents, func) {
 	var html ="";
 	html+= "<div class=\"bg\"></div>";	
@@ -347,16 +308,14 @@ function makePopup(title, contents, func) {
 		closePopup();
 		});
 	$(".confirm_Btn").on("click",function(){
-		location.href = "pos_LogOut";
+		location.href = "Pos_LogOut";
 	});
 	}
-
 function closePopup() {
 	$(".bg, .popup_Area").fadeOut(function(){
 		$(".bg, .popup_Area").remove();
 	}); //popup_Btn end
 }
-
 </script>
 </head>
 <body>

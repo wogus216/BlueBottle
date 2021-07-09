@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>포스로그인페이지</title>
+<title>본사 로그인 페이지</title>
 <style type="text/css">
 /*
   css 색깔
@@ -84,7 +84,7 @@ body{
 	padding: 0;
 }
 
-#bId{
+#hId{
 	text-transform: uppercase;
 }
 
@@ -108,18 +108,19 @@ body{
 		border-radius: 15px;
 	}
 }
+.btn_Area{
+	margin-left: 10px;
+}
 
 .submit,.inquiry_Btn{
-	font-size: 30px;
-    margin: 30px 120px 0 120px;
+    width: 90px;
+    font-size: 20px;
+    margin-top: 20px;
     border-radius: 10px;
 }
-.inquiry_Btn{
-	margin: 0;
-}
 
-.submit:hover,.inquiry_Btn:hover{
-	background-color: #1bc1fe;
+.submit:hover, .inquiry_Btn:hover{
+	background-color: white;
 }
 
  /* 팝업메시지 */
@@ -135,7 +136,7 @@ body{
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_area {
+.popup_Area {
 	display: inline-block;
 	width: 400px;
 	height: 240px;
@@ -146,7 +147,7 @@ body{
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
-.popup_head{
+.popup_Head{
 	height: 30px;
 	font-size: 16pt;
 	background-color: #01a1dd;
@@ -154,10 +155,10 @@ body{
 	padding:10px;
 	font-weight:bold;
 }
-.popup_btn{
+.popup_Btn{
 	text-align:center;
 }
-.popup_btn button{
+.popup_Btn button{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -168,7 +169,7 @@ body{
 	margin:10px;
 	cursor: pointer;
 }
-.popup_content{
+.popup_Content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -178,7 +179,7 @@ body{
 }
 button:focus{outline:none;}
 
-.close_btn{
+.close_Btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -189,7 +190,6 @@ button:focus{outline:none;}
 	color: #ffffff;
 	border: none;
 }
-
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -197,18 +197,17 @@ button:focus{outline:none;}
 $(document).ready(function(){
 	//다시 로그인 페이지
 	$("#HQ").on("click",function(){
-		location.href = "hq_Login";
+		location.href = "Login";
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
-		location.href = "b_Login";
+		location.href = "B_Login";
 	});
 	
 	//포스 로그인 페이지
 	$("#POS").on("click",function(){
-		location.href = "logIn";
+		location.href = "Pos_Login";
 	});
-	
 	
 	//팝업
 	$(".inquiry_Btn").on("click",function(){
@@ -227,26 +226,29 @@ $(document).ready(function(){
 	
 	//로그인버튼
 	$(".submit").on("click",function(){
-		if($.trim($("#bId").val()) == ""){
+		if($.trim($("#hId").val()) == ""){
+			  $(this).val($(this).val().toUpperCase());
 			makePopup("", "아이디를 입력해주세요",function(){
 		});
-			$("#bId").focus();
-		} else if($.trim($("#bPw").val()) =="") {
+			$("#hId").focus();
+		} else if($.trim($("#hPw").val()) =="") {
 				makePopup("", "비밀번호를 입력해주세요",function(){
 					
 				});
-				$("#bPw").focus();	
+				$("#hPw").focus();	
 		} else{
-			$("#bId").val($("#bId").val().toUpperCase()); //대문자처리
+			$("#hId").val($("#hId").val().toUpperCase()); //대문자처리
 			var params = $("#loginForm").serialize();
+			
 			$.ajax({
-				url: "b_Logins",
+				url: "H_Logins",
 				type: "post", 
 				dataType: "json", 
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						location.href = "pos";
+						$("#loginForm").attr("action","H_Menu");
+						$("#loginForm").submit();
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							
@@ -287,31 +289,32 @@ function changeImg(){
 function makePopup(title, contents, func) {
 	var html ="";
 	html+= "<div class=\"bg\"></div>";	
-	html+= "<div class=\"popup_area\">";	
-	html+= "<div class=\"popup_head\">"+ title +"";	
-	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "<div class=\"popup_Area\">";	
+	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= 		"<button class=\"close_Btn\" >X</button>";	
 	html+= "</div>";	
-	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
-	html+= 		"<div class=\"popup_btn\">";	
-	html+= 			"<button style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_Btn\">";	
+	html+= 			"<button class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
 	html+= 	 	"</div>";	
 	html+= "</div>";	
 	
 	$("body").prepend(html);
-	$(".popup_area").hide().show();
+	$(".popup_Area").hide().show();
 	
-	$(".popup_btn, .close_btn").on("click",function(){
+	$(".popup_Btn, .close_Btn").on("click",function(){
 		if(func !=null){
 			func.call();
 		}
 		closePopup();
 		});
+	$(".confirm_Btn")
 	}
 
 function closePopup() {
-	$(".bg, .popup_area").fadeOut(function(){
-		$(".bg, .popup_area").remove();
-	}); //popup_btn end
+	$(".bg, .popup_Area").fadeOut(function(){
+		$(".bg, .popup_Area").remove();
+	}); //popup_Btn end
 }
 
 </script>
@@ -343,11 +346,14 @@ function closePopup() {
 		<div class="info">이용할 시스템을 클릭하세요</div>
 		<form action="#" id="loginForm" method="post">
 			<ul class=log_Input>
-				<li><input type="text" id="bId" name="bId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
-				<li><input type="password" id="bPw" name="bPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
-				<li><input type="button" value="로그인" class="submit"></li>
+				<li><input type="text" id="hId" name="hId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
+				<li><input type="password" id="hPw" name="hPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
+				<li class="btn_Area">
+					<input type="button" value="문의" class="inquiry_Btn"/>
+					<input type="button" value="로그인" class="submit">
+				</li>
 			</ul>
-			<input type="button" value="문의" class="inquiry_Btn"/>
+			<input type="hidden"  id="hUserNo" name="hUserNo">
 		</form>
 	</div>
 </div>

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인페이지</title>
+<title>전체 로그인 페이지</title>
 <style type="text/css">
 
 body{
@@ -115,7 +115,7 @@ body{
 $(document).ready(function(){
 	//본사 로그인 페이지
 	$("#HQ").on("click",function(){
-		location.href = "hq_Login";
+		location.href = "H_Login";
 	});
 	//지점 로그인 페이지
 	$("#B").on("click",function(){
@@ -123,7 +123,7 @@ $(document).ready(function(){
 	});
 	
 	$("#POS").on("click",function(){
-		location.href = "pos_Login";
+		location.href = "Pos_Login";
 	});
 	
 }); //ready end
