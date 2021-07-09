@@ -175,14 +175,14 @@ fieldset{
 	display:inline;
 	border:1px solid;
 	margin:0;
-	padding-right:20px;
-	padding-left:20px;
+	padding-right:10px;
+	padding-left:10px;
 }
 legend{
 	font-size:15px;
 }
 label{
-	margin-right:10px;
+	margin-right:5px;
 	vertical-align: middle;
 	cursor: pointer;
 }
@@ -258,26 +258,17 @@ button{
 }
 </style>
 <script type="text/javascript"
-	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+var ord_ck_arr = [];
+var ref_ck_arr = [];
 $(document).ready(function(){
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
+	ord_ckBox_check();
+	ref_ckBox_check();
 	reloadList();
-	
-	var ord_ck_arr = [];
-	var ref_ck_arr = [];
-	$("input[name=ord]:checked").each(function(){
-		var ord_ck=$(this).val();
-		ord_ck_arr.push(ord_ck);
-		console.log(ord_ck_arr);
-	});
-	$("input[name=ref]:checked").each(function(){
-		var ref_ck=$(this).val();
-		ref_ck_arr.push(ref_ck);
-		console.log(ref_ck_arr);
-	});
 	
 	$("#search_btn").on("click",function(){
 		$("#page").val(1);
@@ -295,35 +286,56 @@ $(document).ready(function(){
 		}else{
 			$("input[name=ord]").prop("checked", false);
 		}
+		ord_ckBox_check();
+		ref_ckBox_check();
+		reloadList();
 	});
-	$("#ck6").on("click",function(){
-		if($("input:checkbox[id='ck6']").prop("checked")){
+	$("#ck7").on("click",function(){
+		if($("input:checkbox[id='ck7']").prop("checked")){
 			$("input[name=ref]").prop("checked", true);
 		}else{
 			$("input[name=ref]").prop("checked", false);
 		}
+		ord_ckBox_check();
+		ref_ckBox_check();
+		reloadList();
 	});
 	$(".ord").click(function(){ 
-		   if($("input[class=ord]:checked").length==4){ 
+		   if($("input[class=ord]:checked").length==5){ 
 		       $("#ck1").prop("checked",true); 
 		    }else{ 
 		       $("#ck1").prop("checked",false); 
-		    } 
+		    }
+		   ord_ckBox_check();
+		   reloadList();
 		});
 	$(".ref").click(function(){ 
 		   if($("input[class=ref]:checked").length==4){ 
-		       $("#ck6").prop("checked",true); 
+		       $("#ck7").prop("checked",true); 
 		    }else{ 
-		       $("#ck6").prop("checked",false); 
-		    } 
+		       $("#ck7").prop("checked",false); 
+		    }
+			ref_ckBox_check();
+			reloadList();
 		});
+	$("tbody").on("click","tr",function(){
+		$("#oNo").val($(this).attr("ord_no"));
+		$("#oEd").val($(this).attr("ord_enroll_date"));
+		$("#bN").val($(this).attr("brch_name"));
+		$("#pD").val($(this).attr("process_date"));
+		$("#cN").val($(this).attr("code_name"));
+		$("#nAr").val($(this).attr("non_apv_rsn"));
+		$("#search_input").val($("#search_old_txt").val());
+		$("#actionForm").attr("action","Ord_Mang_dtl");
+		$("#actionForm").submit();
+	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
 }); //ready end
 
 function reloadList(){
 	var params = $("#actionForm").serialize();
 	
 	$.ajax({
-		url : "H_order_lists",
+		url : "Ord_Mangs",
 		type : "post",  
 		dataType :"json",
 		data : params,
@@ -336,24 +348,58 @@ function reloadList(){
 		}
 	});
 }
-
+function ord_ckBox_check(){
+ord_ck_arr = [];
+$(".ord:checked").each(function(){
+	ord_ck_arr.push(this.value*1);
+});
+console.log(ord_ck_arr);
+}
+function ref_ckBox_check(){
+ref_ck_arr = [];
+$(".ref:checked").each(function(){
+	ref_ck_arr.push(this.value*1);
+	
+});
+console.log(ref_ck_arr);
+}
 function drawList(list){
 	var html ="";
-
 	for(var d of list){
-		html += "<tr ord_no = \""+d.ORD_NO+"\">";
-		html += "<td>"+d.ORD_NO+"</td>";
-		html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
-		html += "<td>"+d.BRCH_NAME+"</td>";
-		html += "<td>"+d.CODE_NAME+"</th>";
-		if(d.PROCESS_DATE == null){
-			html += "<td></td>"
-		}else{
-		html += "<td>"+d.PROCESS_DATE+"</td>"
+		for(var i=0; i<ord_ck_arr.length; i++){
+			if(d.CODE_S_CATE == ord_ck_arr[i]){
+				html += "<tr ord_no = \""+d.ORD_NO+"\" ord_enroll_date = \""+d.ORD_ENROLL_DATE+
+				"\"brch_name = \""+d.BRCH_NAME+"\"process_date = \""+d.PROCESS_DATE+
+				"\"code_name = \""+d.CODE_NAME+"\"non_apv_rsn = \""+d.NON_APV_RSN+"\">";
+				html += "<td>"+d.ORD_NO+"</td>";
+				html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
+				html += "<td>"+d.BRCH_NAME+"</td>";
+				html += "<td>"+d.CODE_NAME+"</th>";
+				if(d.PROCESS_DATE == null){
+					html += "<td></td>"
+				}else{
+				html += "<td>"+d.PROCESS_DATE+"</td>"
+				}
+				html += "</tr>";
+			}
 		}
-		html += "</tr>";	
+		for(var i=0; i<ref_ck_arr.length; i++){
+			if(d.CODE_S_CATE == ref_ck_arr[i]){
+				html += "<tr ord_no = \""+d.ORD_NO+"\" ord_enroll_date = \""+d.ORD_ENROLL_DATE+
+				"\"brch_name = \""+d.BRCH_NAME+"\"process_date = \""+d.PROCESS_DATE+
+				"\"code_name = \""+d.CODE_NAME+"\"non_apv_rsn = \""+d.NON_APV_RSN+"\">";				html += "<td>"+d.ORD_NO+"</td>";
+				html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
+				html += "<td>"+d.BRCH_NAME+"</td>";
+				html += "<td>"+d.CODE_NAME+"</th>";
+				if(d.PROCESS_DATE == null){
+					html += "<td></td>"
+				}else{
+				html += "<td>"+d.PROCESS_DATE+"</td>"
+				}
+				html += "</tr>";
+			}
+		}
 	}
-
 	$("tbody").html(html);
 }
 function drawPaging(pb){
@@ -545,19 +591,21 @@ function drawPaging(pb){
 </div>
 <fieldset style = "margin-right:10px;">
 				<legend>주문선택</legend>
-		<input type = "checkbox" id="ck1" name="ord" checked="checked"/><label id="ck1" for="ck1">전체</label>
-		<input type = "checkbox" id="ck2" class="ord" name="ord" checked="checked"/><label for="ck2">주문요청</label>
-		<input type = "checkbox" id="ck3" class="ord" name="ord" checked="checked"/><label for="ck3">주문요청취소</label>
-		<input type = "checkbox" id="ck4" class="ord" name="ord" checked="checked"/><label for="ck4">주문승인</label>
-		<input type = "checkbox" id="ck5" class="ord" name="ord" checked="checked"/><label for="ck5">주문승인거부</label>
+		<input type = "checkbox" id="ck1" name="ord" value="2" checked="checked"/><label id="ck1" for="ck1">전체</label>
+		<input type = "checkbox" id="ck2" class="ord" name="ord" value="0" checked="checked"/><label for="ck2">주문요청</label>
+		<input type = "checkbox" id="ck3" class="ord" name="ord" value="1" checked="checked"/><label for="ck3">주문요청취소</label>
+		<input type = "checkbox" id="ck4" class="ord" name="ord" value="2" checked="checked"/><label for="ck4">주문승인</label>
+		<input type = "checkbox" id="ck5" class="ord" name="ord" value="3" checked="checked"/><label for="ck5">주문승인거부</label>
+		<input type = "checkbox" id="ck6" class="ord" name="ord" value="4" checked="checked"/><label style = "margin-right:0px;" for="ck6">발송완료</label>
+		
 	</fieldset>
 	<fieldset style =  "float:right; margin-bottom: 20px;">
 		<legend>환불선택</legend>
-		<input type = "checkbox" id="ck6" name="ref" checked="checked"/><label id="ck6" for="ck6">전체</label>
-		<input type = "checkbox" id="ck7" class="ref" name="ref" checked="checked"/><label for="ck7">환불요청</label>
-		<input type = "checkbox" id="ck8" class="ref" name="ref" checked="checked"/><label for="ck8">환불요청취소</label>
-		<input type = "checkbox" id="ck9" class="ref" name="ref" checked="checked"/><label for="ck9">환불승인</label>
-		<input type = "checkbox" id="ck10" class="ref" name="ref" checked="checked"/><label for="ck10">환불승인거부</label>
+		<input type = "checkbox" id="ck7" name="ref" checked="checked"/><label id="ck6" for="ck7">전체</label>
+		<input type = "checkbox" id="ck8" class="ref" name="ref" value="5" checked="checked"/><label for="ck8">환불요청</label>
+		<input type = "checkbox" id="ck9" class="ref" name="ref" value="6" checked="checked"/><label for="ck9">환불요청취소</label>
+		<input type = "checkbox" id="ck10" class="ref" name="ref" value="7" checked="checked"/><label for="ck10">환불승인</label>
+		<input type = "checkbox" id="ck11" class="ref" name="ref" value="8" checked="checked"/><label style = "margin-right:0px;" for="ck11">환불승인거부</label>
 	</fieldset>
 <table cellspacing="0">
 	<colgroup>
@@ -581,10 +629,13 @@ function drawPaging(pb){
 <div class="search_area" style = "margin-top : 30px;">
 	<div class="search_info">
 		<form action = "#" id = "actionForm" method = "post">
-			<input type = "hidden" id = "ord_no" name = "ord_no"/>
+			<input type = "hidden" id = "oNo" name = "oNo"/>
+			<input type = "hidden" id = "oEd" name = "oEd"/>
+			<input type = "hidden" id = "bN" name = "bN"/>
+			<input type = "hidden" id = "cN" name = "cN"/>
+			<input type = "hidden" id = "pD" name = "pD"/>
+			<input type = "hidden" id = "nAr" name = "nAr"/>
 			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
-			<input type = "hidden" id = "ord_ch_arr" name = "ord_ch_arr" value = "${ord_ch_arr}"/>
-			<input type = "hidden" id = "ref_ch_arr" name = "ref_ch_arr" value = "${ref_ch_arr}"/>
 			<select id ="search_filter" name="search_filter">
 				<option value="0" selected="selected">주문번호</option>
 			</select>

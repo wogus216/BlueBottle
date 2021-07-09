@@ -268,7 +268,7 @@ $(document).ready(function(){
 		$(".search_input").val($("#Old_search_input").val());
 		$("#actionForm").attr("action","Stock_Dtl");
 		$("#actionForm").submit();
-	}); //품목명 클릭 시에는 재고 상세조회 페이지로 이동
+	}); //품목명 클릭 시에는 재고 상세조회 페이지로 이동 , 이거 수정 필요.. tr과 a태그 구분 선택...
 	
 	$(".add_btn").on("click",function(){
 		$(".search_input").val($("#Old_search_input").val());
