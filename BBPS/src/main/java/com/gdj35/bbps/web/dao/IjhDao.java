@@ -15,5 +15,9 @@ public interface IjhDao {
 
 	public List<HashMap<String, String>> getMbList(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getMd(HashMap<String, String> params) throws Throwable;
+
+	public int editM(HashMap<String, String> params) throws Throwable;
+
 
 }

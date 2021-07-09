@@ -45,4 +45,16 @@ public class jhDao implements IjhDao {
 		
 	}
 
+	@Override
+	public HashMap<String, String> getMd(HashMap<String, String> params) throws Throwable {
+		System.out.println("상세보기 db돌았습니다.");
+		return sqlsession.selectOne("JH.getMd", params);
+	}
+
+	@Override
+	public int editM(HashMap<String, String> params) throws Throwable {
+		System.out.println("수정 db돌았습니다.");
+		return sqlsession.update("JH.editM", params);
+	}
+
 }
