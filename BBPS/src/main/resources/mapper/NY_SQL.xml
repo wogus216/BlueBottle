@@ -6,7 +6,8 @@
 	SELECT CATE_NO, CATE_NAME
 	FROM NOTICE_CATE
 	WHERE CATE_NO > 0 
-	AND DEL_FLAG = 1		
+	AND DEL_FLAG = 1
+	ORDER BY CATE_NO		
 	</select>
 	
 	<insert id="addCate" parameterType="hashmap">

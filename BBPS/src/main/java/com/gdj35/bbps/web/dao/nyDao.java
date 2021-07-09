@@ -33,7 +33,7 @@ public class nyDao implements InyDao{
 
 	@Override
 	public int deleteCate(HashMap<String, String> params) throws Throwable {
-
+		System.out.println("db돌았습니다");
 		return sqlSession.update("NY.deleteCate", params);
 	}
 	
