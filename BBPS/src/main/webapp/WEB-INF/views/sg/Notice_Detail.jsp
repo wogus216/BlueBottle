@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -249,7 +250,7 @@ $(document).ready(function() {
 		$("#goForm").attr("action", "Notice");
 		$("#goForm").submit();
 	});
-	
+	 
 	$("#updateBtn").on("click", function () {
 		$("#goForm").attr("action", "Notice_Update");
 		$("#goForm").submit();
@@ -440,7 +441,7 @@ $(document).ready(function() {
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>${data.USER_NO}</td>
-<td>${data.SYSDATE}</td>
+<td>${data.B_DT}</td>
 <td></td>
 </tr>
 </tbody>
@@ -449,14 +450,25 @@ $(document).ready(function() {
 
 
 <div class="txt_content">
-
+${data.CONTENT}
 <br/>
+<c:if test="${!empty data.ATT_FILE}">
+<!-- set : 변수 -->
+<%--
+<c:set var="len" value="${fn:length(data.B_FILE)}"></c:set>
+첨부파일 : <!-- a의 download : 해당 주소를 다운로드 하겠다. 값이 있는 경우 해당 이름으로 다운받겠다. -->
+<a href="resources/upload/${data.B_FILE}" download="${fn:substring(data.B_FILE,20, len)}">
+${fn:substring(data.B_FILE,20, len)}</a><br/>
+ --%>
+ 첨부파일 :<a href="resources/upload/${data.ATT_FILE}" download="${data.ATT_UFILE}">
+${data.ATT_UFILE}</a><br/>
+ </c:if>
 </div>
 
 
 
 <div class="btm_btn_area" style = "margin-top : 30px;">
-	<button class="list_btn">목록</button>
+	<input type="button" value="목록으로" id="listBtn" />
 		<div class="edit_info">
 <input type="button" value="수정" class="edit_btn" id="updateBtn" />
 <input type="button" value="삭제" class="del_btn" id="deleteBtn" />

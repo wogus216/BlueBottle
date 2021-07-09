@@ -57,8 +57,8 @@ VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, #{nUser}, #{nTitle}, #{nCon}, #{nFile})
 </insert>
 
 <select id="getN" parameterType="hashmap" resultType="hashmap">
-SELECT TITLE, B_WRITER, B_CON, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') AS B_DT, 
-	ATT_FILE, SUBSTR(B_FILE, 21) AS B_UFILE
+SELECT TITLE, CONTENT, TO_CHAR(WRITE_DT, 'YYYY-MM-DD') AS B_DT, 
+	ATT_FILE, SUBSTR(ATT_FILE, 21) AS ATT_UFILE
 FROM NOTICE
 where TXT_NO = #{nNo}
 </select>

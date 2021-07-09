@@ -116,7 +116,7 @@ public class sgController {
 		
 		mav.addObject("data", data);
 		
-		mav.setViewName("sg/Notice");
+		mav.setViewName("sg/Notice_Detail");
 		
 		return mav;
 	}
