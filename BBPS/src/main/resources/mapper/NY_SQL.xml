@@ -36,15 +36,14 @@
 	<select id="getItemCate"  resultType="hashmap">
 	SELECT CATE_NO, CATE_NAME
 	FROM ITEM_CATE
-	WHERE CATE_NO > 0 
-	AND DEL_FLAG = 1
+	WHERE DEL_FLAG = 1
 	ORDER BY CATE_NO		
 	</select>
 	
 	<!-- 품목 카테고리 등록 -->
 	<insert id="addItemCate" parameterType="hashmap">
 	INSERT INTO ITEM_CATE(CATE_NO, CATE_NAME, DEL_FLAG)
-	VALUES(NOTICE_CATE_SEQ.NEXTVAL,#{inputTxt},1)
+	VALUES(ITEM_CATE_SEQ.NEXTVAL,#{inputTxt},1)
 	</insert>
 	
 	<update id="updateItemCate" parameterType="hashmap">
