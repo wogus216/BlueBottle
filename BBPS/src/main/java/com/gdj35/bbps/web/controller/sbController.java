@@ -224,12 +224,76 @@ public class sbController {
 		return mapper.writeValueAsString(modelMap);
 	}
 		
-	//재고 상세(품목 tr 선택 시 노출)
+	//재고 상세(품목명 선택 시 노출)
 	@RequestMapping(value = "/Stock_Dtl")
-	public ModelAndView HSDetail(ModelAndView mav) throws Throwable {
+	public ModelAndView HSDetail(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
 		
 		mav.setViewName("sb/Stock_Dtl");
 		
 		return mav;
 	}
+	
+	//재고상세 내 유통기한 별 재고리스트
+	@RequestMapping(value = "/Item_Stock_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSStockList(@RequestParam HashMap<String,String> params) throws Throwable{
+					
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String,Object> modelMap = new HashMap<String,Object>();
+				
+			List<HashMap<String,String>> stocklist = isbservice.getSDetail(params); // 유통기한 별 재고 상세
+			
+					
+			modelMap.put("stocklist",stocklist);
+				
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	//재고상세 내 출고재고 리스트 그리기
+	@RequestMapping(value = "/Item_Rel_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSRelList(@RequestParam HashMap<String,String> params) throws Throwable{
+				
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		List<HashMap<String,String>> Rellist = isbservice.getSRelList(params);
+				
+			modelMap.put("Rellist",Rellist);
+			
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	
+	//재고상세 내 폐기 리스트 그리기(폐기목록x) >> 재고상세 내 폐기버튼 클릭 시 변경되는 폐기 가능 리스트 그리기
+	@RequestMapping(value = "/Item_Stock_Discard_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSDiscardList(@RequestParam HashMap<String,String> params) throws Throwable{
+					
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+				
+		List<HashMap<String,String>> stockdiscardlist = isbservice.getSDetail(params); // 유통기한 별 재고 상세
+					
+			modelMap.put("stockdiscardlist",stockdiscardlist);
+				
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	//재고상세 내 폐기 리스트 그리기(폐기목록!!!!)
+	@RequestMapping(value = "/Item_Discard_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HDiscardList(@RequestParam HashMap<String,String> params) throws Throwable{
+						
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+					
+		List<HashMap<String,String>> discardlist = isbservice.getSDList(params); // 유통기한 별 재고 상세
+						
+			modelMap.put("discardlist",discardlist);
+					
+			return mapper.writeValueAsString(modelMap);
+		}
+	
+	
 }
