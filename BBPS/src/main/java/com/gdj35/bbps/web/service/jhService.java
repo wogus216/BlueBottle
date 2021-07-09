@@ -39,4 +39,14 @@ public class jhService implements IjhService {
 		return ijhDao.getMbList(params);
 	}
 
+	@Override
+	public HashMap<String, String> getMd(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getMd(params);
+	}
+
+	@Override
+	public int editM(HashMap<String, String> params) throws Throwable {
+		return ijhDao.editM(params);
+	}
+
 }

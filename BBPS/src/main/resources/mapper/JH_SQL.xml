@@ -100,4 +100,18 @@
 	   WHERE P.RNUM BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	
+	<!-- 상세보기 -->
+	<select id="getMd" parameterType="hashmap" resultType="hashmap">
+	SELECT  PM.MENU_NO AS MNO,PM.MENU_NAME AS MNAME,PC.POS_CATE_NAME AS CNAME,PM.MENU_PRICE AS MPRICE,PM.MENU_IMG AS MIMG,PM.NOTE
+	FROM POS_MENU PM INNER JOIN POS_CATE PC
+                         ON PM.POS_CATE_NO = PC.POS_CATE_NO
+	WHERE PM.MENU_NO = #{menuNo}	
+	</select>
+	
+	<!-- 수정 -->
+	<update id="editM" parameterType="hashmap">
+		UPDATE POS_MENU SET MENU_PRICE = #{m_Price}, NOTE = #{m_Note}
+		WHERE MENU_NO = #{menuNo}
+	</update>
+	
 </mapper> 

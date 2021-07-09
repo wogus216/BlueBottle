@@ -13,7 +13,10 @@ public List<HashMap<String, String>> getHMenu(HashMap<String, String> params) th
 
 public int getMbCnt(HashMap<String, String> params) throws Throwable;
 
-public List<HashMap<String, String>> getMbList(HashMap<String, String> params)  throws Throwable;
+public List<HashMap<String, String>> getMbList(HashMap<String, String> params) throws Throwable;
 
+public HashMap<String, String> getMd(HashMap<String, String> params) throws Throwable;
+
+public int editM(HashMap<String, String> params) throws Throwable;
 
 }

@@ -60,6 +60,21 @@ public class sbService implements IsbService{
 		return isbdao.DelItem(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSDetail(HashMap<String, String> params) throws Throwable {
+		return isbdao.getSDetail(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getSRelList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getSRelList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getSDList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getSDList(params);
+	}
+
 	
 
 }

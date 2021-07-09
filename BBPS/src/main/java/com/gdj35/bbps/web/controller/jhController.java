@@ -317,8 +317,6 @@ public class jhController {
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 			
-	
-						
 		// 목록 취득
 		List<HashMap<String, String>>list= ijhService.getMbList(params);
 		
@@ -327,5 +325,71 @@ public class jhController {
 		System.out.println("list 목록 보자"+list);
 		return mapper.writeValueAsString(modelMap);
 			
+	}
+	
+	//메뉴 상세보기
+	@RequestMapping(value="/Menu_Dtl")
+	public ModelAndView Menu_Dtl(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		
+		HashMap<String, String> data = ijhService.getMd(params);
+		System.out.println("상세보기"+data);
+		mav.addObject("data", data);
+		mav.setViewName("jh/Menu_Dtl");
+		return mav;
+	}
+	
+	//메뉴 수정
+	
+	@RequestMapping(value="/Menu_Edit")
+	public ModelAndView Menu_Edit(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable{
+		
+		HashMap<String, String> data = ijhService.getMd(params);
+		
+		mav.addObject("data", data);
+		System.out.println("수정 데이터 보자"+data);
+		mav.setViewName("jh/Menu_Edit");
+		
+		return mav;
+		
+	}
+	
+	@RequestMapping(value="/Menu_Edits",
+	method = RequestMethod.POST,
+	produces = "text/json;charset=UTF-8")
+	@ResponseBody 
+	public String Menu_Edits(
+		@RequestParam HashMap<String, String> params) throws Throwable {
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+	try {
+		int cnt = ijhService.editM(params);
+		
+		if(cnt > 0) {
+			modelMap.put("msg", "success");
+			
+		} else {
+			modelMap.put("msg", "failed");
+		}
+		
+	} catch (Throwable e) {
+		e.printStackTrace();
+		modelMap.put("msg", "error");
+	}
+	return mapper.writeValueAsString(modelMap);
+	
+	}
+	//메뉴 추가
+	@RequestMapping(value ="/Menu_Add")
+	public ModelAndView Menu_Add(ModelAndView mav) {
+
+		mav.setViewName("jh/Menu_Add");
+
+		return mav;
+
 	}
 }

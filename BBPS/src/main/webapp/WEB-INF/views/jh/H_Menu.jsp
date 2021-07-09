@@ -132,10 +132,6 @@ html,body{
     margin-top: 12px;
 }
 
-.content_area{
-	background-color: #f2f2f2;
-	height: 100%;
-}
 
 
 </style>
@@ -181,7 +177,7 @@ function menuFunction(){
 
 
 function reLoadMenu(){
-	var params = $("#hMenuForm").serialize();
+	var params = $("#h_Menu_Form").serialize();
 	
 	//ajax
 	$.ajax({
@@ -261,7 +257,7 @@ function drawMenu(menu){
 
 </head>
 <body>
-<form action="#" id="hMenuForm" method="post">
+<form action="#" id="h_Menu_Form" method="post">
 		<input type="hidden"  id="hUserNo" name="hUserNo" value="${hUserNo}">
 		<input type="hidden"  id="hDt" name="hDt" value="${hDt}">
 </form>

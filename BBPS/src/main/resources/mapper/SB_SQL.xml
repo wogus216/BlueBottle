@@ -4,7 +4,7 @@
 	
 	<!-- 품목리스트 행 개수 -->
 	<select id ="getPCnt" parameterType="hashmap" resultType="Integer">
-	SELECT COUNT(*)
+	SELECT COUNT(DISTINCT I.ITEM_NO)
 	FROM ITEM I INNER JOIN ITEM_PRICE IP
      ON I.ITEM_NO = IP.ITEM_NO
     WHERE 1=1
@@ -92,4 +92,38 @@
 	<update id="DelItem" parameterType="hashmap">
 	UPDATE ITEM SET DEL_FLAG = 0 WHERE ITEM_NO = #{itemNo}
 	</update>
+	
+	<!-- 재고상세 / 유통기한 별 재고상세 -->
+	<select id = "getSDetail" parameterType="hashmap" resultType="hashmap">
+	SELECT DISTINCT EXPIRY_DATE,ITEM_NAME,ITEM_NO,SUM_CNT
+    FROM (
+    SELECT TO_CHAR(HS.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,I.ITEM_NAME,I.ITEM_NO,SUM(HS.CNT)OVER(PARTITION BY HS.EXPIRY_DATE) AS SUM_CNT
+    FROM ITEM I INNER JOIN HQ_STOR HS
+                ON I.ITEM_NO = HS.ITEM_NO
+                AND I.ITEM_NO = #{itemNo})
+    ORDER BY EXPIRY_DATE
+	</select>
+	
+	<!-- 재고상세 / 출고재고 리스트 -->
+	<select id = "getSRelList" parameterType="hashmap" resultType="hashmap">
+	SELECT O.ORD_NO, I.ITEM_NO, I.ITEM_NAME, OI.CNT,TO_CHAR(NVL(OI.EXPIRY_DATE,'2999-01-01'),'YYYY-MM-DD') AS EXPIRY_DATE,TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ORD_ENROLL_DATE,B.BRCH_NAME
+   	FROM ORD O INNER JOIN ORD_ITEM OI
+                ON O.ORD_NO = OI.ORD_NO
+                AND OI.ITEM_NO = #{itemNo}
+                AND O.STAT_CODE = 4
+                INNER JOIN BRCH B
+                ON O.BRCH_NO = B.BRCH_NO
+                INNER JOIN ITEM I
+                ON OI.ITEM_NO = I.ITEM_NO
+	</select>
+	
+	<!-- 재고상세 / 폐기 리스트 -->
+	<select id ="getSDList" parameterType="hashmap" resultType="hashmap">
+	SELECT TO_CHAR(HD.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE,HD.CNT,TO_CHAR(HS.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,NVL(HD.NOTE,' ')AS NOTE,HU.ID
+    FROM HQ_DISCARD HD INNER JOIN HQ_STOR HS
+                        ON HD.STOR_NO = HS.STOR_NO
+                        INNER JOIN HQ_USER HU
+                        ON HD.USER_NO = HU.USER_NO
+                        AND HS.ITEM_NO = #{itemNo}
+	</select>
 </mapper> 

@@ -9,6 +9,7 @@
 <title>POS관리</title>
 <style type="text/css">
 /* 미들 부분 */
+
 .content_Area{
 	width: 1250px;
 	height: 900px;
@@ -20,7 +21,7 @@
 	max-width: 1250px;
     min-width: 700px;
     margin-left: 30px;
-     width: 1250px;
+    width: 1250px;
 }
 /* Pos메뉴 게시판 */
 
@@ -154,11 +155,12 @@ button{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-		if("${param.search_Filter}" != ""){
+	
+	if("${param.search_Filter}" != ""){
 			$("#search_Filter").val("${param.search_Filter}");
-		}
+	}
 
-		reloadList();
+	reloadList();
 	//페이지 변경	
 	$(".page_Btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
@@ -176,12 +178,24 @@ $(document).ready(function(){
  		reloadList();
  	});
  	
+ 	//상세보기
+ 	$("tbody").on("click","tr",function(){
+ 		$("#menuNo").val($(this).attr("mNo"));
+ 		$("#menu_Form").attr("action","Menu_Dtl");
+ 		$("#menu_Form").submit();
+ 	});
+ 	
+ 	//추가 
+ 	$("add_Btn").on("click",function(){
+ 		$("#menu_Form").attr("action","Menu_Add");
+ 		$("#menu_Form").submit();
+ 	});
  		
 	
 }); //ready end
 //비동기로 다시 해보기
 function reloadList(){
-	var params = $("#menuForm").serialize();
+	var params = $("#menu_Form").serialize();
 	console.log(params);
 	$.ajax({
 		url: "Menu_Lists",
@@ -207,7 +221,7 @@ function drawList(list){
 	//" +  + " : 문자열 넣는 꿀팁
 	for(var m of list){
 		
-		menu+="<tr menuNo=" + m.MENU_NO + ">";
+		menu+="<tr mNo=" + m.MENU_NO + ">";
 		menu+="		<td>" + m.MENU_NO + "</td>";
 		menu+="		<td>" + m.MENU_NAME + "</td>";
 		menu+="		<td>" + m.CNAME + "</td>";
@@ -288,11 +302,10 @@ function drawPaging(pb){
 					<th scope="col">가격(원)</th>
 				</tr>
 			</thead>	
-			<tbody>
-			</tbody>
+			<tbody></tbody>
 		</table>
 		<div class="search_Area" style = "margin-top : 30px;">
-			<form action="#" id="menuForm" method="post">
+			<form action="#" id="menu_Form" method="post">
 				<input type="hidden" id="menuNo" name="menuNo"/>
 				<input type="hidden" id="cateNo" name="cateNo"/>
 				<input type="hidden" id="page" name="page" value="${page}"/>
