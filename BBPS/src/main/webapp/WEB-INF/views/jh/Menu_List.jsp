@@ -9,7 +9,7 @@
 <title>POS관리</title>
 <style type="text/css">
 /* 미들 부분 */
-.content_area{
+.content_Area{
 	width: 1250px;
 	height: 900px;
 	margin: 0 auto;
@@ -80,7 +80,7 @@ input{
 label{
 	vertical-align: middle;
 }
-.search_btn{
+.search_Btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
@@ -114,11 +114,11 @@ button{
 }
 /* 검색 과 페이지 */
 
-.search_info,.page_area, .page_btn{
+.search_Info,.page_Area, .page_Btn{
 	text-align: center;
 }
 
-.page_btn button{
+.page_Btn button{
 	color: black;
 	width: 40px;
 	height: 40px;
@@ -129,15 +129,15 @@ button{
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
 
-.page_btn button:hover{
+.page_Btn button:hover{
 	color: #01a1dd;
 }
 
-.page_btn button:focus{
+.page_Btn button:focus{
 	outline:none;
 }
 
-.search_filter{
+.search_Filter{
 	width : 120px;
 	vertical-align: middle;
 }
@@ -154,14 +154,21 @@ button{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	reloadList();
+
+		reloadList();
 	
-	$(".page_btn").on("click","button",function(){
+	$(".page_Btn").on("click","button",function(){
 		
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
-		
+ 	
+ 	$(".cate").change(function(){
+ 		$("#cateNo").val($(".cate").val());
+ 		reloadList();
+ 	});
+ 		
+	
 }); //ready end
 //비동기로 다시 해보기
 function reloadList(){
@@ -173,9 +180,11 @@ function reloadList(){
 		dataType: "json",
 		data : params, 
 		success : function(res) {
+			
 			console.log(res);
 			drawList(res.list);
 			drawPaging(res.pb);
+			
 		},
 		error: function(request, status, error){ 
 			console.log(error);
@@ -191,7 +200,7 @@ function drawList(list){
 		
 		menu+="<tr menuNo=" + m.MENU_NO + ">";
 		menu+="		<td>" + m.MENU_NO + "</td>";
-		menu+="		<td>" + m.MENU_NAME + "</td";
+		menu+="		<td>" + m.MENU_NAME + "</td>";
 		menu+="		<td>" + m.CNAME + "</td>";
 		menu+="		<td>" + m.MENU_PRICE + "</td>";
 		menu+="</tr>";
@@ -200,23 +209,58 @@ function drawList(list){
 	$("table tbody").html(menu);
 }
 
+function drawPaging(pb){
+	var html = "";
+//	" + + "
+	//처음
+	html+= "<button  page=\"1\" style=\"background-color: white\"><<</button>";
+	
+	//이전페이지
+	if($("#page").val() =="1"){
+		html+= "<button page=\"1\" style=\"background-color: white\"><</button>";
+	} else{
+		html+= "<button page=\"" + ($("#page").val() -1) + "\" style=\"background-color: white\"><</button>";
+	}
+	
+	//처음페이지
+	for(var i = pb.startPcount; i<= pb.endPcount; i++){
+		if($("#page").val() == i ){
+			html+= "<button page=\"" + i + "\" style=\"background-color: white\"><b>" + i + "</b></button>";
+		}else{
+			html+= "<button page=\"" + i + "\" style=\"background-color: white\">" + i + "</button>";
+		}		
+	}
+	//다음페이지
+	if($("#page").val() == pb.maxPcount){
+		html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">></button>";
+	}else{
+		html+= "<button  page=\"" + ($("#page").val() * 1 + 1) + "\" style=\"background-color: white\">></button>";
+		
+	}
+	html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">>></button>";
+
+	$(".page_Btn").html(html)
+}
 
 </script>
 
 </head>
 <body>
 <!--컨텐츠 -->
-	<div class="content_area">
+
+	<div class="content_Area">
 		<div class="content">
 			<h1>POS메뉴조회</h1>
+<form action="Menu_List" class="menuForm" method="post">
 	<div class="filter_Area">
-<select class="cate" name ="cate">
-	<option selected="selected">카테고리명</option>
-	<option value="0">음료</option>
-	<option value="1">제과</option>
-	<option value="2">굿즈</option>
-	<option value="3">원두</option>
-</select>
+		<select class="cate" name ="cate">
+			<option selected="selected">카테고리명</option>
+			<option value="0">음료</option>
+			<option value="1">제과</option>
+			<option value="2">굿즈</option>
+			<option value="3">원두</option>
+		</select>
+</form>
 <button class="add_Btn" style="margin:0px 0px 0px 10px;">추가</button>
 </div>	
 		
@@ -238,24 +282,25 @@ function drawList(list){
 			<tbody>
 			</tbody>
 		</table>
-		<div class="search_area" style = "margin-top : 30px;">
+		<div class="search_Area" style = "margin-top : 30px;">
 		<form action="#" id="menuForm" method="post">
 			<input type="hidden" id="menuNo" name="menuNo"/>
 			<input type="hidden" id="cateNo" name="cateNo"/>
 			<input type="hidden" id="page" name="page" value="${page}"/>
-			<div class="search_info">
-				<select class="search_filter">
+			<div class="search_Info">
+				<select class="search_Filter">
 					<option value="0" selected="selected">메뉴이름</option>
 					<option value="1">카테고리</option>
 					<option value="2">가격</option>
 				</select>
 				<input type="text" class="search_input" value="${param.search_input}"/>
-				<button class="search_btn">검색</button>
+				<button class="search_Btn">검색</button>
 			</div>
 		</form>
 		</div>
-		<div class="page_area">
-			<div class="page_btn">
+		<div class="page_Area">
+			<div class="page_Btn">
+			<%--  
 				<button page="1"  style="background-color: white"><<</button>
 				<!-- 이전페이지 -->
 				<c:choose>
@@ -289,10 +334,11 @@ function drawList(list){
 					</c:choose>
 					<!-- 마지막 페이지 -->
 					<button  page="${pb.maxPcount}" style="background-color: white">>></button>
+					 --%>
 			</div>
 		</div>
 		
 		</div> <!--content end  -->
-	</div> <!--content_area end  -->
+	</div> <!--content_Area end  -->
 </body>
 </html>

@@ -181,7 +181,7 @@ function menuFunction(){
 
 
 function reLoadMenu(){
-	var params = $("#actionForm").serialize();
+	var params = $("#hMenuForm").serialize();
 	
 	//ajax
 	$.ajax({
@@ -261,7 +261,7 @@ function drawMenu(menu){
 
 </head>
 <body>
-<form action="#" id="actionForm" method="post">
+<form action="#" id="hMenuForm" method="post">
 		<input type="hidden"  id="hUserNo" name="hUserNo" value="${hUserNo}">
 		<input type="hidden"  id="hDt" name="hDt" value="${hDt}">
 </form>
