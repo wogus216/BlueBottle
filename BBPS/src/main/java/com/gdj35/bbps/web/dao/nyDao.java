@@ -14,27 +14,51 @@ public class nyDao implements InyDao{
 	public SqlSession sqlSession;
 
 	@Override
-	public List<HashMap<String, String>> getCateList() throws Throwable {
+	public List<HashMap<String, String>> getNoticeCate() throws Throwable {
 		System.out.println("db돌았습니다");
-		return sqlSession.selectList("NY.getCateList");
+		return sqlSession.selectList("NY.getNoticeCate");
 	}
 
 	@Override
-	public int addCate(HashMap<String, String> params) throws Throwable {
+	public int addNoticeCate(HashMap<String, String> params) throws Throwable {
 
-		return sqlSession.insert("NY.addCate", params);
+		return sqlSession.insert("NY.addNoticeCate", params);
 	}
 
 	@Override
-	public int updateCate(HashMap<String, String> params) throws Throwable {
+	public int updateNoticeCate(HashMap<String, String> params) throws Throwable {
 
-		return sqlSession.update("NY.updateCate", params);
+		return sqlSession.update("NY.updateNoticeCate", params);
 	}
 
 	@Override
-	public int deleteCate(HashMap<String, String> params) throws Throwable {
+	public int deleteNoticeCate(HashMap<String, String> params) throws Throwable {
+		System.out.println("db돌았습니다");
+		return sqlSession.update("NY.deleteNoticeCate", params);
+	}
 
-		return sqlSession.update("NY.deleteCate", params);
+	@Override
+	public List<HashMap<String, String>> getItemCate() throws Throwable {
+
+		return sqlSession.selectList("NY.getItemCate");
+	}
+
+	@Override
+	public int addItemCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.insert("NY.addItemCate", params);
+	}
+
+	@Override
+	public int updateItemCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.updateItemCate", params);
+	}
+
+	@Override
+	public int deleteItemCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.deleteItemCate", params);
 	}
 	
 	

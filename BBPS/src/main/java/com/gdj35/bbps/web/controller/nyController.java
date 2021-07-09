@@ -33,14 +33,14 @@ public class nyController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/cateList", method=RequestMethod.POST, produces ="text/json;charset=UTF-8")
+	@RequestMapping(value="/noticeCateList", method=RequestMethod.POST, produces ="text/json;charset=UTF-8")
 	@ResponseBody
-	public String cateList() throws Throwable{
+	public String noticeCateList() throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
-		List<HashMap<String, String>> list = iNyService.getCateList();
+		List<HashMap<String, String>> list = iNyService.getNoticeCate();
 		
 		modelMap.put("list", list);
 		System.out.println("list"+list);
@@ -49,15 +49,15 @@ public class nyController {
 		
 	}
 	
-	@RequestMapping(value="cateAdd", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@RequestMapping(value="noticeCateAdd", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String cateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String noticeCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
-			int cnt = iNyService.addCate(params);
+			int cnt = iNyService.addNoticeCate(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
@@ -73,15 +73,15 @@ public class nyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-	@RequestMapping(value="/cateUpdate", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@RequestMapping(value="/noticeCateUpdate", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String cateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String noticeCateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
-			int cnt = iNyService.updateCate(params);
+			int cnt = iNyService.updateNoticeCate(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg","success");
@@ -97,15 +97,15 @@ public class nyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
-	@RequestMapping(value="/cateDelete", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@RequestMapping(value="/noticeCateDelete", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String cateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String noticeCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
-			int cnt = iNyService.deleteCate(params);
+			int cnt = iNyService.deleteNoticeCate(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg","success");
@@ -120,5 +120,102 @@ public class nyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	@RequestMapping(value="/Item_Cate_Mang")
+	public ModelAndView Item_Cate_Mang(ModelAndView mav) {
+		
+		mav.setViewName("ny/Item_Cate_Mang");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/itemCateList", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String itemCateList() throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		List<HashMap<String, String>> list = iNyService.getItemCate();
+		
+		modelMap.put("list", list);
+		System.out.println("list"+list);
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	@RequestMapping(value="/itemCateAdd", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String itemCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iNyService.addItemCate(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/itemCateUpdate", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String itemCateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iNyService.updateItemCate(params);
+			
+			if(cnt > 0 ) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/itemCateDelete", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String itemCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iNyService.deleteItemCate(params);
+			
+			if(cnt > 0 ) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	
 }
