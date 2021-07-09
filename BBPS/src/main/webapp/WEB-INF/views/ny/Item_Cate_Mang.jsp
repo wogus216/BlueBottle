@@ -314,17 +314,19 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "",
+				url: "itemCateAdd",
 				type: "post",
 				dataType: "json",
 				data: params,
 				success: function(res) {
 					if(res.msg == "success") {
-						location.href = "Notice_Cate_Mang";
+						location.href = "Item_Cate_Mang";
 					}else if(res.msg == "failed") {
-						alert("등록에 실패하였습니다.");
+						makePopup("오류", "등록에 실패했습니다.", null);
+						$("#inputTxt").val("");
 					}else {
-						alert("등록 중 문제가 발생하였습니다.");
+						makePopup("오류", "등록 중 문제가 발생했습니다.", null);
+						$("#inputTxt").val("");
 					}
 				},
 				error: function(request, status, error) {
@@ -349,7 +351,7 @@ $(document).ready(function(){
 		var params = $("#actionForm").serialize();
 		
 		$.ajax({
-			url: "cateUpdate",
+			url: "",
 			type: "post",
 			dataType: "json",
 			data: params,
@@ -357,9 +359,9 @@ $(document).ready(function(){
 				if(res.msg == "success") {
 					location.href = "Notice_Cate_Mang";
 				}else if(res.msg == "failed") {
-					alert("수정에 실패하였습니다.");
+					makePopup("오류", "수정에 실패했습니다.", null);
 				}else {
-					alert("수정 중 문제가 발생하였습니다.");
+					makePopup("오류", "수정 중 문제가 발생했습니다.", null);
 				}
 			},
 			error: function(request, status, error) {
@@ -378,7 +380,7 @@ $(document).ready(function(){
 			var params = $("#actionForm").serialize();
 			
 			$.ajax({
-				url: "cateDelete",
+				url: "",
 				type: "post",
 				dataType: "json",
 				data: params,
@@ -386,9 +388,9 @@ $(document).ready(function(){
 					if(res.msg == "success") {
 						location.href = "Notice_Cate_Mang";
 					}else if(res.msg == "failed") {
-						alert("삭제에 실패하였습니다.");
+						makePopup("오류", "삭제에 실패했습니다.", null);
 					}else {
-						alert("삭제 중 문제가 발생하였습니다.");
+						makePopup("오류", "삭제 중 문제가 발생했습니다.", null);
 					}
 				},
 				error: function(request, status, error) {
@@ -407,7 +409,7 @@ $(document).ready(function(){
 function reloadList() {
 	
 	$.ajax({
-		url: "cateList",
+		url: "itemCateList",
 		type: "post",
 		dataType: "json",
 		success : function(res) {
@@ -458,10 +460,11 @@ function makePopup(title, contents, func) {
 	
 	//확인버튼 
 	$(".confirm_Btn").on("click", function() {
-		if(func !=null){
+		if(func != null){
 			func.call();
 		}
-		closePopup();
+			closePopup();
+	
 	});
 
 }

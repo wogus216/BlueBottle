@@ -38,5 +38,17 @@ public class nyService implements InyService{
 		return iNyDao.deleteNoticeCate(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getItemCate() throws Throwable {
+
+		return iNyDao.getItemCate();
+	}
+
+	@Override
+	public int addItemCate(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.addItemCate(params);
+	}
+
 
 }

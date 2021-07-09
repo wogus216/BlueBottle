@@ -13,4 +13,8 @@ public interface InyDao {
 
 	int deleteNoticeCate(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> getItemCate() throws Throwable;
+
+	int addItemCate(HashMap<String, String> params) throws Throwable;
+
 }

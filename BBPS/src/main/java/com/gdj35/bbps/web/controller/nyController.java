@@ -121,4 +121,51 @@ public class nyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	@RequestMapping(value="/Item_Cate_Mang")
+	public ModelAndView Item_Cate_Mang(ModelAndView mav) {
+		
+		mav.setViewName("ny/Item_Cate_Mang");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/itemCateList", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String itemCateList() throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		List<HashMap<String, String>> list = iNyService.getItemCate();
+		
+		modelMap.put("list", list);
+		System.out.println("list"+list);
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	@RequestMapping(value="itemCateAdd", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String itemCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iNyService.addItemCate(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
 }

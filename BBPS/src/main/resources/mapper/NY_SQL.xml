@@ -10,11 +10,13 @@
 	ORDER BY CATE_NO		
 	</select>
 	
+	<!-- 공지 카테고리 등록 -->
 	<insert id="addNoticeCate" parameterType="hashmap">
 	INSERT INTO NOTICE_CATE(CATE_NO, CATE_NAME, DEL_FLAG)
 	VALUES(NOTICE_CATE_SEQ.NEXTVAL,#{inputTxt},1)
 	</insert>
 	
+	<!-- 공지 카테고리 수정 -->
 	<update id="updateNoticeCate" parameterType="hashmap">
 	UPDATE NOTICE_CATE
 	SET
@@ -22,10 +24,27 @@
 	WHERE CATE_NO = #{cateNo}
 	</update>
 	
+	<!-- 공지 카테고리 삭제(삭제여부 0으로 수정) -->
 	<update id="deleteNoticeCate" parameterType="hashmap">
 	UPDATE NOTICE_CATE
 	SET
 	DEL_FLAG = 0
 	WHERE CATE_NO = #{cateNo}
 	</update>
+	
+	<!-- 품목카테고리 불러오기 -->
+	<select id="getItemCate"  resultType="hashmap">
+	SELECT CATE_NO, CATE_NAME
+	FROM ITEM_CATE
+	WHERE CATE_NO > 0 
+	AND DEL_FLAG = 1
+	ORDER BY CATE_NO		
+	</select>
+	
+	<!-- 품목 카테고리 등록 -->
+	<insert id="addItemCate" parameterType="hashmap">
+	INSERT INTO ITEM_CATE(CATE_NO, CATE_NAME, DEL_FLAG)
+	VALUES(NOTICE_CATE_SEQ.NEXTVAL,#{inputTxt},1)
+	</insert>
+	
 </mapper> 
