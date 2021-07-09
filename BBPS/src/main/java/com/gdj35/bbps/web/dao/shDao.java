@@ -39,7 +39,7 @@ public class shDao implements IshDao{
 
 	@Override
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("SH.getRDtl", params);
+		return sqlSession.selectOne("SH.getRDtl", params); //
 	}
 }
 

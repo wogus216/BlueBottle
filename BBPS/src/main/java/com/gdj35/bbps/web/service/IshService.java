@@ -15,4 +15,4 @@ public interface IshService {
 	public List<HashMap<String, String>> getRDtlList(HashMap<String, String> params) throws Throwable;
 
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable;
-}
+} //

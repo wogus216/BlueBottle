@@ -423,7 +423,7 @@ function drawPaging(pb){
 
 	html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">>></button>";
 
-	$(".page_btn").html(html);
+	$(".page_btn").html(html); //
 }
 </script>
 </head>

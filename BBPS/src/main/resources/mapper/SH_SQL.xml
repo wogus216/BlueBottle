@@ -81,6 +81,6 @@ FROM(SELECT O.ORD_NO, REF_NO, TO_CHAR(R.ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE
                 INNER JOIN COMMON_CODE C
                         ON C.CODE_S_CATE=O.STAT_CODE
      WHERE C.CODE_L_CATE=2)REF
-WHERE REF.ORD_NO= #{oNo}
+WHERE REF.ORD_NO= #{oNo} <!--  -->
 </select>
 </mapper> 

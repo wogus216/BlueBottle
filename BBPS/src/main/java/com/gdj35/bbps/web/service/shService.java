@@ -40,6 +40,6 @@ public class shService implements IshService{
 
 	@Override
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable {
-		return ishDao.getRDtl(params);
+		return ishDao.getRDtl(params); //
 	}
 }

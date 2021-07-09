@@ -289,7 +289,7 @@ function reloadList(){
 			console.log(error);
 		}
 	});
-}
+}//
 function drawList(list2){
 	var html ="";
 	for(var d of list2){
