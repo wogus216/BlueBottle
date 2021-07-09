@@ -26,8 +26,8 @@ public class shController {
 	@Autowired
 	public IPagingService iPagingService;
 	
-	@RequestMapping(value = "/H_order_list")
-	public ModelAndView H_order_list(
+	@RequestMapping(value = "/Ord_Mang")
+	public ModelAndView Ord_Mang(
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) throws Throwable{
 		int page=1;
@@ -37,12 +37,12 @@ public class shController {
 		}
 		   
 		mav.addObject("page", page);
-		mav.setViewName("sh/H_order_list");
+		mav.setViewName("sh/Ord_Mang");
 		return mav;   
 	}
-	@RequestMapping(value = "/H_order_lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@RequestMapping(value = "/Ord_Mangs",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String H_order_lists(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String Ord_Mangs(@RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -63,4 +63,26 @@ public class shController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	@RequestMapping(value="/Ord_Mang_dtl")
+	public ModelAndView Ord_Mang_dtl(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		
+		   mav.setViewName("sh/Ord_Mang_dtl");
+		   return mav;
+	   }
+	@RequestMapping(value = "/Ord_Mang_dtls",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String Ord_Mang_dtls(@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> list = ishService.getO(params);
+		
+		modelMap.put("list", list);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 }

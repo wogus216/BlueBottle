@@ -22,4 +22,9 @@ public class shService implements IshService{
 	public List<HashMap<String, String>> getOList(HashMap<String, String> params) throws Throwable {
 		return ishDao.getOList(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> getO(HashMap<String, String> params) throws Throwable {
+		return ishDao.getO(params);
+	}
 }

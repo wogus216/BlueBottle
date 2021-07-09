@@ -35,5 +35,65 @@
 		ORDER BY SM.ARR_SEQ ASC
 	</select>
 	
+	<!-- 메뉴 게시글 수 갖고오기 -->
+	<select id="getMbCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*) AS CNT
+	FROM POS_MENU
+	WHERE 1 = 1
+	<if test ="search_input !=null and search_input != ''">
+		<choose>
+			<when test="search_input == 0">
+				AND MENU_NAME LIKE '%' || #{search_input} || '%'
+			</when>
+			<when test="search_input == 2">
+				AND MENU_PRICE LIKE '%' || #{search_input} || '%'
+			</when>
+		</choose>
+	</if>
+	</select>
+	
+	<!-- 메뉴 게시글 갖고오기 -->
+	<select id="getMbList" parameterType="hashmap" resultType="hashmap">
+		SELECT P.MENU_NO,P.MENU_NAME,P.CNAME,P.MENU_PRICE,P.POS_CATE_NO
+		FROM (SELECT PM.MENU_NO,PM.MENU_NAME,PM.POS_CATE_NO,PM.MENU_PRICE,PC.POS_CATE_NAME as CNAME,
+		             ROW_NUMBER() OVER( ORDER BY MENU_NO ASC) AS RNUM
+		      FROM POS_MENU PM INNER JOIN POS_CATE PC
+		                                 ON PM.POS_CATE_NO = PC.POS_CATE_NO
+		WHERE 1=1
+	<if test ="search_input !=null and search_input != ''">
+		<choose>
+			<when test="search_input == 0">
+				AND PM.MENU_NAME LIKE '%' || #{search_input} || '%'
+			</when>
+			<when test="search_input == 1">
+				AND PC.POS_CATE_NAME LIKE'%' || #{search_input} || '%'
+			</when>
+			<when test="search_input == 2">
+				AND PM.MENU_PRICE LIKE '%' || #{search_input} || '%'
+			</when>
+		</choose>
+	</if>
+	<if test ="cateNo !=null and cateNo != ''">
+		<choose>
+			<when test="cateNo == 0">
+				AND PM.POS_CATE_NO =  #{cateNo}
+			</when>
+			<when test="cateNo == 1">
+				AND  PM.POS_CATE_NO =  #{cateNo}
+			</when>
+			<when test="cateNo == 2">
+				AND PM.POS_CATE_NO  =  #{cateNo}
+			</when>
+			<when test="cateNo == 3">
+				AND PM.POS_CATE_NO =  #{cateNo}
+			</when>
+			<when test="cateNo == 4">
+				AND PM.POS_CATE_NO =  #{cateNo}
+			</when>
+		</choose>
+	</if>
+	   ) P
+	   WHERE P.RNUM BETWEEN #{startCnt} AND #{endCnt}
+	</select>
 	
 </mapper> 

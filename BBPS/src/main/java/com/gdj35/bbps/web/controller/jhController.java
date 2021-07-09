@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gdj35.bbps.util.Utils;
+import com.gdj35.bbps.common.bean.PagingBean;
+import com.gdj35.bbps.common.service.IPagingService;
 import com.gdj35.bbps.web.service.IjhService;
 
 @Controller
@@ -24,16 +25,17 @@ public class jhController {
 	@Autowired
 	public IjhService ijhService;
 	
-
+	@Autowired
+	public IPagingService iPagingService;
 
 //로그인 페이지
 	
 // 로그인 다 구현하면 아이디에 맞게 링크 걸어 놓기
-	@RequestMapping(value="/logIn")
-	public ModelAndView logIn(
+	@RequestMapping(value="/Login")
+	public ModelAndView Login(
 			ModelAndView mav) {
 		
-		mav.setViewName("jh/logIn");
+		mav.setViewName("jh/Login");
 		
 		return mav;
 		
@@ -200,7 +202,7 @@ public class jhController {
 		
 	//로그아웃
 		@RequestMapping(value="/Pos_LogOut")
-		public ModelAndView pos_LogOut(HttpSession session,
+		public ModelAndView Pos_LogOut(HttpSession session,
 				ModelAndView mav) {
 			System.out.println(session.getAttribute("sBRCHNm"));
 			session.invalidate();
@@ -262,27 +264,68 @@ public class jhController {
 					
 		}
 	//포스
-	@RequestMapping(value="/pos")
+	@RequestMapping(value="/Pos")
 			
-	public ModelAndView pos(
+	public ModelAndView Pos(
 				ModelAndView mav) {
 			
-		mav.setViewName("jh/pos");
+		mav.setViewName("jh/Pos");
 				
 			return mav;
 				
 			}
-		//POS메뉴관리
-	@RequestMapping(value="/Menu_List")
+	//POS메뉴관리
+	 @RequestMapping(value="/Menu_List")
+	 public ModelAndView Menu_List(
+			 @RequestParam HashMap<String, String> params,
+			 ModelAndView mav) {
+
+		 int page = 1;
+
+		 if(params.get("page") != null) {
+			 page = Integer.parseInt(params.get("page"));
+		 }
+
+		 mav.addObject("page", page);
+		 mav.setViewName("jh/Menu_List");
+
+		 return mav;
+
+	 }
 	
-	public ModelAndView Menu_List(
-			ModelAndView mav) {
-			
-		mav.setViewName("jh/Menu_List");
-			
-		return mav;
-			
-		}
-			
+	@RequestMapping(value="/Menu_Lists",
+					method = RequestMethod.POST,
+					produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String Menu_Lists(
+			@RequestParam HashMap<String, String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
+		
+		// 현재 페이지
+		int page = Integer.parseInt(params.get("page"));
+		
+		// 총 게시글 수 
+		int cnt = ijhService.getMbCnt(params);
+			
+		// 페이징 정보 취득
+		PagingBean pb= iPagingService.getPagingBean(page, cnt, 10, 5);
+			
+		//글번호 P 없으면 글번호
+		//게시글 시작번호, 종료번호 할당
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+			
+	
+						
+		// 목록 취득
+		List<HashMap<String, String>>list= ijhService.getMbList(params);
+		
+		modelMap.put("list", list);
+		modelMap.put("pb", pb);
+		System.out.println("list 목록 보자"+list);
+		return mapper.writeValueAsString(modelMap);
+			
+	}
 }
