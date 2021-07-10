@@ -308,7 +308,7 @@ function makePopup(title, contents, func) {
 		}
 		closePopup();
 		});
-	$(".confirm_Btn")
+	
 	}
 
 function closePopup() {

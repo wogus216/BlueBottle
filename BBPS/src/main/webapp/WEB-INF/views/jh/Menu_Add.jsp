@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
+
 <c:import url="H_Menu.jsp"></c:import>
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,9 @@
 <meta charset="UTF-8">
 <title>등록</title>
 <style type="text/css">
-
+ #att {
+	
+} 
 /* 컨텐츠 부분 */
 
 .content_Area{
@@ -24,7 +27,7 @@
     margin-left: 30px;
      width: 1250px;
 }
-/* 메뉴수정 */
+/* 메뉴등록 */
 
 h1 {
  margin-bottom: 40px;
@@ -39,6 +42,12 @@ h1 {
 	background-color: #bf4040;
 	margin-right:0px;
 	float: right;
+}
+
+.m_Cate{
+	width: 200px;
+	height: 50px;
+	font-size: 18px;
 }
 
 table {
@@ -187,6 +196,8 @@ button:focus{outline:none;}
 
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -195,8 +206,14 @@ $(document).ready(function(){
 		history.back();
 	});
 	
+	//행추가
 	$(".row_Add").on("click",function(){
-		$("tbody").prepend("<tr></tr>");
+		add();
+	});
+	
+	//행삭제
+	$(".row_Del").on("click",function(){
+		del();
 	});
 	
 	//엔터 방지
@@ -206,20 +223,47 @@ $(document).ready(function(){
 		}
 	});
 	
-	//완료 버튼
+	//파일 추가 
+	$("#file_Btn").on("click",function(){
+		$("#att").click();
+	});
+	
+	$("#att").on("change", function(){
+		//역슬래시를 문자열로 쓰기위해서는 두개를 사용해야 문자열로 처리된다.
+		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
+	});
+	
+	//추가완료 버튼
 	$(".submit").on("click",function(){
-		if($.trim($("#m_No").val()) == ""){
-			makePopup("", "가격을 입력해주세요",function(){
-				$("#m_Price").focus();
-			});
-		} /* else if($.trim($("#m_Img").val()) ==""){
-			makePopup("", "사진을 넣어주세요",function(){
-				$("#m_Img").focus();
-			}); */
-	 	else{
-			var params = $("#edit_Form").serialize();
-			
-			$.ajax({
+		var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+			beforeSubmit: function(){
+				if($.trim($("#m_Name").val()) == ""){
+					$("#m_Name").focus();
+					makePopup("", "메뉴이름을 입력해주세요",function(){});
+					return false; // ajaxForm 실행 불가
+				} else if($.trim($("#m_Cate").val()) == "카테고리명"){
+					makePopup("", "카테고리를 선택",function(){}); 
+						$("#m_Cate").focus();
+					return false; // ajaxForm 실행 불가
+				} else if($.trim($("#m_Price").val()) == ""){
+					makePopup("", "가격을 입력해주세요",function(){}); 
+						$("#m_Price").focus();
+					return false; // ajaxForm 실행 불가
+				} 
+			},
+			success: function(res){
+				if(res.result == "SUCCESS"){
+					//올라간 파일명 저장
+					if(res.fileName.length > 0){
+							$("m_File").val(res.fileName[0]);
+							makePopup("", "파일 올라갔습니다.",function(){});
+					}
+				//글 저장
+				var params = $("#add_Form").serialize();
+				console.log(params)
+				$.ajax({
 				url: "Menu_Adds",
 				type: "post",
 				dataType: "json",
@@ -228,38 +272,44 @@ $(document).ready(function(){
 					console.log(res)
 				
 					if(res.msg == "success"){
-						$("#edit_Form").attr("action","Menu_Dtl");
-						$("#edit_Form").submit();
+						location.href = "Menu_List";
 					} 
 					else if(res.msg == "failed"){
-							makePopup("", "작성 실패.",function(){
-						});
+							makePopup("", "작성 실패.",function(){});
 					} 
 					else{
-							makePopup("", "수정 중 에러 발생",function(){
-						});
-					}
+							makePopup("", "수정 중 에러 발생",function(){});
+					 }
 				  },
 				  error: function(request, status, error){
 						console.log(error);
-				}
-			});
-		}
-	}); // 완료 end
+					}
+				});
+			}else{
+		 			makePopup("", "파일 업로드 중 문제 발생",function(){});
+				} 
+			},		
+			error: function(){
+				makePopup("", "파일 업로드 중 문제 발생",function(){});
+			}
+		}); //ajaxForm end
+		
+		fileForm.submit();
+	}); //추가완료 end 
 	
-}); //ready end
+});//ready end
 	/* 팝업 */
 	function makePopup(title, contents, func) {
 		var html ="";
 		html+= "<div class=\"bg\"></div>";	
 		html+= "<div class=\"popup_Area\">";	
 		html+= "<div class=\"popup_Head\">"+ title +"";	
-		html+= 		"<button class=\"close_Btn\" >X</button>";	
+		html+= 		"<button class=\"close_Btn\">X</button>";	
 		html+= "</div>";	
 		html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
 		html+= 		"<div class=\"popup_Btn\">";	
 		html+= 			"<button class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
-		html+= 	 	"</div>";	
+		html+= 	 	"</div>";
 		html+= "</div>";	
 		
 		$("body").prepend(html);
@@ -271,7 +321,6 @@ $(document).ready(function(){
 			}
 			closePopup();
 			});
-		$(".confirm_Btn")
 		}
 
 	function closePopup() {
@@ -279,22 +328,39 @@ $(document).ready(function(){
 			$(".bg, .popup_Area").remove();
 		}); //popup_Btn end
 	}	
-
-function row_Add(){
-	var add = "";
-	// " + + "
-	add+= " <tr>";
-	add+= "	<td>" + ${data.MNO} + "</td>";
-	add+= "	<td><input type=\"text\" id=\"m_Name\" name=\"m_Name\" value=\"" + ${data.MNAME} + "\"></td>";
-	add+= "	<td><input type=\"text\" id=\"m_CName\" name=\"m_CName\" value=\"" + ${data.CNAME} + "\"></td>";
-	add+= "	<td><input type=\"text\" id=\"m_Price\" name=\"m_Price\" value=\"" + ${data.MPRICE} + "\"></td>";
-	add+= "	<td><input type=\"file\" id=\"m_Img\" name=\"m_Img\" value=\"" + ${data.MIMG} + "\"></td>";
-	add+= "	<td><input type=\"text\" id=\"m_Note\" name=\"m_Note\" value=\"" + ${data.NOTE} + "\"></td>";
-	add+= "</tr>";
-	
-	$("tbody").html(add);
-	
-}
+	/* 행추가 */
+	function add(){
+		var trCnt = $("#add_Tb tbody tr").length;
+		
+		if(trCnt < 5){
+			var add ="";
+				// " + + "
+				add+=" <tr>";
+				add+="		<td><input type=\"text\" id=\"m_Name\" name=\"m_Name\"></td>";
+				add+="		<td>";
+				add+="			<select class=\"m_Cate\" name =\"m_Cate\">";
+				add+="				<option selected=\"selected\">카테고리명</option>";
+				add+="				<option value=\"0\">음료</option>";
+				add+="				<option value=\"1\">제과</option>";
+				add+="				<option value=\"2\">굿즈</option>";
+				add+="				<option value=\"3\">원두</option>";
+				add+=" 			</select>";
+				add+=" 		</td>";
+				add+= "		<td><input type=\"text\" id=\"m_Price\" name=\"m_Price\"></td>";
+				add+= "		<td><input type=\"button\" value=\"첨부파일선택\" id=\"file_Btn\"></td>";
+				add+= "		<td><input type=\"text\" id=\"m_Note\" name=\"m_Note\"></td>";
+				add+= "</tr>";
+				
+				$("#add_Tb tbody").append(add);
+			}else{
+				makePopup("", "최대 5개까지만 가능합니다.",function(){
+				});
+			}
+	}
+	/* 행삭제 */
+	function del(){
+		$("#add_Tb tbody tr:last").remove();
+	}
 </script>
 </head>
 <body>
@@ -303,6 +369,7 @@ function row_Add(){
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
 	<input type="hidden" name="search_input" value="${param.search_input}">
+</form>
 
 <!--컨텐츠 -->
 	<div class="content_Area">
@@ -312,10 +379,13 @@ function row_Add(){
 			<button class="row_Del">행삭제</button>
 			<button class="row_Add">행추가</button>
 		</div>
-	
-	<table cellspacing="0">
+	<form id="fileForm" action="fileUploadAjax"
+		method="post" enctype="multipart/form-data">
+		<input type="file" name="att" id="att"/>
+	</form>
+	<form action="#" id="add_Form" method="post">
+	<table id="add_Tb" cellspacing="0">
 		<colgroup>
-			<col width="20%" />
 			<col width="20%" />
 			<col width="20%" />
 			<col width="20%" />
@@ -324,8 +394,7 @@ function row_Add(){
 		</colgroup>
 		<thead>
 			<tr>
-				<th scope=col style= "border-left: none;">메뉴번호</th>
-				<th scope=col>메뉴이름</th>
+				<th scope=col style= "border-left: none;">메뉴이름</th>
 				<th scope=col>카테고리</th>
 				<th scope=col>가격(원)</th>
 				<th scope=col>이미지</th>
@@ -334,16 +403,25 @@ function row_Add(){
 		</thead>
 		<tbody>
 			 <tr>
-				<td>${data.MNO}</td>
-				<td><input type="text" id="m_Name" name="m_Name" value="${data.MNAME}"></td>
-				<td><input type="text" id="m_CName" name="m_CName" value="${data.CNAME}"></td>
-				<td><input type="text" id="m_Price" name="m_Price" value="${data.MPRICE}"></td>
-				<td><input type="file" id="m_Img" name="m_Img" value="${data.MIMG}"></td>
-				<td><input type="text" id="m_Note" name="m_Note" value="${data.NOTE}"></td>
+				<td><input type="text" id="m_Name" name="m_Name"></td>
+				<td>
+					<select class="m_Cate" name ="m_Cate">
+						<option selected="selected">카테고리명</option>
+						<option value="0">음료</option>
+						<option value="1">제과</option>
+						<option value="2">굿즈</option>
+						<option value="3">원두</option>
+					</select>
+				</td>
+				<td><input type="text" id="m_Price" name="m_Price"></td>
+				<td><input type="button" value="첨부파일선택" id="file_Btn"></td>
+				<td><input type="text" id="m_Note" name="m_Note"></td>
 			</tr> 
 		</tbody>
-</form>
 		</table>
+			<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/> 	
+			<input type="hidden" id="m_File" name="m_File"/> 	
+		</form>
 			<div class="submit_area">
 				<button class="cnl">취소</button>
 				<button class="submit">완료</button>

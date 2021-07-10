@@ -114,4 +114,10 @@
 		WHERE MENU_NO = #{menuNo}
 	</update>
 	
+	<!-- 등록  -->
+	<insert id="addM" parameterType="hashmap">
+		INSERT INTO POS_MENU (MENU_NO,POS_CATE_NO,MENU_NAME,MENU_PRICE,MENU_IMG)
+		VALUES (POS_MENU_SEQ.NEXTVAL,#{m_Cate},#{m_Name},#{m_Price},#{m_File)
+	</insert>
+	
 </mapper> 

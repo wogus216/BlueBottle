@@ -19,4 +19,6 @@ public HashMap<String, String> getMd(HashMap<String, String> params) throws Thro
 
 public int editM(HashMap<String, String> params) throws Throwable;
 
+public int addM(HashMap<String, String> params) throws Throwable;
+
 }

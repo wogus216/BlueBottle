@@ -57,4 +57,10 @@ public class jhDao implements IjhDao {
 		return sqlsession.update("JH.editM", params);
 	}
 
+	@Override
+	public int addM(HashMap<String, String> params) throws Throwable {
+		System.out.println("추가 db돌았습니다.");
+		return sqlsession.insert("JH.addM", params);
+	}
+
 }

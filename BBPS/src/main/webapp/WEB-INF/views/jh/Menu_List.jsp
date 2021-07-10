@@ -186,7 +186,7 @@ $(document).ready(function(){
  	});
  	
  	//추가 
- 	$("add_Btn").on("click",function(){
+ 	$(".add_Btn").on("click",function(){
  		$("#menu_Form").attr("action","Menu_Add");
  		$("#menu_Form").submit();
  	});
