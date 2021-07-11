@@ -230,7 +230,7 @@ $(document).ready(function(){
 	
 	
 	
-	$("#att0").on("change", function(){
+	$("#att").on("change", function(){
 		//역슬래시를 문자열로 쓰기위해서는 두개를 사용해야 문자열로 처리된다.
 		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
 	});
