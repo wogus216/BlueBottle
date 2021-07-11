@@ -142,38 +142,7 @@ html,body{
 $(document).ready(function(){
 	//메뉴 그리기
 	reLoadMenu();
-	//1뎁스 클릭시 효과 변화
-
-	
-	
-	
 }); //ready end
-function menuFunction(){
-	$(".menu1_wrap").on("click",".menu_depth1",function(){
-		$(".menu1_wrap_on").attr("class","menu1_wrap");
-		$(this).parent().parent().attr("class","menu1_wrap_on");
-		$(".menu_depth1").css("color", "black");
-		$(this).css("color", "#01a1dd");
-	
-	});
-	
-	$(".menu_depth2").on("click",function(){
-	});
-	
-	//2뎁스 호버 시 효과
-	$(".menu_depth2_area").children().hover(function(){
-		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "#f2f2f2");
-	},function(){
-		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
-	});
-	
-	
-	//로그아웃
-	$("#log_Out").on("click",function(){
-		location.href = "H_LogOut";
-	});
-	
-}
 
 
 function reLoadMenu(){
@@ -198,6 +167,32 @@ function reLoadMenu(){
 	
 }
 
+function menuFunction(){
+	
+	//1뎁스 호버 시 효과
+	$(".menu1_wrap").on("click",".menu_depth1",function(){
+		$(".menu1_wrap_on").attr("class","menu1_wrap");
+		$(this).parent().parent().attr("class","menu1_wrap_on");
+		$(".menu_depth1").css("color", "black");
+		$(this).css("color", "#01a1dd");
+	
+	});
+	
+	
+	//2뎁스 호버 시 효과
+	$(".menu_depth2_area").children().hover(function(){
+		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "#f2f2f2");
+	},function(){
+		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
+	});
+	
+	
+	//로그아웃
+	$("#log_Out").on("click",function(){
+		location.href = "H_LogOut";
+	});
+	
+}
 
 function drawMenu(menu){
 	var html = "";

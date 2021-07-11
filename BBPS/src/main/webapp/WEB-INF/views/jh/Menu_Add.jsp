@@ -228,10 +228,14 @@ $(document).ready(function(){
 		$("#att").click();
 	});
 	
-	$("#att").on("change", function(){
+	
+	
+	$("#att0").on("change", function(){
 		//역슬래시를 문자열로 쓰기위해서는 두개를 사용해야 문자열로 처리된다.
 		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
 	});
+	
+	
 	
 	//추가완료 버튼
 	$(".submit").on("click",function(){
@@ -240,16 +244,15 @@ $(document).ready(function(){
 		fileForm.ajaxForm({
 			beforeSubmit: function(){
 				if($.trim($("#m_Name").val()) == ""){
-					$("#m_Name").focus();
 					makePopup("", "메뉴이름을 입력해주세요",function(){});
 					return false; // ajaxForm 실행 불가
+					
 				} else if($.trim($("#m_Cate").val()) == "카테고리명"){
 					makePopup("", "카테고리를 선택",function(){}); 
-						$("#m_Cate").focus();
 					return false; // ajaxForm 실행 불가
+					
 				} else if($.trim($("#m_Price").val()) == ""){
 					makePopup("", "가격을 입력해주세요",function(){}); 
-						$("#m_Price").focus();
 					return false; // ajaxForm 실행 불가
 				} 
 			},
@@ -257,7 +260,8 @@ $(document).ready(function(){
 				if(res.result == "SUCCESS"){
 					//올라간 파일명 저장
 					if(res.fileName.length > 0){
-							$("m_File").val(res.fileName[0]);
+							$("#m_File").val(res.fileName[0]);
+							console.log($("#m_File").val(res.fileName[0]))
 							makePopup("", "파일 올라갔습니다.",function(){});
 					}
 				//글 저장
@@ -349,9 +353,11 @@ $(document).ready(function(){
 				add+= "		<td><input type=\"text\" id=\"m_Price\" name=\"m_Price\"></td>";
 				add+= "		<td><input type=\"button\" value=\"첨부파일선택\" id=\"file_Btn\"></td>";
 				add+= "		<td><input type=\"text\" id=\"m_Note\" name=\"m_Note\"></td>";
+				add+= "		<td><input type=\"hidden\" id=\"userNo\" name=\"userNo\" value=\"${sUSERNo}\"/></td>";
+				add+= "		<td><input type=\"hidden\" id=\"m_File\" name=\"m_File\"/></td>";
 				add+= "</tr>";
 				
-				$("#add_Tb tbody").append(add);
+				$("body #add_Tb tbody").append(add);
 			}else{
 				makePopup("", "최대 5개까지만 가능합니다.",function(){
 				});
@@ -361,6 +367,8 @@ $(document).ready(function(){
 	function del(){
 		$("#add_Tb tbody tr:last").remove();
 	}
+	
+	
 </script>
 </head>
 <body>
@@ -416,11 +424,15 @@ $(document).ready(function(){
 				<td><input type="text" id="m_Price" name="m_Price"></td>
 				<td><input type="button" value="첨부파일선택" id="file_Btn"></td>
 				<td><input type="text" id="m_Note" name="m_Note"></td>
+				<td><input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/></td>
+				<td><input type="hidden" id="m_File" name="m_File"/></td>
 			</tr> 
 		</tbody>
 		</table>
+		<!--  
 			<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/> 	
-			<input type="hidden" id="m_File" name="m_File"/> 	
+			<input type="hidden" id="m_File" name="m_File"/> 
+		-->
 		</form>
 			<div class="submit_area">
 				<button class="cnl">취소</button>
