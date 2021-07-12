@@ -347,6 +347,10 @@ public class jhController {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
 		
+		
+		  String path = "resources/upload/"+ data.get("MIMG"); 
+		  data.put("MIMG",path);
+		 
 		mav.addObject("data", data);
 		System.out.println("수정 데이터 보자"+data);
 		mav.setViewName("jh/Menu_Edit");
@@ -404,6 +408,12 @@ public class jhController {
 	
 	System.out.println("Menu_Adds에서본사유저번호:"+session.getAttribute("sUSERNo"));
 	try {
+		String mFile = params.get("m_File");
+		String[] arrayMFile = mFile.split(",");
+		for(int i =0; i < arrayMFile.length; i++) {
+			System.out.println("이미지:"+arrayMFile[i]);
+			params.put("m_File", arrayMFile[i]);
+		}
 		int cnt = ijhService.addM(params);
 		
 		if(cnt > 0) {

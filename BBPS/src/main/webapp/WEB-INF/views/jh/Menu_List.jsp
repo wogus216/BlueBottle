@@ -316,6 +316,7 @@ function drawPaging(pb){
 					<option value="2">가격</option>
 				</select>
 				<input type="text" class="search_input" name="search_input" value="${param.search_input}"/>
+				<input type="hidden" class="search_Filter" name="search_Filter" value="${search_Filter}"/>
 				<button class="search_Btn">검색</button>
 			</div>
 		</form>

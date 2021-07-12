@@ -62,7 +62,7 @@ th{
     border-left: 1px solid #ffffff;
 }
 td{
-	font-size:18px;
+	font-size:15px;
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
@@ -79,7 +79,7 @@ input{
 
 }
 
-.menu_Img{
+#m_Img{
 	width: 100px;
 	padding-bottom: 20px;
 }
@@ -189,7 +189,11 @@ $(document).ready(function(){
 	
 	//완료 버튼
 	$(".row_Submit").on("click",function(){
-		if($.trim($("#m_Price").val()) == ""){
+		if($.trim($("#m_Name").val()) == ""){
+			makePopup("", "메뉴이름을 입력해주세요",function(){
+				$("#m_Name").focus();
+			});
+		} else if($.trim($("#m_Price").val()) == ""){
 			makePopup("", "가격을 입력해주세요",function(){
 				$("#m_Price").focus();
 			});
@@ -228,7 +232,10 @@ $(document).ready(function(){
 		}
 	}); // 완료 end
 	
+
+	
 }); //ready end
+	
 	/* 팝업 */
 	function makePopup(title, contents, func) {
 		var html ="";
@@ -268,7 +275,7 @@ $(document).ready(function(){
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
 	<input type="hidden" name="search_input" value="${param.search_input}">
-
+	<input type="hidden" id="cateNo" name="cateNo"value="${param.cateNo}"/>
 <!--컨텐츠 -->
 	<div class="content_Area">
 		<div class="content">
@@ -298,16 +305,16 @@ $(document).ready(function(){
 
 		<tr>
 			<td>${data.MNO}</td>
-			<td>${data.MNAME}</td>
+			<td><input type="text" id="m_Name" name="m_Name" value="${data.MNAME}"></td>
 			<td>${data.CNAME}</td>
 			<td><input type="text" id="m_Price" name="m_Price" value="${data.MPRICE}"></td>
-			<td>${data.MIMG}</td>
-			<td><input type="text" id="m_Note" name="m_Note" value="${data.NOTE}"></td>
+			<td><img id="m_Img" name="m_Img" src="${data.MIMG}"></td>
 		</tr>
-</form>
 		</table>
-			
 		</div> <!--content end  -->
 	</div>  <!--content_Area end  -->
+</form>
+	
+<img alt="와플" src="${data.MIMG}">
 </body>
 </html>

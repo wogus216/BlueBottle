@@ -39,7 +39,7 @@
 	<select id="getMbCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*) AS CNT
 	FROM POS_MENU PM INNER JOIN POS_CATE PC
-                        	 ON PM.POS_CATE_NO = PC.POS_CATE_NO
+                        	 ON PM.POS_CATE_NO = PC.CATE_NO
 	WHERE 1 = 1
 	<if test ="search_input !=null and search_input != ''">
 		<choose>
@@ -47,7 +47,7 @@
 				AND PM.MENU_NAME LIKE '%' || #{search_input} || '%'
 			</when>
 			<when test="search_Filter == 1">
-				AND PC.POS_CATE_NAME LIKE '%' || #{search_input} || '%'
+				AND PC.CATE_NAME LIKE '%' || #{search_input} || '%'
 			</when>
 			<when test="search_Filter == 2">
 				AND PM.MENU_PRICE LIKE '%' || #{search_input} || '%'
@@ -59,10 +59,10 @@
 	<!-- 메뉴 게시글 갖고오기 -->
 	<select id="getMbList" parameterType="hashmap" resultType="hashmap">
 		SELECT P.MENU_NO,P.MENU_NAME,P.CNAME,P.MENU_PRICE,P.POS_CATE_NO
-		FROM (SELECT PM.MENU_NO,PM.MENU_NAME,PM.POS_CATE_NO,PM.MENU_PRICE,PC.POS_CATE_NAME as CNAME,
+		FROM (SELECT PM.MENU_NO,PM.MENU_NAME,PM.POS_CATE_NO,PM.MENU_PRICE,PC.CATE_NAME as CNAME,
 		             ROW_NUMBER() OVER( ORDER BY MENU_NO ASC) AS RNUM
 		      FROM POS_MENU PM INNER JOIN POS_CATE PC
-		                                 ON PM.POS_CATE_NO = PC.POS_CATE_NO
+		                                 ON PM.POS_CATE_NO = PC.CATE_NO
 		WHERE 1=1
 	<if test ="search_input !=null and search_input != ''">
 		<choose>
@@ -70,7 +70,7 @@
 				AND PM.MENU_NAME LIKE '%' || #{search_input} || '%'
 			</when>
 			<when test="search_Filter == 1">
-				AND PC.POS_CATE_NAME LIKE'%' || #{search_input} || '%'
+				AND PC.CATE_NAME LIKE'%' || #{search_input} || '%'
 			</when>
 			<when test="search_Filter == 2">
 				AND PM.MENU_PRICE LIKE '%' || #{search_input} || '%'
@@ -102,15 +102,15 @@
 	
 	<!-- 상세보기 -->
 	<select id="getMd" parameterType="hashmap" resultType="hashmap">
-	SELECT  PM.MENU_NO AS MNO,PM.MENU_NAME AS MNAME,PC.POS_CATE_NAME AS CNAME,PM.MENU_PRICE AS MPRICE,PM.MENU_IMG AS MIMG,PM.NOTE
+	SELECT  PM.MENU_NO AS MNO,PM.MENU_NAME AS MNAME,PC.CATE_NAME AS CNAME,PM.MENU_PRICE AS MPRICE,PM.MENU_IMG AS MIMG,PM.NOTE
 	FROM POS_MENU PM INNER JOIN POS_CATE PC
-                         ON PM.POS_CATE_NO = PC.POS_CATE_NO
+                         ON PM.POS_CATE_NO = PC.CATE_NO
 	WHERE PM.MENU_NO = #{menuNo}	
 	</select>
 	
 	<!-- 수정 -->
 	<update id="editM" parameterType="hashmap">
-		UPDATE POS_MENU SET MENU_PRICE = #{m_Price}, NOTE = #{m_Note}
+		UPDATE POS_MENU SET MENU_NAME = #{m_Name}, MENU_PRICE = #{m_Price}
 		WHERE MENU_NO = #{menuNo}
 	</update>
 	
