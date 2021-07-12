@@ -215,7 +215,7 @@ input[type=text]:focus{
 }
 
 .cnl_btn{
-	background-color: #8c8c8c;
+	background-color: #b3b3b3;
 }
 
 .view_tr input[type='text'] {

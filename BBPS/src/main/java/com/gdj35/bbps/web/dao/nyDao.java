@@ -60,6 +60,30 @@ public class nyDao implements InyDao{
 
 		return sqlSession.update("NY.deleteItemCate", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> getMenuCate() throws Throwable {
+
+		return sqlSession.selectList("NY.getMenuCate");
+	}
+
+	@Override
+	public int addMenuCate(HashMap<String, String> params) throws Throwable {
+		
+		return sqlSession.insert("NY.addMenuCate", params);
+	}
+
+	@Override
+	public int updateMenuCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.updateMenuCate", params);
+	}
+
+	@Override
+	public int deleteMenuCate(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.deleteMenuCate", params);
+	}
 	
 	
 }

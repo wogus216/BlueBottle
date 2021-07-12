@@ -198,10 +198,101 @@ public class nyController {
 	public String itemCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();		
+		try {
+			int cnt = iNyService.deleteItemCate(params);
+			
+			if(cnt > 0 ) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping (value="/Menu_Cate_Mang")
+	public ModelAndView Menu_Cate_Mang(ModelAndView mav) {
+		
+		mav.setViewName("ny/Menu_Cate_Mang");		
+		return mav;
+	}
+	
+	@RequestMapping(value="/menuCateList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String menuCateList() throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+				
+		List<HashMap<String, String>> list = iNyService.getMenuCate();
+			
+		modelMap.put("list", list);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+
+	@RequestMapping(value="/menuCateAdd", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String menuCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		try {
-			int cnt = iNyService.deleteItemCate(params);
+			int cnt = iNyService.addMenuCate(params);
+			
+			if(cnt > 0 ) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "error");
+			}
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "failed");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/menuCateUpdate", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String menuCateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int cnt = iNyService.updateMenuCate(params);
+			
+			if(cnt > 0 ) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/menuCateDelete", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String menuCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();		
+		try {
+			int cnt = iNyService.deleteMenuCate(params);
 			
 			if(cnt > 0 ) {
 				modelMap.put("msg", "success");
