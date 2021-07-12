@@ -317,7 +317,8 @@ $(document).ready(function(){
 	});
 	
 	$(".stock_add_btn").on("click",function(){
-		location.href = "H_stock_plus.html";
+		$("#goForm").attr("action","Stock_Add");
+		$("#goForm").submit();
 	});
 	
 	$(".discard_btn").on("click",function(){
@@ -356,7 +357,7 @@ function stockloadList(){
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawstockList(res.stocklist);
+			drawstockList(res.stocklist,res.result);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -364,7 +365,7 @@ function stockloadList(){
 	});
 }
 
-function drawstockList(stocklist){
+function drawstockList(stocklist,result){
 	var html ="";
 	
 	html += "<tr>";
@@ -378,14 +379,22 @@ function drawstockList(stocklist){
 	
 	html ="";
 	
-	for(var d of stocklist){
+	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td>"+d.ITEM_NAME+"</td>";
-		html += "<td>"+d.SUM_CNT+"</td>";
-		html += "<td>"+d.EXPIRY_DATE+"</td>";
-		html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
+		html += "<td colspan = \"4\" style = \"text-align: center;\">해당 품목의 재고가 존재하지 않습니다.</td>";
 		html += "</tr>";	
+	} else if (result > 0){
+		for(var d of stocklist){ //결과 행이 존재하는 경우
+			html += "<tr>";
+			html += "<td>"+d.ITEM_NAME+"</td>";
+			html += "<td>"+d.SUM_CNT+"</td>";
+			html += "<td>"+d.EXPIRY_DATE+"</td>";
+			html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
+			html += "</tr>";	
+		}
 	}
+	
+	
 	
 	$(".stock_tb tbody").html(html);
 }
@@ -400,7 +409,7 @@ function relloadList(){
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawrelList(res.Rellist);
+			drawrelList(res.Rellist,res.result);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -408,7 +417,7 @@ function relloadList(){
 	});
 }
 
-function drawrelList(Rellist){
+function drawrelList(Rellist,result){
 	var html ="";
 	
 	html += "<tr>";
@@ -426,16 +435,22 @@ function drawrelList(Rellist){
 	
 	html ="";
 	
-	for(var d of Rellist){
+	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td><a href = \"#\" ordNo = \""+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
-		html += "<td>"+d.ITEM_NO+"</td>";
-		html += "<td>"+d.ITEM_NAME+"</th>";
-		html += "<td>"+d.CNT+"</td>";
-		html += "<td>"+d.EXPIRY_DATE+"</td>";
-		html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
-		html += "<td>"+d.BRCH_NAME+"</td>";
+		html += "<td colspan = \"7\" style = \"text-align: center;\">해당 품목의 출고 이력이 존재하지 않습니다.</td>";
 		html += "</tr>";	
+	} else if (result > 0){
+		for(var d of Rellist){ //결과 행이 존재하는 경우
+			html += "<tr>";
+			html += "<td><a href = \"#\" ordNo = \""+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
+			html += "<td>"+d.ITEM_NO+"</td>";
+			html += "<td>"+d.ITEM_NAME+"</th>";
+			html += "<td>"+d.CNT+"</td>";
+			html += "<td>"+d.EXPIRY_DATE+"</td>";
+			html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
+			html += "<td>"+d.BRCH_NAME+"</td>";
+			html += "</tr>";	
+		}
 	}
 	
 	$(".stock_rel_history tbody").html(html);
@@ -478,7 +493,7 @@ function drawstockdiscardList(stockdiscardlist){
 		html += "<tr>";
 		html += "<td>"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.SUM_CNT+"</td>";
-		html += "<td><input type = \"number\" id = \"discard_cnt\" name = \"discard_cnt\"/></td>";
+		html += "<td><input type = \"number\" min = 0 id = \"discard_cnt\" name = \"discard_cnt\"/></td>";
 		html += "<td>"+d.EXPIRY_DATE+"</td>";
 		html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
 		html += "</tr>";	
@@ -498,7 +513,7 @@ function discardloadList(){
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawdiscardList(res.discardlist);
+			drawdiscardList(res.discardlist,res.result);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -506,7 +521,7 @@ function discardloadList(){
 	});
 }
 
-function drawdiscardList(discardlist){
+function drawdiscardList(discardlist,result){
 	var html ="";
 	
 	html += "<tr>";
@@ -522,15 +537,21 @@ function drawdiscardList(discardlist){
 	
 	html ="";
 	
-	for(var d of discardlist){
+	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td>"+d.ENROLL_DATE+"</td>";
-		html += "<td>"+d.CNT+"</td>";
-		html += "<td>"+d.EXPIRY_DATE+"</td>";
-		html += "<td>"+d.NOTE+"</td>";
-		html += "<td>"+d.ID+"</td>";
-		html += "<th></th>";
+		html += "<td colspan = \"6\" style = \"text-align: center;\">해당 품목의 폐기 이력이 존재하지 않습니다.</td>";
 		html += "</tr>";	
+	} else if (result > 0){
+		for(var d of discardlist){
+			html += "<tr>";
+			html += "<td>"+d.ENROLL_DATE+"</td>";
+			html += "<td>"+d.CNT+"</td>";
+			html += "<td>"+d.EXPIRY_DATE+"</td>";
+			html += "<td>"+d.NOTE+"</td>";
+			html += "<td>"+d.ID+"</td>";
+			html += "<th></th>";
+			html += "</tr>";	
+		}
 	}
 	
 	$(".stock_discard_history tbody").html(html);
@@ -639,6 +660,7 @@ function drawdiscardList(discardlist){
 <div class="content">
 <form action = "#" id = "goForm" method = "post">
 <input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
+<input type = "hidden" name ="itemName" value = "${param.itemName}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
 <input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 <input type = "hidden" name = "search_input" value = "${param.search_input}"/>

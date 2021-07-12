@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
 /* 상단 바 */
 .top {
    width: 100%;
@@ -200,7 +201,7 @@ button{
 }
 
 .submit{
-	width:200px;
+	width:180px;
 	height: 50px;
 	background-color: #01a1dd;
 	font-weight: bold;
@@ -209,13 +210,37 @@ button{
 
 button:focus{outline:none;}
 
+.cnl_btn{
+	background-color: #b3b3b3;
+    width: 180px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
 </style>
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+var cnt_tr = 1; //행 개수 카운트
+var today = new Date(); //오늘날짜 체크
+
+var dd = today.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+var mm = today.getMonth()+1;
+var yyyy = today.getFullYear();
+	if(dd < 10){
+		dd = "0" + dd;
+	}
+	if(mm < 10){
+		mm = "0" + mm;
+	} //1월인 경우 01로 표기
+
+	today = yyyy+"-"+mm+"-"+dd;
+	
 $(document).ready(function(){
 	
-	draw_stock_add_tb();
+	document.getElementById("stockExpiryDate").valueAsDate = new Date();
+	document.getElementById("stockExpiryDate").setAttribute("min",today);
 	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
@@ -238,41 +263,75 @@ $(document).ready(function(){
 		del_tb();
 	});
 	
+	
+	$(".submit").on("click",function(){
+		if($.trim($(".stockCnt").val()) == ""){
+			alert("추가수량을 입력해주세요.")
+		   $(".stockCnt").focus;
+		}else{
+			
+		   var params = $("#tb_Form").serialize();
+		   
+		   $.ajax({
+		      url : "Stock_Adds",//접속주소
+		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+		      dataType :"json", //받아올 데이터 형식
+		      data : params,///보낼데이터(문자열 형태)
+		      success : function(res){
+		         if(res.msg == "success"){
+		            $("#tb_Form").attr("action","Stock_Dtl");
+		            $("#tb_Form").submit();
+					$("#goForm").submit();
+		         }else if (res.msg == "failed"){
+		            alert("재고 추가에 실패하였습니다."); // 팝업 변경 필요
+		         }else {
+		            alert("재고 추가 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		         }
+		      },
+		      error : function(request,status,error){
+		         console.log(error);
+		      }
+		   });
+		}
+	});
+	
 }); //ready end
 
-var cnt_tr = 0;
-
-function draw_stock_add_tb(){
-	
-	cnt_tr ++;
-	
-	var html = "";
-	
-	html += "<tr class = \"first_tr\">";
-	html += "<td>D-011</td>";
-	html += "<td>우유</td>";
-	html += "<td><input type=\"number\" min = 0 maxlength=\"10\"></td>";
-	html += "<td><input type=\"date\" value=\"2021-01-01\" class=\"start_date\" /></td>";
-	html += "</tr>";
-	
-	$("tbody").html(html);
-}
-
 function add_tb(){
+	
+	var today1 = new Date(); //오늘날짜 체크
+
+	var dd1 = today1.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm1 = today1.getMonth()+1;
+	var yyyy1 = today1.getFullYear();
+		if(dd1 < 10){
+			dd1 = "0" + dd1;
+		}
+		if(mm1 < 10){
+			mm1 = "0" + mm1;
+		} //1월인 경우 01로 표기
+
+		today1 = yyyy1+"-"+mm1+"-"+dd1;
+	
+	if(cnt_tr < 15){
 	
 	cnt_tr ++;
 	
 	var insertTr = "";
 	
 	insertTr += "<tr>";
-	insertTr += "<td>D-011</td>";
-	insertTr += "<td>우유</td>";
-	insertTr += "<td><input type=\"number\" min = 0 maxlength=\"10\"></td>";
-	insertTr += "<td><input type=\"date\" value=\"2021-01-01\" class=\"start_date\" /></td>";
+	insertTr += "<td>"+${param.itemNo}+"<input type = \"hidden\" name = \"itemNo\" value = \""+${param.itemNo}+"\"/></td>";
+	insertTr += "<td>${param.itemName}</td>";
+	insertTr += "<td><input type=\"number\" class = \"stockCnt\" name = \"stockCnt\" min = 1 maxlength=\"10\"></td>";
+	insertTr += "<td><input type=\"date\" class = \"stockExpiryDate\" id = \"stockExpiryDate\" name = \"stockExpiryDate\" min = \""+today1+"\" value = \""+today1+"\" max = \"2999-01-01\"/></td>";
 	insertTr += "</tr>";
 	
 	
 	$("tbody").append(insertTr);
+	
+	}else{
+		alert("최대 행입니다."); // 팝업 변경 필요
+	}
 }
 
 function del_tb(){
@@ -389,12 +448,19 @@ function del_tb(){
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
+<form action = "Stock_Dtl" id = "goForm" method = "post">
+<input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
+<input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
+<input type = "hidden" name ="itemName" value = "${param.itemName}"/>
+<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
+<input type = "hidden" name = "search_input" value = "${param.search_input}"/>
+</form>
 <h1>재고등록</h1>
 <div class="btn_area" style = "height:40px;">
 <button class="row_del" style= "margin:0px 0px 0px 10px;">행삭제</button>
 <button class="row_add" style= "margin:0px 0px 0px 10px;">행추가</button>
 </div>
-
+<form action = "#" id = "tb_Form" method = "post">
 <table cellspacing="0">
 	<colgroup>
 		<col width="25%" />
@@ -410,10 +476,19 @@ function del_tb(){
 		<th scope=col>유통기한</th>
 	</tr>
 	</thead>
-	<tbody>	</tbody>
+	<tbody>
+	<tr>
+	<td>${param.itemNo}<input type = "hidden" name = "itemNo" value = "${param.itemNo}"/></td>
+	<td>${param.itemName}</td>
+	<td><input type="number" class = "stockCnt"  name = "stockCnt" min = 1 maxlength="10"></td>
+	<td><input type="date" class = "stockExpiryDate" id = "stockExpiryDate" name = "stockExpiryDate" max = "2999-01-01" /></td>
+	</tr>
+	</tbody>
 </table>
+</form>
 	<div class="submit_area">
 	<button class="submit">완료</button>
+	<button class="cnl_btn">취소</button>
 	</div>
 </div>
 </div>

@@ -240,12 +240,14 @@ public class sbController {
 					
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String,Object> modelMap = new HashMap<String,Object>();
-				
+			
 			List<HashMap<String,String>> stocklist = isbservice.getSDetail(params); // 유통기한 별 재고 상세
 			
+			int result = stocklist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
 					
 			modelMap.put("stocklist",stocklist);
-				
+			modelMap.put("result",result);
+			
 			return mapper.writeValueAsString(modelMap);
 		}
 	
@@ -256,10 +258,13 @@ public class sbController {
 				
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
-			
+		
 		List<HashMap<String,String>> Rellist = isbservice.getSRelList(params);
 				
+		int result = Rellist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
 			modelMap.put("Rellist",Rellist);
+			modelMap.put("result",result);
 			
 			return mapper.writeValueAsString(modelMap);
 		}
@@ -287,13 +292,65 @@ public class sbController {
 						
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
-					
+		
 		List<HashMap<String,String>> discardlist = isbservice.getSDList(params); // 유통기한 별 재고 상세
-						
+		
+		int result = discardlist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
 			modelMap.put("discardlist",discardlist);
+			modelMap.put("result",result);
 					
 			return mapper.writeValueAsString(modelMap);
 		}
 	
+	//본사재고 추가
+	@RequestMapping(value = "/Stock_Add")
+	public ModelAndView HSAdd(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
+		
+		mav.setViewName("sb/Stock_Add");
+		
+		return mav;
+	}
 	
+	//본사재고추가(기능)
+	@RequestMapping(value = "/Stock_Adds", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSAdds(@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> stockCnt,@RequestParam ArrayList<String> stockExpiryDate) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		System.out.println("인서트 맵" + insertMap);
+		
+		try {
+			
+			for(int i = 0; i < itemNo.size(); i++) {
+				
+				insertMap.put("itemNo", itemNo.get(i));
+				insertMap.put("stockCnt", stockCnt.get(i));
+				insertMap.put("stockExpiryDate", stockExpiryDate.get(i));
+				
+				int cnt = isbservice.AddStock(insertMap);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+					}
+				}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+
 }

@@ -322,7 +322,7 @@ function add_tb(){
 		insertTr += "<option value = \"4\">기타</option>";
 		insertTr += "</select></td>";
 		insertTr += "<td><input class = \"itemName\"type=\"text\" name = \"itemName\" maxlength=\"30\"></td>";
-		insertTr += "<td><input class = \"itemPrice\"type=\"number\" name = \"itemPrice\" maxlength=\"10\"></td>";
+		insertTr += "<td><input class = \"itemPrice\"type=\"number\" min = 1 name = \"itemPrice\" maxlength=\"10\"></td>";
 		insertTr += "<td><input class = \"itemMinOrdUnit\"type=\"number\" name = \"itemMinOrdUnit\" maxlength=\"10\"></td>";
 		insertTr += "<td><input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" checked=\"checked\" value = \"0\"><label style= \"padding-right: 20px;\">Y</label>";
 		insertTr += "<input class = \"itemComProdFlag\"type=\"radio\" name = \"itemComProdFlag"+cnt_tr+"\" value = \"1\"><label>N</label>";

@@ -126,4 +126,9 @@
                         ON HD.USER_NO = HU.USER_NO
                         AND HS.ITEM_NO = #{itemNo}
 	</select>
+	
+	<!-- 본사 재고 추가 -->
+	<insert id="AddStock" parameterType="hashmap">
+	INSERT INTO HQ_STOR VALUES (HQ_STOR_SEQ.NEXTVAL,#{itemNo},4,#{stockCnt},#{stockExpiryDate},SYSDATE)
+	</insert>
 </mapper> 
