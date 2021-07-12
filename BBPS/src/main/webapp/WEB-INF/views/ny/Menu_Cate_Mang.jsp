@@ -328,13 +328,12 @@ $(document).ready(function(){
 						reloadList();
 					}else if(res.msg == "failed") {
 						makePopup("오류", "등록에 실패했습니다.", null);
-						$("#inputTxt").val("");
 						reloadList();
 					}else {
 						makePopup("오류", "등록 중 문제가 발생했습니다.", null);
-						$("#inputTxt").val("");
 						reloadList();
 					}
+					$("#inputTxt").val("");
 				},
 				error: function(request, status, error) {
 					console.log(error);

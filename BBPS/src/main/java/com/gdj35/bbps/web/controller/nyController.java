@@ -308,5 +308,12 @@ public class nyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	@RequestMapping(value="/B_Sales")
+	public ModelAndView B_Sales(ModelAndView mav) {
+		
+		mav.setViewName("ny/B_Sales");
+		
+		return mav;
+	}
 	
 }

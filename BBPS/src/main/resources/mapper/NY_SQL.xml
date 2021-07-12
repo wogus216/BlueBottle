@@ -69,7 +69,7 @@
 	
 	<insert id="addMenuCate" parameterType="hashmap" >
 	INSERT INTO POS_CATE(CATE_NO, CATE_NAME, DEL_FLAG)
-	VALUES(MENU_CATE_SEQ.NEXTVAL,#{inputTxt},1)
+	VALUES(POS_CATE_SEQ.NEXTVAL,#{inputTxt},1)
 	</insert>
 	
 	<update id="updateMenuCate" parameterType="hashmap">
