@@ -59,4 +59,31 @@
 	DEL_FLAG = 0
 	WHERE CATE_NO = #{cateNo}
 	</update>
+	
+	<select id="getMenuCate" resultType="hashmap">
+	SELECT CATE_NO, CATE_NAME
+	FROM POS_CATE
+	WHERE DEL_FLAG = 1
+	ORDER BY CATE_NO
+	</select>
+	
+	<insert id="addMenuCate" parameterType="hashmap" >
+	INSERT INTO POS_CATE(CATE_NO, CATE_NAME, DEL_FLAG)
+	VALUES(POS_CATE_SEQ.NEXTVAL,#{inputTxt},1)
+	</insert>
+	
+	<update id="updateMenuCate" parameterType="hashmap">
+	UPDATE POS_CATE
+	SET
+	CATE_NAME = #{cateName}
+	WHERE CATE_NO = #{cateNo}
+	</update>
+	
+	<update id="deleteMenuCate" parameterType="hashmap">
+	UPDATE POS_CATE
+	SET
+	DEL_FLAG = 0
+	WHERE CATE_NO = #{cateNo}
+	</update>
+	
 </mapper> 

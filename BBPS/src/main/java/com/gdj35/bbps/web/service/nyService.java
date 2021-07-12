@@ -62,5 +62,31 @@ public class nyService implements InyService{
 		return iNyDao.deleteItemCate(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getMenuCate() throws Throwable {
+
+		return iNyDao.getMenuCate();
+	}
+
+	@Override
+	public int addMenuCate(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.addMenuCate(params);
+	}
+
+	@Override
+	public int updateMenuCate(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.updateMenuCate(params);
+	}
+
+	@Override
+	public int deleteMenuCate(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.deleteMenuCate(params);
+	}
+
+
+
 
 }
