@@ -15,4 +15,18 @@ public interface IshService {
 	public List<HashMap<String, String>> getRDtlList(HashMap<String, String> params) throws Throwable;
 
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable;
-} //
+
+	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable;
+
+	public int apvOrd(HashMap<String, String> params) throws Throwable;
+
+	public int nonApvOrd(HashMap<String, String> params) throws Throwable;
+
+	public int apvRef(HashMap<String, String> params) throws Throwable;
+
+	public int nonApvRef(HashMap<String, String> params) throws Throwable;
+
+	public int sendO(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int sendExp(HashMap<String, Object> insertMap) throws Throwable;
+	} 

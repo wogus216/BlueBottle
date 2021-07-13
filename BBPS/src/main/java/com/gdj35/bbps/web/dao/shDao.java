@@ -39,7 +39,42 @@ public class shDao implements IshDao{
 
 	@Override
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("SH.getRDtl", params); //
+		return sqlSession.selectOne("SH.getRDtl", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getOWholeList", params);
+	}
+
+	@Override
+	public int apvOrd(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.apvOrd", params);
+	}
+
+	@Override
+	public int nonApvOrd(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.nonApvOrd", params);
+	}
+
+	@Override
+	public int apvRef(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.apvRef", params);
+	}
+
+	@Override
+	public int nonApvRef(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.nonApvRef", params);
+	}
+
+	@Override
+	public int sendO(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlSession.update("SH.sendO", insertMap);
+	}
+
+	@Override
+	public int sendExp(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlSession.update("SH.sendExp", insertMap);
 	}
 }
 
