@@ -189,10 +189,26 @@ td:first-child{
 	text-align: center;
 }
 
-input{
+.discard_cnt,.discard_{
 	width:220px;
 	height:20px;
 }
+
+.stock_discard_btn{
+	color: white;
+	width: 60px;
+	height: 30px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:15px;
+	margin:0px;
+	cursor: pointer;
+	background-color: #bf4040;
+	outline:none;
+}
+
+
 
 .item_info, .button_area{
 	display: inline-block;
@@ -278,14 +294,20 @@ button{
 
 /*입고이력버튼*/
 .stor_history_btn{ 
+	color: white;
 	background-color: #b5b5b5;
 	width: 80px;
 	height: 30px;
 	font-size:15px;
 	margin: 0px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	cursor: pointer;
+	outline:none;
 }
 
-.stock_tb td:nth-child(4),.stock_tb td:nth-child(5){
+.stock_tb td:nth-child(4),.stock_tb td:nth-child(5),.stock_tb td:nth-child(6){
 	padding : 0px;
 	text-align: center;
 }
@@ -345,6 +367,14 @@ $(document).ready(function(){
 		$(".discard_submit_btn").hide();
 	});
 	
+	$(".stock_discard_btn").on("click",function(){
+		 var params = $("#tb_Form").serialize();
+		   
+		 console.log($("#tb_Form").serialize());
+		 
+		   
+	});
+	
 }); //ready end
 
 //유통기한 별 재고 리스트 그리기
@@ -387,9 +417,9 @@ function drawstockList(stocklist,result){
 		for(var d of stocklist){ //결과 행이 존재하는 경우
 			html += "<tr>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td>"+d.SUM_CNT+"</td>";
+			html += "<td>"+d.PPSUM+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
-			html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
+			html += "<td><input type = \"button\" class = \"stor_history_btn\" value = \"이력확인\"/></td>";
 			html += "</tr>";	
 		}
 	}
@@ -481,8 +511,9 @@ function drawstockdiscardList(stockdiscardlist){
 	html += "<th style=\"border-left: none;\">품목명</th>";
 	html += "<th>재고수량</th>";
 	html += "<th>폐기수량</th>";
+	html += "<th>비고</th>";
 	html += "<th>유통기한</th>";
-	html += "<th>입고이력</th>";
+	html += "<th></th>";
 	html += "</tr>";
 	
 	$(".stock_tb thead").html(html);
@@ -490,12 +521,13 @@ function drawstockdiscardList(stockdiscardlist){
 	html ="";
 	
 	for(var d of stockdiscardlist){
-		html += "<tr>";
+		html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
 		html += "<td>"+d.ITEM_NAME+"</td>";
-		html += "<td>"+d.SUM_CNT+"</td>";
+		html += "<td>"+d.PPSUM+"</td>";
 		html += "<td><input type = \"number\" min = 0 id = \"discard_cnt\" name = \"discard_cnt\"/></td>";
+		html += "<td><input type = \"text\" id = \"discard_note\" name = \"discard_note\"/></td>";
 		html += "<td>"+d.EXPIRY_DATE+"</td>";
-		html += "<td><button class = \"stor_history_btn\">이력확인</button></td>";
+		html += "<td><input type = \"button\" class = \"stock_discard_btn\" value = \"폐기\"/></td>";
 		html += "</tr>";	
 	}
 	
@@ -549,7 +581,7 @@ function drawdiscardList(discardlist,result){
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			html += "<td>"+d.NOTE+"</td>";
 			html += "<td>"+d.ID+"</td>";
-			html += "<th></th>";
+			html += "<td></td>";
 			html += "</tr>";	
 		}
 	}
@@ -676,6 +708,7 @@ function drawdiscardList(discardlist,result){
 			<button class="discard_cnl_btn" style= "margin:0px 0px 0px 10px;">취소</button>
 		</div>
 
+<form action = "#" id = "tb_Form" method = "post">
 <div class = "stock_tb">
 <table cellspacing="0">
 	
@@ -683,6 +716,7 @@ function drawdiscardList(discardlist,result){
 	<tbody></tbody>
 </table>
 </div>
+</form>
 <div class = "stock_rel_history">
 <h2 style ="padding-top: 50px;">재고출고이력</h2>
 <table cellspacing="0">

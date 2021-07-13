@@ -95,13 +95,29 @@
 	
 	<!-- 재고상세 / 유통기한 별 재고상세 -->
 	<select id = "getSDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT DISTINCT EXPIRY_DATE,ITEM_NAME,ITEM_NO,SUM_CNT
-    FROM (
-    SELECT TO_CHAR(HS.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,I.ITEM_NAME,I.ITEM_NO,SUM(HS.CNT)OVER(PARTITION BY HS.EXPIRY_DATE) AS SUM_CNT
-    FROM ITEM I INNER JOIN HQ_STOR HS
-                ON I.ITEM_NO = HS.ITEM_NO
-                AND I.ITEM_NO = #{itemNo})
-    ORDER BY EXPIRY_DATE
+	SELECT I.ITEM_NO,I.ITEM_NAME,TO_CHAR(A.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,A.PPSUM
+               FROM (
+               SELECT P.ITEM_NO,P.EXPIRY_DATE AS EXPIRY_DATE,(NVL(ISUM,0)-NVL(PSUM,0)-NVL(SSUM,0)) AS PPSUM
+               FROM (
+                    SELECT HS.ITEM_NO , HS.EXPIRY_DATE AS EXPIRY_DATE ,SUM(HS.CNT)AS ISUM
+                    FROM HQ_STOR HS INNER JOIN  ITEM I
+                                ON I.ITEM_NO = HS.ITEM_NO
+                                AND HS.ITEM_NO = #{itemNo}
+                    GROUP BY HS.ITEM_NO , HS.EXPIRY_DATE) I  INNER JOIN ( SELECT HS.ITEM_NO , HS.EXPIRY_DATE AS EXPIRY_DATE ,SUM(NVL(HD.CNT,0)) AS PSUM
+                                                                           FROM HQ_STOR HS LEFT OUTER JOIN HQ_DISCARD HD
+                                                                                            ON HD.STOR_NO = HS.STOR_NO
+                                                                            WHERE HS.ITEM_NO = #{itemNo}
+                                                                           GROUP BY HS.ITEM_NO , HS.EXPIRY_DATE ) P 
+                                                             ON I.EXPIRY_DATE = P.EXPIRY_DATE              
+                                                                           LEFT OUTER JOIN (SELECT  OI.ITEM_NO, OI.EXPIRY_DATE AS EXPIRY_DATE, SUM(NVL(OI.CNT,0)) AS SSUM
+                                                                                                                                       FROM ORD O INNER JOIN ORD_ITEM OI
+                                                                                                                                                   ON O.ORD_NO = OI.ORD_NO
+                                                                                                                                                   AND OI.ITEM_NO = #{itemNo}
+                                                                                                                                      GROUP BY OI.ITEM_NO, OI.EXPIRY_DATE) S
+                                                                                  
+                                                                            ON P.EXPIRY_DATE = S.EXPIRY_DATE) A INNER JOIN ITEM I
+                                                                                                                 ON A.ITEM_NO = I.ITEM_NO
+                                                                            WHERE A.PPSUM > 0
 	</select>
 	
 	<!-- 재고상세 / 출고재고 리스트 -->
@@ -130,5 +146,17 @@
 	<!-- 본사 재고 추가 -->
 	<insert id="AddStock" parameterType="hashmap">
 	INSERT INTO HQ_STOR VALUES (HQ_STOR_SEQ.NEXTVAL,#{itemNo},4,#{stockCnt},#{stockExpiryDate},SYSDATE)
+	</insert>
+	
+	<!-- 본사 재고 폐기 --><!-- 유통기한과 품목번호가 동일한 상품은 제일 먼저 ENROLL된 재고에서 폐기가 이루어짐 -->
+	<insert id="istock">
+	INSERT INTO HQ_DISCARD (DISCARD_NO,STOR_NO,USER_NO,CNT,NOTE,ENROLL_DATE)
+		SELECT 11,STOR_NO,4,33,'테스트',SYSDATE
+		FROM(
+			SELECT HQ_STOR.*,ROW_NUMBER()OVER(ORDER BY ENROLL_DATE) AS RNK
+			FROM HQ_STOR
+			WHERE ITEM_NO = 1
+			AND EXPIRY_DATE = '2021-07-25')
+		WHERE RNK = 1;
 	</insert>
 </mapper> 
