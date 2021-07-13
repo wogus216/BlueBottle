@@ -1,6 +1,5 @@
 package com.gdj35.bbps.web.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,6 +72,11 @@ public class sbService implements IsbService{
 	@Override
 	public List<HashMap<String, String>> getSDList(HashMap<String, String> params) throws Throwable {
 		return isbdao.getSDList(params);
+	}
+
+	@Override
+	public int AddStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.AddStock(insertMap);
 	}
 
 	

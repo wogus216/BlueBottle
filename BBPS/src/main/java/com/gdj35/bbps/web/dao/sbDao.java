@@ -73,5 +73,10 @@ public class sbDao implements IsbDao{
 		return sqlsession.selectList("sb.getSDList",params);
 	}
 
+	@Override
+	public int AddStock(HashMap<String, Object> insertMap) throws Throwable {
+		return  sqlsession.insert("sb.AddStock",insertMap);
+	}
+
 
 }

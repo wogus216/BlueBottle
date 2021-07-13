@@ -28,5 +28,5 @@ public interface IsbService {
 
 	public List<HashMap<String, String>> getSDList(HashMap<String, String> params) throws Throwable;
 
-	
+	public int AddStock(HashMap<String, Object> insertMap) throws Throwable;
 }

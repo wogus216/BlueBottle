@@ -21,4 +21,12 @@ public interface InyService {
 
 	int deleteItemCate(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> getMenuCate() throws Throwable;
+
+	int addMenuCate(HashMap<String, String> params) throws Throwable;
+
+	int updateMenuCate(HashMap<String, String> params) throws Throwable;
+
+	int deleteMenuCate(HashMap<String, String> params) throws Throwable;
+
 }

@@ -44,7 +44,7 @@ public class jhController {
 	@RequestMapping(value="/H_Login")
 	public ModelAndView hq_Login(HttpSession session, ModelAndView mav) {
 			if(session.getAttribute("sUSERNo") != null	) { //로그인상태
-				mav.setViewName("redirect:hq_Menu");
+				mav.setViewName("redirect:H_Menu");
 			} else { // 비 로그인 상태
 				mav.setViewName("jh/H_Login");
 			}
@@ -76,7 +76,8 @@ public class jhController {
 		session.setAttribute("sAUTHNo", data.get("AUTH_NO"));
 		session.setAttribute("sDEPNo", data.get("DEP_NO"));
 		session.setAttribute("sId", data.get("ID"));
-		System.out.println(session.getAttribute("sUSERNo"));
+		System.out.println("유저번호:"+session.getAttribute("sUSERNo"));
+		
 		
 		modelMap.put("resMsg", "success");
 	} else { // 사용자 정보가 없음
@@ -219,7 +220,6 @@ public class jhController {
 				HttpSession session,
 				@RequestParam HashMap<String, String> params,
 				ModelAndView mav) {
-			System.out.println("H_Menu파람:"+params);
 			System.out.println("본사유저번호:"+session.getAttribute("sUSERNo"));
 			mav.setViewName("jh/H_Menu");
 				
@@ -234,7 +234,6 @@ public class jhController {
 	HttpSession session,
 	@RequestParam HashMap<String, String> params) throws Throwable{
 			
-	System.out.println("H_Menus파람:"+params);
 	ObjectMapper mapper = new ObjectMapper();
 	
 	Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -249,7 +248,6 @@ public class jhController {
 	modelMap.put("menu", menu);
 	
 	System.out.println("menu"+menu);
-	System.out.println("모델맵"+modelMap);
 	return mapper.writeValueAsString(modelMap);
 	}
 			
@@ -349,6 +347,10 @@ public class jhController {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
 		
+		
+		  String path = "resources/upload/"+ data.get("MIMG"); 
+		  data.put("MIMG",path);
+		 
 		mav.addObject("data", data);
 		System.out.println("수정 데이터 보자"+data);
 		mav.setViewName("jh/Menu_Edit");
@@ -399,11 +401,19 @@ public class jhController {
 		produces = "text/json;charset=UTF-8")
 	@ResponseBody 
 	public String Menu_Adds(
+		HttpSession session,
 		@RequestParam HashMap<String, String> params) throws Throwable {
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
 	
+	System.out.println("Menu_Adds에서본사유저번호:"+session.getAttribute("sUSERNo"));
 	try {
+		String mFile = params.get("m_File");
+		String[] arrayMFile = mFile.split(",");
+		for(int i =0; i < arrayMFile.length; i++) {
+			System.out.println("이미지:"+arrayMFile[i]);
+			params.put("m_File", arrayMFile[i]);
+		}
 		int cnt = ijhService.addM(params);
 		
 		if(cnt > 0) {
@@ -417,8 +427,6 @@ public class jhController {
 		e.printStackTrace();
 		modelMap.put("msg", "error");
 	}
-	
-	
 	return mapper.writeValueAsString(modelMap);
 	
 	}

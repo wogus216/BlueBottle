@@ -265,6 +265,7 @@ $(document).ready(function(){
 	
 	$("tbody").on("click","td:nth-child(3)",function(){
 		$("#itemNo").val($(this).attr("itemNo"));
+		$("#itemName").val($(this).attr("itemName"));
 		$(".search_input").val($("#Old_search_input").val());
 		$("#actionForm").attr("action","Stock_Dtl");
 		$("#actionForm").submit();
@@ -315,7 +316,7 @@ function drawproductList(list){
 			html += "<td>기타</td>";
 		}
 		
-		html += "<td itemNo = \""+d.ITEM_NO+"\">"+d.ITEM_NAME+"</td>";
+		html += "<td itemNo = \""+d.ITEM_NO+"\" itemName = \""+d.ITEM_NAME+"\">"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.PRICE+"</th>";
 		html += "<td>"+d.MIN_ORD_UNIT+"</td>";
 		html += "</tr>";	
@@ -493,6 +494,7 @@ function drawproductPaging(pb){
 		<form action = "#" id = "actionForm" method = "post">
 			<input type = "hidden" id = "Old_search_input" name = "Old_search_input" value ="${param.search_input}" />
 			<input type = "hidden" id = "itemNo" name = "itemNo"/>
+			<input type = "hidden" id = "itemName" name = "itemName"/>
 			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
 		<select id="search_filter" name = "search_filter">
 				<option value="0" selected="selected">품목코드</option>
