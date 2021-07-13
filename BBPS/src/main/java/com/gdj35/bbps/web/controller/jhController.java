@@ -333,11 +333,11 @@ public class jhController {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
 			
-		if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
-			
-			String path = "resources/upload/"+data.get("MIMG");
-			data.put("MIMG", path);
-		}
+		/*
+		 * if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
+		 * 
+		 * String path = "resources/upload/"+data.get("MIMG"); data.put("MIMG", path); }
+		 */
 		System.out.println("상세보기 데이터"+data);
 		mav.addObject("data", data);
 		mav.setViewName("jh/Menu_Dtl");
@@ -353,12 +353,11 @@ public class jhController {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
 		
-		
-		if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
-			
-			String path = "resources/upload/"+data.get("MIMG");
-			data.put("MIMG", path);
-		}
+		/*
+		 * if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
+		 * 
+		 * String path = "resources/upload/"+data.get("MIMG"); data.put("MIMG", path); }
+		 */
 		mav.addObject("data", data);
 		System.out.println("수정 데이터 보자"+data);
 		mav.setViewName("jh/Menu_Edit");
@@ -379,10 +378,11 @@ public class jhController {
 			Map<String, Object> modelMap = new HashMap<String, Object>();
 			System.out.println("이미지파람스"+params);
 			
-			if(Integer.parseInt(String.valueOf(params.get("img_Cnt"))) == 0) {
-				String path = "resources/upload/"+params.get("m_File");
-				params.put("m_File", path);
-			}
+		/*
+		 * if(Integer.parseInt(String.valueOf(params.get("img_Cnt"))) == 0) { String
+		 * path = "resources/upload/"+params.get("m_File"); params.put("m_File", path);
+		 * }
+		 */
 			try {
 				int cnt = ijhService.editM(params);
 				

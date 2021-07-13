@@ -102,7 +102,7 @@
 	
 	<!-- 상세보기 -->
 	<select id="getMd" parameterType="hashmap" resultType="hashmap">
-	SELECT  PM.MENU_NO AS MNO,PM.MENU_NAME AS MNAME,PC.CATE_NAME AS CNAME,PM.MENU_PRICE AS MPRICE,PM.MENU_IMG AS MIMG,PM.NOTE,PM.EDIT_FLAG AS EFLAG
+	SELECT  PM.MENU_NO AS MNO, PM.MENU_NAME AS MNAME, PC.CATE_NAME AS CNAME, PM.MENU_PRICE AS MPRICE, PM.MENU_IMG AS MIMG, PM.NOTE
 	FROM POS_MENU PM INNER JOIN POS_CATE PC
                          ON PM.POS_CATE_NO = PC.CATE_NO
 	WHERE PM.MENU_NO = #{menuNo}	
@@ -110,7 +110,7 @@
 	
 	<!-- 수정 -->
 	<update id="editM" parameterType="hashmap">
-		UPDATE POS_MENU SET MENU_NAME = #{m_Name}, MENU_PRICE = #{m_Price},MENU_IMG = #{m_File},NOTE = #{m_Note}, EDIT_FLAG = 0
+		UPDATE POS_MENU SET MENU_NAME = #{m_Name}, MENU_PRICE = #{m_Price},MENU_IMG = #{m_File},NOTE = #{m_Note}
 		WHERE MENU_NO = #{menuNo}
 	</update>
 	

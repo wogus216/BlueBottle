@@ -29,16 +29,9 @@
     margin-left: 30px;
      width: 1250px;
 }
-/* 메뉴등록 */
-
-.menu_Img{
-	width: 100px;
-	padding-bottom: 20px;
-}
-
 
 /* 버튼 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -51,7 +44,7 @@ button{
 	outline:none;
 }
 
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
 
 
 .submit_area{
@@ -91,6 +84,7 @@ input{
 	width: 358px;
     height: 36px;
     margin: 15px 0;
+    font-size: 18px;
 }
 input:focus{
 	animation-name: border-focus;
@@ -111,6 +105,13 @@ input:focus{
 #fileName{
 	text-align: center;
 }
+#file_Btn{
+
+	width: 358px;
+    background-color: darkgray;
+   	margin: 10px 0 0 0;
+}
+
 
 /* 팝업메시지 */
 
@@ -147,7 +148,7 @@ input:focus{
 .popup_Btn{
 	text-align:center;
 }
-.popup_Btn button{
+.popup_Btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -166,9 +167,9 @@ input:focus{
 	font-size:18px;
 	color: black
 }
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
 
-.close_Btn{
+.popup_Head > .close_Btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -290,11 +291,11 @@ $(document).ready(function(){
 		html+= "<div class=\"bg\"></div>";	
 		html+= "<div class=\"popup_Area\">";	
 		html+= "<div class=\"popup_Head\">"+ title +"";	
-		html+= 		"<button class=\"close_Btn\">X</button>";	
+		html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
 		html+= "</div>";	
 		html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
 		html+= 		"<div class=\"popup_Btn\">";	
-		html+= 			"<button class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
+		html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 		html+= 	 	"</div>";
 		html+= "</div>";	
 		
@@ -366,8 +367,8 @@ $(document).ready(function(){
 	</div>
 		</form>
 			<div class="submit_area">
-				<button class="cnl">취소</button>
-				<button class="submit">완료</button>
+				<input type="button" class="cnl" value="취소">
+				<input type="button" class="submit" value="완료">
 			</div>
 		</div> <!--content end  -->
 	</div>  <!--content_Area end  -->

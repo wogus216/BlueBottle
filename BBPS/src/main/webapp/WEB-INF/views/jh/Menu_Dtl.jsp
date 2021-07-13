@@ -83,7 +83,7 @@ input{
 }
 
 /* 이게일반 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -107,7 +107,7 @@ button{
 	 font-size: 22px;
 }
 
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
 
 
 /* 팝업메시지 */
@@ -145,7 +145,7 @@ button:focus{outline:none;}
 .popup_Btn{
 	text-align:center;
 }
-.popup_Btn button{
+.popup_Btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -164,9 +164,9 @@ button:focus{outline:none;}
 	font-size:18px;
 	color: black
 }
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
 
-.close_Btn{
+.popup_Head > .close_Btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -198,8 +198,13 @@ $(document).ready(function(){
 		$("#send_Form").submit();
 	});
 	
-	//삭제
+	//삭제버튼
 	$(".row_Del").on("click",function(){
+		makePopup("", "메뉴를 삭제하시겠습니까?",function(){});
+	});
+	
+	//삭제
+	$("body").on("click",".confirm_Btn",function(){
 		var params = $("#send_Form").serialize();
 		
 		$.ajax({
@@ -210,7 +215,8 @@ $(document).ready(function(){
 			success: function(res){
 				
 				if(res.msg == "success"){
-					location.href="Menu_List"
+					$("#send_Form").attr("action","Menu_List");
+					$("#send_Form").submit();
 				} else if(res.msg = "failed"){
 					makePopup("", "삭제 중 문제 발생",function(){});
 				} else{
@@ -229,11 +235,12 @@ function makePopup(title, contents, func) {
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"popup_Area\">";	
 	html+= "<div class=\"popup_Head\">"+ title +"";	
-	html+= 		"<button class=\"close_Btn\">X</button>";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
 	html+= "</div>";	
 	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
 	html+= 		"<div class=\"popup_Btn\">";	
-	html+= 			"<button class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\" style=\"background-color: rgb(190, 190, 190)\">";	
 	html+= 	 	"</div>";
 	html+= "</div>";	
 	
@@ -246,6 +253,9 @@ function makePopup(title, contents, func) {
 		}
 		closePopup();
 		});
+	$(".confirm_Btn").on("click",function(){
+		location.href = "Menu_List";
+	});
 	}
 
 function closePopup() {
@@ -268,8 +278,8 @@ function closePopup() {
 		<div class="content">
 			<h1>POS 메뉴조회</h1>
 		<div class="btn_Area">
-			<button class="row_Del">삭제</button>
-			<button class="row_Add">수정</button>
+			<input type="button" class="row_Del" value="삭제">
+			<input type="button" class="row_Add" value="수정">
 		</div>
 	
 	<table cellspacing="0">
@@ -295,13 +305,13 @@ function closePopup() {
 			<td>${data.MNAME}</td>
 			<td>${data.CNAME}</td>
 			<td>${data.MPRICE}</td>
-			<td><img id="m_Img" alt="메뉴 이미지" src="${data.MIMG}"></td>
+			<td><img id="m_Img" alt="메뉴 이미지" src="resources/upload/${data.MIMG}"></td>
 			<td>${data.NOTE}</td>
 		</tr>
 
 		</table>
 			<div class="submit_Area">
-				<button class="list_Btn">목록</button>
+				<input type="button" class="list_Btn" value="목록"/>
 			</div> 
 		</div> <!--content end  -->
 	</div>  <!--content_Area end  -->
