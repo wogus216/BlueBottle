@@ -157,11 +157,26 @@ margin : 20px 0px;
 	text-align:center;
 }
 .submit_btn{
-	width:200px;
-	height: 50px;
+	width:180px;
+	height: 55px;
 	background-color: #01a1dd;
 	font-weight: bold;
 	 font-size: 22px;
+	 color: white;
+	text-align:center;
+	border: 0;
+	border-radius: 3px;
+	margin:10px;
+	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
+}
+.list_btn {
+	width : 100px;
+	height : 45px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	 font-size: 20px;
 	 color: white;
 	text-align:center;
 	border: 0;
@@ -265,7 +280,7 @@ $(document).ready(function () {
 					var params = $("#addForm").serialize();
 					
 					$.ajax({
-						url:"NoticeWrites", //접속주소
+						url:"Notice_Writes", //접속주소
 						type:"post", //전송방식 : get, post
 						dataType:"json",//받아올데이터형식
 						data:params, //보낼 데이터(문자열 형태)
@@ -442,12 +457,12 @@ $(document).ready(function () {
 <h1>공지사항</h1>
 
 <select class="cate" id="nCate" name="nCate">
-	<option value="카테고리">전체</option>
-	<option>이벤트</option>
-	<option>주문</option>
-	<option>재고</option>
-	<option>시스템</option>
-	<option>기타</option>
+	<option value="0">전체</option>
+	<option value="1">이벤트</option>
+	<option value="2">주문</option>
+	<option value="3">재고</option>
+	<option value="4">시스템</option>
+	<option value="5">기타</option>
 </select>
 <form id="fileForm" action="fileUploadAjax" 
 	method="post" enctype="multipart/form-data">
@@ -468,7 +483,7 @@ $(document).ready(function () {
 <div class="submit">
 <input type="button" value="등록" id="addBtn" class="submit_btn" />
 </div>
-<input type="button" value="목록으로" id="listBtn" />
+<input type="button" value="목록" id="listBtn" class="list_btn"/>
 </div>
 </div>
 </body>

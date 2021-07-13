@@ -40,6 +40,41 @@ public class shService implements IshService{
 
 	@Override
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable {
-		return ishDao.getRDtl(params); //
+		return ishDao.getRDtl(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable {
+		return ishDao.getOWholeList(params);
+	}
+
+	@Override
+	public int apvOrd(HashMap<String, String> params) throws Throwable {
+		return ishDao.apvOrd(params);
+	}
+
+	@Override
+	public int nonApvOrd(HashMap<String, String> params) throws Throwable {
+		return ishDao.nonApvOrd(params);
+	}
+
+	@Override
+	public int apvRef(HashMap<String, String> params) throws Throwable {
+		return ishDao.apvRef(params);
+	}
+
+	@Override
+	public int nonApvRef(HashMap<String, String> params) throws Throwable {
+		return ishDao.nonApvRef(params);
+	}
+
+	@Override
+	public int sendO(HashMap<String, Object> insertMap) throws Throwable {
+		return ishDao.sendO(insertMap);
+	}
+
+	@Override
+	public int sendExp(HashMap<String, Object> insertMap) throws Throwable {
+		return ishDao.sendExp(insertMap);
 	}
 }

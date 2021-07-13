@@ -36,51 +36,96 @@
 	WHERE ORD.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 <select id="getODtlList" parameterType="hashmap" resultType="hashmap">
-SELECT *
-FROM(SELECT O.ORD_NO, OI.ITEM_NO, I.ITEM_NAME, OI.CNT, OI.PRICE, TO_CHAR(EXPIRY_DATE, 'YYYY-MM-DD')AS EXPIRY_DATE
-     FROM ORD O INNER JOIN ORD_ITEM OI
-                      	ON O.ORD_NO = OI.ORD_NO
-                INNER JOIN ITEM I
-                        ON OI.ITEM_NO=I.ITEM_NO)ORD
-WHERE ORD.ORD_NO= #{oNo}
+	SELECT *
+	FROM(SELECT O.ORD_NO, OI.ITEM_NO, I.ITEM_NAME, I.CATE_NO, OI.CNT, OI.PRICE, TO_CHAR(EXPIRY_DATE, 'YYYY-MM-DD')AS EXPIRY_DATE
+     	   FROM ORD O INNER JOIN ORD_ITEM OI
+            	     		  ON O.ORD_NO = OI.ORD_NO
+          		   	  INNER JOIN ITEM I
+                       		  ON OI.ITEM_NO=I.ITEM_NO)ORD
+	WHERE ORD.ORD_NO= #{oNo}
 </select>
 <select id="getODtl" parameterType="hashmap" resultType="hashmap">
-SELECT *
-FROM(SELECT O.ORD_NO, TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, BRCH_NAME, TO_CHAR(PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE, CODE_NAME, NON_APV_RSN
-     FROM ORD O INNER JOIN ORD_ITEM OI
-                      	ON O.ORD_NO = OI.ORD_NO
-                INNER JOIN BRCH B
-                        ON B.BRCH_NO = O.BRCH_NO
-                INNER JOIN COMMON_CODE C
-                        ON C.CODE_S_CATE=O.STAT_CODE
-     WHERE C.CODE_L_CATE=2)ORD
-WHERE ORD.ORD_NO= #{oNo}
-GROUP BY ORD_NO, ENROLL_DATE, BRCH_NAME, PROCESS_DATE, CODE_NAME, NON_APV_RSN
+	SELECT ORD_NO, ENROLL_DATE, BRCH_NAME, CODE_NAME, PROCESS_DATE, NON_APV_RSN, SUM(PRICE) AS TOT_PRICE
+    FROM(SELECT O.ORD_NO, TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, BRCH_NAME,
+    	 TO_CHAR(PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE, CODE_NAME, NON_APV_RSN, PRICE
+         FROM ORD O INNER JOIN ORD_ITEM OI
+                         	ON O.ORD_NO = OI.ORD_NO
+                    INNER JOIN BRCH B
+                            ON B.BRCH_NO = O.BRCH_NO
+                    INNER JOIN COMMON_CODE C
+                          	ON C.CODE_S_CATE=O.STAT_CODE
+         WHERE C.CODE_L_CATE=2)ORD
+	WHERE ORD.ORD_NO= #{oNo}
+	GROUP BY ORD_NO, ENROLL_DATE, BRCH_NAME, PROCESS_DATE, CODE_NAME, NON_APV_RSN
 </select>
 
 <select id="getRDtlList" parameterType="hashmap" resultType="hashmap">
-SELECT *
-FROM(SELECT O.ORD_NO, OI.ITEM_NO, I.ITEM_NAME, OI.CNT, OI.PRICE,
-RI.CNT AS RCNT, RSN
-	 FROM ORD O INNER JOIN REF R
-                        ON O.ORD_NO=R.ORD_NO
-                INNER JOIN REF_ITEM RI
-                        ON R.REF_NO=RI.REF_NO
-                INNER JOIN ITEM I
-                        ON RI.ITEM_NO = I.ITEM_NO
-                INNER JOIN ORD_ITEM OI
-                        ON RI.ITEM_NO = OI.ITEM_NO)REF
-WHERE REF.ORD_NO= #{oNo}
+	SELECT ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT AS REF_PRICE, RSN
+	FROM(SELECT O.ORD_NO, OI.ITEM_NO, I.ITEM_NAME, OI.CNT, RI.CNT AS RCNT, IP.PRICE, RSN
+	 	 FROM ORD O INNER JOIN REF R
+                      		ON O.ORD_NO=R.ORD_NO
+               		INNER JOIN REF_ITEM RI
+               		    	ON R.REF_NO=RI.REF_NO
+               		INNER JOIN ITEM I
+                   	   		ON RI.ITEM_NO = I.ITEM_NO
+               		INNER JOIN ORD_ITEM OI
+                    	  	ON RI.ITEM_NO = OI.ITEM_NO
+                   	INNER JOIN ITEM_PRICE IP
+                       	    ON I.ITEM_NO=IP.ITEM_NO)REF
+	WHERE REF.ORD_NO= #{oNo}
 </select>
 
 <select id="getRDtl" parameterType="hashmap" resultType="hashmap">
-SELECT *
-FROM(SELECT O.ORD_NO, REF_NO, TO_CHAR(R.ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, CODE_NAME, TO_CHAR(R.PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE, R.NON_APV_RSN
-     FROM ORD O INNER JOIN REF R
-                  		ON O.ORD_NO=R.ORD_NO
-                INNER JOIN COMMON_CODE C
-                        ON C.CODE_S_CATE=O.STAT_CODE
-     WHERE C.CODE_L_CATE=2)REF
-WHERE REF.ORD_NO= #{oNo} <!--  -->
+	SELECT ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, SUM(PRICE*RCNT)AS TOT_PRICE, NON_APV_RSN
+	FROM(SELECT O.ORD_NO, R.REF_NO, TO_CHAR(R.ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, CODE_NAME,
+    TO_CHAR(R.PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE,  RI.CNT AS RCNT, IP.PRICE, R.NON_APV_RSN
+     	 FROM ORD O INNER JOIN REF R
+         	         		ON O.ORD_NO=R.ORD_NO
+            	    INNER JOIN COMMON_CODE C
+                	        ON C.CODE_S_CATE=O.STAT_CODE
+                    INNER JOIN REF_ITEM RI
+                            ON R.REF_NO=RI.REF_NO
+                    INNER JOIN ITEM I
+                            ON RI.ITEM_NO=I.ITEM_NO
+                    INNER JOIN ITEM_PRICE IP
+                            ON RI.ITEM_NO=IP.ITEM_NO
+    	 WHERE C.CODE_L_CATE=2)REF
+WHERE REF.ORD_NO = #{oNo}
+GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 </select>
+
+<select id="getOWholeList" parameterType="hashmap" resultType="hashmap">
+	SELECT *
+	FROM(SELECT O.ORD_NO, REF_NO, TO_CHAR(R.ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, CODE_NAME, TO_CHAR(R.PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE, R.NON_APV_RSN
+    	 FROM ORD O INNER JOIN REF R
+          	        		ON O.ORD_NO=R.ORD_NO
+            	    INNER JOIN COMMON_CODE C
+                	        ON C.CODE_S_CATE=O.STAT_CODE
+   		 WHERE C.CODE_L_CATE=2)REF
+	WHERE REF.ORD_NO= #{oNo}
+</select>
+<update id="apvOrd" parameterType="hashmap">
+	UPDATE ORD SET STAT_CODE = 2, PROCESS_DATE=SYSDATE
+	WHERE ORD_NO = #{oNo}
+</update>
+<update id="nonApvOrd" parameterType="hashmap">
+	UPDATE ORD SET STAT_CODE = 3, PROCESS_DATE=SYSDATE, NON_APV_RSN = #{oRsn}
+	WHERE ORD_NO = #{oNo}
+</update>
+<update id="apvRef" parameterType="hashmap">
+	UPDATE ORD SET STAT_CODE = 7, PROCESS_DATE=SYSDATE
+	WHERE ORD_NO = #{oNo}
+</update>
+<update id="nonApvRef" parameterType="hashmap">
+	UPDATE ORD SET STAT_CODE = 8, PROCESS_DATE=SYSDATE, NON_APV_RSN = #{rRsn}
+	WHERE ORD_NO = #{oNo}
+</update>
+<update id="sendO" parameterType="hashmap">
+	UPDATE ORD SET STAT_CODE = 4, SEND_DATE=SYSDATE
+	WHERE ORD_NO = #{oNo1}
+</update>
+<update id="sendExp" parameterType="hashmap">
+	UPDATE ORD_ITEM SET EXPIRY_DATE = #{expDate}
+	WHERE ORD_NO = #{oNo1}
+</update>
 </mapper> 

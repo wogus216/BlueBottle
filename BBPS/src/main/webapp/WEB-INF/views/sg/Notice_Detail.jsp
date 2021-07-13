@@ -168,14 +168,45 @@ position: relative;
  
  
   .txt_content{
- position: relative;
+position: relative;
 width: 100%;
  }
  
- 
- 
-.edit_btn, .del_btn{
+
+.btm_btn_area button:focus{
+outline:none;
+}
+
+.list_btn{
+float : left;
 color: white;
+text-align:center;
+border: 0;
+border-radius: 3px;
+margin:10px 0px;
+cursor: pointer;
+background-color: #01a1dd;
+outline:none;
+width:100px;
+height: 40px;
+font-weight: bold;
+font-size: 15px;
+}
+
+
+ .btm_btn_area {
+ display: inline-block;
+ width: 100%;
+ }
+ 
+ 
+.edit_btn_area {
+display: inline-block;
+float: right;
+}
+
+ .edit_btn{
+	color: white;
 	text-align:center;
 	border: 0;
 	border-radius: 3px;
@@ -186,23 +217,23 @@ color: white;
 	width:100px;
 	height: 40px;
 	font-weight: bold;
-	 font-size: 15px;
+	font-size: 15px;
 }
+ .del_btn{
+	color: white;
+	background-color: #b3b3b3;
+    width: 100px;
+    height: 40px;
+    font-weight: bold;
+    font-size: 15px;
+    text-align:center;
+	border: 0;
+	border-radius: 3px;
+	margin:10px 0px;
+	cursor: pointer;
+	outline:none;
+ }
 
-
-button:focus{
-outline:none;
-}
-
- 
- .edit_info
- {
- 	float: right;
- 	display : inline-block;
-	text-align: center;
-	margin : 10px 0px;
-}
- 
  .btm_tb{
  position: relative;
 width: 100%;
@@ -244,6 +275,9 @@ $(document).ready(function(){
 	
 	
 }); //ready end
+
+
+
 
 $(document).ready(function() {
 	$("#listBtn").on("click", function() {
@@ -287,138 +321,7 @@ $(document).ready(function() {
 <body>
 <!-- 상단 -->
   <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         		발주관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발주요청조회</a>
-	             <a href="#">
-	            	발주완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		발송관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발송요청조회</a>
-	             <a href="#">
-	            	발송완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_c">
-         <li>
-         	<a class="main_menu" href="#">
-         		환불관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_e">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		품목관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	품목조회</a>
-		            <a href="#">
-		            	품목등록</a>
-		            </div>
-	          </li>
-         </div>
-         
-            <div class="menu_f">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		카테고리관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	공지카테고리</a>
-		            <a href="#">
-		            	품목카테고리</a>
-		            <a href="#">
-		            	메뉴카테고리</a>
-		            </div>
-	          </li>
-         </div>
-         
-         <div class="menu_g">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_h">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_i">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_j">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
+    
    </div>
 
 <!--컨텐츠 -->
@@ -436,12 +339,19 @@ $(document).ready(function() {
 <table class="tb1">
 <tbody>
 <tr>
+<td>${data.TXT_NO}</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>${data.USER_NO}</td>
-<td>${data.B_DT}</td>
+<td>&nbsp;</td>
+<td>${data.S_DT}</td>
+<td>&nbsp;</td>
+<td>조회수</td>
 <td></td>
 </tr>
 </tbody>
@@ -450,6 +360,7 @@ $(document).ready(function() {
 
 
 <div class="txt_content">
+<br/>
 ${data.CONTENT}
 <br/>
 <c:if test="${!empty data.ATT_FILE}">
@@ -468,12 +379,12 @@ ${data.ATT_UFILE}</a><br/>
 
 
 <div class="btm_btn_area" style = "margin-top : 30px;">
-	<input type="button" value="목록으로" id="listBtn" />
-		<div class="edit_info">
+<input type="button" value="목록" id="listBtn" class="list_btn" />
+	<div class="edit_btn_area">
 <input type="button" value="수정" class="edit_btn" id="updateBtn" />
 <input type="button" value="삭제" class="del_btn" id="deleteBtn" />
-		</div>
 	</div>
+</div>
 
 <div class="btm_tb">
 <table class="tb2">

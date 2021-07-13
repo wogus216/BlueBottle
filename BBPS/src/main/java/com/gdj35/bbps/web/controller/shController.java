@@ -1,5 +1,6 @@
 package com.gdj35.bbps.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,27 +70,150 @@ public class shController {
 			ModelAndView mav) throws Throwable {
 		HashMap<String,String> data = ishService.getODtl(params);
 		List<HashMap<String,String>> list = ishService.getODtlList(params);
+		HashMap<String,String> data2 = ishService.getRDtl(params);
+	    List<HashMap<String,String>> list2 = ishService.getRDtlList(params);
 
 		mav.addObject("list",list);
 		mav.addObject("data",data);
+		mav.addObject("list2",list2);
+		mav.addObject("data2",data2);
 		mav.setViewName("sh/Ord_Mang_dtl");
 		return mav;
 	   }
-	@RequestMapping(value = "/Ord_Mang_RDtl",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-	   @ResponseBody
-	   public String Ord_Mang_RDtl(@RequestParam HashMap<String,String> params) throws Throwable{
-	      
-	      ObjectMapper mapper = new ObjectMapper();
-	      Map<String,Object> modelMap = new HashMap<String,Object>();
-	      
-	      HashMap<String,String> data2 = ishService.getRDtl(params);
-	      List<HashMap<String,String>> list2 = ishService.getRDtlList(params);
-	      
-	      modelMap.put("list2", list2);
-	      modelMap.put("data2", data2);
-	      
-	      return mapper.writeValueAsString(modelMap);
-	   }
-//
-	
+	@RequestMapping(value = "/ord_history",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ord_history(@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		List<HashMap<String,String>> popupList = ishService.getOWholeList(params);
+		modelMap.put("popupList", popupList);
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ord_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ord_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		try {
+				int cnt = ishService.apvOrd(params);
+					
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+				
+			modelMap.put("msg", "error");
+		}
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ord_non_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ord_non_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		try {
+				int cnt = ishService.nonApvOrd(params);
+					
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+				
+			modelMap.put("msg", "error");
+		}
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ref_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ref_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		try {
+				int cnt = ishService.apvRef(params);
+					
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+				
+			modelMap.put("msg", "error");
+		}
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ref_non_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ref_non_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		try {
+				int cnt = ishService.nonApvRef(params);
+					
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+				
+			modelMap.put("msg", "error");
+		}
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ord_send",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ord_send(@RequestParam ArrayList<String> expDate) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+			
+			for(int i = 0; i < expDate.size(); i++) {
+				insertMap.put("itemCate", expDate.get(i));
+				
+				int cnt = ishService.sendO(insertMap);
+				int cnt2 = ishService.sendExp(insertMap);	
+				if(cnt > 0 && cnt2 > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}
+		}
+				
+		} catch (Throwable e) {
+			e.printStackTrace();
+				
+			modelMap.put("msg", "error");
+		}
+			
+		return mapper.writeValueAsString(modelMap);
+	}
 }

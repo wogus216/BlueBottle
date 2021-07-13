@@ -570,12 +570,16 @@ function drawPaging(pb){
 <div class="filter_area">
 	<select class="brch">
 		<option value="0" selected="selected">지점명</option>
-		<option value="1">가산디지털단지역점</option>
-		<option value="2">건대점</option>
-		<option value="3">구로점</option>
-		<option value="3">롯데타워점</option>
-		<option value="3">성신여대점</option>
-		<option value="3">잠실점</option>
+		<option value="1">광화문점</option>
+		<option value="2">난곡점</option>
+		<option value="3">망원점</option>
+		<option value="4">삼청한옥점</option>
+		<option value="5">서인천점</option>
+		<option value="6">성수점</option>
+		<option value="7">압구정점</option>
+		<option value="8">여의도점</option>
+		<option value="9">부천점</option>
+		<option value="10">방화점</option>
 	</select>
 	<input class="start_date" type = "date" value="2021-01-01"/>
 	<input class="end_date" type = "date" value="2021-01-01"/>
