@@ -63,4 +63,11 @@ public class jhDao implements IjhDao {
 		return sqlsession.insert("JH.addM", params);
 	}
 
+	@Override
+	public int delM(HashMap<String, String> params) throws Throwable {
+		return sqlsession.update("JH.delM", params);
+	}
+
+
+
 }

@@ -143,7 +143,7 @@ body{
 .popup_btn{
 	text-align:center;
 }
-.popup_btn button{
+.popup_btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -154,7 +154,7 @@ body{
 	margin:10px;
 	cursor: pointer;
 }
-.popup_content{
+.popup_Content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -162,8 +162,10 @@ body{
 	font-size:18px;
 	color: black
 }
-button:focus{outline:none;}
-.close_btn{
+
+input[type='button']:focus{outline:none;}
+
+.popup_Head > .close_Btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -269,11 +271,11 @@ function makePopup(title, contents, func) {
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"popup_area\">";	
 	html+= "<div class=\"popup_head\">"+ title +"";	
-	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
 	html+= "</div>";	
-	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
-	html+= 			"<button style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 	html+= 	 	"</div>";	
 	html+= "</div>";	
 	

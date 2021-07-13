@@ -84,9 +84,8 @@ input{
 	padding-bottom: 20px;
 }
 
-
 /* 버튼 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -99,7 +98,7 @@ button{
 	outline:none;
 }
 
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
 
 /* 팝업메시지 */
 
@@ -136,7 +135,7 @@ button:focus{outline:none;}
 .popup_Btn{
 	text-align:center;
 }
-.popup_Btn button{
+.popup_Btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -155,9 +154,9 @@ button:focus{outline:none;}
 	font-size:18px;
 	color: black
 }
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
 
-.close_Btn{
+.popup_Head > .close_Btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -168,16 +167,89 @@ button:focus{outline:none;}
 	color: #ffffff;
 	border: none;
 }
+.s{
+	width: 500px;
+	height: 300px;
+}
 </style>
 
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	//이미지 파일 선택
+	$("#fileBtn").on("click",function(){
+		
+		$("#att").click();
+	});
+	
+	//이미지 변경 시 다시 띄우기
+	$("#att").on("change", function(){
+		//역슬래시를 문자열로 쓰기위해서는 두개를 사용해야 문자열로 처리된다.
+		console.log($(this).val());
+		console.log($(this).val().substring($(this).val().lastIndexOf("\\") +1));
+		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
+	
+		var fileForm = $("#fileForm");
+		
+		fileForm.ajaxForm({
+			
+			success: function(res){
+				if(res.result == "SUCCESS"){
+					//올라간 파일명 저장
+					if(res.fileName.length > 0){
+						
+							$("#m_File").val(res.fileName[0]);
+							console.log($("#m_File").val(res.fileName[0]))
+							makePopup("", "이미지가 변경 되었습니다.",function(){});
+					
+						}
+				//글 저장
+				var params = $("#edit_Form").serialize();
+				console.log(params)
+				$.ajax({
+				url: "Menu_Imgs",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res){
+					console.log(res)
+				
+					if(res.msg == "success"){
+						$("#edit_Form").attr("action","Menu_Edit");
+						$("#edit_Form").submit();
+					} 
+					else if(res.msg == "failed"){
+							makePopup("", "작성 실패.",function(){});
+					} 
+					else{
+							makePopup("", "수정 중 에러 발생",function(){});
+					 }
+				  },
+				  error: function(request, status, error){
+						console.log(error);
+					}
+				});
+			}else{
+		 			makePopup("", "파일 업로드 중 문제 발생",function(){});
+				} 
+			},		
+			error: function(){
+				makePopup("", "파일 업로드 중 문제 발생",function(){});
+			}
+		}); //ajaxForm end
+		
+		fileForm.submit();
+	
+	}); //이미지 변경 사진 변경해서 띄우기 종료
+	
 	//취소
 	$(".row_Cnl").on("click",function(){
-		history.back();
+		$("#edit_Form").attr("action","Menu_Dtl");
+		$("#edit_Form").submit();
 	});
 	
 	//엔터 방지
@@ -189,21 +261,37 @@ $(document).ready(function(){
 	
 	//완료 버튼
 	$(".row_Submit").on("click",function(){
-		if($.trim($("#m_Name").val()) == ""){
-			makePopup("", "메뉴이름을 입력해주세요",function(){
-				$("#m_Name").focus();
-			});
-		} else if($.trim($("#m_Price").val()) == ""){
-			makePopup("", "가격을 입력해주세요",function(){
-				$("#m_Price").focus();
-			});
-		} /* else if($.trim($("#m_Img").val()) ==""){
-			makePopup("", "사진을 넣어주세요",function(){
-				$("#m_Img").focus();
-			}); */
-	 	else{
+		//$("#img_Cnt").attr("value","1");
+		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
+		var fileForm = $("#fileForm");
+		
+		
+		
+		fileForm.ajaxForm({
+			beforeSubmit: function(){
+			if($.trim($("#m_Name").val()) == ""){
+				makePopup("", "메뉴이름을 입력해주세요",function(){
+					$("#m_Name").focus();
+					return false; // ajaxForm 실행 불가
+				});
+			} else if($.trim($("#m_Price").val()) == ""){
+				makePopup("", "가격을 입력해주세요",function(){
+					$("#m_Price").focus();
+					return false; // ajaxForm 실행 불가
+				});
+			}
+		},	
+		success: function(res){
+			if(res.result == "SUCCESS"){
+				//올라간 파일명 저장
+				if(res.fileName.length > 0){
+						$("#m_File").val(res.fileName[0]);
+						console.log($("#m_File").val(res.fileName[0]))
+						makePopup("", "수정완료되었습니다.",function(){});
+				
+					}
+			//글 저장
 			var params = $("#edit_Form").serialize();
-			
 			$.ajax({
 				url: "Menu_Edits",
 				type: "post",
@@ -217,22 +305,29 @@ $(document).ready(function(){
 						$("#edit_Form").submit();
 					} 
 					else if(res.msg == "failed"){
-							makePopup("", "작성 실패.",function(){
-						});
+							makePopup("", "작성 실패.",function(){});
 					} 
 					else{
-							makePopup("", "수정 중 에러 발생",function(){
-						});
+							makePopup("", "수정 중 에러 발생",function(){});
 					}
 				  },
 				  error: function(request, status, error){
 						console.log(error);
 				}
-			});
-		}
+			}); //ajax end
+			
+			}else{
+				makePopup("", "파일 업로드 중 문제 발생",function(){});
+			 	}
+			},
+			error: function(){
+				makePopup("", "파일 업로드 중 문제 발생",function(){});
+			}
+		});//ajaxForm end
+		
+		fileForm.submit();
+		
 	}); // 완료 end
-	
-
 	
 }); //ready end
 	
@@ -242,11 +337,11 @@ $(document).ready(function(){
 		html+= "<div class=\"bg\"></div>";	
 		html+= "<div class=\"popup_Area\">";	
 		html+= "<div class=\"popup_Head\">"+ title +"";	
-		html+= 		"<button class=\"close_Btn\" >X</button>";	
+		html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
 		html+= "</div>";	
 		html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
 		html+= 		"<div class=\"popup_Btn\">";	
-		html+= 			"<button class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">확인</button>";	
+		html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 		html+= 	 	"</div>";	
 		html+= "</div>";	
 		
@@ -259,7 +354,7 @@ $(document).ready(function(){
 			}
 			closePopup();
 			});
-		$(".confirm_Btn")
+		
 		}
 
 	function closePopup() {
@@ -270,6 +365,10 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+<form id="fileForm" action="fileUploadAjax"
+		method="post" enctype="multipart/form-data">
+		<input type="file" name="att" id="att"/>
+</form>
 <form action="#" id="edit_Form" method="post">
 	<input type="hidden" name="menuNo" value="${data.MNO}">
 	<input type="hidden" name="page" value="${param.page}">
@@ -281,8 +380,8 @@ $(document).ready(function(){
 		<div class="content">
 			<h1>POS 메뉴조회</h1>
 		<div class="btn_Area">
-			<button class="row_Cnl">취소</button>
-			<button class="row_Submit">완료</button>
+			<input type="button" value="취소" class="row_Cnl">
+			<input type="button" value="완료" class="row_Submit">
 		</div>
 	
 	<table cellspacing="0">
@@ -308,13 +407,18 @@ $(document).ready(function(){
 			<td><input type="text" id="m_Name" name="m_Name" value="${data.MNAME}"></td>
 			<td>${data.CNAME}</td>
 			<td><input type="text" id="m_Price" name="m_Price" value="${data.MPRICE}"></td>
-			<td><img id="m_Img" name="m_Img" src="${data.MIMG}"></td>
+			<td>
+				<img id="m_Img" name="m_Img" src="resources/upload/${data.MIMG}">
+				<input type="button" value="이미지파일선택" id="fileBtn"/>
+			</td>
+			<td><input type="text" id="m_Note" name="m_Note" value="${data.NOTE}"></td>
 		</tr>
 		</table>
+		<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/>
+		<input type="hidden" id="m_File" name="m_File" value="${data.MIMG}"/>
+		<input type="hidden" id="img_Cnt" name="img_Cnt" value="0"/>
 		</div> <!--content end  -->
 	</div>  <!--content_Area end  -->
 </form>
-	
-<img alt="와플" src="${data.MIMG}">
 </body>
 </html>

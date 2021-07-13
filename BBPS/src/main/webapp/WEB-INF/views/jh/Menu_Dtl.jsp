@@ -77,15 +77,13 @@ input{
 
 }
 
-
-.menu_Img{
+#m_Img{
 	width: 100px;
 	padding-bottom: 20px;
 }
 
-
 /* 이게일반 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -109,7 +107,77 @@ button{
 	 font-size: 22px;
 }
 
-button:focus{outline:none;}
+input[type='button']:focus{outline:none;}
+
+
+/* 팝업메시지 */
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_Area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_Head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_Btn{
+	text-align:center;
+}
+.popup_Btn input[type='button']{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_Content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+input[type='button']:focus{outline:none;}
+
+.popup_Head > .close_Btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
+
 
 </style>
 
@@ -129,7 +197,73 @@ $(document).ready(function(){
 		$("#send_Form").attr("action","Menu_Edit");
 		$("#send_Form").submit();
 	});
-});
+	
+	//삭제버튼
+	$(".row_Del").on("click",function(){
+		makePopup("", "메뉴를 삭제하시겠습니까?",function(){});
+	});
+	
+	//삭제
+	$("body").on("click",".confirm_Btn",function(){
+		var params = $("#send_Form").serialize();
+		
+		$.ajax({
+			url: "Menu_Dels",
+			type: "post",
+			dataType: "json",
+			data: params,
+			success: function(res){
+				
+				if(res.msg == "success"){
+					$("#send_Form").attr("action","Menu_List");
+					$("#send_Form").submit();
+				} else if(res.msg = "failed"){
+					makePopup("", "삭제 중 문제 발생",function(){});
+				} else{
+					makePopup("", "삭제 중 문제 발생",function(){});
+				}
+			}
+		})
+	}); //del end
+	
+}); //ready end
+
+/* 팝업 */
+function makePopup(title, contents, func) {
+	
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_Area\">";	
+	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_Btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\" style=\"background-color: rgb(190, 190, 190)\">";	
+	html+= 	 	"</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_Area").hide().show();
+	
+	$(".popup_Btn, .close_Btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+	$(".confirm_Btn").on("click",function(){
+		location.href = "Menu_List";
+	});
+	}
+
+function closePopup() {
+	$(".bg, .popup_Area").fadeOut(function(){
+		$(".bg, .popup_Area").remove();
+	}); //popup_Btn end
+}	
+
 </script>
 </head>
 <body>
@@ -144,8 +278,8 @@ $(document).ready(function(){
 		<div class="content">
 			<h1>POS 메뉴조회</h1>
 		<div class="btn_Area">
-			<button class="row_Del">삭제</button>
-			<button class="row_Add">수정</button>
+			<input type="button" class="row_Del" value="삭제">
+			<input type="button" class="row_Add" value="수정">
 		</div>
 	
 	<table cellspacing="0">
@@ -171,13 +305,13 @@ $(document).ready(function(){
 			<td>${data.MNAME}</td>
 			<td>${data.CNAME}</td>
 			<td>${data.MPRICE}</td>
-			<td>${data.MIMG}</td>
+			<td><img id="m_Img" alt="메뉴 이미지" src="resources/upload/${data.MIMG}"></td>
 			<td>${data.NOTE}</td>
 		</tr>
 
 		</table>
 			<div class="submit_Area">
-				<button class="list_Btn">목록</button>
+				<input type="button" class="list_Btn" value="목록"/>
 			</div> 
 		</div> <!--content end  -->
 	</div>  <!--content_Area end  -->

@@ -21,5 +21,7 @@ public interface IjhDao {
 
 	public int addM(HashMap<String, String> params) throws Throwable;
 
+	public int delM(HashMap<String, String> params) throws Throwable;
+
 
 }

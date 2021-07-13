@@ -33,6 +33,29 @@ public class sgService implements IsgService {
 		return isgDao.addN(params);
 	}
 
+	@Override
+	public int updateN(HashMap<String, String> params) throws Throwable {
+		return isgDao.updateN(params);
+	}
+
+	@Override
+	public int deleteN(HashMap<String, String> params) throws Throwable {
+		return isgDao.deleteN(params);
+	}
+	
+	
+	
+	@Override
+	public int getUCnt(HashMap<String, String> params) throws Throwable {
+		return isgDao.getUCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getUList(HashMap<String, String> params) throws Throwable {
+		return isgDao.getUList(params);
+	}
+
+	
 	
 
 }

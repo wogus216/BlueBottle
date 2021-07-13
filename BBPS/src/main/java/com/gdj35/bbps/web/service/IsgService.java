@@ -13,4 +13,13 @@ public interface IsgService {
 	
 	public int addN(HashMap<String, String> params) throws Throwable;
 
+	public int updateN(HashMap<String, String> params) throws Throwable;
+
+	public int deleteN(HashMap<String, String> params) throws Throwable;
+
+
+	public int getUCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getUList(HashMap<String, String> params) throws Throwable;
+
 }

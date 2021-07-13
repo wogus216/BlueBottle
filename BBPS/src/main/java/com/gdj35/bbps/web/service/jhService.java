@@ -54,4 +54,11 @@ public class jhService implements IjhService {
 		return ijhDao.addM(params);
 	}
 
+	@Override
+	public int delM(HashMap<String, String> params) throws Throwable {
+		return ijhDao.delM(params);
+	}
+
+	
+
 }

@@ -40,7 +40,7 @@
 	SELECT COUNT(*) AS CNT
 	FROM POS_MENU PM INNER JOIN POS_CATE PC
                         	 ON PM.POS_CATE_NO = PC.CATE_NO
-	WHERE 1 = 1
+	WHERE 1 = 1 AND PM.DEL_FLAG = 1
 	<if test ="search_input !=null and search_input != ''">
 		<choose>
 			<when test="search_Filter == 0">
@@ -58,12 +58,12 @@
 	
 	<!-- 메뉴 게시글 갖고오기 -->
 	<select id="getMbList" parameterType="hashmap" resultType="hashmap">
-		SELECT P.MENU_NO,P.MENU_NAME,P.CNAME,P.MENU_PRICE,P.POS_CATE_NO
-		FROM (SELECT PM.MENU_NO,PM.MENU_NAME,PM.POS_CATE_NO,PM.MENU_PRICE,PC.CATE_NAME as CNAME,
+		SELECT P.MENU_NO,P.MENU_NAME,P.CNAME,P.MENU_PRICE,P.POS_CATE_NO,P.NOTE,P.MENU_IMG
+		FROM (SELECT PM.MENU_NO,PM.MENU_NAME,PM.POS_CATE_NO,PM.MENU_PRICE,PM.MENU_IMG,PC.CATE_NAME as CNAME,PM.NOTE,
 		             ROW_NUMBER() OVER( ORDER BY MENU_NO ASC) AS RNUM
 		      FROM POS_MENU PM INNER JOIN POS_CATE PC
 		                                 ON PM.POS_CATE_NO = PC.CATE_NO
-		WHERE 1=1
+		WHERE 1=1 AND PM.DEL_FLAG = 1
 	<if test ="search_input !=null and search_input != ''">
 		<choose>
 			<when test="search_Filter == 0">
@@ -102,7 +102,7 @@
 	
 	<!-- 상세보기 -->
 	<select id="getMd" parameterType="hashmap" resultType="hashmap">
-	SELECT  PM.MENU_NO AS MNO,PM.MENU_NAME AS MNAME,PC.CATE_NAME AS CNAME,PM.MENU_PRICE AS MPRICE,PM.MENU_IMG AS MIMG,PM.NOTE
+	SELECT  PM.MENU_NO AS MNO, PM.MENU_NAME AS MNAME, PC.CATE_NAME AS CNAME, PM.MENU_PRICE AS MPRICE, PM.MENU_IMG AS MIMG, PM.NOTE
 	FROM POS_MENU PM INNER JOIN POS_CATE PC
                          ON PM.POS_CATE_NO = PC.CATE_NO
 	WHERE PM.MENU_NO = #{menuNo}	
@@ -110,14 +110,20 @@
 	
 	<!-- 수정 -->
 	<update id="editM" parameterType="hashmap">
-		UPDATE POS_MENU SET MENU_NAME = #{m_Name}, MENU_PRICE = #{m_Price}
+		UPDATE POS_MENU SET MENU_NAME = #{m_Name}, MENU_PRICE = #{m_Price},MENU_IMG = #{m_File},NOTE = #{m_Note}
 		WHERE MENU_NO = #{menuNo}
 	</update>
 	
 	<!-- 등록  -->
 	<insert id="addM" parameterType="hashmap">
-		INSERT INTO POS_MENU (MENU_NO,MENU_NAME,POS_CATE_NO,USER_NO,MENU_PRICE,MENU_IMG)
-		VALUES (POS_MENU_SEQ.NEXTVAL,#{m_Name},#{m_Cate},#{userNo},#{m_Price},#{m_File})
+		INSERT INTO POS_MENU (MENU_NO,MENU_NAME,POS_CATE_NO,USER_NO,MENU_PRICE,MENU_IMG,NOTE)
+		VALUES (POS_MENU_SEQ.NEXTVAL,#{m_Name},#{m_Cate},#{userNo},#{m_Price},#{m_File},#{m_Note})
 	</insert>
+	
+	<!-- 수정 -->
+	<update id="delM" parameterType="hashmap">
+		UPDATE POS_MENU SET DEL_FLAG = 0
+		WHERE MENU_NO = #{menuNo}
+	</update>
 	
 </mapper> 

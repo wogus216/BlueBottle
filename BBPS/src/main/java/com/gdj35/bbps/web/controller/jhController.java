@@ -240,14 +240,14 @@ public class jhController {
 	params.put("hUserNo", String.valueOf(session.getAttribute("sUSERNo")));
 	params.put("hDt", "1");
 	
-	System.out.println("hq_menus에서본사유저번호:"+session.getAttribute("sUSERNo"));
+	System.out.println("H_menus에서본사유저번호:"+session.getAttribute("sUSERNo"));
 	
 	// 메뉴 취득
 	List<HashMap<String, String>>menu= ijhService.getHMenu(params);
 	
 	modelMap.put("menu", menu);
 	
-	System.out.println("menu"+menu);
+	System.out.println("본사menu 보자"+menu);
 	return mapper.writeValueAsString(modelMap);
 	}
 			
@@ -332,7 +332,13 @@ public class jhController {
 			ModelAndView mav) throws Throwable {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
-		System.out.println("상세보기"+data);
+			
+		/*
+		 * if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
+		 * 
+		 * String path = "resources/upload/"+data.get("MIMG"); data.put("MIMG", path); }
+		 */
+		System.out.println("상세보기 데이터"+data);
 		mav.addObject("data", data);
 		mav.setViewName("jh/Menu_Dtl");
 		return mav;
@@ -347,10 +353,11 @@ public class jhController {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
 		
-		
-		  String path = "resources/upload/"+ data.get("MIMG"); 
-		  data.put("MIMG",path);
-		 
+		/*
+		 * if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
+		 * 
+		 * String path = "resources/upload/"+data.get("MIMG"); data.put("MIMG", path); }
+		 */
 		mav.addObject("data", data);
 		System.out.println("수정 데이터 보자"+data);
 		mav.setViewName("jh/Menu_Edit");
@@ -358,6 +365,41 @@ public class jhController {
 		return mav;
 		
 	}
+	
+	//메뉴 이미지 변경Menu_Imgs
+	
+	@RequestMapping(value="/Menu_Imgs",
+			method = RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+			@ResponseBody 
+			public String Menu_Imgs(
+				@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			System.out.println("이미지파람스"+params);
+			
+		/*
+		 * if(Integer.parseInt(String.valueOf(params.get("img_Cnt"))) == 0) { String
+		 * path = "resources/upload/"+params.get("m_File"); params.put("m_File", path);
+		 * }
+		 */
+			try {
+				int cnt = ijhService.editM(params);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+					
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+			} catch (Throwable e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			return mapper.writeValueAsString(modelMap);
+			
+			}
 	
 	@RequestMapping(value="/Menu_Edits",
 	method = RequestMethod.POST,
@@ -385,6 +427,8 @@ public class jhController {
 	return mapper.writeValueAsString(modelMap);
 	
 	}
+	
+	
 	//메뉴 추가
 	@RequestMapping(value ="/Menu_Add")
 	public ModelAndView Menu_Add(ModelAndView mav) {
@@ -408,12 +452,7 @@ public class jhController {
 	
 	System.out.println("Menu_Adds에서본사유저번호:"+session.getAttribute("sUSERNo"));
 	try {
-		String mFile = params.get("m_File");
-		String[] arrayMFile = mFile.split(",");
-		for(int i =0; i < arrayMFile.length; i++) {
-			System.out.println("이미지:"+arrayMFile[i]);
-			params.put("m_File", arrayMFile[i]);
-		}
+		
 		int cnt = ijhService.addM(params);
 		
 		if(cnt > 0) {
@@ -427,6 +466,37 @@ public class jhController {
 		e.printStackTrace();
 		modelMap.put("msg", "error");
 	}
+	return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	//삭제
+	
+	@RequestMapping(value="/Menu_Dels",
+					method = RequestMethod.POST,
+					produces = "text/json;charset=UTF-8")
+	@ResponseBody 
+	public String Menu_Dels(
+	@RequestParam HashMap<String, String> params) throws Throwable {
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+	try {
+	int cnt = ijhService.delM(params);
+	
+	if(cnt > 0) {
+	modelMap.put("msg", "success");
+	
+	} else {
+	modelMap.put("msg", "failed");
+	}
+	
+	} catch (Throwable e) {
+	e.printStackTrace();
+	modelMap.put("msg", "error");
+	}
+	
+	
 	return mapper.writeValueAsString(modelMap);
 	
 	}
