@@ -21,4 +21,6 @@ public int editM(HashMap<String, String> params) throws Throwable;
 
 public int addM(HashMap<String, String> params) throws Throwable;
 
+public int delM(HashMap<String, String> params)  throws Throwable;
+
 }

@@ -10,9 +10,9 @@
 <title>등록</title>
 <style type="text/css">
 .file_Form_Wrap {
-
+	/*
 	display: none;
-
+		*/
 } 
 /* 컨텐츠 부분 */
 
@@ -315,8 +315,6 @@ $(document).ready(function(){
 		}); //popup_Btn end
 	}	
 
-	
-
 </script>
 </head>
 <body>
@@ -363,7 +361,6 @@ $(document).ready(function(){
 			<input type="button" value="첨부파일선택" id="file_Btn"/>
 			<div id="fileName"></div>
 			<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/>
-				
 			<input type="hidden" id="m_File" name="m_File"/>
 		</div>
 	</div>
