@@ -13,4 +13,12 @@ public interface IsgDao {
 	
 	int addN(HashMap<String, String> params) throws Throwable;
 
+	int getUCnt(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getUList(HashMap<String, String> params) throws Throwable;
+
+	int updateN(HashMap<String, String> params) throws Throwable;
+
+	int deleteN(HashMap<String, String> params) throws Throwable; 
+
 }

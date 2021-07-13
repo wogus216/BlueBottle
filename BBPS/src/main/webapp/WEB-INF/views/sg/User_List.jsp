@@ -1,12 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset= "UTF-8">
-
-<title>본사공지사항리스트</title>
+<meta charset="UTF-8">
+<title>본사사용자리스트</title>
 <style type="text/css">
 /* 상단 바 */
 .top {
@@ -14,7 +12,6 @@
    padding: 0;
    margin: 0;
    background-color: white;
-   
    display: inline-block;
    min-width: 1820px;
    height: 62px;
@@ -161,21 +158,15 @@ td{
  td:first-child{
 	border-left: none;
 }
-input{
-	width:200px;
-	height:40px;
 
-}
-
-.input_btn_area{
-display: inline-block;
-text-align: left;
-}
 
 .filter_area{
-float : right;
-	text-align: right;
+ display : inline-block;
+	float : left;
 	margin-bottom: 20px;
+}
+.add_btn {
+	float: right;
 }
 [name=r]{
 	margin: 0;
@@ -187,7 +178,12 @@ float : right;
 label{
 	vertical-align: middle;
 }
-.search_btn, .input_btn{
+.search_input {
+	width:200px;
+	height:40px;
+
+}
+.search_btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
@@ -214,14 +210,13 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
 }
 /* 검색 과 페이지 */
 
-.search_area,.paing_wrap, .page_btn{
+.search_info,.page_area, .page_btn{
 	text-align: center;
 }
 
@@ -256,111 +251,27 @@ button{
 	outline:none;
 }
 </style>
+
 <script type="text/javascript"
-	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+	src="../script/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-
-	
-	
-	
-	
-	if("${param.searchGbn}" != ""){
-		$("#searchGbn").val("${param.searchGbn}");
-	}
-	reloadList();
-	
-	$("#searchBtn").on("click",function(){
-		$("#page").val(1);
-		$("#searchOldTxt").val($("#searchTxt").val());
-		reloadList();
+	$(".top_menu").on("click","a",function(){
+		$(".top_menu a").attr("style","color: black");
+		$(this).css("color", "#01a1dd");
+		$(this).parent().parent().children(1).css("color", "#01a1dd");
 	});
+	$(".sub").hover(function(){
+		$("li").css("background-color","white");
+		$(this).parent("li").css("background-color","#f1f1f1");
 	
-	$(".paging_Wrap").on("click","span",function(){
-		$("#page").val($(this).attr("name"));
-		$("#searchTxt").val($("#searchOldTxt").val());
-		reloadList();
-	});
-	
-	$("#writeBtn").on("click", function () {
-		location.href = "Notice_Write";
-		$("#actionForm").attr("action", "Notice_Write");
-		$("#actionForm").submit();
-	});
-	
-	$(".list_wrap tbody").on("click","tr", function () {
-		$("#nNo").val($(this).attr("nno"));
-		
-		$("#actionForm").attr("action", "Notice_Detail");
-		$("#actionForm").submit();
+	},function(){
+			$("li").css("background-color","white");
 	});
 	
 	
 }); //ready end
 
-function reloadList() {
-	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
-	
-	$.ajax({
-		url:"Notices", //접속주소
-		type:"post", //전송방식 : get, post
-		dataType:"json",//받아올데이터형식
-		data:params, //보낼 데이터(문자열 형태)
-		success : function (res) {//성공 시 다음함수 실행
-			drawList(res.list);
-			drawPaging(res.pb);
-		},
-		error : function (request, status, error) { //실패 시 다음함수 실행
-			console.log(error);
-		}
-	});
-}
-function drawList(list) {
-	var html = "";
-	
-	for(var d of list){
-		html += "<tr nno=\"" + d.TXT_NO + "\">";
-		html += "<td>" + d.TXT_NO+ "</td>";
-		html += "<td>" + d.TITLE + "</td>";
-		html += "<td>" + d.S_DT + "</td>";
-		html += "<td>" + d.USER_NO + "</td>";
-		html += "</tr>";
-		
-		
-	}
-	
-	$("tbody").html(html);
-}
-
-function drawPaging(pb) {
-	var html="";
-	
-	html += "<span name=\"1\">처음</span>";
-	
-	if($("#page").val() == "1"){
-		html += "<span name=\"1\">이전</span>";
-	} else {
-		html += "<span name=\"" + ($("#page").val() -1) + "\">이전</span>";
-	}
-	
-	for(var i = pb.startPcount; i<=pb.endPcount; i++){
-		if($("#page").val() == i){
-			html += "<span class=\"" + i + "\"><b>" + i + "</b></span>";		} else {
-			html += "<span name=\"" + i + "\">" + i + "</span>";
-		}
-	}
-	
-	if($("#page").val() == pb.maxPCount){
-		html += "<span name=\"" + pb.maxPCount + "\">다음</span>";
-	} else {
-		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
-	}
-	
-	
-	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
-	
-	$("#paging_Wrap").html(html);
-}
 
 
 </script>
@@ -368,66 +279,58 @@ function drawPaging(pb) {
 <body>
 <!-- 상단 -->
   <div class="top">
-    
+     
    </div>
-
 
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
-<h1>공지사항</h1>
-<div class="input_btn_area">
-<button class="input_btn" id="writeBtn">작성</button>
-</div>
+<h1>사용자 조회</h1>
 
 	<div class="filter_area">
 			<select class="cate">
 				<option value="0" selected="selected">전체</option>
-				<option value="1">이벤트</option>
-				<option value="2">주문관련</option>
-				<option value="3">재고관련</option>
-				<option value="4">시스템</option>
-				<option value="4">기타</option>
+				<option value="1">본사</option>
+				<option value="2">지점</option>
 			</select>
-			<input type = "date" value="2021-01-01" class="start_date" />
-			<input type = "date" value="2021-01-01" class="end_date"/>
-			<button class="search_btn">검색</button>
 		</div>
-<div class="list_wrap">
-<table>
+	<div class="add_btn_area">
+		<button class="add_btn">등록</button>
+	</div>
+	
+<table cellspacing="0">
 	<colgroup>
-		<col width="15%">
-		<col width="45%">
+		<col width="20%">
+		<col width="40%">
 		<col width="20%">
 		<col width="20%">
 	</colgroup>
 	<thead>
 		<tr>
-			<th>NO.</th>
-			<th>제목</th>
-			<th>날짜</th>
-			<th>작성자</th>
+			<th>사용자번호</th>
+			<th>지점/부서명</th>
+			<th>사용자명</th>
+			<th>ID</th>
 		</tr>
 	</thead>
 	<tbody>
 	</tbody>
 </table>
-</div>
 	<div class="search_area" style = "margin-top : 30px;">
-		<form action="#" id="actionForm" method="post">
-	<input type="hidden" id="nNo" name="nNo"/>
-	<input type="hidden" id="page" name="page" value="${page}">
-			<select id="searchGbn" name="searchGbn" class="search_filter">
-				<option value="0" selected="selected">제목+내용</option>
-				<option value="1">제목</option>
-				<option value="2">내용</option>
-				<option value="3">작성자</option>
+		<div class="search_info">
+			<select class="search_filter">
+				<option value="0" selected="selected">전체</option>
+				<option value="1">사용자번호</option>
+				<option value="2">지점명</option>
+				<option value="3">부서명</option>
+				<option value="4">사용자명</option>
+				<option value="5">ID</option>
 			</select>
-			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
-			<button class="search_btn" id="searchBtn">검색</button>
-			</form>
+			<input type="text" class="search_input"/>
+			<button class="search_btn">검색</button>
+		</div>
 	</div>
-<div class="paging_wrap">
+	<div class="page_area">
 		<div class="page_btn">
 		<button style="background-color: white"><</button>
 		<button style="background-color: white">1</button>
@@ -435,8 +338,10 @@ function drawPaging(pb) {
 		<button style="background-color: white">3</button>
 		<button style="background-color: white">></button>
 		</div>
-</div>
+	</div>
+	
 	</div>
 </div>
+
 </body>
 </html>
