@@ -174,7 +174,12 @@ td{
 	float: right;
 }
 
-.search_btn, .graph_btn{
+.sales_info span {
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+.search_btn, .graph_btn, .reset_btn{
 	height: 40px;
 	vertical-align: bottom;
 }
@@ -185,13 +190,16 @@ td{
 	background-color: #bf4040;
 	margin-right: 0px;
 }
+.reset_btn {
+	background-color: #b3b3b3;
+}
 
-.start_date, .end_date {
+#todayA, #todayB {
     width: 150px;
     font-size: 15px;
     height: 36px;
 }
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -207,7 +215,9 @@ button{
 .page_area, .page_btn{
 	text-align: center;
 }
-
+.page_area, .page_btn{
+	text-align: center;
+}
 .page_btn button{
 	color: black;
 	width: 40px;
@@ -218,7 +228,6 @@ button{
 	margin:40px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
-
 .page_btn button:hover{
 	color: #01a1dd;
 }
@@ -227,10 +236,110 @@ button{
 	outline:none;
 }
 
-button:focus{outline:none;}
+.page_btn button{
+	background-color: white;
+}
+
+.on {
+	background-color: blue;
+}
 
 </style>
 
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript"> 
+$(document).ready(function() {
+	
+	reloadList();
+	
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		reloadList();
+	}); 
+	
+	$(".reset_btn").on("click", function() {
+		$("#start_date").val("");
+		$("#end_date").val("");
+	});//reset_btn click end
+	
+	$(".search_btn").on("click", function() {
+		reloadList();
+	});// search_btn click end
+	
+	
+});// document ready end
+
+		
+function reloadList() {
+
+	var params = $("#actionForm").serialize();
+
+	console.log(params);
+	$.ajax({
+		url: "getSalesList",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			drawList(res.list);
+			drawPaging(res.pb);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
+
+function drawList(list) {
+	var html = "";
+	console.log(list);
+	for(var d of list) {
+		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
+		html += "<td>" + d.ENROLL_DATE + "</td>     ";
+		html += "<td>" + d.SALES_PRICE + "</td>     ";
+		html += "<td>" + d.ORD_PRICE + "</td>     ";
+		html += "<td>" + d.NET_PRICE + "</td>     ";
+		html += "</tr>                ";
+	}
+	
+	$("tbody").html(html);
+}
+
+
+function drawPaging(pb){
+	var html = "";
+	                                    
+	html += "<button page = \"1\">|<</button>";
+	if($("#page").val()=="1"){
+		html += "<button page = \"1\"><</button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()-1) + "\" ><</button>";
+		
+	}
+	
+	for(var i = pb.startPcount; i <= pb.endPcount; i++){
+		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
+			html += "<button class = \"on\" page = \""+ i +"\" >"+ i +"</button>";	
+		}else{
+			html += "<button  page = \""+ i +"\" >"+ i +"</button>";	
+		}
+		
+	}
+	
+	if($("#page").val() == pb.maxPcount){
+		html += "<button page = \""+ pb.maxPcount +"\" >></button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+	}
+	
+	
+	
+	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	
+	$(".page_btn").html(html);
+}
+</script>
 
 </head>
 <body>
@@ -294,10 +403,16 @@ button:focus{outline:none;}
 	<div class="content">
 	<h1 >매출조회</h1>
 	<div class="sales_info">
-			<input type = "date" value="2021-01-01" class="start_date" />
-			<input type = "date" value="2021-01-01" class="end_date"/>
-			<button class="search_btn">검색</button>
-			<button class="graph_btn">그래프</button>
+		<form action="#" method="post" id="actionForm">
+			<input type="hidden" id="page" name="page" value="${page}" />
+			<input type="button" class="reset_btn" value="초기화" />
+			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" />
+			<span>부터</span>
+			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />
+			<span>까지</span>
+			<input type="button" class="search_btn" value="검색" />
+			<input type="button" class="graph_btn" value="검색" />
+		</form>
 	</div>
 	<table cellspacing="0">
 		<colgroup>
@@ -306,85 +421,26 @@ button:focus{outline:none;}
 			<col width="25%">
 			<col width="25%">
 		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col" style="border-left: none;">날짜</th>
+				<th scope="col">매출액</th>
+				<th scope="col">지출액</th>
+				<th scope="col">순매출액</th>
+			</tr>
+		</thead>
 		<tbody>
-		<tr>
-			<th scope="col" style="border-left: none;">날짜</th>
-			<th scope="col">매출액</th>
-			<th scope="col">지출액</th>
-			<th scope="col">순매출액</th>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
-		<tr>
-			<td>2021-05-01</a></td>
-			<td>1,000,00</td>
-			<td>500,000</td>
-			<td>500,000</td>
-		</tr>
 		</tbody>
 	</table>
-
-		<ul class="tot_sales">
-			<li><strong>총 순매출액: </strong>4,000,000원</li>
-			<li><strong>총 지출액 : </strong>1,000,000원</li>
-			<li><strong>총 매출액 : </strong>5,000,000원</li>
-		</ul>
-			<div class="page_area">
-				<div class="page_btn">
-					<button style="background-color: white"><</button>
-					<button style="background-color: white">1</button>
-					<button style="background-color: white">2</button>
-					<button style="background-color: white">3</button>
-					<button style="background-color: white">></button>
-				</div>
-			</div>
-			
-		</div> <!--content end  -->
-	</div> <!--content_area end -->
+	<ul class="tot_sales">
+		<li><strong>총 순매출액:</li>
+		<li><strong>총 지출액 : </li>
+		<li><strong>총 매출액 : </li>
+	</ul>
+	<div class="page_area">
+		<div class="page_btn"></div>
+	</div>
+		
+	</div> <!--content end  -->
+</div> <!--content_area end -->
 </html>

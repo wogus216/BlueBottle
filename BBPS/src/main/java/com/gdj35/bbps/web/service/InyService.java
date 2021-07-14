@@ -29,4 +29,8 @@ public interface InyService {
 
 	int deleteMenuCate(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> getSalesList(HashMap<String, String> params) throws Throwable;
+
+	int getSalesCnt(HashMap<String, String> params) throws Throwable;
+
 }

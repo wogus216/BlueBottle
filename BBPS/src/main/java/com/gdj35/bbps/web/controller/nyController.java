@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gdj35.bbps.common.bean.PagingBean;
 import com.gdj35.bbps.common.service.IPagingService;
 import com.gdj35.bbps.web.service.InyService;
 
@@ -309,11 +310,47 @@ public class nyController {
 	}
 	
 	@RequestMapping(value="/B_Sales")
-	public ModelAndView B_Sales(ModelAndView mav) {
+	public ModelAndView B_Sales(@RequestParam HashMap<String, String> params, ModelAndView mav) {
 		
+		int page = 1;
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
 		mav.setViewName("ny/B_Sales");
 		
 		return mav;
 	}
 	
+	@RequestMapping(value="/getSalesList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getSalesList(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			int page = Integer.parseInt(params.get("page"));
+			
+			int cnt = iNyService.getSalesCnt(params);
+			
+			PagingBean pb = iPagingService.getPagingBean(page, cnt);
+			
+			params.put("startCnt", Integer.toString(pb.getStartCount()));
+			params.put("endCnt", Integer.toString(pb.getEndCount()));
+			
+			List<HashMap<String, String>> list = iNyService.getSalesList(params);
+			
+			modelMap.put("list", list);
+			modelMap.put("pb", pb);
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		
+		return mapper.writeValueAsString(modelMap);
+	}
 }
