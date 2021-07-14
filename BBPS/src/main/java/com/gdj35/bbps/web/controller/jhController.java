@@ -158,8 +158,8 @@ public class jhController {
 		
 	//포스 로그인
 		
-		@RequestMapping(value="/pos_Login")
-		public ModelAndView pos_Login(HttpSession session, ModelAndView mav) {
+		@RequestMapping(value="/Pos_Login")
+		public ModelAndView Pos_Login(HttpSession session, ModelAndView mav) {
 				if(session.getAttribute("sBRCHNo") != null	) { //로그인상태
 					mav.setViewName("redirect:Pos");
 				} else { // 비 로그인 상태
@@ -168,11 +168,11 @@ public class jhController {
 				
 				return mav;
 		}
-		@RequestMapping(value="/pos_Logins",
+		@RequestMapping(value="/Pos_Logins",
 				method = RequestMethod.POST,
 				produces = "text/json;charset=UTF-8")
 		@ResponseBody
-		public String pos_Logins(
+		public String Pos_Logins(
 			HttpSession session,
 			@RequestParam HashMap<String, String> params) throws Throwable{
 		ObjectMapper mapper = new ObjectMapper();
