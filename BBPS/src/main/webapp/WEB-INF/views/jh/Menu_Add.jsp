@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
-
-<c:import url="H_Menu.jsp"></c:import>
+<c:import url="H_Menu.jsp">
+	<c:param name="menuno" value="9"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>

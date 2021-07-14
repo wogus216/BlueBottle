@@ -50,15 +50,16 @@ html,body{
 	width: 1600px;
 	height: 60px;
 }
-
-.menu1_wrap_on > .menu_depth1{
-	color: #01a1dd;
-}
 .menu1_wrap, .menu1_wrap_on{
+
 	display: inline-table;
 	cursor: pointer;
 }
 
+
+.menu1_wrap_on > .menu1_title > .menu_depth1{
+	color: #01a1dd;
+}
 .menu1_title {
 	display: inline-table;
 	width: 128px;
@@ -132,8 +133,6 @@ html,body{
     margin-top: 12px;
 }
 
-
-
 </style>
 
 <script type="text/javascript"
@@ -142,6 +141,32 @@ html,body{
 $(document).ready(function(){
 	//메뉴 그리기
 	reLoadMenu();
+	
+	//1뎁스 클릭 시 효과
+	$("body").on("click",".menu1_wrap",function(){
+		
+		$(this).attr("class","menu1_wrap_on");
+	});
+	
+	//2뎁스 호버 시 효과
+	$(".top_Menu .menu_depth2_area").children().hover(function(){
+		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "#f2f2f2");
+	},function(){
+		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
+	});
+	
+	//메뉴이동
+	$(".top_Menu").on("click", ".menu_depth1",".menu_depth2",function(){
+		$("#h_Menu_Form").attr("action",$(this).parent().parent().attr("addr"));
+		$(this).parent().parent().css("color","#01a1dd");
+		$("#h_Menu_Form").submit();
+	});
+	
+	//로그아웃
+	$("body").on("click", "#log_Out",function(){
+		location.href = "H_LogOut";
+	});
+	
 }); //ready end
 
 
@@ -156,40 +181,13 @@ function reLoadMenu(){
 		success: function(res){
 			console.log(res);
 			drawMenu(res.menu);
-			menuFunction();
+			
 		},
 		error : function(request, status, error){
 			console.log(error);
 			console.log(request);
 			console.log(status);
 		}
-	});
-	
-}
-
-function menuFunction(){
-	
-	//1뎁스 호버 시 효과
-	$(".menu1_wrap").on("click",".menu_depth1",function(){
-		$(".menu1_wrap_on").attr("class","menu1_wrap");
-		$(this).parent().parent().attr("class","menu1_wrap_on");
-		$(".menu_depth1").css("color", "black");
-		$(this).css("color", "#01a1dd");
-	
-	});
-	
-	
-	//2뎁스 호버 시 효과
-	$(".menu_depth2_area").children().hover(function(){
-		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "#f2f2f2");
-	},function(){
-		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
-	});
-	
-	
-	//로그아웃
-	$("#log_Out").on("click",function(){
-		location.href = "H_LogOut";
 	});
 	
 }
@@ -203,26 +201,34 @@ function drawMenu(menu){
 	html += "  </div>";
 	for(var i =0; i < menu.length; i++){
 		if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
-					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+				if(menu[i].SITE_MENU_NO == "${param.menuno}"){
+					html += "<div class=\"menu1_wrap_on\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
+				}
+				else{
+					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
+				}
 					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
-		}
+				}
 		
 		else if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
-					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\">";
+			if(menu[i].SITE_MENU_NO == "${param.menuno}"){
+					html += "<div class=\"menu1_wrap_on\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
+				}
+				else{
+					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
+				}
 					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
-					
 			for(var j = menu.length -1; j > i;	j--){
 				if(menu[i].SITE_MENU_NO == menu[j].TOP){
-					//if(menu[j].SITE_MENU_NO == $("#menuno").val()){
 						if(menu[j].DEPTH == 2){
-							html +="<div class=menu2_wrap " + menu[j].SITE_MENU_NO + "\">";
+							html +="<div class=\"menu2_wrap\" menuno=\"" + menu[j].SITE_MENU_NO + "\"  addr = \""+menu[i].MADDR + "\">";
 							}
-							html +=		"<div class=menu2_title>";
-							html +=			"<div class=menu_depth2_area \" >";
+							html +=		"<div class=\"menu2_title\">";
+							html +=			"<div class= \"menu_depth2_area \">";
 									if(menu[i].SITE_MENU_NO == 2){
 							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
 							html +=			"<div class=\"menu_depth2\">" + menu[j-1].SITE_MENU_NAME + "</div>";
@@ -236,7 +242,7 @@ function drawMenu(menu){
 							html +=		"</div>";
 							html +=	  "</div>";
 							html +="</div>";
-							//}
+							
 						}
 					}
 				}
@@ -244,7 +250,10 @@ function drawMenu(menu){
 		}
 			
 		html +="<input type=\"button\" value=\"로그아웃\" class=\"log_Out\"/ id=\"log_Out\">";
-	$(".top_Menu").html(html);
+	
+		$(".top_Menu").html(html);
+		console.log(menu[2].SITE_MENU_NO);
+		console.log("${param.menuno}");
 }
 
 
@@ -253,8 +262,9 @@ function drawMenu(menu){
 </head>
 <body>
 <form action="#" id="h_Menu_Form" method="post">
-		<input type="hidden"  id="hUserNo" name="hUserNo" value="${hUserNo}">
-		<input type="hidden"  id="hDt" name="hDt" value="${hDt}">
+		<input type="hidden"  id="UserNo" name="UserNo" value="${sUSERNo}">
+		<input type="hidden"  id="Dt" name="Dt" value="${sDEPNo}">
+		<input type="hidden"  id="menuno" name="menuno" value="${SITE_MENU_NO}">
 </form>
 
          	<!-- 탑메뉴 -->

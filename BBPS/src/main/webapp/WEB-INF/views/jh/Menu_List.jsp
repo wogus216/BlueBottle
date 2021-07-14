@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
-<c:import url="H_Menu.jsp"></c:import>
+<c:import url="H_Menu.jsp">
+	<c:param name="menuno" value="9"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
@@ -156,6 +158,8 @@ button{
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	
+	
 	if("${param.search_Filter}" != ""){
 			$("#search_Filter").val("${param.search_Filter}");
 	}
@@ -306,7 +310,7 @@ function drawPaging(pb){
 		</table>
 		<div class="search_Area" style = "margin-top : 30px;">
 			<form action="#" id="menu_Form" method="post">
-				<input type="hidden" id="menuNo" name="menuNo"/>
+				<input type="hidden" id="menuNo" name="menuNo" value="${param.menuNo}"/>
 				<input type="hidden" id="cateNo" name="cateNo"/>
 				<input type="hidden" id="page" name="page" value="${page}"/>
 			<div class="search_Info">
