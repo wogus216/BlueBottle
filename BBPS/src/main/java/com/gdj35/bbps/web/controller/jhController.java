@@ -158,7 +158,7 @@ public class jhController {
 		
 	//포스 로그인
 		
-		@RequestMapping(value="/Pos_Login")
+		@RequestMapping(value="/pos_Login")
 		public ModelAndView pos_Login(HttpSession session, ModelAndView mav) {
 				if(session.getAttribute("sBRCHNo") != null	) { //로그인상태
 					mav.setViewName("redirect:Pos");
@@ -220,7 +220,7 @@ public class jhController {
 				HttpSession session,
 				@RequestParam HashMap<String, String> params,
 				ModelAndView mav) {
-			System.out.println("본사유저번호:"+session.getAttribute("sUSERNo"));
+			System.out.println("유저권한번호:"+session.getAttribute("sAUTHNo"));
 			mav.setViewName("jh/H_Menu");
 				
 			return mav;
@@ -229,38 +229,66 @@ public class jhController {
 		@RequestMapping(value="/H_Menus",
 		method = RequestMethod.POST,
 		produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String H_Menus(
-	HttpSession session,
-	@RequestParam HashMap<String, String> params) throws Throwable{
-			
-	ObjectMapper mapper = new ObjectMapper();
-	
-	Map<String, Object> modelMap = new HashMap<String, Object>();
-	params.put("hUserNo", String.valueOf(session.getAttribute("sUSERNo")));
-	params.put("hDt", "1");
-	
-	System.out.println("H_menus에서본사유저번호:"+session.getAttribute("sUSERNo"));
-	
-	// 메뉴 취득
-	List<HashMap<String, String>>menu= ijhService.getHMenu(params);
-	
-	modelMap.put("menu", menu);
-	
-	System.out.println("본사menu 보자"+menu);
-	return mapper.writeValueAsString(modelMap);
-	}
-			
+		
+		@ResponseBody
+		public String H_Menus(
+		HttpSession session,
+		@RequestParam HashMap<String, String> params) throws Throwable{
+				
+		ObjectMapper mapper = new ObjectMapper();
+		
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		params.put("hAuthNo", String.valueOf(session.getAttribute("sAUTHNo")));
+		params.put("hDt", "1");
+		
+		System.out.println("H_menus에서 권한번호:"+session.getAttribute("hAuthNo"));
+		
+		// 메뉴 취득
+		List<HashMap<String, String>>menu= ijhService.getHMenu(params);
+		
+		modelMap.put("menu", menu);
+		
+		System.out.println("본사menu 보자"+menu);
+		return mapper.writeValueAsString(modelMap);
+		}
+		
+	// 지점 메뉴	
 	@RequestMapping(value="/B_Menu")
 				
 		public ModelAndView b_Menu(
+				HttpSession session,
 					ModelAndView mav) {
-				
+		System.out.println("지점이름:"+session.getAttribute("sBRCHNm"));
 			mav.setViewName("jh/B_Menu");
 					
 				return mav;
-					
 		}
+	
+	@RequestMapping(value="/B_Menus",
+			method = RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+			
+			@ResponseBody
+			public String B_Menus(
+			HttpSession session,
+			@RequestParam HashMap<String, String> params) throws Throwable{
+					
+			ObjectMapper mapper = new ObjectMapper();
+			
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			params.put("BrNm", String.valueOf(session.getAttribute("sBRCHNm")));
+			params.put("bDt", "1");
+			
+			System.out.println("B_menus에서 지점이름:"+session.getAttribute("sBRCHNm"));
+			
+			// 메뉴 취득
+			List<HashMap<String, String>>menu= ijhService.getBMenu(params);
+			
+			modelMap.put("menu", menu);
+			
+			System.out.println("지점menu 보자"+menu);
+			return mapper.writeValueAsString(modelMap);
+			}
 	//포스
 	@RequestMapping(value="/Pos")
 			

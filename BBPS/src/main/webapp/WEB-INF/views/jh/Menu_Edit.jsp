@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
-<c:import url="H_Menu.jsp"></c:import>
+<c:import url="H_Menu.jsp">
+	<c:param name="menuno" value="9"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +12,10 @@
 <style type="text/css">
 
 /* 컨텐츠 부분 */
+
+#att{
+	display: none;
+}
 
 .content_Area{
 	width: 1250px;
@@ -82,6 +88,11 @@ input{
 #m_Img{
 	width: 100px;
 	padding-bottom: 20px;
+}
+
+#fileBtn{
+	color: black;
+    width: 150px;
 }
 
 /* 버튼 */
@@ -167,10 +178,7 @@ input[type='button']:focus{outline:none;}
 	color: #ffffff;
 	border: none;
 }
-.s{
-	width: 500px;
-	height: 300px;
-}
+
 </style>
 
 <script type="text/javascript"
@@ -182,7 +190,6 @@ $(document).ready(function(){
 	
 	//이미지 파일 선택
 	$("#fileBtn").on("click",function(){
-		
 		$("#att").click();
 	});
 	

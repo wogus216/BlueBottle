@@ -23,5 +23,7 @@ public interface IjhDao {
 
 	public int delM(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getBMenu(HashMap<String, String> params) throws Throwable;
+
 
 }

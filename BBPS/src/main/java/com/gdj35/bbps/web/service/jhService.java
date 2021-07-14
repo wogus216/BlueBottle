@@ -59,6 +59,11 @@ public class jhService implements IjhService {
 		return ijhDao.delM(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBMenu(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getBMenu(params);
+	}
+
 	
 
 }
