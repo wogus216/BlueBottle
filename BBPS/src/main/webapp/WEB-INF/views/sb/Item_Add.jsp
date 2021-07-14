@@ -266,14 +266,36 @@ $(document).ready(function(){
 	});
 	
 	$(".submit").on("click",function(){
-		if($.trim($(".itemName").val()) == ""){
-			alert("품목명을 입력해주세요.")
+		var nameCnt = 0; //품목명 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+		var priceCnt = 0; //품목가격 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+		var minordCnt = 0; //최소주문단위 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+
+		$(".itemName").each(function(){
+			if($(this).val() == ""){
+				nameCnt++;
+			}
+		});
+		
+		$(".itemPrice").each(function(){
+			if($(this).val() == ""){
+				priceCnt++;
+			}
+		});
+		
+		$(".itemMinOrdUnit").each(function(){
+			if($(this).val() == ""){
+				minordCnt++;
+			}
+		});
+		
+		if(nameCnt > 0){
+			alert("품목명을 입력해주세요.");
 		   $(".itemName").focus;
-		}else if($.trim($(".itemPrice").val()) == ""){
-			alert("가격을 입력해주세요.")
+		}else if(priceCnt > 0){
+			alert("가격을 입력해주세요.");
 		   $(".itemPrice").focus;
-		}else if($.trim($(".itemMinOrdUnit").val()) == ""){
-			alert("최소주문단위를 입력해주세요.")
+		}else if(minordCnt > 0){
+			alert("최소주문단위를 입력해주세요.");
 		   $(".itemMinOrdUnit").focus;
 		}else{
 			

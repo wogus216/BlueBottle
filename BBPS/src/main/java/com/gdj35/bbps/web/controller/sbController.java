@@ -123,7 +123,8 @@ public class sbController {
 				insertMap.put("itemMinOrdUnit", itemMinOrdUnit.get(i));
 				insertMap.put("itemComProdFlag", itemComProdFlag.get(i));
 				
-			
+				System.out.println("이것은 인서트맵" + insertMap);
+				
 				int cnt = isbservice.AddItem(insertMap);
 				
 				int cnt2 = isbservice.AddItemPrice(insertMap);
@@ -323,8 +324,6 @@ public class sbController {
 
 		HashMap<String,Object> insertMap = new HashMap<String, Object>();
 		
-		System.out.println("인서트 맵" + insertMap);
-		
 		try {
 			
 			for(int i = 0; i < itemNo.size(); i++) {
@@ -352,5 +351,46 @@ public class sbController {
 		
 	}
 	
+	//본사 재고 폐기
+	@RequestMapping(value = "/Stock_Discards", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSDiscards(@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+			
+			for(int i = 0; i < itemNo.size(); i++) {
+				
+				if(discardCnt.get(i).equals("0")) {
+					
+				}else {
+				
+				insertMap.put("itemNo", itemNo.get(i));
+				insertMap.put("discardCnt", discardCnt.get(i));
+				insertMap.put("discardNote", discardNote.get(i));
+				insertMap.put("expDate", expDate.get(i));
+				
+				int cnt = isbservice.DiscardStock(insertMap);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+					}
+				}
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
 
 }

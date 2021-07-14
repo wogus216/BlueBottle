@@ -30,5 +30,7 @@ public interface IsbDao {
 
 	public int AddStock(HashMap<String, Object> insertMap) throws Throwable;
 
+	public int DiscardStock(HashMap<String, Object> insertMap) throws Throwable;
+
 
 }

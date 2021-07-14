@@ -72,7 +72,7 @@
 	
 	<!-- 품목추가 --><!-- 사용자 번호는 로그인된  대상으로 수정 필요  및 현재 시퀀스는 테스트용으로 만든 시퀀스로 쓴 것이므로 나중에 진짜 시퀀스로 바꿔야함-->
 	<insert id="AddItem" parameterType="hashmap">	
-	INSERT INTO ITEM VALUES (TEST_SEQ.NEXTVAL,#{itemCate},4,#{itemName},#{itemMinOrdUnit},SYSDATE,#{itemComProdFlag})
+	INSERT INTO ITEM VALUES (TEST_SEQ.NEXTVAL,#{itemCate},4,#{itemName},#{itemMinOrdUnit},SYSDATE,#{itemComProdFlag},DEFAULT)
 	</insert>
 	<insert id="AddItemPrice" parameterType="hashmap">	
 	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,TEST_SEQ.CURRVAL,4,#{itemPrice},SYSDATE)
@@ -126,7 +126,7 @@
    	FROM ORD O INNER JOIN ORD_ITEM OI
                 ON O.ORD_NO = OI.ORD_NO
                 AND OI.ITEM_NO = #{itemNo}
-                AND O.STAT_CODE = 4
+                AND O.STAT_CODE IN (4,5,7)
                 INNER JOIN BRCH B
                 ON O.BRCH_NO = B.BRCH_NO
                 INNER JOIN ITEM I
@@ -141,6 +141,7 @@
                         INNER JOIN HQ_USER HU
                         ON HD.USER_NO = HU.USER_NO
                         AND HS.ITEM_NO = #{itemNo}
+	ORDER BY  HD.ENROLL_DATE DESC                      
 	</select>
 	
 	<!-- 본사 재고 추가 -->
@@ -149,14 +150,14 @@
 	</insert>
 	
 	<!-- 본사 재고 폐기 --><!-- 유통기한과 품목번호가 동일한 상품은 제일 먼저 ENROLL된 재고에서 폐기가 이루어짐 -->
-	<insert id="istock">
+	<insert id="DiscardStock" parameterType="hashmap">
 	INSERT INTO HQ_DISCARD (DISCARD_NO,STOR_NO,USER_NO,CNT,NOTE,ENROLL_DATE)
-		SELECT 11,STOR_NO,4,33,'테스트',SYSDATE
+		SELECT HQ_DISCARD_SEQ.NEXTVAL,STOR_NO,4,#{discardCnt},#{discardNote},SYSDATE
 		FROM(
 			SELECT HQ_STOR.*,ROW_NUMBER()OVER(ORDER BY ENROLL_DATE) AS RNK
 			FROM HQ_STOR
-			WHERE ITEM_NO = 1
-			AND EXPIRY_DATE = '2021-07-25')
-		WHERE RNK = 1;
+			WHERE ITEM_NO = #{itemNo}
+			AND EXPIRY_DATE = #{expDate})
+		WHERE RNK = 1
 	</insert>
 </mapper> 

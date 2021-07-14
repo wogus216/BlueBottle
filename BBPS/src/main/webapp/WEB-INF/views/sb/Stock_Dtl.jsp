@@ -307,11 +307,30 @@ button{
 	outline:none;
 }
 
-.stock_tb td:nth-child(4),.stock_tb td:nth-child(5),.stock_tb td:nth-child(6){
+.stock_tb td:nth-child(4),.stock_tb td:nth-child(5),.stock_tb td:nth-child(3){
 	padding : 0px;
 	text-align: center;
 }
 
+/*최하단 목록 버튼*/
+.list_btn_area{
+	text-align:center;
+}
+
+.list_btn{
+	width:200px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	font-size: 22px;
+	cursor: pointer;
+	color: white;	
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	margin:0px;
+	outline:none;
+}
 
 </style>
 
@@ -343,6 +362,11 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 	
+	$(".list_btn").on("click",function(){
+		$("#goForm").attr("action","Item_List");
+		$("#goForm").submit();
+	});
+	
 	$(".discard_btn").on("click",function(){
 		stockdiscardloadList();
 		$(".discard_btn").hide();
@@ -367,13 +391,70 @@ $(document).ready(function(){
 		$(".discard_submit_btn").hide();
 	});
 	
-	$(".stock_discard_btn").on("click",function(){
+	$(".discard_submit_btn").on("click",function(){
+		
+		var cnt = 0; //빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+		var cnt2 = 0; // 0 값이 있는지 체크할 변수 (모두 0값인 경우 작업불가 alert)
+		
+		$(".discardCnt").each(function(){
+				if($(this).val() == ""){
+					cnt++;
+				}else if($(this).val() == "0"){
+					cnt2++;
+				}
+		});
+		
+		if(cnt > 0){
+			alert("폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력");
+		   $(".discardCnt").focus;
+		   stockdiscardloadList();
+		  	$(".discard_btn").hide();
+			$(".stock_add_btn").hide();
+			$(".discard_cnl_btn").show();
+			$(".discard_submit_btn").show();
+		   
+		}else if(cnt2 == $(".stock_tb tbody tr").size()){
+			alert("현재 폐기수량이 모두 0입니다.");
+			stockdiscardloadList();
+		  	$(".discard_btn").hide();
+			$(".stock_add_btn").hide();
+			$(".discard_cnl_btn").show();
+			$(".discard_submit_btn").show();
+		}else{
 		 var params = $("#tb_Form").serialize();
 		   
-		 console.log($("#tb_Form").serialize());
+		 $.ajax({
+		      url : "Stock_Discards",//접속주소
+		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+		      dataType :"json", //받아올 데이터 형식
+		      data : params,///보낼데이터(문자열 형태)
+		      success : function(res){
+		         if(res.msg == "success"){
+		        	 stockloadList();
+		        	 discardloadList();
+		        	 relloadList();
+					$(".discard_btn").show();
+					$(".stock_add_btn").show();
+					$(".discard_cnl_btn").hide();
+					$(".discard_submit_btn").hide();
+		      	  }else if (res.msg == "failed"){
+		            alert("재고폐기에 실패하였습니다."); // 팝업 변경 필요
+		         }else {
+		            alert("재고페기 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		         }
+		      },
+		      error : function(request,status,error){
+		         console.log(error);
+		      }
+		   });
 		 
-		   
+		}
 	});
+	
+	$(".stor_history_btn").on("click",function(){
+		
+	});
+		
 	
 }); //ready end
 
@@ -513,7 +594,6 @@ function drawstockdiscardList(stockdiscardlist){
 	html += "<th>폐기수량</th>";
 	html += "<th>비고</th>";
 	html += "<th>유통기한</th>";
-	html += "<th></th>";
 	html += "</tr>";
 	
 	$(".stock_tb thead").html(html);
@@ -522,12 +602,11 @@ function drawstockdiscardList(stockdiscardlist){
 	
 	for(var d of stockdiscardlist){
 		html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
-		html += "<td>"+d.ITEM_NAME+"</td>";
+		html += "<td>"+d.ITEM_NAME+"<input type = \"hidden\" name = \"itemNo\" value = \""+${param.itemNo}+"\"/></td>";
 		html += "<td>"+d.PPSUM+"</td>";
-		html += "<td><input type = \"number\" min = 0 id = \"discard_cnt\" name = \"discard_cnt\"/></td>";
-		html += "<td><input type = \"text\" id = \"discard_note\" name = \"discard_note\"/></td>";
-		html += "<td>"+d.EXPIRY_DATE+"</td>";
-		html += "<td><input type = \"button\" class = \"stock_discard_btn\" value = \"폐기\"/></td>";
+		html += "<td><input type = \"number\" min = 0 class = \"discardCnt\" id = \"discardCnt\" name = \"discardCnt\" value = \"0\"/></td>";
+		html += "<td><input type = \"text\" id = \"discardNote\" name = \"discardNote\"/></td>";
+		html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" id = \"expDate\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\" /></td>";
 		html += "</tr>";	
 	}
 	
@@ -731,8 +810,8 @@ function drawdiscardList(discardlist,result){
 	<tbody></tbody>
 </table>
 </div>
-<div class="list_btn">
-<button style = "margin:50px 0 50px 0;">목록</button>
+<div class="list_btn_area">
+<input class="list_btn" type = "button" style = "margin:50px 0 50px 0;" value = "목록"/>
 		</div>
 	</div>
 </div>

@@ -79,6 +79,11 @@ public class sbService implements IsbService{
 		return isbdao.AddStock(insertMap);
 	}
 
+	@Override
+	public int DiscardStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.DiscardStock(insertMap);
+	}
+
 	
 
 }

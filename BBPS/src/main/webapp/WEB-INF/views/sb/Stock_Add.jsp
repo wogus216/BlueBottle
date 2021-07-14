@@ -196,26 +196,46 @@ button{
 	background-color: #01a1dd;
 	outline:none;
 }
+
+
+button:focus{outline:none;}
+
+
+/*최하단 목록,취소 버튼*/
 .submit_area{
 	text-align: center;
 }
 
 .submit{
-	width:180px;
+	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
 	font-weight: bold;
-	 font-size: 22px;
+	font-size: 22px;
+	cursor: pointer;
+	color: white;	
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	margin:0px;
+	outline:none;
+	margin:20px;
 }
 
-button:focus{outline:none;}
-
 .cnl_btn{
+	width: 180px;
+	height: 50px;
 	background-color: #b3b3b3;
-    width: 180px;
-    height: 50px;
-    font-weight: bold;
-    font-size: 22px;
+	font-weight: bold;
+	font-size: 22px;
+	cursor: pointer;
+	color: white;	
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	margin:0px;
+	outline:none;
+	margin:20px;
 }
 
 </style>
@@ -264,9 +284,22 @@ $(document).ready(function(){
 	});
 	
 	
+	$(".cnl_btn").on("click",function(){
+		$("#goForm").submit();
+	});
+	
 	$(".submit").on("click",function(){
-		if($.trim($(".stockCnt").val()) == ""){
-			alert("추가수량을 입력해주세요.")
+		
+		var cnt = 0; //추가수량 빈 값이 있는지 확인
+		
+		$(".stockCnt").each(function(){
+			if($(this).val() == ""){
+				cnt++;
+			}
+		});
+		
+		if(cnt > 0){
+			alert("추가수량을 입력해주세요.");
 		   $(".stockCnt").focus;
 		}else{
 			
@@ -487,8 +520,8 @@ function del_tb(){
 </table>
 </form>
 	<div class="submit_area">
-	<button class="submit">완료</button>
-	<button class="cnl_btn">취소</button>
+	<input type ="button" class="submit" value = "완료"/>
+	<input type ="button" class="cnl_btn" value = "취소"/>
 	</div>
 </div>
 </div>
