@@ -28,7 +28,7 @@ public class jhDao implements IjhDao {
 
 	@Override
 	public List<HashMap<String, String>> getHMenu(HashMap<String, String> params) throws Throwable {
-		System.out.println("메뉴db돌았습니다.");
+		System.out.println("본사메뉴db돌았습니다.");
 		return sqlsession.selectList("JH.getHMenu", params);
 	}
 
@@ -66,6 +66,12 @@ public class jhDao implements IjhDao {
 	@Override
 	public int delM(HashMap<String, String> params) throws Throwable {
 		return sqlsession.update("JH.delM", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBMenu(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점메뉴db돌았습니다.");
+		return sqlsession.selectList("JH.getBMenu", params);
 	}
 
 

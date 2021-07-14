@@ -21,19 +21,20 @@
 	
 	<!-- 본사메뉴 -->
 	<select id="getHMenu" parameterType="hashmap" resultType="hashmap">
-		SELECT DISTINCT SM.SITE_MENU_NO,TOP_SITE_MENU_NO as TOP,SM.SITE_MENU_NAME,
-			SM.ARR_SEQ,SM.DEPTH,SMA.AUTH_CODE,H.USER_NO,SM.SUB_MENU_FLAG AS sub,SM.MENU_ADDR AS MADDR
+		SELECT DISTINCT SM.SITE_MENU_NO,SM.TOP_SITE_MENU_NO as TOP,SM.SITE_MENU_NAME,
+			SM.ARR_SEQ,SM.DEPTH,SMA.AUTH_CODE,A.AUTH_NO,SM.SUB_MENU_FLAG AS sub,SM.MENU_ADDR AS MADDR
 		FROM SITE_MENU SM INNER JOIN SITE_MENU_AUTH SMA
                           ON SM.SITE_MENU_NO = SMA.SITE_MENU_NO
                          AND SM.SITE_MENU_NO BETWEEN 1 AND 13
                          AND SMA.AUTH_CODE IN (1,2)
-                  INNER JOIN HQ_USER H
-                          ON H.AUTH_NO = SMA.AUTH_NO
-        WHERE H.USER_NO = #{UserNo}
+                  INNER JOIN AUTH A
+                          ON A.AUTH_NO = SMA.AUTH_NO
+        WHERE A.AUTH_NO = #{hAuthNo}
 		START WITH SM.DEPTH = #{hDt}
 		CONNECT BY PRIOR SM.SITE_MENU_NO =SM.TOP_SITE_MENU_NO 
 		ORDER BY SM.ARR_SEQ ASC
 	</select>
+	
 	
 	<!-- 메뉴 게시글 수 갖고오기 -->
 	<select id="getMbCnt" parameterType="hashmap" resultType="Integer">
@@ -125,5 +126,20 @@
 		UPDATE POS_MENU SET DEL_FLAG = 0
 		WHERE MENU_NO = #{menuNo}
 	</update>
+	
+	<!-- 지점메뉴 -->
+	<select id="getBMenu" parameterType="hashmap" resultType="hashmap">
+		SELECT DISTINCT SM.SITE_MENU_NO,SM.TOP_SITE_MENU_NO AS TOP,SM.SITE_MENU_NAME,SM.ARR_SEQ,SM.DEPTH,SMA.AUTH_CODE,A.AUTH_NO,SM.SUB_MENU_FLAG as sub,SM.MENU_ADDR AS MADDR
+		FROM SITE_MENU SM INNER JOIN SITE_MENU_AUTH SMA
+		                          ON SM.SITE_MENU_NO = SMA.SITE_MENU_NO
+		                         AND SM.SITE_MENU_NO BETWEEN 14 AND 24
+		                         AND SMA.AUTH_CODE IN (1,2)
+		                  INNER JOIN AUTH A
+		                          ON A.AUTH_NO = SMA.AUTH_NO
+        WHERE A.AUTH_NO = 6
+		START WITH SM.DEPTH = #{bDt}
+		CONNECT BY PRIOR SM.SITE_MENU_NO =SM.TOP_SITE_MENU_NO 
+		ORDER BY SM.SITE_MENU_NO ASC
+	</select>
 	
 </mapper> 

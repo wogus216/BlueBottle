@@ -91,7 +91,7 @@ label{
 }
 
 select{
-	font-size: 15px;	
+	font-size: 13px;	
 	height: 40px;
 	width : 100px;
 }
