@@ -95,7 +95,7 @@
 	
 	<!-- 재고상세 / 유통기한 별 재고상세 -->
 	<select id = "getSDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT I.ITEM_NO,I.ITEM_NAME,TO_CHAR(A.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,A.PPSUM
+	SELECT I.ITEM_NO,I.ITEM_NAME,TO_CHAR(A.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,A.PPSUM,ROW_NUMBER() OVER(ORDER BY A.EXPIRY_DATE )AS RNUM
                FROM (
                SELECT P.ITEM_NO,P.EXPIRY_DATE AS EXPIRY_DATE,(NVL(ISUM,0)-NVL(PSUM,0)-NVL(SSUM,0)) AS PPSUM
                FROM (
@@ -160,4 +160,13 @@
 			AND EXPIRY_DATE = #{expDate})
 		WHERE RNK = 1
 	</insert>
+	
+	<!-- 입고확인 버튼 클릭 시 보여지는 팝업 리스트 (본사 재고 입고 이력)-->
+	<select id ="getHSHList" parameterType="hashmap" resultType="hashmap">
+	SELECT TO_CHAR(HS.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE ,HS.CNT,HU.ID
+	FROM HQ_STOR HS INNER JOIN HQ_USER HU
+                ON HS.USER_NO = HU.USER_NO
+                AND HS.ITEM_NO = #{itemNo}
+                AND HS.EXPIRY_DATE = #{expDate}                   
+	</select>
 </mapper> 

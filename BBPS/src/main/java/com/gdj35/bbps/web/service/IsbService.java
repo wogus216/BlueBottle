@@ -31,4 +31,6 @@ public interface IsbService {
 	public int AddStock(HashMap<String, Object> insertMap) throws Throwable;
 
 	public int DiscardStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public List<HashMap<String, String>> getHSHList(HashMap<String, String> params) throws Throwable;
 }

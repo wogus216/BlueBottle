@@ -332,6 +332,74 @@ button{
 	outline:none;
 }
 
+/*팝업*/
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_Area {
+	display: inline-block;
+	width: 500px;
+	height: 300px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 150px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 250px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_Head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_Btn{
+	text-align:center;
+}
+.popup_Btn input[type='button']{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin-top:50px;
+	cursor: pointer;
+}
+.popup_Content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+input[type='button']:focus{outline:none;}
+
+.popup_Head > .close_Btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
+
 </style>
 
 
@@ -451,11 +519,12 @@ $(document).ready(function(){
 		}
 	});
 	
-	$(".stor_history_btn").on("click",function(){
-		
-	});
-		
-	
+	  $(document).on("click",".stor_history_btn",function(){
+		$("#itemNo").val($(this).parent().parent().attr("itemNo"));
+		$("#expDate").val($(this).parent().parent().attr("expDate"));
+		storHistoryloadList();
+	}); 
+	 
 }); //ready end
 
 //유통기한 별 재고 리스트 그리기
@@ -496,12 +565,12 @@ function drawstockList(stocklist,result){
 		html += "</tr>";	
 	} else if (result > 0){
 		for(var d of stocklist){ //결과 행이 존재하는 경우
-			html += "<tr>";
+			html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
 			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td>"+d.PPSUM+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			html += "<td><input type = \"button\" class = \"stor_history_btn\" value = \"이력확인\"/></td>";
-			html += "</tr>";	
+			html += "</tr>";
 		}
 	}
 	
@@ -668,6 +737,79 @@ function drawdiscardList(discardlist,result){
 	$(".stock_discard_history tbody").html(html);
 }
 
+function storHistoryloadList(){
+	var params = $("#storHistoryForm").serialize();
+	
+	$.ajax({
+		url : "Stock_Stor_History",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			makePopup("입고이력",drawstorHistory(res.StorHistorylist),function(){});
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+	
+}
+
+//입고이력 버튼 눌렸을 때 그려지는 테이블
+function drawstorHistory(StorHistorylist){
+	var shhtml ="";
+	
+	shhtml += "<table cellspacing=\"0\">";
+	shhtml += "<tr>";
+	shhtml += "<th style=\"border-left: none;\">입고날짜</th>";
+	shhtml += "<th>입고수량</th>";
+	shhtml += "<th>변경자</th>";
+	shhtml += "</tr>";
+	
+	for(var d of StorHistorylist){
+	shhtml += "<tr>";
+	shhtml += "<td>"+d.ENROLL_DATE+"</td>";
+	shhtml += "<td>"+d.CNT+"</td>";
+	shhtml += "<td>"+d.ID+"</td>";
+	shhtml += "</tr>";
+	} 
+	shhtml += "</table>";
+	
+	return shhtml;
+}
+
+//팝업
+function makePopup(title, contents, func) {
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_Area\">";	
+	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";
+	html+= "</div>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_Btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_Area").hide().show();
+	
+	$(".popup_Btn, .close_Btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+	
+}
+
+function closePopup() {
+	$(".bg, .popup_Area").fadeOut(function(){
+		$(".bg, .popup_Area").remove();
+	}); //popup_Btn end
+}
+
 </script>
 </head>
 <body>
@@ -775,6 +917,10 @@ function drawdiscardList(discardlist,result){
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
 <input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 <input type = "hidden" name = "search_input" value = "${param.search_input}"/>
+</form>
+<form action="#" id = "storHistoryForm" method = "post">
+<input type = "hidden" id = "itemNo" name ="itemNo" />
+<input type = "hidden" id = "expDate"name ="expDate"/>
 </form>
 <h1>재고상세조회</h1>
 <ul class="item_info">

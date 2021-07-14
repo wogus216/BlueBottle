@@ -83,5 +83,10 @@ public class sbDao implements IsbDao{
 		return sqlsession.insert("sb.DiscardStock",insertMap);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getHSHList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getHSHList",params);
+	}
+
 
 }

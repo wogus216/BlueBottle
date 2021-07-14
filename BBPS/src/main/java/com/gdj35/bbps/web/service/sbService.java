@@ -84,6 +84,11 @@ public class sbService implements IsbService{
 		return isbdao.DiscardStock(insertMap);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getHSHList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getHSHList(params);
+	}
+
 	
 
 }

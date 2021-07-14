@@ -392,5 +392,21 @@ public class sbController {
 		return mapper.writeValueAsString(modelMap);
 		
 	}
+	
+	//본사 재고입고이력 리스트 그리기
+	@RequestMapping(value = "/Stock_Stor_History", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSHistory(@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> StorHistorylist = isbservice.getHSHList(params);
+		
+		modelMap.put("StorHistorylist",StorHistorylist);
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
 
 }
