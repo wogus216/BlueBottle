@@ -29,7 +29,7 @@ body{
 
 
 /* 사진 */
-.main_img{
+.main_Img{
 	display: inline-block;
 	width: 65vw;
 	
@@ -39,7 +39,7 @@ body{
 	height: 100%;
 }
 /* 로그인 */
-.login_area{
+.login_Area{
 	display: inline-block;
 	vertical-align: top;
 	width: 25vw;
@@ -54,13 +54,13 @@ body{
 	margin: 20px 0;
 }
 
-.choice_img{
+.choice_Img{
 	margin-top: 60px;
 	width: 5vw;
 	padding: 0 10px;
  	cursor: pointer;
 }
-.sys_img {
+.sys_Img {
 	padding: 0px;
 	list-style: none;
  	margin: 0;
@@ -68,7 +68,7 @@ body{
 	margin-left: 50px;
 }
 
-.sys_img li {
+.sys_Img li {
 	border: 0;
 	float: left;
 	font-size: 1.2vw;
@@ -109,18 +109,19 @@ body{
 	}
 }
 
+.btn_Area{
+	margin-left: 10px;
+}
+
 .submit,.inquiry_Btn{
-	font-size: 30px;
-    margin: 30px 120px 0 120px;
+    width: 90px;
+    font-size: 20px;
+    margin-top: 20px;
     border-radius: 10px;
 }
-.inquiry_Btn{
-	margin: 0;
 
-}
-
-.submit:hover,.inquiry_Btn:hover{
-	background-color: #1bc1fe;
+.submit:hover, .inquiry_Btn:hover{
+	background-color: white;
 }
 
  /* 팝업메시지 */
@@ -320,23 +321,23 @@ function closePopup() {
 <body>
 
 <div class="content">
-	<div class="main_img">
+	<div class="main_Img">
 	<img alt="이미지" src="resources/images/bb/블루보틀2.jpg" id="img1" onload="start()"/>
 	</div>
-	<div class="login_area">
+	<div class="login_Area">
 		<div class="title">Blue Bottle</div>
-		<div class="choi_area">
-			<ul class="sys_img">
+		<div class="choi_Area">
+			<ul class="sys_Img">
 				<li>
-					<img src="resources/images/bb/user.png" id="HQ" class="choice_img"/><br/>
+					<img src="resources/images/bb/user.png" id="HQ" class="choice_Img"/><br/>
 					<span style="font-size:20px">본사</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/user.png" id="B" class="choice_img"/><br/>
+					<img src="resources/images/bb/user.png" id="B" class="choice_Img"/><br/>
 					<span style="font-size:20px">지점</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_img"/><br/>
+					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_Img"/><br/>
 					<span style="font-size:20px">POS</span>
 				</li>
 			</ul>
@@ -346,9 +347,11 @@ function closePopup() {
 			<ul class=log_Input>
 				<li><input type="text" id="bId" name="bId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
 				<li><input type="password" id="bPw" name="bPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
-				<li><input type="button" value="로그인" class="submit"></li>
+				<li class="btn_Area">
+					<input type="button" value="문의" class="inquiry_Btn"/>
+					<input type="button" value="로그인" class="submit">
+				</li>
 			</ul>
-			<input type="button" value="문의" class="inquiry_Btn"/>
 		</form>
 	</div>
 </div>

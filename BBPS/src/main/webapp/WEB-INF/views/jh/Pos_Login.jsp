@@ -25,7 +25,7 @@ body{
 	text-align: center;
 }
 /* 사진 */
-.main_img{
+.main_Img{
 	display: inline-block;
 	width: 65vw;
 	
@@ -35,7 +35,7 @@ body{
 	height: 100%;
 }
 /* 로그인 */
-.login_area{
+.login_Area{
 	display: inline-block;
 	vertical-align: top;
 	width: 25vw;
@@ -49,20 +49,20 @@ body{
 	font-size: 2vw;
 	margin: 20px 0;
 }
-.choice_img{
+.choice_Img{
 	margin-top: 60px;
 	width: 5vw;
 	padding: 0 10px;
  	cursor: pointer;
 }
-.sys_img {
+.sys_Img{
 	padding: 0px;
 	list-style: none;
  	margin: 0;
  	height: 200px;
 	margin-left: 50px;
 }
-.sys_img li {
+.sys_Img li {
 	border: 0;
 	float: left;
 	font-size: 1.2vw;
@@ -98,16 +98,20 @@ body{
 		border-radius: 15px;
 	}
 }
+
+.btn_Area{
+	margin-left: 10px;
+}
+
 .submit,.inquiry_Btn{
-	font-size: 30px;
-    margin: 30px 120px 0 120px;
+    width: 90px;
+    font-size: 20px;
+    margin-top: 20px;
     border-radius: 10px;
 }
-.inquiry_Btn{
-	margin: 0;
-}
-.submit:hover,.inquiry_Btn:hover{
-	background-color: #1bc1fe;
+
+.submit:hover, .inquiry_Btn:hover{
+	background-color: white;
 }
  /* 팝업메시지 */
 .bg{
@@ -226,7 +230,7 @@ $(document).ready(function(){
 			$("#bId").val($("#bId").val().toUpperCase()); //대문자처리
 			var params = $("#loginForm").serialize();
 			$.ajax({
-				url: "B_Logins",
+				url: "Pos_Logins",
 				type: "post", 
 				dataType: "json", 
 				data : params, 
@@ -249,6 +253,7 @@ $(document).ready(function(){
 	});
 		
 }); //ready end
+
 var imgs = ["resources/images/bb/블루보틀2.jpg","resources/images/bb/블루보틀0.jpg","resources/images/bb/블루보틀5.jpg","resources/images/bb/블루보틀4.jpg"]
 var now = 0;
 var interval = null;
@@ -299,23 +304,23 @@ function closePopup() {
 <body>
 
 <div class="content">
-	<div class="main_img">
+	<div class="main_Img">
 	<img alt="이미지" src="resources/images/bb/블루보틀2.jpg" id="img1" onload="start()"/>
 	</div>
-	<div class="login_area">
+	<div class="login_Area">
 		<div class="title">Blue Bottle</div>
 		<div class="choi_area">
-			<ul class="sys_img">
+			<ul class="sys_Img">
 				<li>
-					<img src="resources/images/bb/user.png" id="HQ" class="choice_img"/><br/>
+					<img src="resources/images/bb/user.png" id="HQ" class="choice_Img"/><br/>
 					<span style="font-size:20px">본사</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/user.png" id="B" class="choice_img"/><br/>
+					<img src="resources/images/bb/user.png" id="B" class="choice_Img"/><br/>
 					<span style="font-size:20px">지점</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_img"/><br/>
+					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_Img"/><br/>
 					<span style="font-size:20px">POS</span>
 				</li>
 			</ul>
@@ -325,9 +330,11 @@ function closePopup() {
 			<ul class=log_Input>
 				<li><input type="text" id="bId" name="bId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
 				<li><input type="password" id="bPw" name="bPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
-				<li><input type="button" value="로그인" class="submit"></li>
+				<li class="btn_Area">
+					<input type="button" value="문의" class="inquiry_Btn"/>
+					<input type="button" value="로그인" class="submit">
+				</li>
 			</ul>
-			<input type="button" value="문의" class="inquiry_Btn"/>
 		</form>
 	</div>
 </div>
