@@ -86,6 +86,18 @@ public class nyService implements InyService{
 		return iNyDao.deleteMenuCate(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSalesList(HashMap<String, String> params) throws Throwable {
+		
+		return iNyDao.getSalesLists(params);
+	}
+
+	@Override
+	public int getSalesCnt(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getSalesCnt(params);
+	}
+
 
 
 

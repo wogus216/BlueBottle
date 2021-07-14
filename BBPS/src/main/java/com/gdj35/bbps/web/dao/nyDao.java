@@ -84,6 +84,18 @@ public class nyDao implements InyDao{
 
 		return sqlSession.update("NY.deleteMenuCate", params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> getSalesLists(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getSalesList", params);
+	}
+
+	@Override
+	public int getSalesCnt(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectOne("NY.getSalesCnt", params);
+	}
 	
 	
 }
