@@ -189,7 +189,7 @@ label{
 }
 .search_btn, .input_btn{
 	height: 40px;
-	margin: 0 ;
+	margin: 0 ; 	
 	padding: 0;
 	vertical-align: bottom;
 }
@@ -206,7 +206,7 @@ select{
 	height: 36px;
 }
 /* 일반버튼 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -258,13 +258,10 @@ button{
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-
-	
-	
-	
-	
 	if("${param.searchGbn}" != ""){
 		$("#searchGbn").val("${param.searchGbn}");
 	}
@@ -277,7 +274,7 @@ $(document).ready(function(){
 	});
 	
 	$(".paging_Wrap").on("click","span",function(){
-		$("#page").val($(this).attr("name"));
+		$("#page").val($(this).attr("nno"));
 		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 	});
@@ -359,7 +356,7 @@ function drawPaging(pb) {
 	
 	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
 	
-	$("#paging_Wrap").html(html);
+	$(".paging_Wrap").html(html);
 }
 
 
@@ -424,11 +421,12 @@ function drawPaging(pb) {
 				<option value="3">작성자</option>
 			</select>
 			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
-			<button class="search_btn" id="searchBtn">검색</button>
+			<input type="button" value="검색" id="searchBtn" class="search_btn"/>
 			</form>
 	</div>
 <div class="paging_wrap">
 		<div class="page_btn">
+		
 		<button style="background-color: white"><</button>
 		<button style="background-color: white">1</button>
 		<button style="background-color: white">2</button>
