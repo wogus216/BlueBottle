@@ -10,14 +10,14 @@
 <meta charset="UTF-8">
 <title>등록</title>
 <style type="text/css">
-.file_Form_Wrap {
-	/*
+.file_form_wrap {
+	
 	display: none;
-		*/
+		
 } 
 /* 컨텐츠 부분 */
 
-.content_Area{
+.content_area{
 	width: 1250px;
 	height: 900px;
 	margin: 0 auto;
@@ -81,7 +81,7 @@ input{
 	height: 30px;
 	
 }
-.m_Cate{
+.m_cate{
 	width: 358px;
     height: 36px;
     margin: 15px 0;
@@ -106,7 +106,7 @@ input:focus{
 #fileName{
 	text-align: center;
 }
-#file_Btn{
+#file_btn{
 
 	width: 358px;
     background-color: darkgray;
@@ -127,7 +127,7 @@ input:focus{
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_Area {
+.popup_area {
 	display: inline-block;
 	width: 400px;
 	height: 240px;
@@ -138,7 +138,7 @@ input:focus{
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
-.popup_Head{
+.popup_head{
 	height: 30px;
 	font-size: 16pt;
 	background-color: #01a1dd;
@@ -146,10 +146,10 @@ input:focus{
 	padding:10px;
 	font-weight:bold;
 }
-.popup_Btn{
+.popup_btn{
 	text-align:center;
 }
-.popup_Btn input[type='button']{
+.popup_btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -160,7 +160,7 @@ input:focus{
 	margin:10px;
 	cursor: pointer;
 }
-.popup_Content{
+.popup_content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -170,7 +170,7 @@ input:focus{
 }
 input[type='button']:focus{outline:none;}
 
-.popup_Head > .close_Btn{
+.popup_head > .close_btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -192,8 +192,8 @@ $(document).ready(function(){
 	
 	//취소
 	$(".cnl").on("click",function(){
-		$("#edit_Form").attr("action", "Menu_List");
-		$("#edit_Form").submit();
+		$("#edit_form").attr("action", "Menu_List");
+		$("#edit_form").submit();
 	});
 	
 	
@@ -205,7 +205,7 @@ $(document).ready(function(){
 	});
 	
 	//파일 추가 
-		$("#file_Btn").on("click",function(){
+		$("#file_btn").on("click",function(){
 		$("#att").click();
 
 		});
@@ -225,15 +225,15 @@ $(document).ready(function(){
 		
 		fileForm.ajaxForm({
 			beforeSubmit: function(){
-				if($.trim($("#m_Name").val()) == ""){
+				if($.trim($("#m_name").val()) == ""){
 					makePopup("", "메뉴이름을 입력해주세요",function(){});
 					return false; // ajaxForm 실행 불가
 					
-				} else if($.trim($("#m_Cate").val()) == "카테고리명"){
+				} else if($.trim($("#m_cate").val()) == "카테고리명"){
 					makePopup("", "카테고리를 선택",function(){}); 
 					return false; // ajaxForm 실행 불가
 					
-				} else if($.trim($("#m_Price").val()) == ""){
+				} else if($.trim($("#m_price").val()) == ""){
 					makePopup("", "가격을 입력해주세요",function(){}); 
 					return false; // ajaxForm 실행 불가
 				} 
@@ -243,13 +243,13 @@ $(document).ready(function(){
 					//올라간 파일명 저장
 					if(res.fileName.length > 0){
 						
-							$("#m_File").val(res.fileName[0]);
-							console.log($("#m_File").val(res.fileName[0]))
+							$("#m_file").val(res.fileName[0]);
+							console.log($("#m_file").val(res.fileName[0]))
 							makePopup("", "메뉴등록되었습니다.",function(){});
 					
 						}
 				//글 저장
-				var params = $("#add_Form").serialize();
+				var params = $("#add_form").serialize();
 				console.log(params)
 				$.ajax({
 				url: "Menu_Adds",
@@ -290,20 +290,20 @@ $(document).ready(function(){
 	function makePopup(title, contents, func) {
 		var html ="";
 		html+= "<div class=\"bg\"></div>";	
-		html+= "<div class=\"popup_Area\">";	
-		html+= "<div class=\"popup_Head\">"+ title +"";	
-		html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
+		html+= "<div class=\"popup_area\">";	
+		html+= "<div class=\"popup_head\">"+ title +"";	
+		html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
 		html+= "</div>";	
-		html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
-		html+= 		"<div class=\"popup_Btn\">";	
+		html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+		html+= 		"<div class=\"popup_btn\">";	
 		html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 		html+= 	 	"</div>";
 		html+= "</div>";	
 		
 		$("body").prepend(html);
-		$(".popup_Area").hide().show();
+		$(".popup_area").hide().show();
 		
-		$(".popup_Btn, .close_Btn").on("click",function(){
+		$(".popup_btn, .close_btn").on("click",function(){
 			if(func !=null){
 				func.call();
 			}
@@ -312,15 +312,15 @@ $(document).ready(function(){
 		}
 
 	function closePopup() {
-		$(".bg, .popup_Area").fadeOut(function(){
-			$(".bg, .popup_Area").remove();
-		}); //popup_Btn end
+		$(".bg, .popup_area").fadeOut(function(){
+			$(".bg, .popup_area").remove();
+		}); //popup_btn end
 	}	
 
 </script>
 </head>
 <body>
-<form action="#" id="edit_Form" method="post">
+<form action="#" id="edit_form" method="post">
 	<input type="hidden" name="menuNo" value="${data.MNO}">
 	<input type="hidden" id="cateNo" name="cateNo"value="${param.cateNo}"/>
 	<input type="hidden" name="page" value="${param.page}">
@@ -330,24 +330,24 @@ $(document).ready(function(){
 </form>
 
 <!--컨텐츠 -->
-	<div class="content_Area">
+	<div class="content_area">
 		<div class="content">
 			<h1>POS 메뉴등록</h1>
 <!--파일 업로드 -->
-	<div class="file_Form_Wrap">
+	<div class="file_form_wrap">
 		<form id="fileForm" action="fileUploadAjax"
 			method="post" enctype="multipart/form-data">
 			<input type="file" name="att" id="att" />
 		</form>
 	</div>
 <!--메뉴 넣기 -->
-	<form action="#" id="add_Form" method="post">
+	<form action="#" id="add_form" method="post">
 	
 		<div class="container">
 			<div>메뉴이름<div>
-			<input type="text" id="m_Name" name="m_Name" placeholder="메뉴이름를입력해주세요"/>
+			<input type="text" id="m_name" name="m_name" placeholder="메뉴이름를입력해주세요"/>
 			<div>카테고리</div>
-					<select class="m_Cate" name ="m_Cate">
+					<select class="m_cate" name ="m_cate">
 						<option selected="selected">카테고리명</option>
 						<option value="0">음료</option>
 						<option value="1">제과</option>
@@ -356,14 +356,14 @@ $(document).ready(function(){
 					</select>
 			
 			<div>메뉴가격</div>
-			<input type="text" id="m_Price" name="m_Price" placeholder="가격을입력해주세요"/>
+			<input type="text" id="m_price" name="m_price" placeholder="가격을입력해주세요"/>
 			<div>비고</div>
 			<input type="text" id="m_Note" name="m_Note"></div>
 			<div>이미지</div>
-			<input type="button" value="첨부파일선택" id="file_Btn"/>
+			<input type="button" value="첨부파일선택" id="file_btn"/>
 			<div id="fileName"></div>
 			<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/>
-			<input type="hidden" id="m_File" name="m_File"/>
+			<input type="hidden" id="m_file" name="m_file"/>
 		</div>
 	</div>
 		</form>
@@ -372,6 +372,6 @@ $(document).ready(function(){
 				<input type="button" class="submit" value="완료">
 			</div>
 		</div> <!--content end  -->
-	</div>  <!--content_Area end  -->
+	</div>  <!--content_area end  -->
 </body>
 </html>

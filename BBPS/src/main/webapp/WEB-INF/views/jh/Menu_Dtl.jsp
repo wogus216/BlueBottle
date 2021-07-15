@@ -13,7 +13,7 @@
 
 /* 미들 부분 */
 
-.content_Area{
+.content_area{
 	width: 1250px;
 	height: 900px;
 	margin: 0 auto;
@@ -33,11 +33,11 @@ h1 {
  font-size: 30px;
 }
 
-.row_Add, .row_Del{
+.row_add, .row_del{
 	background-color: #01a1dd;
 	float: right;
 }
-.row_Del{
+.row_del{
 	background-color: #bf4040;
 	margin-right:0px;
 	float: right;
@@ -79,7 +79,7 @@ input{
 
 }
 
-#m_Img{
+#m_img{
 	width: 100px;
 	padding-bottom: 20px;
 }
@@ -97,7 +97,7 @@ input[type='button']{
 	cursor: pointer;
 	outline:none;
 }
-.submit_Area{
+.submit_area{
 	text-align: center;
 }
 
@@ -125,7 +125,7 @@ input[type='button']:focus{outline:none;}
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_Area {
+.popup_area {
 	display: inline-block;
 	width: 400px;
 	height: 240px;
@@ -136,7 +136,7 @@ input[type='button']:focus{outline:none;}
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
-.popup_Head{
+.popup_head{
 	height: 30px;
 	font-size: 16pt;
 	background-color: #01a1dd;
@@ -144,10 +144,10 @@ input[type='button']:focus{outline:none;}
 	padding:10px;
 	font-weight:bold;
 }
-.popup_Btn{
+.popup_btn{
 	text-align:center;
 }
-.popup_Btn input[type='button']{
+.popup_btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -158,7 +158,7 @@ input[type='button']:focus{outline:none;}
 	margin:10px;
 	cursor: pointer;
 }
-.popup_Content{
+.popup_content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -168,7 +168,7 @@ input[type='button']:focus{outline:none;}
 }
 input[type='button']:focus{outline:none;}
 
-.popup_Head > .close_Btn{
+.popup_head > .close_btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -190,24 +190,24 @@ $(document).ready(function(){
 	
 	//목록
 	$(".list_Btn").on("click",function(){
-		$("#send_Form").attr("action","Menu_List");
-		$("#send_Form").submit();
+		$("#send_form").attr("action","Menu_List");
+		$("#send_form").submit();
 	});
 	
 	//수정
-	$(".row_Add").on("click",function(){
-		$("#send_Form").attr("action","Menu_Edit");
-		$("#send_Form").submit();
+	$(".row_add").on("click",function(){
+		$("#send_form").attr("action","Menu_Edit");
+		$("#send_form").submit();
 	});
 	
 	//삭제버튼
-	$(".row_Del").on("click",function(){
+	$(".row_del").on("click",function(){
 		makePopup("", "메뉴를 삭제하시겠습니까?",function(){});
 	});
 	
 	//삭제
-	$("body").on("click",".confirm_Btn",function(){
-		var params = $("#send_Form").serialize();
+	$("body").on("click",".confirm_btn",function(){
+		var params = $("#send_form").serialize();
 		
 		$.ajax({
 			url: "Menu_Dels",
@@ -217,8 +217,8 @@ $(document).ready(function(){
 			success: function(res){
 				
 				if(res.msg == "success"){
-					$("#send_Form").attr("action","Menu_List");
-					$("#send_Form").submit();
+					$("#send_form").attr("action","Menu_List");
+					$("#send_form").submit();
 				} else if(res.msg = "failed"){
 					makePopup("", "삭제 중 문제 발생",function(){});
 				} else{
@@ -235,53 +235,53 @@ function makePopup(title, contents, func) {
 	
 	var html ="";
 	html+= "<div class=\"bg\"></div>";	
-	html+= "<div class=\"popup_Area\">";	
-	html+= "<div class=\"popup_Head\">"+ title +"";	
-	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
 	html+= "</div>";	
-	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
-	html+= 		"<div class=\"popup_Btn\">";	
-	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 	html+= 			"<input type=\"button\"  value=\"취소\" style=\"background-color: rgb(190, 190, 190)\">";	
 	html+= 	 	"</div>";
 	html+= "</div>";	
 	
 	$("body").prepend(html);
-	$(".popup_Area").hide().show();
+	$(".popup_area").hide().show();
 	
-	$(".popup_Btn, .close_Btn").on("click",function(){
+	$(".popup_btn, .close_btn").on("click",function(){
 		if(func !=null){
 			func.call();
 		}
 		closePopup();
 		});
-	$(".confirm_Btn").on("click",function(){
+	$(".confirm_btn").on("click",function(){
 		location.href = "Menu_List";
 	});
 	}
 
 function closePopup() {
-	$(".bg, .popup_Area").fadeOut(function(){
-		$(".bg, .popup_Area").remove();
-	}); //popup_Btn end
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
 }	
 
 </script>
 </head>
 <body>
-<form action="#" id="send_Form" method="post">
+<form action="#" id="send_form" method="post">
 	<input type="hidden" name="menuNo" value="${data.MNO}">
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
 	<input type="hidden" name="search_input" value="${param.search_input}">
 </form>
 <!--컨텐츠 -->
-	<div class="content_Area">
+	<div class="content_area">
 		<div class="content">
 			<h1>POS 메뉴조회</h1>
 		<div class="btn_Area">
-			<input type="button" class="row_Del" value="삭제">
-			<input type="button" class="row_Add" value="수정">
+			<input type="button" class="row_del" value="삭제">
+			<input type="button" class="row_add" value="수정">
 		</div>
 	
 	<table cellspacing="0">
@@ -307,15 +307,15 @@ function closePopup() {
 			<td>${data.MNAME}</td>
 			<td>${data.CNAME}</td>
 			<td>${data.MPRICE}</td>
-			<td><img id="m_Img" alt="메뉴 이미지" src="resources/upload/${data.MIMG}"></td>
+			<td><img id="m_img" alt="메뉴 이미지" src="resources/upload/${data.MIMG}"></td>
 			<td>${data.NOTE}</td>
 		</tr>
 
 		</table>
-			<div class="submit_Area">
+			<div class="submit_area">
 				<input type="button" class="list_Btn" value="목록"/>
 			</div> 
 		</div> <!--content end  -->
-	</div>  <!--content_Area end  -->
+	</div>  <!--content_area end  -->
 </body>
 </html>

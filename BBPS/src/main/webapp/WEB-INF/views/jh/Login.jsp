@@ -33,7 +33,7 @@ body{
 	height: 100%;
 }
 /* 로그인 */
-.login_Area{
+.login_area{
 	display: inline-block;
 	vertical-align: top;
 	width: 25vw;
@@ -48,13 +48,13 @@ body{
 	margin: 20px 0;
 }
 
-.choice_Img{
+.choice_img{
 	margin-top: 60px;
 	width: 5vw;
 	padding: 0 10px;
  	cursor: pointer;
 }
-.sys_Img{
+.sys_img{
 	padding: 0px;
 	list-style: none;
  	margin: 0;
@@ -62,7 +62,7 @@ body{
 	margin-left: 50px;
 }
 
-.sys_Img li {
+.sys_img li {
 	border: 0;
 	float: left;
 	font-size: 1.2vw;
@@ -73,7 +73,7 @@ body{
     margin-top: 60px;
 }
 
-.log_Input{
+.log_input{
 	list-style: none;
 	padding: 0;
 }
@@ -157,20 +157,20 @@ function changeImg(){
 	<div class="main_img">
 	<img alt="이미지" src="resources/images/bb/블루보틀2.jpg" id="img1" onload="start()"/>
 	</div>
-	<div class="login_Area">
+	<div class="login_area">
 		<div class="title">Blue Bottle</div>
 		<div class="choi_area">
-			<ul class="sys_Img">
+			<ul class="sys_img">
 				<li>
-					<img src="resources/images/bb/user.png" id="HQ" class="choice_Img"/><br/>
+					<img src="resources/images/bb/user.png" id="HQ" class="choice_img"/><br/>
 					<span style="font-size:20px">본사</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/user.png" id="B" class="choice_Img"/><br/>
+					<img src="resources/images/bb/user.png" id="B" class="choice_img"/><br/>
 					<span style="font-size:20px">지점</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_Img"/><br/>
+					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_img"/><br/>
 					<span style="font-size:20px">POS</span>
 				</li>
 			</ul>

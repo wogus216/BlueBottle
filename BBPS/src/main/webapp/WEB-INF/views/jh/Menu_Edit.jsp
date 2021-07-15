@@ -17,7 +17,7 @@
 	display: none;
 }
 
-.content_Area{
+.content_area{
 	width: 1250px;
 	height: 900px;
 	margin: 0 auto;
@@ -37,11 +37,11 @@ h1 {
  font-size: 30px;
 }
 
-.row_Submit{
+.row_submit{
 	background-color: #01a1dd;
 	float: right;
 }
-.row_Cnl{
+.row_cnl{
 	background-color: #bf4040;
 	margin-right:0px;
 	float: right;
@@ -85,7 +85,7 @@ input{
 
 }
 
-#m_Img{
+#m_img{
 	width: 100px;
 	padding-bottom: 20px;
 }
@@ -124,7 +124,7 @@ input[type='button']:focus{outline:none;}
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_Area {
+.popup_area {
 	display: inline-block;
 	width: 400px;
 	height: 240px;
@@ -135,7 +135,7 @@ input[type='button']:focus{outline:none;}
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
-.popup_Head{
+.popup_head{
 	height: 30px;
 	font-size: 16pt;
 	background-color: #01a1dd;
@@ -143,10 +143,10 @@ input[type='button']:focus{outline:none;}
 	padding:10px;
 	font-weight:bold;
 }
-.popup_Btn{
+.popup_btn{
 	text-align:center;
 }
-.popup_Btn input[type='button']{
+.popup_btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -157,7 +157,7 @@ input[type='button']:focus{outline:none;}
 	margin:10px;
 	cursor: pointer;
 }
-.popup_Content{
+.popup_content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -167,7 +167,7 @@ input[type='button']:focus{outline:none;}
 }
 input[type='button']:focus{outline:none;}
 
-.popup_Head > .close_Btn{
+.popup_head > .close_btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -209,13 +209,13 @@ $(document).ready(function(){
 					//올라간 파일명 저장
 					if(res.fileName.length > 0){
 						
-							$("#m_File").val(res.fileName[0]);
-							console.log($("#m_File").val(res.fileName[0]))
+							$("#m_file").val(res.fileName[0]);
+							console.log($("#m_file").val(res.fileName[0]))
 							makePopup("", "이미지가 변경 되었습니다.",function(){});
 					
 						}
 				//글 저장
-				var params = $("#edit_Form").serialize();
+				var params = $("#edit_form").serialize();
 				console.log(params)
 				$.ajax({
 				url: "Menu_Imgs",
@@ -226,8 +226,8 @@ $(document).ready(function(){
 					console.log(res)
 				
 					if(res.msg == "success"){
-						$("#edit_Form").attr("action","Menu_Edit");
-						$("#edit_Form").submit();
+						$("#edit_form").attr("action","Menu_Edit");
+						$("#edit_form").submit();
 					} 
 					else if(res.msg == "failed"){
 							makePopup("", "작성 실패.",function(){});
@@ -254,20 +254,20 @@ $(document).ready(function(){
 	}); //이미지 변경 사진 변경해서 띄우기 종료
 	
 	//취소
-	$(".row_Cnl").on("click",function(){
-		$("#edit_Form").attr("action","Menu_Dtl");
-		$("#edit_Form").submit();
+	$(".row_cnl").on("click",function(){
+		$("#edit_form").attr("action","Menu_Dtl");
+		$("#edit_form").submit();
 	});
 	
 	//엔터 방지
-	$(".row_Submit").on("Keypress","input",function(){
+	$(".row_submit").on("Keypress","input",function(){
 		if(event.keyCode == 13){
 			return false;
 		}
 	});
 	
 	//완료 버튼
-	$(".row_Submit").on("click",function(){
+	$(".row_submit").on("click",function(){
 		//$("#img_Cnt").attr("value","1");
 		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
 		var fileForm = $("#fileForm");
@@ -276,14 +276,14 @@ $(document).ready(function(){
 		
 		fileForm.ajaxForm({
 			beforeSubmit: function(){
-			if($.trim($("#m_Name").val()) == ""){
+			if($.trim($("#m_name").val()) == ""){
 				makePopup("", "메뉴이름을 입력해주세요",function(){
-					$("#m_Name").focus();
+					$("#m_name").focus();
 					return false; // ajaxForm 실행 불가
 				});
-			} else if($.trim($("#m_Price").val()) == ""){
+			} else if($.trim($("#m_price").val()) == ""){
 				makePopup("", "가격을 입력해주세요",function(){
-					$("#m_Price").focus();
+					$("#m_price").focus();
 					return false; // ajaxForm 실행 불가
 				});
 			}
@@ -292,13 +292,13 @@ $(document).ready(function(){
 			if(res.result == "SUCCESS"){
 				//올라간 파일명 저장
 				if(res.fileName.length > 0){
-						$("#m_File").val(res.fileName[0]);
-						console.log($("#m_File").val(res.fileName[0]))
+						$("#m_file").val(res.fileName[0]);
+						console.log($("#m_file").val(res.fileName[0]))
 						makePopup("", "수정완료되었습니다.",function(){});
 				
 					}
 			//글 저장
-			var params = $("#edit_Form").serialize();
+			var params = $("#edit_form").serialize();
 			$.ajax({
 				url: "Menu_Edits",
 				type: "post",
@@ -308,8 +308,8 @@ $(document).ready(function(){
 					console.log(res)
 				
 					if(res.msg == "success"){
-						$("#edit_Form").attr("action","Menu_Dtl");
-						$("#edit_Form").submit();
+						$("#edit_form").attr("action","Menu_Dtl");
+						$("#edit_form").submit();
 					} 
 					else if(res.msg == "failed"){
 							makePopup("", "작성 실패.",function(){});
@@ -342,20 +342,20 @@ $(document).ready(function(){
 	function makePopup(title, contents, func) {
 		var html ="";
 		html+= "<div class=\"bg\"></div>";	
-		html+= "<div class=\"popup_Area\">";	
-		html+= "<div class=\"popup_Head\">"+ title +"";	
-		html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
+		html+= "<div class=\"popup_area\">";	
+		html+= "<div class=\"popup_head\">"+ title +"";	
+		html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
 		html+= "</div>";	
-		html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
-		html+= 		"<div class=\"popup_Btn\">";	
+		html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+		html+= 		"<div class=\"popup_btn\">";	
 		html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 		html+= 	 	"</div>";	
 		html+= "</div>";	
 		
 		$("body").prepend(html);
-		$(".popup_Area").hide().show();
+		$(".popup_area").hide().show();
 		
-		$(".popup_Btn, .close_Btn").on("click",function(){
+		$(".popup_btn, .close_btn").on("click",function(){
 			if(func !=null){
 				func.call();
 			}
@@ -365,9 +365,9 @@ $(document).ready(function(){
 		}
 
 	function closePopup() {
-		$(".bg, .popup_Area").fadeOut(function(){
-			$(".bg, .popup_Area").remove();
-		}); //popup_Btn end
+		$(".bg, .popup_area").fadeOut(function(){
+			$(".bg, .popup_area").remove();
+		}); //popup_btn end
 	}	
 </script>
 </head>
@@ -376,19 +376,19 @@ $(document).ready(function(){
 		method="post" enctype="multipart/form-data">
 		<input type="file" name="att" id="att"/>
 </form>
-<form action="#" id="edit_Form" method="post">
+<form action="#" id="edit_form" method="post">
 	<input type="hidden" name="menuNo" value="${data.MNO}">
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
 	<input type="hidden" name="search_input" value="${param.search_input}">
 	<input type="hidden" id="cateNo" name="cateNo"value="${param.cateNo}"/>
 <!--컨텐츠 -->
-	<div class="content_Area">
+	<div class="content_area">
 		<div class="content">
 			<h1>POS 메뉴조회</h1>
 		<div class="btn_Area">
-			<input type="button" value="취소" class="row_Cnl">
-			<input type="button" value="완료" class="row_Submit">
+			<input type="button" value="취소" class="row_cnl">
+			<input type="button" value="완료" class="row_submit">
 		</div>
 	
 	<table cellspacing="0">
@@ -411,21 +411,20 @@ $(document).ready(function(){
 
 		<tr>
 			<td>${data.MNO}</td>
-			<td><input type="text" id="m_Name" name="m_Name" value="${data.MNAME}"></td>
+			<td><input type="text" id="m_name" name="m_name" value="${data.MNAME}"></td>
 			<td>${data.CNAME}</td>
-			<td><input type="text" id="m_Price" name="m_Price" value="${data.MPRICE}"></td>
+			<td><input type="text" id="m_price" name="m_price" value="${data.MPRICE}"></td>
 			<td>
-				<img id="m_Img" name="m_Img" src="resources/upload/${data.MIMG}">
+				<img id="m_img" name="m_img" src="resources/upload/${data.MIMG}">
 				<input type="button" value="이미지파일선택" id="fileBtn"/>
 			</td>
 			<td><input type="text" id="m_Note" name="m_Note" value="${data.NOTE}"></td>
 		</tr>
 		</table>
 		<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/>
-		<input type="hidden" id="m_File" name="m_File" value="${data.MIMG}"/>
-		<input type="hidden" id="img_Cnt" name="img_Cnt" value="0"/>
+		<input type="hidden" id="m_file" name="m_file" value="${data.MIMG}"/>
 		</div> <!--content end  -->
-	</div>  <!--content_Area end  -->
+	</div>  <!--content_area end  -->
 </form>
 </body>
 </html>

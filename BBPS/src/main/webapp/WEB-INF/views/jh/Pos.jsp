@@ -14,7 +14,7 @@ body {
 }
 /* 레이아웃 */
 .top {
-	min-width: 1980px;
+	min-width: 1280px;
 	height: 40px;
 	background-color: #01a1dd;
 	border-bottom: 2px solid white;
@@ -58,13 +58,13 @@ body {
 	float: left;
 }
 .now_ord{
-	width: 47%;
+	width: 40%;
 	
 }
 .date,.brch{
 	width: 15%;
 }
-.pos_Off_Btn, .finish_Btn{
+.pos_off_btn, .finish_btn{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -122,21 +122,21 @@ body {
 	float: right;
 }
 /* 카테고리 */
-.menu_Cate{
+.menu_cate{
 	width: 700px;
 	float: right;
 	margin-bottom: 20px;
 }
-.menu_Cate{
+.menu_cate{
 	display: inline-block;
 	height: 250px;
 }
-.cate_Drink,.cate_Pastry,.cate_Goods,.cate_Bean{
+.cate_drink,.cate_pastry,.cate_goods,.cate_bean{
 	width: 175px;
 	display: inline-block;
 	height: 100%;
 }
-.menu_Cate > div > input {
+.menu_cate > div > input {
 	width: 175px;
 	height: 100%;
 	font-size: 40px;
@@ -165,10 +165,10 @@ body {
 	font-size: 20px;
 	margin-top: 10px;
 }
-.menu_Btn{
+.menu_btn{
     text-align: right;
 }
-.menu_Btn > input[type=button]{
+.menu_btn > input[type=button]{
 	background-color: #cc6600;
 	border: none;
 	color: white;
@@ -198,7 +198,7 @@ body {
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_Area {
+.popup_area {
 	display: inline-block;
 	width: 400px;
 	height: 240px;
@@ -209,7 +209,7 @@ body {
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
-.popup_Head{
+.popup_head{
 	height: 30px;
 	font-size: 16pt;
 	background-color: #01a1dd;
@@ -217,10 +217,10 @@ body {
 	padding:10px;
 	font-weight:bold;
 }
-.popup_Btn{
+.popup_btn{
 	text-align:center;
 }
-.popup_Btn input[type='button']{
+.popup_btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -231,7 +231,7 @@ body {
 	margin:10px;
 	cursor: pointer;
 }
-.popup_Content{
+.popup_content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -240,7 +240,7 @@ body {
 }
 input[type='button']:focus{outline:none;}
 
-.popup_Head > .close_Btn{
+.popup_head > .close_Btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -271,7 +271,7 @@ input[type='button']:focus{outline:none;}
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$(".pos_Off_Btn").on("click",function(){
+	$(".pos_off_btn").on("click",function(){
 		makePopup("POS종료", "POS를 종료하시겠습니까?",function(){
 		});
 	}); //pos_off end
@@ -288,34 +288,34 @@ $(document).ready(function(){
 function makePopup(title, contents, func) {
 	var html ="";
 	html+= "<div class=\"bg\"></div>";	
-	html+= "<div class=\"popup_Area\">";	
-	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
 	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";		
 	html+= "</div>";	
-	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
-	html+= 		"<div class=\"popup_Btn\">";	
-	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 	html+= 			"<input type=\"button\"  value=\"취소\" style=\"background-color: rgb(190, 190, 190)\">";	
 	html+= 	 	"</div>";	
 	html+= "</div>";	
 	
 	$("body").prepend(html);
-	$(".popup_Area").hide().show();
+	$(".popup_area").hide().show();
 	
-	$(".popup_Btn, .close_Btn").on("click",function(){
+	$(".popup_btn, .close_Btn").on("click",function(){
 		if(func !=null){
 			func.call();
 		}
 		closePopup();
 		});
-	$(".confirm_Btn").on("click",function(){
+	$(".confirm_btn").on("click",function(){
 		location.href = "Pos_LogOut";
 	});
 	}
 function closePopup() {
-	$(".bg, .popup_Area").fadeOut(function(){
-		$(".bg, .popup_Area").remove();
-	}); //popup_Btn end
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
 }
 </script>
 </head>
@@ -325,8 +325,8 @@ function closePopup() {
 		<div class="date">2021년05월09일</div>
 		<div class="brch">성수 1호점</div>
 		<div class="pos_uesr">사용자: 권재현</div>
-		<input type="button" value="종료" class="pos_Off_Btn"/>
-		<input type="button" value="마감" class="finish_Btn"/>
+		<input type="button" value="종료" class="pos_off_btn"/>
+		<input type="button" value="마감" class="finish_btn"/>
 	</div>
 		<div class=content>
 			<div class="left">
@@ -460,17 +460,17 @@ function closePopup() {
 				</table>
 			</div>
 			<div class="right">
-				<div class="menu_Cate">
-						<div class="cate_Drink">
+				<div class="menu_cate">
+						<div class="cate_drink">
 							<input type="button" value="DRINK"/>
 						</div>
-						<div class="cate_Pastry">
+						<div class="cate_pastry">
 							<input type="button" value="PASTRY"/>
 						</div>
-						<div class="cate_Goods">
+						<div class="cate_goods">
 							<input type="button" value="GOODS"/>
 						</div>
-						<div class="cate_Bean">
+						<div class="cate_bean">
 							<input type="button" value="BEAN"/>
 						</div>
 				</div>
@@ -479,19 +479,19 @@ function closePopup() {
 							<tr>
 								<td>
 									<img src="resources/images/bb/espresso.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="에스프레소" class="menu_name">
 									</div>
 								</td>
 								<td>
 									<img src="resources/images/bb/americano.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="아메리카노 " class="menu_name">
 									</div>
 								</td>
 								<td>
 									<img src="resources/images/bb/dripCoffee.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="드립커피" class="menu_name">
 									</div>
 								</td>
@@ -499,19 +499,19 @@ function closePopup() {
 							<tr>
 								<td>
 									<img src="resources/images/bb/latte.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="라떼" class="menu_name">
 									</div>
 								</td>
 								<td>
 									<img src="resources/images/bb/cappuccino.png" class="menu_img"><br/>
-									<div class="menu_Btn">	
+									<div class="menu_btn">	
 										<input type="button" value="카푸치노 " class="menu_name">
 									</div>
 								</td>
 								<td>
 									<img src="resources/images/bb/lemon.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="레몬유자피즈" class="menu_name">
 									</div>
 								</td>
@@ -519,19 +519,19 @@ function closePopup() {
 							<tr>
 								<td>
 									<img src="resources/images/bb/choco.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="핫초코" class="menu_name">	
 									</div>
 								</td>
 								<td>
 									<img src="resources/images/bb/cake.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="케이크" class="menu_name">
 									</div>
 								</td>
 								<td>
 									<img src="resources/images/bb/sandwich.png" class="menu_img"><br/>
-									<div class="menu_Btn">
+									<div class="menu_btn">
 										<input type="button" value="샌드위치" class="menu_name" >
 									</div>
 								</td>
@@ -539,19 +539,19 @@ function closePopup() {
 							<tr>
 							<td>
 								<img src="resources/images/bb/choco.png" class="menu_img"><br/>
-								<div class="menu_Btn">
+								<div class="menu_btn">
 									<input type="button" value="핫초코" class="menu_name">	
 								</div>
 							</td>
 							<td>
 								<img src="resources/images/bb/cake.png" class="menu_img"><br/>
-								<div class="menu_Btn">
+								<div class="menu_btn">
 									<input type="button" value="케이크" class="menu_name">
 								</div>
 							</td>
 							<td>
 								<img src="resources/images/bb/sandwich.png" class="menu_img"><br/>
-								<div class="menu_Btn">
+								<div class="menu_btn">
 									<input type="button" value="샌드위치" class="menu_name" >
 								</div>
 							</td>

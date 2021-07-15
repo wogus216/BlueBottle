@@ -25,7 +25,7 @@ body{
 	text-align: center;
 }
 /* 사진 */
-.main_Img{
+.main_img{
 	display: inline-block;
 	width: 65vw;
 	
@@ -35,7 +35,7 @@ body{
 	height: 100%;
 }
 /* 로그인 */
-.login_Area{
+.login_area{
 	display: inline-block;
 	vertical-align: top;
 	width: 25vw;
@@ -49,20 +49,20 @@ body{
 	font-size: 2vw;
 	margin: 20px 0;
 }
-.choice_Img{
+.choice_img{
 	margin-top: 60px;
 	width: 5vw;
 	padding: 0 10px;
  	cursor: pointer;
 }
-.sys_Img{
+.sys_img{
 	padding: 0px;
 	list-style: none;
  	margin: 0;
  	height: 200px;
 	margin-left: 50px;
 }
-.sys_Img li {
+.sys_img li {
 	border: 0;
 	float: left;
 	font-size: 1.2vw;
@@ -72,7 +72,7 @@ body{
     font-size:  1.3vw;
     margin-top: 60px;
 }
-.log_Input{
+.log_input{
 	list-style: none;
 	padding: 0;
 }
@@ -99,18 +99,18 @@ body{
 	}
 }
 
-.btn_Area{
+.btn_area{
 	margin-left: 10px;
 }
 
-.submit,.inquiry_Btn{
+.submit,.inquiry_btn{
     width: 90px;
     font-size: 20px;
     margin-top: 20px;
     border-radius: 10px;
 }
 
-.submit:hover, .inquiry_Btn:hover{
+.submit:hover, .inquiry_btn:hover{
 	background-color: white;
 }
  /* 팝업메시지 */
@@ -158,7 +158,7 @@ body{
 	margin:10px;
 	cursor: pointer;
 }
-.popup_Content{
+.popup_content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
@@ -169,7 +169,7 @@ body{
 
 input[type='button']:focus{outline:none;}
 
-.popup_Head > .close_Btn{
+.popup_head > .close_btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -201,7 +201,7 @@ $(document).ready(function(){
 	
 	
 	//팝업
-	$(".inquiry_Btn").on("click",function(){
+	$(".inquiry_btn").on("click",function(){
 		makePopup("", "02-486-6479로 문의주시면 됩니다.",function(){
 			
 		});
@@ -276,9 +276,9 @@ function makePopup(title, contents, func) {
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"popup_area\">";	
 	html+= "<div class=\"popup_head\">"+ title +"";	
-	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
 	html+= "</div>";	
-	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
 	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
 	html+= 	 	"</div>";	
@@ -304,34 +304,34 @@ function closePopup() {
 <body>
 
 <div class="content">
-	<div class="main_Img">
+	<div class="main_img">
 	<img alt="이미지" src="resources/images/bb/블루보틀2.jpg" id="img1" onload="start()"/>
 	</div>
-	<div class="login_Area">
+	<div class="login_area">
 		<div class="title">Blue Bottle</div>
 		<div class="choi_area">
-			<ul class="sys_Img">
+			<ul class="sys_img">
 				<li>
-					<img src="resources/images/bb/user.png" id="HQ" class="choice_Img"/><br/>
+					<img src="resources/images/bb/user.png" id="HQ" class="choice_img"/><br/>
 					<span style="font-size:20px">본사</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/user.png" id="B" class="choice_Img"/><br/>
+					<img src="resources/images/bb/user.png" id="B" class="choice_img"/><br/>
 					<span style="font-size:20px">지점</span>
 				</li>
 				<li>
-					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_Img"/><br/>
+					<img src="resources/images/bb/pos.PNG" id="POS" class="choice_img"/><br/>
 					<span style="font-size:20px">POS</span>
 				</li>
 			</ul>
 		</div>
 		<div class="info">이용할 시스템을 클릭하세요</div>
 		<form action="#" id="loginForm" method="post">
-			<ul class=log_Input>
+			<ul class=log_input>
 				<li><input type="text" id="bId" name="bId" class="input" maxlength="15" placeholder="아이디를 입력해주세요"/></li>
 				<li><input type="password" id="bPw" name="bPw" class="input" maxlength="15" placeholder="비밀번호을 입력해주세요"/></li>
-				<li class="btn_Area">
-					<input type="button" value="문의" class="inquiry_Btn"/>
+				<li class="btn_area">
+					<input type="button" value="문의" class="inquiry_btn"/>
 					<input type="button" value="로그인" class="submit">
 				</li>
 			</ul>
