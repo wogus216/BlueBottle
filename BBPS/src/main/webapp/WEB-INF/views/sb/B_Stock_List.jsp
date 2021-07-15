@@ -161,7 +161,12 @@ td{
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 }
-.search_btn{
+
+.edit_submit_btn,.edit_cnl_btn,.discard_submit_btn,.discard_cnl_btn{
+	display:none;
+}
+
+.edit_btn,.search_btn,.edit_submit_btn,.discard_submit_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -174,7 +179,25 @@ td{
 	background-color: #01a1dd;
 	outline:none;
 	vertical-align: middle;
+	margin:0px 0px 0px 10px;
 }
+
+.discard_btn,.edit_cnl_btn,.discard_cnl_btn{
+	color: white;
+	width: 100px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	background-color: #bf4040;
+	outline:none;
+	vertical-align: middle;
+	margin:0px 0px 0px 10px;
+}
+
 .search_info,.page_area, .page_btn{
 	text-align: center;
 }
@@ -200,14 +223,16 @@ td{
 }
 .search_filter{
 	width : 120px;
-	vertical-align: middle;
 }
 
 .search_input{
 	height: 34px;
-	vertical-align: middle;
 	width : 280px;
 	outline:none;
+}
+
+.search_filter,.search_input{
+	vertical-align: top;
 }
 
 .page_btn button{
@@ -481,7 +506,7 @@ function drawdiscardPaging(pb){
    </div>
 <div class="content_area">
 <div class="content">
-<h1>폐기 목록</h1>
+<h1>재고 목록</h1>
 <form action = "#" id = "filter_Form" method = "post">
 <div class="filter_area">
 			<select class="cate" name = "cate">
@@ -493,8 +518,13 @@ function drawdiscardPaging(pb){
 			<option value="3">굿즈</option>
 			<option value="4">기타</option>
 			</select>
-			<input type = "date" name = "start_date"  class="start_date" value = "2001-01-01"/>
-			<input type = "date" name = "end_date"  class="end_date" value = "2999-01-01" />
+			<input type= "button" class="edit_btn" value = "수정하기"/>
+			<input type= "button" class="discard_btn" value = "폐기하기"/>
+			<input type= "button" class="edit_submit_btn" value = "수정완료"/>
+			<input type= "button" class="edit_cnl_btn" value = "수정취소"/>
+			<input type= "button" class="discard_submit_btn" value = "폐기완료"/>
+			<input type= "button" class="discard_cnl_btn" value = "폐기취소"/>
+			
 		</div>
 </form>
 <div class = "Discard_List">

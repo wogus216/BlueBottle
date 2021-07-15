@@ -95,7 +95,7 @@
 	
 	<!-- 재고상세 / 유통기한 별 재고상세 -->
 	<select id = "getSDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT I.ITEM_NO,I.ITEM_NAME,TO_CHAR(A.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,A.PPSUM,ROW_NUMBER() OVER(ORDER BY A.EXPIRY_DATE )AS RNUM
+	SELECT I.ITEM_NO,I.ITEM_NAME,TO_CHAR(A.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,A.PPSUM
                FROM (
                SELECT P.ITEM_NO,P.EXPIRY_DATE AS EXPIRY_DATE,(NVL(ISUM,0)-NVL(PSUM,0)-NVL(SSUM,0)) AS PPSUM
                FROM (
@@ -168,5 +168,92 @@
                 ON HS.USER_NO = HU.USER_NO
                 AND HS.ITEM_NO = #{itemNo}
                 AND HS.EXPIRY_DATE = #{expDate}                   
+	</select>
+	
+	<!-- 본사 폐기리스트 행 개수 -->
+	<select id ="getHSDCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*)
+	FROM HQ_DISCARD HD INNER JOIN HQ_STOR HS
+                    ON HD.STOR_NO = HS.STOR_NO
+                    INNER JOIN ITEM I
+                    ON HS.ITEM_NO  = I.ITEM_NO
+    WHERE 1=1
+    <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != '' and cate != 7">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = 0
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = 1
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = 2
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = 3
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = 4
+			</when>
+		</choose>
+	</if>	
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND HD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>
+	</select>
+	
+	<!-- 본사 폐기 목록 조회 -->
+	<select id = "getHSDList" parameterType="hashmap" resultType="hashmap">
+	SELECT CATE_NO,ITEM_NO,ITEM_NAME,TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE ,CNT,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,NOTE,RNUM
+	FROM(
+		SELECT I.CATE_NO,I.ITEM_NO,I.ITEM_NAME,HD.ENROLL_DATE,HD.CNT,HS.EXPIRY_DATE,HD.NOTE,ROW_NUMBER() OVER(ORDER BY HD.ENROLL_DATE DESC )AS RNUM
+		FROM HQ_DISCARD HD INNER JOIN HQ_STOR HS
+         	           ON HD.STOR_NO = HS.STOR_NO
+          	          INNER JOIN ITEM I
+         	           ON HS.ITEM_NO  = I.ITEM_NO
+        <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != '' and cate != 7">
+	<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = 0
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = 1
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = 2
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = 3
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = 4
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND HD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>)
+	WHERE RNUM BETWEEN #{startCnt} AND #{endCnt}
+	
 	</select>
 </mapper> 

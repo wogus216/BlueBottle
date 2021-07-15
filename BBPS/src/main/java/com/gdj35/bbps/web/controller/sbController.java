@@ -408,5 +408,97 @@ public class sbController {
 		return mapper.writeValueAsString(modelMap);
 		
 	}
-
+	
+	
+	//본사 폐기 목록 조회
+	@RequestMapping(value = "/Stock_Discard_List")
+	public ModelAndView HSDList (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
+			
+		int page = 1;
+			
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page",page);
+		mav.setViewName("sb/Stock_Discard_List");
+			
+		return mav;
+	}
+	
+	//본사폐기리스트 그리기 (페이징과 같이)
+	@RequestMapping(value = "/Stock_Discard_Lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSDLists(@RequestParam HashMap<String,String> params) throws Throwable{
+			
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		int page = Integer.parseInt(params.get("page"));
+			
+		//게시글 수 가져오겠다
+		int cnt  = isbservice.getHSDCnt(params);
+			
+		PagingBean pb = iPagingServcie.getPagingBean(page, cnt);
+			
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+			
+		List<HashMap<String,String>> list = isbservice.getHSDList(params);
+		
+		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
+		modelMap.put("list", list);
+		modelMap.put("result", result);
+		modelMap.put("pb", pb);
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+/************여기부터 지점*********************************************************************************************************************/	
+	
+	//지점 재고 목록 조회
+	@RequestMapping(value = "/B_Stock_List")
+	public ModelAndView BSList (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
+				
+		int page = 1;
+				
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+			
+		mav.addObject("page",page);
+		mav.setViewName("sb/B_Stock_List");
+				
+		return mav;
+	}
+	
+	//지점재고리스트 그리기 (페이징과 같이)
+	@RequestMapping(value = "/B_Stock_Lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String BSLists(@RequestParam HashMap<String,String> params) throws Throwable{
+				
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+				
+		int page = Integer.parseInt(params.get("page"));
+				
+		//게시글 수 가져오겠다
+		int cnt  = isbservice.getHSDCnt(params);
+				
+		PagingBean pb = iPagingServcie.getPagingBean(page, cnt);
+				
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+				
+		List<HashMap<String,String>> list = isbservice.getHSDList(params);
+			
+		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+			
+		modelMap.put("list", list);
+		modelMap.put("result", result);
+		modelMap.put("pb", pb);
+				
+		return mapper.writeValueAsString(modelMap);
+	}
 }

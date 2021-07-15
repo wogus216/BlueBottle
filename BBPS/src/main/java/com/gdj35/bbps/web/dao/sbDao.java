@@ -88,5 +88,15 @@ public class sbDao implements IsbDao{
 		return sqlsession.selectList("sb.getHSHList",params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getHSDList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getHSDList",params);
+	}
+
+	@Override
+	public int getHSDCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getHSDCnt",params);
+	}
+
 
 }
