@@ -120,17 +120,19 @@ li {
 /* 게시판 */
 
 h1 {
+ width: 90%;
  margin-bottom: 40px;
+ margin-left: 30px;
  font-size: 30px;
 }
 table {
-    width: 100%;
+    width: 90%;
     table-layout: fixed;
     background: #ffffff;
 	margin: 10px 0;
+	margin-left: 30px;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
-	
 }
 tbody td{
 	cursor: pointer;
@@ -151,8 +153,14 @@ td{
 	border-left: 1px solid #eaeaea;
 }
 
- td:first-child{
+td:first-child{
 	border-left: none;
+}
+tbody td {
+	text-align: right;
+}
+tbody td:first-child{
+	text-align: center;
 }
  input{
 	width:150px;
@@ -170,8 +178,11 @@ td{
    
 }
 
-.sales_info{
-	float: right;
+.sales_info, .tot_sales{
+	width: 90%;
+	float: center;
+	text-align: right;
+	margin-left: 30px;
 }
 
 .sales_info span {
@@ -179,6 +190,17 @@ td{
 	vertical-align: middle;
 }
 
+.tot_sales span{
+	font-weight: 600;
+	font-size: 18px;
+	vertical-align: middle;
+	margin-left: 15px;
+}
+
+.tot_price{
+	color: red;
+	font-size: 22px;
+}
 .search_btn, .graph_btn, .reset_btn{
 	height: 40px;
 	vertical-align: bottom;
@@ -198,6 +220,10 @@ td{
     width: 150px;
     font-size: 15px;
     height: 36px;
+}
+
+input[type='date'] hover {
+    cursor: pointer;
 }
 input[type='button']{
 	color: white;
@@ -230,6 +256,7 @@ input[type='button']{
 }
 .page_btn button:hover{
 	color: #01a1dd;
+	cursor: pointer;
 }
 
 .page_btn button:focus{
@@ -241,7 +268,7 @@ input[type='button']{
 }
 
 .on {
-	background-color: blue;
+	font-weight: bold;
 }
 
 </style>
@@ -264,6 +291,7 @@ $(document).ready(function() {
 	
 	$(".search_btn").on("click", function() {
 		reloadList();
+		
 	});// search_btn click end
 	
 	
@@ -283,6 +311,7 @@ function reloadList() {
 		success: function(res) {
 			drawList(res.list);
 			drawPaging(res.pb);
+			totPrice(res.list);
 		},
 		error: function(request, status, error) {
 			console.log(error);
@@ -295,17 +324,43 @@ function drawList(list) {
 	var html = "";
 	console.log(list);
 	for(var d of list) {
+		
+		var S = addComma(d.SALES_PRICE);
+		var O = addComma(d.ORD_PRICE);
+		var N = addComma(d.NET_PRICE);
+		
 		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
 		html += "<td>" + d.ENROLL_DATE + "</td>     ";
-		html += "<td>" + d.SALES_PRICE + "</td>     ";
-		html += "<td>" + d.ORD_PRICE + "</td>     ";
-		html += "<td>" + d.NET_PRICE + "</td>     ";
+		html += "<td>" + S + "</td>     ";
+		html += "<td>" + O + "</td>     ";
+		html += "<td>" + N + "</td>     ";
 		html += "</tr>                ";
 	}
 	
 	$("tbody").html(html);
 }
 
+//총 매출,지출액 정보
+function totPrice(list){
+	
+	var sHtml = 0;
+	var eHtml = 0;
+	var pHtml = 0;
+	
+	for(d of list) {		
+		sHtml += parseInt(d.SALES_PRICE);
+		eHtml += parseInt(d.ORD_PRICE);
+		pHtml += parseInt(d.NET_PRICE);
+	}
+	
+	sHtml = addComma(sHtml);
+	eHtml = addComma(eHtml);
+	pHtml = addComma(pHtml);
+	
+	$(".tot_sales_price").html("총매출액: " + sHtml + "원");
+	$(".tot_expense_price").html("총지출액: " + eHtml + "원");
+	$(".tot_price").html("순매출액: " + pHtml + "원");
+}
 
 function drawPaging(pb){
 	var html = "";
@@ -339,6 +394,14 @@ function drawPaging(pb){
 	
 	$(".page_btn").html(html);
 }
+
+//천단위 콤마 찍기
+function addComma(value){
+	value = String(value);
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return value; 
+}
+
 </script>
 
 </head>
@@ -411,7 +474,7 @@ function drawPaging(pb){
 			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />
 			<span>까지</span>
 			<input type="button" class="search_btn" value="검색" />
-			<input type="button" class="graph_btn" value="검색" />
+			<input type="button" class="graph_btn" value="그래프" />
 		</form>
 	</div>
 	<table cellspacing="0">
@@ -424,19 +487,19 @@ function drawPaging(pb){
 		<thead>
 			<tr>
 				<th scope="col" style="border-left: none;">날짜</th>
-				<th scope="col">매출액</th>
-				<th scope="col">지출액</th>
-				<th scope="col">순매출액</th>
+				<th scope="col">매출액(원)</th>
+				<th scope="col">지출액(원)</th>
+				<th scope="col">순매출액(원)</th>
 			</tr>
 		</thead>
 		<tbody>
 		</tbody>
 	</table>
-	<ul class="tot_sales">
-		<li><strong>총 순매출액:</li>
-		<li><strong>총 지출액 : </li>
-		<li><strong>총 매출액 : </li>
-	</ul>
+	<div class="tot_sales">
+		<span class="tot_sales_price"></span>
+		<span class="tot_expense_price"></span>
+		<span class="tot_price"></span>
+	</div>
 	<div class="page_area">
 		<div class="page_btn"></div>
 	</div>

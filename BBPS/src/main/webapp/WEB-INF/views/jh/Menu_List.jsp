@@ -12,7 +12,7 @@
 <style type="text/css">
 /* 미들 부분 */
 
-.content_Area{
+.content_area{
 	width: 1250px;
 	height: 900px;
 	margin: 0 auto;
@@ -69,11 +69,11 @@ input{
 
 }
 
-.filter_Area{
+.filter_area{
 	text-align: right;
 	margin-bottom: 20px;
 }
-.add_Btn{
+.add_btn{
 	height: 40px;
     padding: 0;
     vertical-align: bottom;
@@ -83,7 +83,7 @@ input{
 label{
 	vertical-align: middle;
 }
-.search_Btn{
+.search_btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
@@ -96,11 +96,6 @@ select{
 	width : 100px;
 }
 
-.start_date, .end_date{
-	width: 150px;
-	font-size: 15px;
-	height: 36px;
-}
 /* 일반버튼 */
 button{
 	color: white;
@@ -117,11 +112,11 @@ button{
 }
 /* 검색 과 페이지 */
 
-.search_Info,.page_Area, .page_Btn{
+.search_Info,.page_Area, .page_btn{
 	text-align: center;
 }
 
-.page_Btn button{
+.page_btn button{
 	color: black;
 	width: 40px;
 	height: 40px;
@@ -132,11 +127,11 @@ button{
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
 
-.page_Btn button:hover{
+.page_btn button:hover{
 	color: #01a1dd;
 }
 
-.page_Btn button:focus{
+.page_btn button:focus{
 	outline:none;
 }
 
@@ -166,7 +161,7 @@ $(document).ready(function(){
 
 	reloadList();
 	//페이지 변경	
-	$(".page_Btn").on("click","button",function(){
+	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
@@ -177,7 +172,7 @@ $(document).ready(function(){
  	});
  	
  	//검색
- 	$(".search_Btn").on("click",function(){
+ 	$(".search_btn").on("click",function(){
  		$("#page").val(1);
  		reloadList();
  	});
@@ -185,21 +180,21 @@ $(document).ready(function(){
  	//상세보기
  	$("tbody").on("click","tr",function(){
  		$("#menuNo").val($(this).attr("mNo"));
- 		$("#menu_Form").attr("action","Menu_Dtl");
- 		$("#menu_Form").submit();
+ 		$("#menu_form").attr("action","Menu_Dtl");
+ 		$("#menu_form").submit();
  	});
  	
  	//추가 
- 	$(".add_Btn").on("click",function(){
- 		$("#menu_Form").attr("action","Menu_Add");
- 		$("#menu_Form").submit();
+ 	$(".add_btn").on("click",function(){
+ 		$("#menu_form").attr("action","Menu_Add");
+ 		$("#menu_form").submit();
  	});
  		
 	
 }); //ready end
 //비동기로 다시 해보기
 function reloadList(){
-	var params = $("#menu_Form").serialize();
+	var params = $("#menu_form").serialize();
 	console.log(params);
 	$.ajax({
 		url: "Menu_Lists",
@@ -266,7 +261,7 @@ function drawPaging(pb){
 	}
 	html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">>></button>";
 
-	$(".page_Btn").html(html)
+	$(".page_btn").html(html)
 }
 
 </script>
@@ -275,11 +270,11 @@ function drawPaging(pb){
 <body>
 <!--컨텐츠 -->
 
-	<div class="content_Area">
+	<div class="content_area">
 		<div class="content">
 			<h1>POS메뉴조회</h1>
 
-	<div class="filter_Area">
+	<div class="filter_area">
 		<select class="cate" name ="cate">
 			<option selected="selected">카테고리명</option>
 			<option value="0">음료</option>
@@ -288,7 +283,7 @@ function drawPaging(pb){
 			<option value="3">원두</option>
 		</select>
 
-<button class="add_Btn" style="margin:0px 0px 0px 10px;">추가</button>
+<button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
 </div>	
 		
 		<table cellspacing="0">
@@ -309,7 +304,7 @@ function drawPaging(pb){
 			<tbody></tbody>
 		</table>
 		<div class="search_Area" style = "margin-top : 30px;">
-			<form action="#" id="menu_Form" method="post">
+			<form action="#" id="menu_form" method="post">
 				<input type="hidden" id="menuNo" name="menuNo" value="${param.menuNo}"/>
 				<input type="hidden" id="cateNo" name="cateNo"/>
 				<input type="hidden" id="page" name="page" value="${page}"/>
@@ -321,12 +316,12 @@ function drawPaging(pb){
 				</select>
 				<input type="text" class="search_input" name="search_input" value="${param.search_input}"/>
 				<input type="hidden" class="search_Filter" name="search_Filter" value="${search_Filter}"/>
-				<button class="search_Btn">검색</button>
+				<button class="search_btn">검색</button>
 			</div>
 		</form>
 		</div>
 		<div class="page_Area">
-			<div class="page_Btn">
+			<div class="page_btn">
 			<%--  
 				<button page="1"  style="background-color: white"><<</button>
 				<!-- 이전페이지 -->
@@ -366,6 +361,6 @@ function drawPaging(pb){
 		</div>
 		
 		</div> <!--content end  -->
-	</div> <!--content_Area end  -->
+	</div> <!--content_area end  -->
 </body>
 </html>
