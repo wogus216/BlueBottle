@@ -38,5 +38,11 @@ public interface IsbDao {
 
 	public int getHSDCnt(HashMap<String, String> params) throws Throwable;
 
+	public int getBSLCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBSList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBSEList(HashMap<String, String> params) throws Throwable;
+
 
 }
