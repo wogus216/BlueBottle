@@ -74,6 +74,17 @@ public class jhDao implements IjhDao {
 		return sqlsession.selectList("JH.getBMenu", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getPMenu(HashMap<String, String> params) throws Throwable {
+		System.out.println("포스메뉴db돌았습니다.");
+		return sqlsession.selectList("JH.getPMenu", params);
+	}
 
+	@Override
+	public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Throwable {
+		System.out.println("오더메뉴db돌았습니다.");
+		return sqlsession.selectOne("JH.getMOrd",  params);
+	}
 
+	
 }

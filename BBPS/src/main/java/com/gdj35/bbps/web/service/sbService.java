@@ -89,6 +89,16 @@ public class sbService implements IsbService{
 		return isbdao.getHSHList(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getHSDList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getHSDList(params);
+	}
+
+	@Override
+	public int getHSDCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getHSDCnt(params);
+	}
+
 	
 
 }

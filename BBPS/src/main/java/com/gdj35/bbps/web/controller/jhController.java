@@ -289,17 +289,64 @@ public class jhController {
 			System.out.println("지점menu 보자"+menu);
 			return mapper.writeValueAsString(modelMap);
 			}
+	
 	//포스
+	
 	@RequestMapping(value="/Pos")
-			
+	
 	public ModelAndView Pos(
+			HttpSession session,
 				ModelAndView mav) {
-			
+		System.out.println("Pos에서 지점이름:"+session.getAttribute("sBRCHNm"));
+		
 		mav.setViewName("jh/Pos");
 				
 			return mav;
+	}
+	
+	
+	@RequestMapping(value="/Poss",
+					method = RequestMethod.POST,
+					produces = "text/json;charset=UTF-8")
+			
+	@ResponseBody
+	public String Poss(
+			@RequestParam HashMap<String, String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+		System.out.println("포스params"+params);
+		//메뉴 목록 취득
+		List<HashMap<String, String>> list = ijhService.getPMenu(params);
+		
+		System.out.println("포스메뉴 보자list"+list);
+		modelMap.put("list", list);
+		
+		return mapper.writeValueAsString(modelMap);
 				
-			}
+		}
+	
+	@RequestMapping(value="/PosOrd",
+			method = RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String PosOrd(
+		@RequestParam HashMap<String, String> params) throws Throwable{
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+	System.out.println("오더Params"+params);
+	// 오더 취득
+	HashMap<String, String>ord= ijhService.getMOrd(params);
+	
+	modelMap.put("ord", ord);
+	
+	System.out.println("오더 목록 보자"+ord);
+	return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+
 	//POS메뉴관리
 	 @RequestMapping(value="/Menu_List")
 	 public ModelAndView Menu_List(
@@ -343,7 +390,7 @@ public class jhController {
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 			
-		// 목록 취득
+		// 메뉴목록 취득
 		List<HashMap<String, String>>list= ijhService.getMbList(params);
 		
 		modelMap.put("list", list);

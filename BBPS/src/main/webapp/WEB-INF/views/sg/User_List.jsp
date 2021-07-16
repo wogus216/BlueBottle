@@ -185,6 +185,7 @@ label{
 }
 .search_btn{
 	height: 40px;
+	width :60px;
 	margin: 0 ;
 	padding: 0;
 	vertical-align: bottom;
@@ -202,7 +203,7 @@ select{
 	height: 36px;
 }
 /* 일반버튼 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -253,24 +254,104 @@ button{
 </style>
 
 <script type="text/javascript"
-	src="../script/jquery/jquery-1.12.4.js"></script>
+	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
+	if("${param.searchGbn}" != ""){
+		$("#searchGbn").val("${param.searchGbn}");
+	}
+	reloadList();
 	
-	},function(){
-			$("li").css("background-color","white");
+	$(".list_wrap tbody").on("click", "tr", function(){
+		$("#uNo").val($(this).attr("uno"));
+		$("#actionForm").attr("action", "User_Detail");
+		$("#actionForm").submit();
 	});
 	
+	$("#addBtn").on("click",function(){
+		$("#searchTxt").val($("#searchOldTxt").val());
+		$("#actionForm").attr("action", "User_Detail");
+		$("#actionForm").submit();
+	});
+	
+	$("#searchBtn").on("click",function(){
+		$("#page").val(1);
+		$("#searchOldTxt").val($("#searchTxt").val());
+		reloadList();
+	});
+	
+	$("#paging_Wrap").on("click","span",function(){
+		$("#page").val($(this).attr("uno"));
+		$("#searchTxt").val($("#searchOldTxt").val());
+		reloadList();
+	});
 	
 }); //ready end
+
+function reloadList() {
+	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
+	
+	$.ajax({
+		url:"User_Lists", //접속주소
+		type:"post", //전송방식 : get, post
+		dataType:"json",//받아올데이터형식
+		data:params, //보낼 데이터(문자열 형태)
+		success : function (res) {//성공 시 다음함수 실행
+			drawList(res.list);
+			drawPaging(res.pb);
+		},
+		error : function (request, status, error) { //실패 시 다음함수 실행
+			console.log(error);
+		}
+	});
+}
+
+function drawList(list) {
+	var html = "";
+	for(var d of list){
+		html += "<tr uno=\"" + d.USER_NO + "\">";
+		html += "<td>" + d.USER_NO+ "</td>";
+		html += "<td>" + d.NAME + "</td>";
+		html += "<td>" + d.USER_NAME + "</td>";
+		html += "<td>" + d.ID + "</td>";
+		html += "</tr>";
+		
+	}
+	
+	$("tbody").html(html);
+}
+
+function drawPaging(pb) {
+	var html="";
+	
+	html += "<span name=\"1\">처음</span>";
+	
+	if($("#page").val() == "1"){
+		html += "<span name=\"1\">이전</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() -1) + "\">이전</span>";
+	}
+	
+	for(var i = pb.startPcount; i<=pb.endPcount; i++){
+		if($("#page").val() == i){
+			html += "<span class=\"" + i + "\"><b>" + i + "</b></span>";		} else {
+			html += "<span name=\"" + i + "\">" + i + "</span>";
+		}
+	}
+	
+	if($("#page").val() == pb.maxPCount){
+		html += "<span name=\"" + pb.maxPCount + "\">다음</span>";
+	} else {
+		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
+	}
+	
+	
+	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
+	
+	$("#paging_Wrap").html(html);
+}
 
 
 
@@ -295,9 +376,9 @@ $(document).ready(function(){
 			</select>
 		</div>
 	<div class="add_btn_area">
-		<button class="add_btn">등록</button>
+	<input type="button" class="add_btn" value="등록" id="addBtn"/>
 	</div>
-	
+<div class="list_wrap">	
 <table cellspacing="0">
 	<colgroup>
 		<col width="20%">
@@ -316,21 +397,26 @@ $(document).ready(function(){
 	<tbody>
 	</tbody>
 </table>
+</div>
+<form action="#" id="actionForm" method="post">
+<input type="hidden" id="uNo" name="uNo"/>
+<input type="hidden" id="page" name="page" value="${page}">
 	<div class="search_area" style = "margin-top : 30px;">
 		<div class="search_info">
-			<select class="search_filter">
+			<select  name="searchGbn" class="search_filter">
 				<option value="0" selected="selected">전체</option>
 				<option value="1">사용자번호</option>
-				<option value="2">지점명</option>
-				<option value="3">부서명</option>
-				<option value="4">사용자명</option>
-				<option value="5">ID</option>
+				<option value="2">지점명/부서명</option>
+				<option value="3">사용자명</option>
+				<option value="4">ID</option>
 			</select>
-			<input type="text" class="search_input"/>
-			<button class="search_btn">검색</button>
+			<input type="hidden" id="searchOldTxt" value="${param.searchTxt}"/>
+			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}"/>
+			<input type="button" value="검색" id="searchBtn" class="search_btn"/>
 		</div>
 	</div>
-	<div class="page_area">
+	</form>
+	<div class="page_area" id="paging_Wrap">
 		<div class="page_btn">
 		<button style="background-color: white"><</button>
 		<button style="background-color: white">1</button>

@@ -25,4 +25,9 @@ public int delM(HashMap<String, String> params) throws Throwable;
 
 public List<HashMap<String, String>> getBMenu(HashMap<String, String> params) throws Throwable;
 
+public List<HashMap<String, String>> getPMenu(HashMap<String, String> params) throws Throwable;
+
+public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Throwable;
+
+
 }

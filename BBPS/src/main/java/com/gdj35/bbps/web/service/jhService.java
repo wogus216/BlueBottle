@@ -64,6 +64,14 @@ public class jhService implements IjhService {
 		return ijhDao.getBMenu(params);
 	}
 
-	
+	@Override
+	public List<HashMap<String, String>> getPMenu(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getPMenu(params);
+	}
+
+	@Override
+	public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getMOrd(params);
+	}
 
 }

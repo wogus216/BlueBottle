@@ -58,7 +58,7 @@ public class sgController {
 		int cnt = isgService.getNCnt(params);
 
 		// 페이징 정보 취득
-		PagingBean pb = ipagingService.getPagingBean(page, cnt);
+		PagingBean pb = ipagingService.getPagingBean(page, cnt, 2, 3);
 		
 		// 게시글 시작번호, 종료 번호 할당
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
@@ -205,7 +205,7 @@ public class sgController {
 		
 		return mav;
 	}
-	@RequestMapping(value="/User_List",
+	@RequestMapping(value="/User_Lists",
 			method=RequestMethod.POST,
 			produces = "text/json;charset=UTF-8")
 	@ResponseBody

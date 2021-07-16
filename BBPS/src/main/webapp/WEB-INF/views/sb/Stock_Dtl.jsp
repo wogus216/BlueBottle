@@ -142,6 +142,30 @@ table {
 	
 }
 
+.popup_Content table{
+	width: 100%;
+    background: #ffffff;
+	margin: 10px 0;
+	border-top: 2px solid #01a1dd;
+	border-bottom: 2px solid #d9d9d9;
+}
+
+.popup_Content th{
+	background: #e8e8e8;
+    padding: 0px;
+    border-bottom: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    font-size:15px;
+}
+
+
+.popup_Content td{
+	font-size:15px;
+	padding:0px;
+	border-top: 1px solid #eaeaea;
+	border-left: 1px solid #eaeaea;
+}
+
 tr {
     display: table-row;
 }
@@ -158,6 +182,26 @@ td{
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
+}
+
+.popup_Content thead{
+	display : table;
+	table-layout : fixed;
+	width : 100%;
+}
+
+.popup_Content tbody{
+	display : block;
+	max-height : 120px;
+	width : 100%px;
+	overflow : auto;
+	overflow-x : hidden;
+}
+
+.popup_Content tr{
+	display : table;
+	table-layout : fixed;
+	width : 100%;
 }
 
 .stock_rel_history thead,.stock_discard_history thead{
@@ -369,19 +413,20 @@ button{
 }
 .popup_Btn input[type='button']{
 	color: white;
-	width: 150px;
-	height: 40px;
+	width: 120px;
+	height: 30px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
-	margin-top:50px;
+	font-size:15px;
+	margin:10px;
 	cursor: pointer;
 }
 .popup_Content{
 	margin-bottom:80px;
 	margin-top:20px;
 	margin-left:20px;
+	margin-right:20px;
 	text-align:center;
 	font-size:18px;
 	color: black
@@ -760,12 +805,15 @@ function drawstorHistory(StorHistorylist){
 	var shhtml ="";
 	
 	shhtml += "<table cellspacing=\"0\">";
+	shhtml += "<thead>";
 	shhtml += "<tr>";
 	shhtml += "<th style=\"border-left: none;\">입고날짜</th>";
 	shhtml += "<th>입고수량</th>";
 	shhtml += "<th>변경자</th>";
 	shhtml += "</tr>";
+	shhtml += "</thead>";
 	
+	shhtml += "<tbody>";
 	for(var d of StorHistorylist){
 	shhtml += "<tr>";
 	shhtml += "<td>"+d.ENROLL_DATE+"</td>";
@@ -773,6 +821,7 @@ function drawstorHistory(StorHistorylist){
 	shhtml += "<td>"+d.ID+"</td>";
 	shhtml += "</tr>";
 	} 
+	shhtml += "</tbody>";
 	shhtml += "</table>";
 	
 	return shhtml;
