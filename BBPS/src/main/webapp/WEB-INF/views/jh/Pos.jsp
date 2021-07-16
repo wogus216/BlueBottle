@@ -43,16 +43,9 @@ body {
 	min-width: 1400px;
 	
 }
-/* 중간 부분 */
-.ord_area {
-	display: inline-block;
-	height: 450px;
-}
 
-.table_menu input{
-	cursor: pointer;
-}
 /* 탑부분 */
+
 .now_ord, .date,.brch,.pos_uesr{
 	display: inline-block;
 	font-size: 22px;
@@ -80,16 +73,28 @@ body {
 }
 /* 왼쪽 부분 */
 .left{
-	width: 700px;
+	width: 680px;
 	display: inline-block;
+
 }
-.table_ord {
-   list-style-type: none;
+.ord_area {
+	display: inline-block;
+	width: 100%;
+	height: 450px;
+}
+.ord_stat {
    width: 100%;
 }
-.table_ord li {
-   float: left;
-   margin-bottom: 10px;
+.ord_div,.ord_img{
+	display: inline-block;
+}
+.ord_img{
+	vertical-align: bottom;
+}
+#ord_cnt{
+	width: 100px;
+    height: 62px;
+    font-size: 16px;
 }
 .choice_img{
 	width: 60px;
@@ -106,6 +111,11 @@ body {
 .choice_plus, .choice_minus{
 	width: 30px;
 	font-size: 20.5px;
+}
+
+.choice_cnl{
+	width: 80px;
+    height: 60px;
 }
 .table_pay {
 	display: inline-block;
@@ -198,7 +208,7 @@ body {
  	background-color: #1bc1fe;
  	box-shadow: 1px 1px 0px 1px #000000;
  }
-.pay-5 input:active{
+.pay_method input:active{
  	background-color: #1bc1fe;
  } 
 .table_num input:active{
@@ -289,30 +299,68 @@ input[type='button']:focus{outline:none;}
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	var cnt = 0;
 	
 	reloadList();
-	cateCall();
-	
-	
+	ord_pay();
 	$(".pos_off_btn").on("click",function(){
 		makePopup("POS종료", "POS를 종료하시겠습니까?",function(){
 		});
 	}); //pos_off end
 	
+	//현재주문 상황
 	$("body").on("click",".menu_btn",function(){
-		console.log($(this).attr("mno"));
-		$("#menuNo").val($(this).attr("mno"));
-		reloadOrd();
+		console.log(cnt);
+		if(cnt < 7){
+			
+			$("#menuNo").val($(this).attr("mno"));
+			reloadOrd();
+			cnt++;
+			
+		
+			
+		}else{
+			ordPopup("", "더이상 품목추가는 불가합니다.",function(){
+			});
+		}
 		
 		//$("#menuNo").val($(this).val(".menu_no"));
 		//$(".table_num").show();
 	
 	}); // 계산기
 	
+	$(".ord_area").on("change","select",function(){
+		
+	});
+
+	//주문 취소
+	$(".ord_area").on("click",".choice_cnl",function(){
+		$(this).parent().parent().remove();
+		cnt--;
+	});
+
+	
 	$(".table_num").on("click", ".confirm",function(){
 		
 		$(".table_num").hide();
 	}); // 계산기
+	
+	//카테고리 선택
+	$(".cate_btn").on("click", "input[type='button']",function(){
+		if($(this).val() == "DRINK"){
+			$("#cateNo").val(0);
+		} 
+		else if($(this).val() == "PASTRY"){
+			$("#cateNo").val(1);
+		}
+		else if($(this).val() == "GOODS"){
+			$("#cateNo").val(2);
+		}
+		else{
+			$("#cateNo").val(3);
+		}
+		reloadList();
+	});
 	
 });//ready end
 
@@ -338,7 +386,6 @@ function reloadList(){
 
 function reloadOrd(){
 	var params = $("#ord_form").serialize();
-	
 	console.log(params);
 	$.ajax({
 		url: "PosOrd",
@@ -349,13 +396,13 @@ function reloadOrd(){
 			console.log(res.ord);
 			inputOrd(res.ord);
 			
+			
 		},
 		error: function(request, status, error){
 			console.log(error)
 		}
 	});
 }
-
 
 function drawMenu(list){
 	var menu ="";
@@ -375,53 +422,80 @@ function drawMenu(list){
 //현재 주문 넣기
 function inputOrd(ord){
 	var order ="";
+	
 	// "+ + "
+	order+= 		"<div class=\"ord_stat\">";
+	order+= 			"<div class=\"ord_img\" mNo=\""+ ord.MNO +"\">";
+	order+= 				"<img src=\"resources/upload/"+ord.MIMG+"\" class=\"choice_img\">";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\">";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
+	order+= 			"</div >";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<select id=\"ord_cnt\" name=\"ord_cnt\">";
+	order+= 					"<option value=\"1\" selected=\"selected\">1</option>";
+	order+= 					"<option value=\"2\">2</option>";
+	order+= 					"<option value=\"3\">3</option>";
+	order+= 					"<option value=\"4\">4</option>";
+	order+= 					"<option value=\"5\">5</option>";
+	order+= 					"<option value=\"6\">6</option>";
+	order+= 					"<option value=\"7\">7</option>";
+	order+= 					"<option value=\"8\">8</option>";
+	order+= 					"<option value=\"9\">9</option>";
+	order+= 					"<option value=\"10\">10</option>";
+	order+= 				"</select>";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"button\" value=\"취소\" class=\"choice_cnl\">";
+	order+= 			"</div >";
+	order+= 		"</div>";
 	
-	order+= "<ul mNo=\""+ ord.MNO +"\" class=\"table_ord\" cellspacing=\"0\">";                                                         
-	order+= 		"<li>";
-	order+= 			"<img src=\"resources/upload/"+ord.MIMG+"\" class=\"choice_img\">";
-	order+= 		"</li>";
-	order+= 		"<li>";
-	order+= 			"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\">";
-	order+= 		"</li>";
-	order+= 		"<li>";
-	order+= 			"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
-	order+= 		"</li>";
-	order+= 		"<li>";
-	order+= 			"<input type=\"text\" value=1 class=\"choice_num\">";
-	order+= 		"</li>";
-	order+= 		"<li>";
-	order+= 			"<input type=\"button\" value=\"+\" class=\"choice_plus\">";
-	order+=		 "<br/>";
-	order+= 			"<input type=\"button\" value=\"-\" class=\"choice_minus\">";
-	order+= 		"</li>";
-	order+= "</ul>";
-	
-	
-	
-	$(".table_ord").append(order);
+	$(".ord_area").append(order);
+	ordCnt();
 }
-//메뉴 카테고리 벨류 넣기
-function cateCall(){
-	//drink 클릭
-	$(".cate_btn").on("click", "input[type='button']",function(){
-		if($(this).val() == "DRINK"){
-			$("#cateNo").val(0);
-		} 
-		else if($(this).val() == "PASTRY"){
-			$("#cateNo").val(1);
-		}
-		else if($(this).val() == "GOODS"){
-			$("#cateNo").val(2);
-		}
-		else{
-			$("#cateNo").val(3);
-		}
-		
-		$("#menu_form").attr("action","Pos");
-		$("#menu_form").submit();
+
+function ordCnt(){
+	var cnt = 0 ;
+	$("#ord_area .ord_stat").each(function(){
+		//	$(this).금액 벨류랑 셀렉 밸류
 	});
+	
 }
+
+//결제
+function ord_pay(){
+	var pay ="";
+
+	//"+ +"
+	pay+= "<tr class=\"pay_info\">";
+	pay+= "	 <td>30000원</td>";
+	pay+= "	 <td rowspan=\"3\">"+  +"개</td>";
+	pay+= "	 <td rowspan=\"3\">24000원</td>";
+	pay+= "</tr>";
+	pay+= "<tr class=\"pay_change\">";
+	pay+= "	 <td>거스름돈</td>";
+	pay+= "</tr>";
+	pay+= "<tr class=\"change_price\">";
+	pay+= "	 <td>6000원</td>";
+	pay+= "</tr>";
+	pay+= "<tr class=\"pay_method\">";
+	pay+= "	<td>";
+	pay+= "		<input type=\"button\" value=\"현금결제\" class=\"pay\" />";
+	pay+= "	</td>";
+	pay+= "	<td>";
+	pay+= "		<input type=\"button\" value=\"카드결제\" class=\"pay\" />";
+	pay+= "	</td>";
+	pay+= "	<td>";
+	pay+= "		<input type=\"button\" value=\"환불\" class=\"pay\" />";
+	pay+= "	</td>";
+	pay+= "</tr>";
+	
+	$(".table_pay tbody").html(pay);
+}
+
 function makePopup(title, contents, func) {
 	var html ="";
 	html+= "<div class=\"bg\"></div>";	
@@ -448,7 +522,39 @@ function makePopup(title, contents, func) {
 	$(".confirm_btn").on("click",function(){
 		location.href = "Pos_LogOut";
 	});
+ }
+	
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
+ }
+
+function ordPopup(title, contents, func) {
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";		
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".popup_btn, .close_Btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+
 	}
+	
 function closePopup() {
 	$(".bg, .popup_area").fadeOut(function(){
 		$(".bg, .popup_area").remove();
@@ -473,134 +579,44 @@ function closePopup() {
 		<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/> 
 		<input type="hidden" id="menuCnt" name="menuCnt" /> 
 			<div class="left">
-					<div class="ord_area">
-						<ul class="table_ord" cellspacing="0">
-						<!--  
-								<li>
-									<img src="resources/images/bb/espresso.png" class="choice_img" >
-								</li>
-								<li>
-									<input type="text" value="에스프레소" class="choice_menu">
-								</li>
-								<li>
-									<input type="text" value="5000" class="choice_price">
-								</li>
-								<li>
-									<input type="text" value=1 class="choice_num">
-								</li>
-								<li>		
-									<input type="button" value="+" class="choice_plus">
-									<br/>
-									<input type="button" value="-" class="choice_minus">
-								</li>	
-						</ul>
-						<ul class="table_ord" cellspacing="0">
-								<li>
-									<img src="resources/images/bb/espresso.png" class="choice_img" >
-								</li>
-								<li>
-									<input type="text" value="에스프레소" class="choice_menu">
-								</li>
-								<li>
-									<input type="text" value="5000" class="choice_price">
-								</li>
-								<li>
-									<input type="text" value=1 class="choice_num">
-								</li>
-								<li>		
-									<input type="button" value="+" class="choice_plus">
-									<br/>
-									<input type="button" value="-" class="choice_minus">
-								</li>	
-						</ul>
-						<ul class="table_ord" cellspacing="0">
-								<li>
-									<img src="resources/images/bb/espresso.png" class="choice_img" >
-								</li>
-								<li>
-									<input type="text" value="에스프레소" class="choice_menu">
-								</li>
-								<li>
-									<input type="text" value="5000" class="choice_price">
-								</li>
-								<li>
-									<input type="text" value=1 class="choice_num">
-								</li>
-								<li>		
-									<input type="button" value="+" class="choice_plus">
-									<br/>
-									<input type="button" value="-" class="choice_minus">
-								</li>	
-						</ul>
-						<ul class="table_ord" cellspacing="0">
-								<li>
-									<img src="resources/images/bb/espresso.png" class="choice_img" >
-								</li>
-								<li>
-									<input type="text" value="에스프레소" class="choice_menu">
-								</li>
-								<li>
-									<input type="text" value="5000" class="choice_price">
-								</li>
-								<li>
-									<input type="text" value=1 class="choice_num">
-								</li>
-								<li>		
-									<input type="button" value="+" class="choice_plus">
-									<br/>
-									<input type="button" value="-" class="choice_minus">
-								</li>	
-						</ul>
-						<ul class="table_ord" cellspacing="0">
-								<li>
-									<img src="resources/images/bb/espresso.png" class="choice_img" >
-								</li>
-								<li>
-									<input type="text" value="에스프레소" class="choice_menu">
-								</li>
-								<li>
-									<input type="text" value="5000" class="choice_price">
-								</li>
-								<li>
-									<input type="text" value=1 class="choice_num">
-								</li>
-								<li>		
-									<input type="button" value="+" class="choice_plus">
-									<br/>
-									<input type="button" value="-" class="choice_minus">
-								</li>	
-								-->
-						</ul>
-					</div>
+					<div class="ord_area"></div>
 					<table class="table_pay" border="2" cellspacing="0">
 					<colgroup>
 						<col width="220px">
 						<col width="220px">
+						<col width="220px">
 					</colgroup>
-					<tr class="pay-1">
-						<td>받은금액</td>
-						<td>총수량</td>
-						<td>주문금액</td>
-					</tr>
-					<tr class="pay-2">
-						<td>30000원</td>
-						<td rowspan="3">5개</td>
-						<td rowspan="3">24000원</td>
-					</tr>
-					<tr class="pay-3">
-						<td>거스름돈</td>
-					</tr>
-					<tr class="pay-4">
-						<td>6000원</td>
-					</tr>
-					<tr class="pay-5">
-						<td>
-							<input type="button" value="현금결제" class="pay" />
-						</td>
-						<td>
-							<input type="button" value="카드결제" class="pay" />
-						</td>
-					</tr>
+					<tbody>
+					<!-- 
+						<tr class="pay_price">
+							<td>받은금액</td>
+							<td>총수량</td>
+							<td>주문금액</td>
+						</tr>
+						<tr class="pay_info">
+							<td>30000원</td>
+							<td rowspan="3">5개</td>
+							<td rowspan="3">24000원</td>
+						</tr>
+						<tr class="pay_change">
+							<td>거스름돈</td>
+						</tr>
+						<tr class="change_price">
+							<td>6000원</td>
+						</tr>
+						<tr class="pay_method">
+							<td>
+								<input type="button" value="현금결제" class="pay" />
+							</td>
+							<td>
+								<input type="button" value="카드결제" class="pay" />
+							</td>
+							<td>
+								<input type="button" value="환불" class="pay" />
+							</td>
+						</tr>
+								 -->
+					</tbody>
 				</table>
 			</div>
 			<div class="right">
@@ -618,7 +634,9 @@ function closePopup() {
 							<input type="button" value="BEAN"/>
 						</div>
 				</div>
-				<div class="menu_area"></div>
+				<div class="menu_area">
+					
+				</div>
 			 <table class="table_num" border="2" cellspacing="0">
 					<colgroup>
 						<col width="10%">
