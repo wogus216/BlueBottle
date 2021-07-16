@@ -16,7 +16,9 @@
 	width: 1250px;
 	height: 900px;
 	margin: 0 auto;
-	margin-top: 50px;
+	margin-top: 50px;    
+	width: 50%;
+    height: 110px;
 }
 
 .content{
@@ -152,9 +154,6 @@ button{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	
-	
 	if("${param.search_Filter}" != ""){
 			$("#search_Filter").val("${param.search_Filter}");
 	}
