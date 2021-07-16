@@ -117,6 +117,18 @@ public class nyService implements InyService{
 		return iNyDao.getSalesDetailAll(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSalesDetailDetail(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getSalesDetailDetail(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getTotSales(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getTotSales(params);
+	}
+
 
 
 }

@@ -348,7 +348,7 @@ $(document).ready(function() {
 	
 	$(".search_btn").on("click", function() {
 		reloadList();
-		
+		totSales();
 	});// search_btn click end
 	
 	$("tbody").on("click", "td", function() {
@@ -363,7 +363,7 @@ $(document).ready(function() {
 			}
 			if($(this).attr("id") == "expense") {
 				$("#enroll_date").val($(this).parent().attr("date"));
-				$("#actionForm").attr("action","B_Expense_Detail");
+				$("#actionForm").attr("action","");
 				$("#actionForm").submit();		
 			}
 		}
@@ -387,7 +387,6 @@ function reloadList() {
 		success: function(res) {
 			drawList(res.list);
 			drawPaging(res.pb);
-			totPrice(res.list);
 		},
 		error: function(request, status, error) {
 			console.log(error);
@@ -417,6 +416,24 @@ function drawList(list) {
 }
 
 //총 매출,지출액 정보
+function totSales() {
+	var params = $("#actionForm").serialize();
+
+	console.log(params);
+	$.ajax({
+		url: "getTotSales",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			totPrice(res.list);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
 function totPrice(list){
 	
 	var sHtml = 0;

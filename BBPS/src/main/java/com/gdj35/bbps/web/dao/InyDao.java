@@ -39,5 +39,9 @@ public interface InyDao {
 
 	List<HashMap<String, String>> getSalesDetailAll(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> getSalesDetailDetail(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getTotSales(HashMap<String, String> params) throws Throwable;
+
 	
 }

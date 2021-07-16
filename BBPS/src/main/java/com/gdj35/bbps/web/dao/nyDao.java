@@ -116,5 +116,17 @@ public class nyDao implements InyDao{
 		return sqlSession.selectList("NY.getSalesDetailAll", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getSalesDetailDetail(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getSalesDetailDetail", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getTotSales(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getTotSales", params);
+	}
+
 		
 }

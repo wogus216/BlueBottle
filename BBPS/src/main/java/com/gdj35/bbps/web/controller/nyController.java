@@ -354,6 +354,29 @@ public class nyController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	@RequestMapping(value="/getTotSales", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getTotSales(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			
+			List<HashMap<String, String>> list = iNyService.getTotSales(params);
+			
+			modelMap.put("list", list);
+
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	@RequestMapping (value="/B_Sales_Detail")
 	public ModelAndView B_Sales_Detail(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
 		
@@ -441,4 +464,28 @@ public class nyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	@RequestMapping(value="/getSalesDetailDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getSalesDetailDetail(@RequestParam HashMap<String,String> params)throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			
+			List<HashMap<String,String>> list = iNyService.getSalesDetailDetail(params);
+			
+			modelMap.put("list", list);
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	
 }
