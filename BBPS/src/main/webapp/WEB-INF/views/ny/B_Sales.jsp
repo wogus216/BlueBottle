@@ -1,8 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>지점매출조회</title>
 <style type="text/css">
 
@@ -168,16 +168,6 @@ tbody td:first-child{
 	margin:10px 5px;
 }
 
-.tot_sales li{
-	font-size:19px;
-	margin:10px;
-	float:right;
-}
-.tot_sales ul{
-	max-width: 1000px; 
-   
-}
-
 .sales_info, .tot_sales{
 	width: 90%;
 	float: center;
@@ -191,7 +181,7 @@ tbody td:first-child{
 }
 
 .tot_sales span{
-	font-weight: 600;
+	font-weight: 500;
 	font-size: 18px;
 	vertical-align: middle;
 	margin-left: 15px;
@@ -199,7 +189,7 @@ tbody td:first-child{
 
 .tot_price{
 	color: red;
-	font-size: 22px;
+	font-size: 20px;
 }
 .search_btn, .graph_btn, .reset_btn{
 	height: 40px;
@@ -271,6 +261,73 @@ input[type='button']{
 	font-weight: bold;
 }
 
+/*팝업*/
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn input[type='button']{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+input[type='button']:focus{outline:none;}
+
+.popup_head .close_btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
+
 </style>
 
 <script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -291,8 +348,27 @@ $(document).ready(function() {
 	
 	$(".search_btn").on("click", function() {
 		reloadList();
-		
+		totSales();
 	});// search_btn click end
+	
+	$("tbody").on("click", "td", function() {
+		if($(this).html() == "0") {
+			makePopup("", "해당 일자의 매출 정보가 없습니다.", null);
+		} 
+		else{
+			if($(this).attr("id") == "sales") {
+				$("#enroll_date").val($(this).parent().attr("date"));
+				$("#actionForm").attr("action","B_Sales_Detail");
+				$("#actionForm").submit();		
+			}
+			if($(this).attr("id") == "expense") {
+				$("#enroll_date").val($(this).parent().attr("date"));
+				$("#actionForm").attr("action","");
+				$("#actionForm").submit();		
+			}
+		}
+				
+	});// td click end
 	
 	
 });// document ready end
@@ -311,7 +387,6 @@ function reloadList() {
 		success: function(res) {
 			drawList(res.list);
 			drawPaging(res.pb);
-			totPrice(res.list);
 		},
 		error: function(request, status, error) {
 			console.log(error);
@@ -331,8 +406,8 @@ function drawList(list) {
 		
 		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
 		html += "<td>" + d.ENROLL_DATE + "</td>     ";
-		html += "<td>" + S + "</td>     ";
-		html += "<td>" + O + "</td>     ";
+		html += "<td id=\"sales\">" + S + "</td>     ";
+		html += "<td id=\"expense\">" + O + "</td>     ";
 		html += "<td>" + N + "</td>     ";
 		html += "</tr>                ";
 	}
@@ -341,6 +416,24 @@ function drawList(list) {
 }
 
 //총 매출,지출액 정보
+function totSales() {
+	var params = $("#actionForm").serialize();
+
+	console.log(params);
+	$.ajax({
+		url: "getTotSales",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			totPrice(res.list);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
 function totPrice(list){
 	
 	var sHtml = 0;
@@ -401,6 +494,41 @@ function addComma(value){
     value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return value; 
 }
+
+//팝업
+function makePopup(title, contents, func) {
+	
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 	 	"</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".popup_btn, .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+	$(".confirm_btn").on("click",function(){
+		closePopup();
+	});
+	}
+
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
+}	
 
 </script>
 
@@ -467,6 +595,7 @@ function addComma(value){
 	<h1 >매출조회</h1>
 	<div class="sales_info">
 		<form action="#" method="post" id="actionForm">
+			<input type="hidden" id="enroll_date" name="enroll_date" />
 			<input type="hidden" id="page" name="page" value="${page}" />
 			<input type="button" class="reset_btn" value="초기화" />
 			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" />

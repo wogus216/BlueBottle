@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>지점매출액상세조회</title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>일자별 매출조회</title>
 <style type="text/css">
 
 /* 상단 바 */
@@ -105,23 +106,36 @@ li {
 
 /* 미들 부분 */
 .content_area{
-	width: 1250px;
+	width: 1350px;
 	height: 900px;
 	margin: 0 auto;
-	margin-top: 50px;
+	margin-top: 60px;
+	text-align: center;
 }
 
-.content{
-	max-width: 1250px;
-    min-width: 700px;
+.contentA{
+	display: inline-block;
+	vertical-align: top;
     margin-left: 30px;
-     width: 1250px;
+    margin-right: 15px;
+    width: 55%;
+}
+
+.contentB {
+	display: none;
+	vertical-align: top;
+	width: 40%;
 }
 /* 게시판 */
-
+.head{
+	display: inline-block;
+	float: left;
+	vertical-align: top;
+}
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
+ float: left;
 }
 table {
     width: 100%;
@@ -147,40 +161,44 @@ td{
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
+	cursor:pointer;
 }
 
- td:first-child{
+td:first-child{
 	border-left: none;
 }
-select, input{
-	width:150px;
-	height:40px;
-	margin:10px 5px;
-}
-.selectBox, .tot_price li{
-	float:right;
-}
-.tot_price li{
-	font-size:19px;
-	margin:10px;
-	
-}
-.tot_price ul{
-	max-width: 1000px; 
-   
+
+table td {
+	text-align: center;
 }
 
-.sales_info{
-	float: left;
-	font-size: 20px;
-	margin-bottom: 10px;
+.sales_info {
+	font-size: 18px;
+	font-weight: 500;
+	width: 100%;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.graph_btn{
-	background-color: red;
+.sales_info .info{
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 5px;
+	float:left
+}
+.tot_price #tot_pay{
+	color: red;
+}
+.tot_price {
+	display: inline-block;
+	vertical-align: top;
+	float: right;
+}
+.tot_price span {
+	margin-right:5px;
 }
 
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -190,12 +208,20 @@ button{
 	font-size:18px;
 	margin:10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
 }
 
-.page_area, .page_btn{
+.page_area{
 	text-align: center;
+	margin-top: 30px;
+}
+.page_btn{
+	display: inline-block;
+	text-align: center;
+	vertical-align: bottom;
+	margin: 10px 0px;
+	margin-right: 80px;
+	float: middle;
 }
 
 .page_btn button{
@@ -205,22 +231,211 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:40px 3px;
+	margin:0px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
-
 .page_btn button:hover{
 	color: #01a1dd;
+	cursor: pointer;
 }
 
 .page_btn button:focus{
 	outline:none;
 }
 
-button:focus{outline:none;}
+.page_btn button{
+	background-color: white;
+}
+
+.on {
+	font-weight: bold;
+}
+
+.list_btn {
+	width:200px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	font-size: 22px;
+	float: left;
+	vertical-align: bottom;
+	margin: 0px;
+}
 
 </style>
 
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	reloadListA();
+	
+	$(".contentA .page_btn").on("click","button",function(){
+		$(".contentA #page").val($(this).attr("page"));
+		reloadListA();
+	}); 
+	
+	$(".contentA .list_btn").on("click", function() {
+		$("#actionForm").attr("action", "B_Sales");
+		$("#actionForm").submit();
+	}); 
+	
+	$(".contentA tbody").on("click", "tr", function() {
+		$("#sales_no").val($(this).attr("salesNo"));
+		$(".contentB").css("display", "inline-block");
+		reloadListB();	
+	});// tr click end
+	
+});//document ready end
+
+function reloadListA(){
+	var params = $(".contentA #actionForm").serialize();
+	
+	$.ajax({
+		url: "getSalesDetail",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			totSales();
+			drawListA(res.list);
+			drawPagingA(res.pb);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
+
+function reloadListB(){
+	var params = $(".contentA #actionForm").serialize();
+	$.ajax({
+		url: "getSalesDetailDetail",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			drawListB(res.list);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
+
+function totSales(){
+	
+	var params = $(".contentA #actionForm").serialize();
+	
+	$.ajax({
+		url: "getSalesDetailAll",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			getTotSales(res.list);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
+
+function getTotSales(list) {
+	
+	for(d of list) {
+		$(".contentA .sales_info #card_pay").html("<strong>카드결제: </strong>" + d.CARD_PAY + "원");
+		$(".contentA .sales_info #cash_pay").html("<strong>현금결제: </strong>" + d.CASH_PAY + "원");
+		$(".contentA .sales_info #tot_pay").html("<strong>총결제금액: </strong>" + d.TOT_PAY + "원");
+	}
+	
+}
+
+function drawListA(list) {
+	
+	var html = "";
+	
+	for(d of list) {	
+		var card = addComma(d.CARD_PAY);
+		var cash = addComma(d.CASH_PAY);
+		var tot = addComma(d.TOT_PAY);
+		
+		html += "<tr salesNo = \""+ d.SALES_NO +"\">";
+		html += "<td>"+ d.NUM +"</td>     ";
+		html += "<td>"+ d.ENROLL_TIME +"</td>";
+		html += "<td>"+ d.SALES_NO +"</td>   ";
+		html += "<td>"+ card +"</td>   ";
+		html += "<td>"+ cash +"</td>   ";
+		html += "<td>"+ tot +"</td>    ";
+		html += "</tr>";
+	}
+	
+	$(".contentA tbody").html(html);
+}
+
+function drawListB(list) {
+	
+	var html = "";
+	
+	for(d of list) {	
+		var price = addComma(d.PRICE);
+		
+		html += "<tr>";
+		html += "<td>"+ d.ROWNUM +"</td>";
+		html += "<td>"+ d.MENU_NAME +"</td>     ";
+		html += "<td>"+ d.CNT +"</td>";
+		html += "<td>"+ d.PRICE +"</td>   ";
+		html += "</tr>";
+	}
+	
+	$(".contentB .sales_info .info span").html($("#sales_no").val());
+	$(".contentB tbody").html(html);
+}
+
+function drawPagingA(pb){
+	var html = "";
+	                                    
+	html += "<button page = \"1\">|<</button>";
+	if($("#page").val()=="1"){
+		html += "<button page = \"1\"><</button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()-1) + "\" ><</button>";
+		
+	}
+	
+	for(var i = pb.startPcount; i <= pb.endPcount; i++){
+		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
+			html += "<button class = \"on\" page = \""+ i +"\" >"+ i +"</button>";	
+		}else{
+			html += "<button  page = \""+ i +"\" >"+ i +"</button>";	
+		}
+		
+	}
+	
+	if($("#page").val() == pb.maxPcount){
+		html += "<button page = \""+ pb.maxPcount +"\" >></button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+	}
+	
+	
+	
+	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	
+	$(".contentA .page_btn").html(html);
+}
+
+//천단위 콤마 찍기
+function addComma(value){
+	value = String(value);
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return value; 
+}
+
+</script>
 
 </head>
 <body>
@@ -228,7 +443,7 @@ button:focus{outline:none;}
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./이미지(권재현)/logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -281,89 +496,81 @@ button:focus{outline:none;}
 
 <!--컨텐츠 -->
 <div class="content_area">
-<div class="content">
-<h1 >매출액조회</h1>
+<div class="contentA">
+<form action="#" method="post" id="actionForm">
+	<input type="hidden" id="page" name="page" value="${page}" />
+	<input type="hidden" id="enroll_date" name="enroll_date" value="${param.enroll_date}" />
+	<input type ="hidden" id="start_date" name="start_date" value="${param.start_date}" />
+	<input type="hidden" id="end_date" name="end_date" value="${param.end_date}" />
+	<input type="hidden" id="sales_no" name="sales_no"/>
+</form>
+<div class="head"><h1 >일자별 매출액조회</h1></div>
 <div class="sales_info">
-	
-		<strong>조회날짜 : </strong>2021-05-28
-	
+	<div class="info">
+		<span><strong>조회날짜 : </strong>${param.enroll_date}</span>
+	</div>
+	<div class="tot_price">
+		<span id="card_pay"></span>
+		<span id="cash_pay"></span>
+		<span id="tot_pay"></span>
+	</div>
 </div>
 <table cellspacing="0">
 	<colgroup>
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
+		<col width="10%">
+		<col width="13%">
+		<col width="20%">
+		<col width="18%">
+		<col width="18%">
+		<col width="18%">
 	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" style="border-left: none;">No.</th>
+			<th scope="col">판매시간</th>
+			<th scope="col">판매번호</th>
+			<th scope="col">카드매출(원)</th>
+			<th scope="col">현금매출(원)</th>
+			<th scope="col">총매출(원)</th>
+		</tr>
+	<thead>
 	<tbody>
-	<tr>
-		<th scope="col" style="border-left: none;">품목</th>
-		<th scope="col">수량</th>
-		<th scope="col">가격(원)</th>
-		<th scope="col">카드매출</th>
-		<th scope="col">현금매출</th>
-		<th scope="col">총매출</th>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
 	</tbody>
 </table>
+	<div class="page_area">
+		<div class="page_btn">
+		</div>	
+		<input type="button" class="list_btn" value="목록"/>
+	</div>	
+</div> <!--contentA end  -->
 
-	<ul class="tot_price">
-		<li><strong> 카드매출액 : </strong>5,000,000원</li>
-		<li><strong> 현금매출액 : </strong>1,000,000원</li>
-		<li><strong> 총매출액: </strong>4,000,000원</li>
-	</ul>
-		<div class="page_area">
-			<div class="page_btn">
-				<button style="background-color: white"><</button>
-				<button style="background-color: white">1</button>
-				<button style="background-color: white">2</button>
-				<button style="background-color: white">3</button>
-				<button style="background-color: white">></button>
-			</div>
+<div class="contentB">
+
+	<div class="head"><h1 >상세조회</h1></div>
+	<div class="sales_info">
+		<div class="info">
+			<strong>판매번호 : </strong><span></span>
 		</div>
-		
-	</div> <!--content end  -->
+	</div>
+	<table cellspacing="0">
+		<colgroup>
+			<col width="15%">
+			<col width="45%">
+			<col width="20%">
+			<col width="40%">
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col" style="border-left: none;">No.</th>
+					<th scope="col">품목</th>
+					<th scope="col">수량</th>
+					<th scope="col">가격</th>
+				</tr>
+			<thead>
+			<tbody>
+			</tbody>
+		</table>
+</div><!--contentB end -->
+	
 </div> <!--content_area end -->
 </html>

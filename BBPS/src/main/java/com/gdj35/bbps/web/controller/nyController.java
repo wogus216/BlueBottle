@@ -353,4 +353,139 @@ public class nyController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	@RequestMapping(value="/getTotSales", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getTotSales(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			
+			List<HashMap<String, String>> list = iNyService.getTotSales(params);
+			
+			modelMap.put("list", list);
+
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping (value="/B_Sales_Detail")
+	public ModelAndView B_Sales_Detail(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		if(params.get("enroll_date") != null) {
+			int page = 1;
+			if(params.get("page") != null) {
+				page = Integer.parseInt(params.get("page"));
+			}
+			
+			mav.addObject("page", page);
+			mav.setViewName("ny/B_Sales_Detail");
+		}
+		else {
+			mav.setViewName("redirect:B_Sales");
+		}
+		
+		return mav;
+	}
+	
+	@RequestMapping (value="/B_Expense_Detail")
+	public ModelAndView B_Expense_Detail(@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable {
+		
+		if(params.get("enroll_date") != null) {
+			int page = 1;
+			if(params.get("page") != null) {
+				page = Integer.parseInt(params.get("page"));
+			}
+			
+			mav.addObject("page", page);
+			mav.setViewName("ny/B_Expense_Detail");
+		}
+		else {
+			mav.setViewName("redirect:B_Sales");
+		}
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/getSalesDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getSalesDetail(@RequestParam HashMap<String,String> params)throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int page = Integer.parseInt(params.get("page"));
+			
+			int cnt = iNyService.getSalesDetailCnt(params);
+			
+			PagingBean pb = iPagingService.getPagingBean(page, cnt);
+			
+			params.put("startCnt", Integer.toString(pb.getStartCount()));
+			params.put("endCnt", Integer.toString(pb.getEndCount()));
+			
+			List<HashMap<String,String>> list = iNyService.getSalesDetail(params);
+			
+			modelMap.put("list", list);
+			modelMap.put("pb", pb);
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/getSalesDetailAll", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getSalesDetailAll(@RequestParam HashMap<String,String> params)throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			List<HashMap<String, String>> list = iNyService.getSalesDetailAll(params);
+	
+			modelMap.put("list", list);
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/getSalesDetailDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getSalesDetailDetail(@RequestParam HashMap<String,String> params)throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			
+			List<HashMap<String,String>> list = iNyService.getSalesDetailDetail(params);
+			
+			modelMap.put("list", list);
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+		
+	}
+	
+	
 }

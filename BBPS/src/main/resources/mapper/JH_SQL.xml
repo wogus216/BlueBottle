@@ -64,7 +64,8 @@
 		             ROW_NUMBER() OVER( ORDER BY MENU_NO ASC) AS RNUM
 		      FROM POS_MENU PM INNER JOIN POS_CATE PC
 		                                 ON PM.POS_CATE_NO = PC.CATE_NO
-		WHERE 1=1 AND PM.DEL_FLAG = 1
+		WHERE 1=1 
+		AND PM.DEL_FLAG = 1
 	<if test ="search_input !=null and search_input != ''">
 		<choose>
 			<when test="search_Filter == 0">
@@ -140,6 +141,41 @@
 		START WITH SM.DEPTH = #{bDt}
 		CONNECT BY PRIOR SM.SITE_MENU_NO =SM.TOP_SITE_MENU_NO 
 		ORDER BY SM.SITE_MENU_NO ASC
+	</select>
+	
+	<!--포스 갖고오기 -->
+	<select id="getPMenu" parameterType="hashmap" resultType="hashmap">
+		SELECT M.MNO,M.CNO,M.MNAME,M.MIMG,M.MPRICE
+		FROM (SELECT MENU_NO AS MNO,POS_CATE_NO AS CNO, MENU_NAME AS MNAME,MENU_IMG AS MIMG, MENU_PRICE AS MPRICE,
+                ROW_NUMBER() OVER ( ORDER BY MENU_NO DESC)
+     		  FROM POS_MENU
+      	WHERE 1 = 1 
+      	AND DEL_FLAG = 1
+	<if test ="cateNo !=null and cateNo != ''">
+		<choose>
+			<when test="cateNo == 0">
+				AND POS_CATE_NO =  #{cateNo}
+			</when>
+			<when test="cateNo == 1">
+				AND  POS_CATE_NO =  #{cateNo}
+			</when>
+			<when test="cateNo == 2">
+				AND POS_CATE_NO  =  #{cateNo}
+			</when>
+			<when test="cateNo == 3">
+				AND POS_CATE_NO =  #{cateNo}
+			</when>
+		</choose>
+	</if>
+     	) M
+	</select>
+	
+	<!-- 오더메뉴 -->
+	<select id="getMOrd" parameterType="hashmap" resultType="hashmap">
+	SELECT  PM.MENU_NO AS MNO, PM.MENU_NAME AS MNAME, PC.CATE_NAME AS CNAME, PM.MENU_PRICE AS MPRICE, PM.MENU_IMG AS MIMG,PC.CATE_NO AS CNO
+	FROM POS_MENU PM INNER JOIN POS_CATE PC
+                         ON PM.POS_CATE_NO = PC.CATE_NO
+	WHERE PM.MENU_NO = #{menuNo}
 	</select>
 	
 </mapper> 

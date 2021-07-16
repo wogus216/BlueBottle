@@ -99,42 +99,43 @@ WHERE TXT_NO = #{nNo}
 </select>
 
 
+
+
 <select id ="getUList" parameterType="hashmap" resultType="hashmap">
-SELECT U.USER_NO, U.TITLE, U.S_DT, U.USER_NAME AS USER_NO
-FROM(SELECT TXT_NO, TITLE, TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS S_DT,H.USER_NAME
-        , ROW_NUMBER() OVER(ORDER BY USER_NO DESC) AS RNUM
-    FROM NOTICE O INNER JOIN HQ_USER H
-                          ON O.USER_NO = H.USER_NO
-WHERE 1=1
-<if test="searchTxt != null and searchTxt != ''"> 
+SELECT U.USER_NO, U.NAME, U.USER_NAME, U.ID
+FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, ROW_NUMBER() OVER(ORDER BY U.USER_NO DESC) AS RNUM
+    FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID
+        FROM  HQ_DEP D INNER JOIN HQ_USER U
+        ON D.DEP_NO = U.DEP_NO
+        UNION
+        SELECT BRCH_NO AS USER_NO, BRCH_NAME AS NAME, MGR_NAME AS USER_NAME, ID
+        FROM BRCH) U
+    WHERE 1=1 
+    <if test="searchTxt != null and searchTxt != ''"> 
 	<choose>
 		<when test="searchGbn == 0">
-		AND USER_NO LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 1">
-		AND BRCH_NAME LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 2">
-		AND DEP_NAME LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 3">
-		AND USER_NAME LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 3">
-		AND USER_NAME LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 3">
-		AND USER_NAME LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 4">
-		AND ID LIKE '%' || #{searchTxt} || '%'
-		</when>
-	</choose>
-</if>
-)N
-WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
+    	AND USER_NO LIKE '%' || #{searchTxt} || '%'
+    	OR AND NAME LIKE '%' || #{searchTxt} || '%'
+    	OR USER_NAME LIKE '%' || #{searchTxt} || '%'
+    	OR ID  LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 1">
+    	AND USER_NO LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 2">
+    	AND NAME LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 3">
+    	AND USER_NAME LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 4">
+    	AND ID LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	</choose>
+	</if>
+)U
+WHERE U.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
-
 
 
 </mapper>
