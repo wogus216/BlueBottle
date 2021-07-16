@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>지점매출액상세조회</title>
 <style type="text/css">
 
@@ -149,38 +150,38 @@ td{
 	border-left: 1px solid #eaeaea;
 }
 
- td:first-child{
+td:first-child{
 	border-left: none;
 }
-select, input{
-	width:150px;
-	height:40px;
-	margin:10px 5px;
+
+table td {
+	text-align: center;
 }
-.selectBox, .tot_price li{
-	float:right;
+
+.sales_info {
+	font-size: 20px;
+	width: 100%;
 }
-.tot_price li{
+
+.sales_info span{
+	font-weight: 500;
+	font-size: 18px;
+	vertical-align: middle;
+	margin-left: 15px;
+}
+.sales_info #tot_pay{
+	color: red;
+}
+.tot_price {
+	display: inline-block;
+	float: right;
+}
+.tot_price span{
 	font-size:19px;
 	margin:10px;
-	
-}
-.tot_price ul{
-	max-width: 1000px; 
-   
 }
 
-.sales_info{
-	float: left;
-	font-size: 20px;
-	margin-bottom: 10px;
-}
-
-.graph_btn{
-	background-color: red;
-}
-
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -190,12 +191,19 @@ button{
 	font-size:18px;
 	margin:10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
 }
 
-.page_area, .page_btn{
+.page_area{
 	text-align: center;
+	margin-top: 30px;
+}
+.page_btn{
+	display: inline-block;
+	width: 400px;
+	text-align: center;
+	vertical-align: bottom;
+	margin: 10px;
 }
 
 .page_btn button{
@@ -205,22 +213,169 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:40px 3px;
+	margin:0px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
-
 .page_btn button:hover{
 	color: #01a1dd;
+	cursor: pointer;
 }
 
 .page_btn button:focus{
 	outline:none;
 }
 
-button:focus{outline:none;}
+.page_btn button{
+	background-color: white;
+}
+
+.on {
+	font-weight: bold;
+}
+
+.list_btn {
+	width:200px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	font-size: 22px;
+	float: left;
+	vertical-align: bottom;
+	margin: 0px;
+}
 
 </style>
 
+<script type="text/javascript" src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	
+	reloadList();
+	
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		reloadList();
+	}); 
+	
+	$(".list_btn").on("click", function() {
+		$("#actionForm").attr("action", "B_Sales");
+		$("#actionForm").submit();
+	}); 
+	
+});//document ready end
+
+function reloadList(){
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url: "getSalesDetail",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			totSales();
+			drawList(res.list);
+			drawPaging(res.pb);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
+
+function totSales(){
+	
+	var params = $("#actionForm").serialize();
+	
+	$.ajax({
+		url: "getSalesDetailAll",
+		type: "post",
+		dataType: "json",
+		data: params,
+		success: function(res) {
+			getTotSales(res.list);
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+}
+
+function getTotSales(list) {
+	
+	for(d of list) {
+		$(".sales_info #card_pay").html("카드결제: " + d.CARD_PAY + "원");
+		$(".sales_info #cash_pay").html("현금결제: " + d.CASH_PAY + "원");
+		$(".sales_info #tot_pay").html("총결제금액: " + d.TOT_PAY + "원");
+	}
+	
+}
+
+function drawList(list) {
+	
+	var html = "";
+	
+	for(d of list) {	
+		var card = addComma(d.CARD_PAY);
+		var cash = addComma(d.CASH_PAY);
+		var tot = addComma(d.TOT_PAY);
+		
+		html += "<tr salesNo = \""+ d.SALES_NO +"\">";
+		html += "<td>"+ d.NUM +"</td>     ";
+		html += "<td>"+ d.ENROLL_TIME +"</td>";
+		html += "<td>"+ d.SALES_NO +"</td>   ";
+		html += "<td>"+ card +"</td>   ";
+		html += "<td>"+ cash +"</td>   ";
+		html += "<td>"+ tot +"</td>    ";
+		html += "</tr>";
+	}
+	
+	$("tbody").html(html);
+}
+
+function drawPaging(pb){
+	var html = "";
+	                                    
+	html += "<button page = \"1\">|<</button>";
+	if($("#page").val()=="1"){
+		html += "<button page = \"1\"><</button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()-1) + "\" ><</button>";
+		
+	}
+	
+	for(var i = pb.startPcount; i <= pb.endPcount; i++){
+		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
+			html += "<button class = \"on\" page = \""+ i +"\" >"+ i +"</button>";	
+		}else{
+			html += "<button  page = \""+ i +"\" >"+ i +"</button>";	
+		}
+		
+	}
+	
+	if($("#page").val() == pb.maxPcount){
+		html += "<button page = \""+ pb.maxPcount +"\" >></button>";
+	}else{
+		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
+	}
+	
+	
+	
+	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	
+	$(".page_btn").html(html);
+}
+
+//천단위 콤마 찍기
+function addComma(value){
+	value = String(value);
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return value; 
+}
+
+</script>
 
 </head>
 <body>
@@ -228,7 +383,7 @@ button:focus{outline:none;}
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="./이미지(권재현)/logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -282,88 +437,48 @@ button:focus{outline:none;}
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
-<h1 >매출액조회</h1>
+<form action="#" method="post" id="actionForm">
+	<input type="hidden" id="page" name="page" value="${page}" />
+	<input type="hidden" id="enroll_date" name="enroll_date" value="${param.enroll_date}" />
+	<input type ="hidden" id="start_date" name="start_date" value="${param.start_date}" />
+	<input type="hidden" id="end_date" name="end_date" value="${param.end_date}" />
+</form>
+<h1 >일자별 매출액조회</h1>
 <div class="sales_info">
-	
-		<strong>조회날짜 : </strong>2021-05-28
-	
+	<strong>조회날짜 : </strong>${param.enroll_date}
+	<div class="tot_price">
+		<span id="card_pay"></span>
+		<span id="cash_pay"></span>
+		<span id="tot_pay"></span>
+	</div>
 </div>
 <table cellspacing="0">
 	<colgroup>
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
-		<col width="25%">
+		<col width="10%">
+		<col width="13%">
+		<col width="20%">
+		<col width="18%">
+		<col width="18%">
+		<col width="18%">
 	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col" style="border-left: none;">No.</th>
+			<th scope="col">판매시간</th>
+			<th scope="col">판매번호</th>
+			<th scope="col">카드매출(원)</th>
+			<th scope="col">현금매출(원)</th>
+			<th scope="col">총매출(원)</th>
+		</tr>
+	<thead>
 	<tbody>
-	<tr>
-		<th scope="col" style="border-left: none;">품목</th>
-		<th scope="col">수량</th>
-		<th scope="col">가격(원)</th>
-		<th scope="col">카드매출</th>
-		<th scope="col">현금매출</th>
-		<th scope="col">총매출</th>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
-	<tr>
-		<td>에스프레소</a></td>
-		<td>10</td>
-		<td>3000</td>
-		<td>30,000</td>
-		<td>20,000</td>
-		<td>50,000</td>
-	</tr>
 	</tbody>
 </table>
-
-	<ul class="tot_price">
-		<li><strong> 카드매출액 : </strong>5,000,000원</li>
-		<li><strong> 현금매출액 : </strong>1,000,000원</li>
-		<li><strong> 총매출액: </strong>4,000,000원</li>
-	</ul>
-		<div class="page_area">
-			<div class="page_btn">
-				<button style="background-color: white"><</button>
-				<button style="background-color: white">1</button>
-				<button style="background-color: white">2</button>
-				<button style="background-color: white">3</button>
-				<button style="background-color: white">></button>
-			</div>
-		</div>
-		
+	<div class="page_area">
+		<div class="page_btn">
+		</div>	
+		<input type="button" class="list_btn" value="목록"/>
+	</div>	
 	</div> <!--content end  -->
 </div> <!--content_area end -->
 </html>

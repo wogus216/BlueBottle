@@ -99,6 +99,24 @@ public class nyService implements InyService{
 	}
 
 
+	@Override
+	public List<HashMap<String, String>> getSalesDetail(HashMap<String, String> params) throws Throwable {
+		System.out.println("db돌았습니다");
+		return iNyDao.getSalesDetail(params);
+	}
+
+	@Override
+	public int getSalesDetailCnt(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getSalesDetailCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getSalesDetailAll(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getSalesDetailAll(params);
+	}
+
 
 
 }

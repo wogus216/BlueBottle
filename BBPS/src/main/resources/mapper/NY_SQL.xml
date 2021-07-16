@@ -87,25 +87,32 @@
 	</update>
 	
 	<select id="getSalesList" parameterType="hashmap" resultType="hashmap">
-	SELECT TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE, SALES_PRICE, ORD_PRICE, (SALES_PRICE - ORD_PRICE) AS NET_PRICE
-	FROM (SELECT CASE WHEN O.ENROLL_DATE IS NULL THEN S.ENROLL_DATE ELSE O.ENROLL_DATE END AS ENROLL_DATE,
-	               CASE WHEN SALES_PRICE IS NULL THEN 0 ELSE SALES_PRICE END AS SALES_PRICE,
-	               CASE WHEN ORD_PRICE IS NULL THEN 0 ELSE ORD_PRICE END AS ORD_PRICE
-	        FROM (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
-	                FROM ORD O INNER JOIN ORD_ITEM OI
-	                             ON O.ORD_NO = OI.ORD_NO
-	                WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
-	                      OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
-	                AND BRCH_NO = 2
-	                GROUP BY O.ENROLL_DATE)O FULL OUTER JOIN 
-	             (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
-	                FROM SALES S INNER JOIN SALES_MENU SM
-	                                ON S.SALES_NO = SM.SALES_NO
-	                             INNER JOIN POS_MENU PM
-	                                ON SM.MENU_NO = PM.MENU_NO
-	                WHERE CNL_DATE IS NULL
-	                AND BRCH_NO = 2
-	                GROUP BY S.ENROLL_DATE)S ON O.ENROLL_DATE = S.ENROLL_DATE)
+	SELECT ENROLL_DATE, SUM(SALES_PRICE) AS SALES_PRICE, SUM(ORD_PRICE) AS ORD_PRICE, 
+	       (SUM(SALES_PRICE)+SUM(ORD_PRICE)) AS NET_PRICE
+	FROM (SELECT CASE WHEN S.ENROLL_DATE IS NULL THEN TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') 
+	                  ELSE TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') END AS ENROLL_DATE,
+	           CASE WHEN S.SALES_PRICE IS NULL THEN 0 ELSE S.SALES_PRICE END AS SALES_PRICE,
+	           CASE WHEN O.ORD_PRICE IS NULL THEN 0 ELSE O.ORD_PRICE END AS ORD_PRICE
+	    FROM (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
+	            FROM SALES S INNER JOIN SALES_MENU SM
+	                            ON S.SALES_NO = SM.SALES_NO
+	                         INNER JOIN POS_MENU PM
+	                            ON SM.MENU_NO = PM.MENU_NO
+	                         INNER JOIN BRCH B
+	                            ON S.BRCH_NO = B.BRCH_NO
+	            WHERE S.CNL_DATE IS NULL
+	            AND B.BRCH_NO = 2 
+	            GROUP BY S.ENROLL_DATE) S 
+	    FULL OUTER JOIN (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
+	                    FROM ORD O INNER JOIN ORD_ITEM OI
+	                                 ON O.ORD_NO = OI.ORD_NO
+	                               INNER JOIN BRCH B
+	                                 ON O.BRCH_NO = B.BRCH_NO
+	                    WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+	                          OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
+	                    AND O.BRCH_NO = 2
+	                    GROUP BY O.ENROLL_DATE) O
+	    ON S.ENROLL_DATE = O.ENROLL_DATE)
 	<choose>
 		<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 	    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
@@ -117,29 +124,38 @@
 		WHERE ENROLL_DATE <![CDATA[ <=]]> TO_DATE(#{end_date}, 'YY/MM/DD')
 		</when>
 	</choose>
+	GROUP BY ENROLL_DATE
 	ORDER BY ENROLL_DATE
 	</select>
 	
 	<select id="getSalesCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*)
-	FROM (SELECT CASE WHEN O.ENROLL_DATE IS NULL THEN S.ENROLL_DATE ELSE O.ENROLL_DATE END AS ENROLL_DATE,
-	               CASE WHEN SALES_PRICE IS NULL THEN 0 ELSE SALES_PRICE END AS SALES_PRICE,
-	               CASE WHEN ORD_PRICE IS NULL THEN 0 ELSE ORD_PRICE END AS ORD_PRICE
-	        FROM (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
-	                FROM ORD O INNER JOIN ORD_ITEM OI
-	                             ON O.ORD_NO = OI.ORD_NO
-	                WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
-	                      OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
-	                AND BRCH_NO = 2
-	                GROUP BY O.ENROLL_DATE)O FULL OUTER JOIN 
-	             (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
-	                FROM SALES S INNER JOIN SALES_MENU SM
-	                                ON S.SALES_NO = SM.SALES_NO
-	                             INNER JOIN POS_MENU PM
-	                                ON SM.MENU_NO = PM.MENU_NO
-	                WHERE CNL_DATE IS NULL
-	                AND BRCH_NO = 2
-	                GROUP BY S.ENROLL_DATE)S ON O.ENROLL_DATE = S.ENROLL_DATE)
+FROM (SELECT ENROLL_DATE, SUM(SALES_PRICE) AS SALES_PRICE, SUM(ORD_PRICE) AS ORD_PRICE, 
+	       (SUM(SALES_PRICE)+SUM(ORD_PRICE)) AS NET_PRICE
+	FROM (SELECT CASE WHEN S.ENROLL_DATE IS NULL THEN TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') 
+	                  ELSE TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') END AS ENROLL_DATE,
+	           CASE WHEN S.SALES_PRICE IS NULL THEN 0 ELSE S.SALES_PRICE END AS SALES_PRICE,
+	           CASE WHEN O.ORD_PRICE IS NULL THEN 0 ELSE O.ORD_PRICE END AS ORD_PRICE
+	    FROM (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
+	            FROM SALES S INNER JOIN SALES_MENU SM
+	                            ON S.SALES_NO = SM.SALES_NO
+	                         INNER JOIN POS_MENU PM
+	                            ON SM.MENU_NO = PM.MENU_NO
+	                         INNER JOIN BRCH B
+	                            ON S.BRCH_NO = B.BRCH_NO
+	            WHERE S.CNL_DATE IS NULL
+	            AND B.BRCH_NO = 2 
+	            GROUP BY S.ENROLL_DATE) S 
+	    FULL OUTER JOIN (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
+	                    FROM ORD O INNER JOIN ORD_ITEM OI
+	                                 ON O.ORD_NO = OI.ORD_NO
+	                               INNER JOIN BRCH B
+	                                 ON O.BRCH_NO = B.BRCH_NO
+	                    WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+	                          OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
+	                    AND O.BRCH_NO = 2
+	                    GROUP BY O.ENROLL_DATE) O
+	    ON S.ENROLL_DATE = O.ENROLL_DATE)
 	<choose>
 		<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 	    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
@@ -150,7 +166,110 @@
 		<when test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
 		WHERE ENROLL_DATE <![CDATA[ <=]]> TO_DATE(#{end_date}, 'YY/MM/DD')
 		</when>
-	</choose>
-	ORDER BY ENROLL_DATE
+	</choose>    
+	GROUP BY ENROLL_DATE
+    ORDER BY ENROLL_DATE)
+	</select>
+	
+	<select id="getSalesDetail" parameterType="hashmap" resultType="hashmap">
+	SELECT ROW_NUMBER() OVER (ORDER BY SALES_NO) AS NUM, BRCH_NO, 
+	       TO_CHAR(ENROLL_DATE, 'HH24:MI') AS ENROLL_TIME, SALES_NO, CARD_PAY, CASH_PAY,
+	       (CARD_PAY + CASH_PAY) AS TOT_PAY
+	FROM (SELECT CASE WHEN B.BRCH_NO IS NULL THEN A.BRCH_NO ELSE B.BRCH_NO END AS BRCH_NO,
+               CASE WHEN B.ENROLL_DATE IS NULL THEN A.ENROLL_DATE ELSE B.ENROLL_DATE END AS ENROLL_DATE,
+               CASE WHEN A.SALES_NO IS NULL THEN B.SALES_NO ELSE A.SALES_NO END AS SALES_NO,
+               CASE WHEN A.PRICE IS NULL THEN 0 ELSE A.PRICE END AS CARD_PAY, 
+               CASE WHEN B.PRICE IS NULL THEN 0 ELSE B.PRICE END AS CASH_PAY
+	        FROM (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
+                    FROM SALES S INNER JOIN SALES_MENU SM
+                                  ON S.SALES_NO = SM.SALES_NO
+                                 INNER JOIN POS_MENU PM
+                                  ON SM.MENU_NO = PM.MENU_NO
+                    WHERE PAY_METHOD = 0
+                    AND BRCH_NO = 2 
+                    AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                    GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
+                    ORDER BY S.SALES_NO) A 
+	             FULL OUTER JOIN (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
+                                FROM SALES S INNER JOIN SALES_MENU SM
+                                              ON S.SALES_NO = SM.SALES_NO
+                                             INNER JOIN POS_MENU PM
+                                              ON SM.MENU_NO = PM.MENU_NO
+                                WHERE PAY_METHOD = 1
+                                AND BRCH_NO = 2 
+                                AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                                GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
+                                ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
+	                                                   AND A.BRCH_NO = B.BRCH_NO
+	                                                   AND A.ENROLL_DATE = B.ENROLL_DATE)
+	ORDER BY SALES_NO
+	</select>
+	
+	<select id="getSalesDetailCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*)
+FROM( SELECT ROW_NUMBER() OVER (ORDER BY SALES_NO) AS NUM, BRCH_NO, 
+               TO_CHAR(ENROLL_DATE, 'HH24:MI') AS ENROLL_TIME, SALES_NO, CARD_PAY, CASH_PAY,
+               (CARD_PAY + CASH_PAY) AS TOT_PAY
+        FROM (SELECT CASE WHEN B.BRCH_NO IS NULL THEN A.BRCH_NO ELSE B.BRCH_NO END AS BRCH_NO,
+                   CASE WHEN B.ENROLL_DATE IS NULL THEN A.ENROLL_DATE ELSE B.ENROLL_DATE END AS ENROLL_DATE,
+                   CASE WHEN A.SALES_NO IS NULL THEN B.SALES_NO ELSE A.SALES_NO END AS SALES_NO,
+                   CASE WHEN A.PRICE IS NULL THEN 0 ELSE A.PRICE END AS CARD_PAY, 
+                   CASE WHEN B.PRICE IS NULL THEN 0 ELSE B.PRICE END AS CASH_PAY
+                FROM (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
+                        FROM SALES S INNER JOIN SALES_MENU SM
+                                      ON S.SALES_NO = SM.SALES_NO
+                                     INNER JOIN POS_MENU PM
+                                      ON SM.MENU_NO = PM.MENU_NO
+                        WHERE PAY_METHOD = 0
+                        AND BRCH_NO = 2 
+                        AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                        GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
+                        ORDER BY S.SALES_NO) A 
+                     FULL OUTER JOIN (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
+                                    FROM SALES S INNER JOIN SALES_MENU SM
+                                                  ON S.SALES_NO = SM.SALES_NO
+                                                 INNER JOIN POS_MENU PM
+                                                  ON SM.MENU_NO = PM.MENU_NO
+                                    WHERE PAY_METHOD = 1
+                                    AND BRCH_NO = 2 
+                                    AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                                    GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
+                                    ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
+                                                           AND A.BRCH_NO = B.BRCH_NO
+                                                           AND A.ENROLL_DATE = B.ENROLL_DATE)
+        ORDER BY SALES_NO)
+	</select>
+	
+	<select id="getSalesDetailAll" parameterType="hashmap" resultType="hashmap">
+	SELECT SUM(CARD_PAY) AS CARD_PAY, SUM(CASH_PAY) AS CASH_PAY, (SUM(CARD_PAY)+SUM(CASH_PAY)) AS TOT_PAY
+	FROM (SELECT CASE WHEN B.BRCH_NO IS NULL THEN A.BRCH_NO ELSE B.BRCH_NO END AS BRCH_NO,
+               CASE WHEN B.ENROLL_DATE IS NULL THEN A.ENROLL_DATE ELSE B.ENROLL_DATE END AS ENROLL_DATE,
+               CASE WHEN A.SALES_NO IS NULL THEN B.SALES_NO ELSE A.SALES_NO END AS SALES_NO,
+               CASE WHEN A.PRICE IS NULL THEN 0 ELSE A.PRICE END AS CARD_PAY, 
+               CASE WHEN B.PRICE IS NULL THEN 0 ELSE B.PRICE END AS CASH_PAY
+	        FROM (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
+                    FROM SALES S INNER JOIN SALES_MENU SM
+                                  ON S.SALES_NO = SM.SALES_NO
+                                 INNER JOIN POS_MENU PM
+                                  ON SM.MENU_NO = PM.MENU_NO
+                    WHERE PAY_METHOD = 0
+                    AND BRCH_NO = 2 
+                    AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                    GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
+                    ORDER BY S.SALES_NO) A 
+	             FULL OUTER JOIN (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
+                                FROM SALES S INNER JOIN SALES_MENU SM
+                                              ON S.SALES_NO = SM.SALES_NO
+                                             INNER JOIN POS_MENU PM
+                                              ON SM.MENU_NO = PM.MENU_NO
+                                WHERE PAY_METHOD = 1
+                                AND BRCH_NO = 2
+                                AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                                GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
+                                ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
+	                                                   AND A.BRCH_NO = B.BRCH_NO
+	                                                   AND A.ENROLL_DATE = B.ENROLL_DATE)
+	GROUP BY ENROLL_DATE
+    ORDER BY ENROLL_DATE
 	</select>
 </mapper> 
