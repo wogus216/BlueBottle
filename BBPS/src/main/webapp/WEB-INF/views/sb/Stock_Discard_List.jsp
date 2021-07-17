@@ -143,9 +143,6 @@ table {
 	border-top: 2px solid #3498db;
 	border-bottom: 2px solid #d9d9d9;
 }
-tbody td:nth-child(3){
-	cursor: pointer;
-}
 tr {
     display: table-row;
 }
@@ -332,8 +329,8 @@ function drawstockdiscardList(list,result){
 			
 			html += "<td>"+d.ITEM_NO+"</a></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td>"+d.CNT+"</th>";
-			html += "<td>"+d.EXPIRY_DATE+"</th>";
+			html += "<td>"+d.CNT+"</td>";
+			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			if(d.NOTE != null){
 				html += "<td>"+d.NOTE+"</td>";
 			}else{

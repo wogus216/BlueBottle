@@ -484,14 +484,14 @@ public class sbController {
 		int page = Integer.parseInt(params.get("page"));
 				
 		//게시글 수 가져오겠다
-		int cnt  = isbservice.getHSDCnt(params);
+		int cnt  = isbservice.getBSLCnt(params);
 				
 		PagingBean pb = iPagingServcie.getPagingBean(page, cnt);
 				
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 				
-		List<HashMap<String,String>> list = isbservice.getHSDList(params);
+		List<HashMap<String,String>> list = isbservice.getBSList(params);
 			
 		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
 			
@@ -499,6 +499,77 @@ public class sbController {
 		modelMap.put("result", result);
 		modelMap.put("pb", pb);
 				
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	//지점재고 수정
+		@RequestMapping(value = "/B_Stock_Edit")
+		public ModelAndView BSEList(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
+			
+			mav.setViewName("sb/B_Stock_Edit");
+			
+			return mav;
+		}
+	
+	//지점재고수정리스트 그리기
+	@RequestMapping(value = "/B_Stock_edit_Lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String BSELists(@RequestParam HashMap<String,String> params) throws Throwable{
+					
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+					
+					
+		List<HashMap<String,String>> list = isbservice.getBSEList(params);
+				
+		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+				
+		modelMap.put("list", list);
+		modelMap.put("result", result);
+					
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	//지점 재고 수정 기능
+	@RequestMapping(value = "/B_Stock_edit",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String BSEdit(@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
+					
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+			
+			for(int i = 0; i < itemNo.size(); i++) {
+				
+				if(discardCnt.get(i).equals("0")) {
+					
+				}else {
+				
+				insertMap.put("itemNo", itemNo.get(i));
+				insertMap.put("discardCnt", discardCnt.get(i));
+				insertMap.put("discardNote", discardNote.get(i));
+				insertMap.put("expDate", expDate.get(i));
+				
+				int cnt = isbservice.DiscardStock(insertMap);
+				//int cnt2 = isbservice 해야될거 간단히 적어두자면, 수정 시 사용insert 되고 안전재고 update 진행
+				// 다만 해당 작업 시 유저번호를 가져와야함 << 쿼리에 로그인된 유저와 맞는지 조건 추가필요함(ord 조인 후 ord 테이블에서 brchno 찾으면됨
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+					}
+				}
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
 		return mapper.writeValueAsString(modelMap);
 	}
 }

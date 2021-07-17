@@ -118,19 +118,13 @@ li {
 	text-align: right;
 	margin-bottom: 10px;
 }
-.search_btn{
-	
-}
+
 select{
 	font-size: 15px;	
 	height: 40px;
 	width : 100px;
 }
-.add_btn{
-	height: 40px;
-	padding: 0;
-	vertical-align: bottom;
-}
+
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
@@ -143,9 +137,21 @@ table {
 	border-top: 2px solid #3498db;
 	border-bottom: 2px solid #d9d9d9;
 }
-tbody td:nth-child(3){
-	cursor: pointer;
+
+td:nth-child(4),td:nth-child(5){
+	padding : 0px;
+	text-align: center;
 }
+
+.editcurCnt,.editsafeCnt{
+	height: 30px;
+	margin: 0px;
+	width : 80%;
+	cursor: pointer;
+	background-color: #e6e6e6;
+	border-radius: 2px;
+}
+
 tr {
     display: table-row;
 }
@@ -161,12 +167,33 @@ td{
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 }
-
-.edit_submit_btn,.edit_cnl_btn,.discard_submit_btn,.discard_cnl_btn{
-	display:none;
+.search_info{
+	text-align: center;
 }
 
-.edit_btn,.search_btn,.edit_submit_btn,.discard_submit_btn{
+.search_filter{
+	width : 120px;
+}
+
+.search_input{
+	height: 34px;
+	width : 280px;
+	outline:none;
+}
+
+.search_filter,.search_input,.search_btn{
+	vertical-align: middle;
+}
+.search_info{
+	float: right;
+}
+
+/*최하단 버튼*/
+.submit_area{
+	text-align: center;
+}
+
+.edit_btn,.edit_cnl_btn,.search_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -178,78 +205,25 @@ td{
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
-	vertical-align: middle;
-	margin:0px 0px 0px 10px;
+}
+.search_btn{
+	margin: 10px 0px 10px 10px;
 }
 
-.discard_btn,.edit_cnl_btn,.discard_cnl_btn{
-	color: white;
-	width: 100px;
-	height: 40px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:10px;
-	cursor: pointer;
-	background-color: #bf4040;
-	outline:none;
-	vertical-align: middle;
-	margin:0px 0px 0px 10px;
+.edit_btn{
+	width: 180px;
+	height: 50px;
+	background-color: #01a1dd;
+	font-weight: bold;
+	 font-size: 22px;
 }
 
-.search_info,.page_area, .page_btn{
-	text-align: center;
-}
-.page_area, .page_btn{
-	text-align: center;
-}
-.page_btn button{
-	color: black;
-	width: 40px;
-	height: 40px;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:40px 3px;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
-}
-.page_btn button:hover{
-	color: #01a1dd;
-}
-
-.page_btn button:focus{
-	outline:none;
-}
-.search_filter{
-	width : 120px;
-}
-
-.search_input{
-	height: 34px;
-	width : 280px;
-	outline:none;
-}
-
-.search_filter,.search_input{
-	vertical-align: top;
-}
-
-.page_btn button{
-	background-color: white;
-}
-
-.on{
-	background-color: blue;
-}
-.start_date, .end_date{
-	width: 150px;
-	font-size: 15px;
-	height: 36px;
-}
-.editcurCnt,.editsafeCnt{
-	margin: 0px;
-	width : 80%;
+.edit_cnl_btn{
+	background-color: #b3b3b3;
+    width: 180px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 22px;
 }
 </style>
 <script type="text/javascript"
@@ -263,12 +237,12 @@ $(document).ready(function(){
 		$("#search_filter").val("${param.search_filter}");
 	}
 	
-	reloadList();
+	reeditloadList();
 	
 	$(".search_btn").on("click",function(){
 		$("#cate").val($(".cate").val());
 		$("#page").val(1);
-		reloadList();	
+		reeditloadList();	
 	});
 	
 	
@@ -285,31 +259,95 @@ $(document).ready(function(){
 			$("li").css("background-color","white");
 	});
 	
-	$(".page_btn").on("click","button",function(){
-		$("#page").val($(this).attr("page"));
-		$(".search_input").val($("#Old_search_input").val());
-		reloadList();
+	$(document).on("dblclick",".editcurCnt",function(){
+        $(this).attr("readonly",false);//더블클릭 시 수정이 가능하도록 disabled 해제
+        $(this).css("background-color","white");
+     });
+	
+	$(document).on("dblclick",".editsafeCnt",function(){
+        $(this).attr("readonly",false);//더블클릭 시 수정이 가능하도록 disabled 해제
+        $(this).css("background-color","white");
+     });
+
+	
+	$(document).click(function(e){
+        if (!$(e.target).is(".editcurCnt")) {
+        	$(".editcurCnt").attr("readonly",true); //해당 클래스가 없는 곳 클릭 시 인풋 disabled설정
+        	$(".editcurCnt").css("background-color","#e6e6e6");
+        }
+    });
+	
+	$(document).click(function(e){
+         if(!$(e.target).is(".editsafeCnt")){
+        	$(".editsafeCnt").attr("readonly",true); //해당 클래스가 없는 곳 클릭 시 인풋 disabled설정
+        	$(".editsafeCnt").css("background-color","#e6e6e6");
+        }
+    });
+	
+	$(".edit_cnl_btn").on("click",function(){
+		location.href = "B_Stock_List";
 	});
 	
 	$(".edit_btn").on("click",function(){
-		$(".search_input").val($("#Old_search_input").val());
-		$("#actionForm").attr("action","B_Stock_Edit");
-		$("#actionForm").submit();
+		var chkcurCnt = 0; //현재 재고 수량 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+		var chksafeCnt = 0; //안전 재고 수량 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+
+		$(".editcurCnt").each(function(){
+			if($(this).val() == ""){
+				chkcurCnt++;
+			}
+		});
+		
+		$(".editsafeCnt").each(function(){
+			if($(this).val() == ""){
+				chksafeCnt++;
+			}
+		});
+		
+		if(chkcurCnt > 0){
+			alert("재고 수량이 빈 항목이 존재합니다.");
+		   $(".editcurCnt").focus;
+		}else if(chksafeCnt > 0){
+			alert("안전 재고 수량이 빈 항목이 존재합니다.");
+		   $(".editsafeCnt").focus;
+		}else{
+			
+		   var params = $("#tb_Form").serialize();
+		   console.log($("#tb_Form").serialize());
+		   
+		    $.ajax({
+		      url : "B_Stock_edit",//접속주소
+		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+		      dataType :"json", //받아올 데이터 형식
+		      data : params,///보낼데이터(문자열 형태)
+		      success : function(res){
+		         if(res.msg == "success"){
+		            location.href = "B_Stock_List";
+		         }else if (res.msg == "failed"){
+		            alert("수정에 실패하였습니다."); // 팝업 변경 필요
+		         }else {
+		            alert("수정 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		         }
+		      },
+		      error : function(request,status,error){
+		         console.log(error);
+		      }
+		   }); 
+		}
 	});
 	
 }); //ready end
 
-function reloadList(){
+function reeditloadList(){
 	var params = $("#actionForm").serialize();
 	
 	$.ajax({
-		url : "B_Stock_Lists",
+		url : "B_Stock_edit_Lists", //재고 리스트를 불러오지만 페이징 기능은 사용하지 않을 것임
 		type : "post",  
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawbrchstockList(res.list,res.result);
-			drawdiscardPaging(res.pb);
+			drawbrchstockeditList(res.list,res.result);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -317,7 +355,7 @@ function reloadList(){
 	});
 }
 
-function drawbrchstockList(list,result){
+function drawbrchstockeditList(list,result){
 	
 	var html ="";
 	
@@ -325,7 +363,7 @@ function drawbrchstockList(list,result){
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"6\" style = \"text-align: center;\">검색조건에 맞는 결과가 존재하지 않습니다.</td>";
+		html += "<td colspan = \"6\" style = \"text-align: center;\">데이터가 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
@@ -349,11 +387,11 @@ function drawbrchstockList(list,result){
 				
 			html += ">";
 			html += "<td>"+d.CATE_NAME+"</td>";
-			html += "<td>"+d.ITEM_NO+"</td>";
+			html += "<td>"+d.ITEM_NO+"<input type = \"hidden\" name = \"itemNo\" value = \""+d.ITEM_NO+"\"/></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td>"+d.CURCNT+"</td>";
-			html += "<td>"+d.SAFECNT+"</td>";
-			html += "<td>"+d.EXPIRY_DATE+"</td>";
+			html += "<td><input readonly type = \"number\" class = \"editcurCnt\" name = \"editcurCnt\" min = \"0\" value = \""+d.CURCNT+"\"/><input type = \"hidden\" name = \"chkcurCnt\" value = \""+d.CURCNT+"\"/></td>";
+			html += "<td><input readonly type = \"number\" class = \"editsafeCnt\" name = \"editsafeCnt\" min = \"0\" value = \""+d.SAFECNT+"\"/><input type = \"hidden\" name = \"chkcurCnt\" value = \""+d.SAFECNT+"\"/></td>";
+			html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\"/></td>";
 			html += "</tr>";
 		}
 		
@@ -361,39 +399,6 @@ function drawbrchstockList(list,result){
 	
 	$("tbody").html(html);
 }
-
-
-function drawdiscardPaging(pb){
-	var html = "";
-	                                    
-	html += "<button page = \"1\">|<</button>";
-	if($("#page").val()=="1"){
-		html += "<button page = \"1\"><</button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()-1) + "\" ><</button>";
-		
-	}
-	
-	for(var i = pb.startPcount; i <= pb.endPcount; i++){
-		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
-			html += "<button class = \"on\" page = \""+ i +"\" >"+ i +"</button>";	
-		}else{
-			html += "<button  page = \""+ i +"\" >"+ i +"</button>";	
-		}
-		
-	}
-	
-	if($("#page").val() == pb.maxPcount){
-		html += "<button page = \""+ pb.maxPcount +"\" >></button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
-	}
-	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
-	
-	$(".page_btn").html(html);
-}
-
 function curdate(){
 	var today = new Date(); //오늘날짜 체크
 
@@ -515,9 +520,14 @@ function curdate(){
    </div>
 <div class="content_area">
 <div class="content">
-<h1>재고 목록</h1>
-<div class="filter_area">
-			<select class="cate" name = "cate">
+<h1>재고 수정</h1>
+<div class="filter_area"></div>
+<div class="search_area" style = "margin-top : 30px;">
+		<div class="search_info">
+		<form action = "#" id = "actionForm" method = "post">
+			<input type = "hidden" id = "Old_search_input" name = "Old_search_input" value ="${param.search_input}" />
+			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
+		<select class="cate" name = "cate">
 			<option selected="selected" value="7">카테고리명</option>
 			<option value="7">전체</option>
 			<option value="0">음료재료</option>
@@ -526,15 +536,17 @@ function curdate(){
 			<option value="3">굿즈</option>
 			<option value="4">기타</option>
 			</select>
-			<input type= "button" class="edit_btn" value = "수정하기"/>
-			<input type= "button" class="discard_btn" value = "폐기하기"/>
-			<input type= "button" class="edit_submit_btn" value = "수정완료"/>
-			<input type= "button" class="edit_cnl_btn" value = "수정취소"/>
-			<input type= "button" class="discard_submit_btn" value = "폐기완료"/>
-			<input type= "button" class="discard_cnl_btn" value = "폐기취소"/>
-			
+		<select id="search_filter" name = "search_filter">
+				<option value="0" selected="selected">품목코드</option>
+				<option value="1">품목명</option>
+			</select>
+			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
+			<input type= "button" class="search_btn" value = "검색"/>
+			</form>
 		</div>
+	</div>
 <div class = "Stock_List">
+<form action = "#" id = "tb_Form" method = "post">
 <table cellspacing="0">
 	<colgroup>
 	<col width = "15%">
@@ -556,25 +568,12 @@ function curdate(){
 	</thead>
 	<tbody></tbody>
 </table>
+</form>
 </div>
-<div class="search_area" style = "margin-top : 30px;">
-		<div class="search_info">
-		<form action = "#" id = "actionForm" method = "post">
-			<input type = "hidden" id = "Old_search_input" name = "Old_search_input" value ="${param.search_input}" />
-			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
-		<select id="search_filter" name = "search_filter">
-				<option value="0" selected="selected">품목코드</option>
-				<option value="1">품목명</option>
-			</select>
-			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
-			<input type= "button" class="search_btn" value = "검색"/>
-			<input type = "hidden" id = "cate" name = "cate"/>
-			</form>
-		</div>
-	</div>
-<div class="page_area">
-		<div class="page_btn"></div>
-	</div>
+<div class="submit_area" style = "margin-top: 30px;">
+	<input type= "button" class="edit_btn" value = "수정"/>
+	<input type= "button" class="edit_cnl_btn" value = "취소"/>
+</div>
 </div>
 </div>
 </body>
