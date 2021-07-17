@@ -298,8 +298,8 @@ input[type='button']:focus{outline:none;}
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
-	var cnt = 0;
 	
 	reloadList();
 	ord_pay();
@@ -308,16 +308,16 @@ $(document).ready(function(){
 		});
 	}); //pos_off end
 	
-	//현재주문 상황
+	//현재주문 상황에 넣기
+	var cnt = 0; //품목주문개수
 	$("body").on("click",".menu_btn",function(){
 		console.log(cnt);
 		if(cnt < 7){
 			
 			$("#menuNo").val($(this).attr("mno"));
 			reloadOrd();
-			cnt++;
-			
 		
+			cnt++;
 			
 		}else{
 			ordPopup("", "더이상 품목추가는 불가합니다.",function(){
@@ -329,8 +329,9 @@ $(document).ready(function(){
 	
 	}); // 계산기
 	
-	$(".ord_area").on("change","select",function(){
-		
+	//셀렉트에서 주문 갯
+	$("body .ord_area").on("change","select",function(){
+		 $("#ord_cnt").attr("value",$(this).val());
 	});
 
 	//주문 취소
@@ -396,7 +397,6 @@ function reloadOrd(){
 			console.log(res.ord);
 			inputOrd(res.ord);
 			
-			
 		},
 		error: function(request, status, error){
 			console.log(error)
@@ -406,7 +406,6 @@ function reloadOrd(){
 
 function drawMenu(list){
 	var menu ="";
-	
 	// "+ + "
 	for(var m of list){
 		
@@ -454,15 +453,30 @@ function inputOrd(ord){
 	order+= 		"</div>";
 	
 	$(".ord_area").append(order);
-	ordCnt();
+	ordRes();
+	ord_pay();
 }
 
-function ordCnt(){
-	var cnt = 0 ;
-	$("#ord_area .ord_stat").each(function(){
-		//	$(this).금액 벨류랑 셀렉 밸류
+var ordCnt = "" ; //주문 개수 
+var ordMoney= "" ; // 주문 금액
+var ordPrice = 0; // 금액 * 갯수
+var ordPay = 0; // 총 주문금액
+function ordRes(){
+	//금액
+	$(".ord_area .choice_price").each(function(){		
+		ordMoney = ($(this).val() * 1); //int 변환
 	});
-	
+	//갯수
+	$(".ord_area select").each(function(){
+		ordCnt = ($(this).val() * 1); //int 변환
+	});
+	// 총 금액에 넣는 과정 
+		// 금액 * 갯수
+		ordPrice = ordMoney * ordCnt;
+		//결제금액 넣어주기
+		ordPay += ordPrice;
+	console.log("개수, 금액, 총금액");
+	console.log(ordCnt,ordMoney,ordPrice);
 }
 
 //결제
@@ -472,8 +486,8 @@ function ord_pay(){
 	//"+ +"
 	pay+= "<tr class=\"pay_info\">";
 	pay+= "	 <td>30000원</td>";
-	pay+= "	 <td rowspan=\"3\">"+  +"개</td>";
-	pay+= "	 <td rowspan=\"3\">24000원</td>";
+	pay+= "	 <td rowspan=\"3\">"+ ordResCnt +"개</td>";
+	pay+= "	 <td rowspan=\"3\">"+ ordPay +"원</td>";
 	pay+= "</tr>";
 	pay+= "<tr class=\"pay_change\">";
 	pay+= "	 <td>거스름돈</td>";
@@ -519,6 +533,7 @@ function makePopup(title, contents, func) {
 		}
 		closePopup();
 		});
+	
 	$(".confirm_btn").on("click",function(){
 		location.href = "Pos_LogOut";
 	});
@@ -560,6 +575,7 @@ function closePopup() {
 		$(".bg, .popup_area").remove();
 	}); //popup_btn end
 }
+
 </script>
 </head>
 <body>
@@ -586,37 +602,14 @@ function closePopup() {
 						<col width="220px">
 						<col width="220px">
 					</colgroup>
-					<tbody>
-					<!-- 
-						<tr class="pay_price">
-							<td>받은금액</td>
-							<td>총수량</td>
-							<td>주문금액</td>
+					<thead>
+						<tr>
+							<th>받은금액</th>
+							<th>총주문개수</th>
+							<th>결제금액</th>
 						</tr>
-						<tr class="pay_info">
-							<td>30000원</td>
-							<td rowspan="3">5개</td>
-							<td rowspan="3">24000원</td>
-						</tr>
-						<tr class="pay_change">
-							<td>거스름돈</td>
-						</tr>
-						<tr class="change_price">
-							<td>6000원</td>
-						</tr>
-						<tr class="pay_method">
-							<td>
-								<input type="button" value="현금결제" class="pay" />
-							</td>
-							<td>
-								<input type="button" value="카드결제" class="pay" />
-							</td>
-							<td>
-								<input type="button" value="환불" class="pay" />
-							</td>
-						</tr>
-								 -->
-					</tbody>
+					</thead>
+					<tbody></tbody>
 				</table>
 			</div>
 			<div class="right">
@@ -634,9 +627,7 @@ function closePopup() {
 							<input type="button" value="BEAN"/>
 						</div>
 				</div>
-				<div class="menu_area">
-					
-				</div>
+				<div class="menu_area"></div>
 			 <table class="table_num" border="2" cellspacing="0">
 					<colgroup>
 						<col width="10%">
