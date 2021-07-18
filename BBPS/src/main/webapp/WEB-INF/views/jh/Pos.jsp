@@ -175,6 +175,7 @@ body {
 }
 .menu_img{
     width: 50%;
+    
     height: 120px;
 }
 .menu_name{
@@ -295,14 +296,20 @@ input[type='button']:focus{outline:none;}
 	cursor: pointer;
 }
 </style>
+
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+var ordCnt = "" ; //주문 개수 
+var ordMoney= "" ; // 주문 금액
+var ordPrice =  0; // 금액 * 갯수
+var ordResCnt = 0 ; //총 주문 갯수
+var ordResPay = 0 ; // 총 주문금액
 
 $(document).ready(function(){
-	
+
 	reloadList();
-	ord_pay();
+	ordPay();
 	$(".pos_off_btn").on("click",function(){
 		makePopup("POS종료", "POS를 종료하시겠습니까?",function(){
 		});
@@ -324,20 +331,63 @@ $(document).ready(function(){
 			});
 		}
 		
-		//$("#menuNo").val($(this).val(".menu_no"));
-		//$(".table_num").show();
-	
-	}); // 계산기
+	});
 	
 	//셀렉트에서 주문 갯
-	$("body .ord_area").on("change","select",function(){
-		 $("#ord_cnt").attr("value",$(this).val());
-	});
+		$("body .ord_area").on("focus","#ord_cnt",function(){
+				console.log("총갯수 :"+ ordResCnt);
+		$(".ord_area #ord_cnt").each(function(){		
+		
+			if(ordResCnt > 0){
+				var preCnt = ($(this).val() * 1); // 변경 전 갯수
+				ordResCnt -= preCnt; // 총 갯수에서 제외
+				console.log("전갯수 :"+preCnt);
+				console.log("현재갯수 :"+ordResCnt);
+				ordPrice = ordMoney * preCnt;
+				console.log("전갯수 * 금액:"+ordPrice);
+				//결제금액 넣어주기
+				ordResPay -= ordPrice;
+				console.log("전갯수 뺀 금액 :"+ordResPay);
+				ordPay();
+			
+				}
+			/* if(ordResCnt == 0){
+				$("#ord_cnt").on("focus");
+				console.log("총확인갯수 :"+ ordResCnt);
+				} */
+		});
+			}).on("change","#ord_cnt",function(){
+				console.log("t슈발:"+($(this).val() * 1));
+				var nowCnt = ($(this).val() * 1); // 변경 후 갯수
+				ordResCnt += nowCnt; // 총 갯수에서 제외
+				 console.log("현재 선택한 수 :"+nowCnt);
+				 console.log("현재갯수 :"+ordResCnt);
+				 ordPrice = ordMoney * nowCnt;
+				 console.log("현재 수 * 금액 :"+ordPrice);
+				//결제금액 넣어주기
+				ordResPay += ordPrice;
+				ordPay();
+				
+				$("#ord_cnt").blur();
+		});
+		
+	
 
+	
 	//주문 취소
 	$(".ord_area").on("click",".choice_cnl",function(){
+		//취소 시 갯수 제거
+		ordResCnt -= $(this).parent().parent().children().children().eq(3).val();
+		
+		//취소 시 금액 마이너스
+		ordResPay -= ($(this).parent().parent().children().children().eq(3).val() * 
+				$(this).parent().parent().children().children().eq(2).val()	)
+		//주문 제거
 		$(this).parent().parent().remove();
+		
+		ordPay();
 		cnt--;
+		
 	});
 
 	
@@ -454,14 +504,11 @@ function inputOrd(ord){
 	
 	$(".ord_area").append(order);
 	ordRes();
-	ord_pay();
+	ordPay();
 }
 
-var ordCnt = "" ; //주문 개수 
-var ordMoney= "" ; // 주문 금액
-var ordPrice = 0; // 금액 * 갯수
-var ordPay = 0; // 총 주문금액
 function ordRes(){
+	
 	//금액
 	$(".ord_area .choice_price").each(function(){		
 		ordMoney = ($(this).val() * 1); //int 변환
@@ -471,23 +518,31 @@ function ordRes(){
 		ordCnt = ($(this).val() * 1); //int 변환
 	});
 	// 총 금액에 넣는 과정 
+		if( ordResCnt >= 0){
 		// 금액 * 갯수
 		ordPrice = ordMoney * ordCnt;
 		//결제금액 넣어주기
-		ordPay += ordPrice;
+		ordResPay += ordPrice;
+		ordResCnt += ordCnt;
 	console.log("개수, 금액, 총금액");
 	console.log(ordCnt,ordMoney,ordPrice);
+		} 
+		else{
+			ordResPay = 0;
+			ordResCnt = 0;
+		}
+	
 }
 
 //결제
-function ord_pay(){
+function ordPay(){
 	var pay ="";
 
 	//"+ +"
 	pay+= "<tr class=\"pay_info\">";
 	pay+= "	 <td>30000원</td>";
 	pay+= "	 <td rowspan=\"3\">"+ ordResCnt +"개</td>";
-	pay+= "	 <td rowspan=\"3\">"+ ordPay +"원</td>";
+	pay+= "	 <td rowspan=\"3\">"+ ordResPay +"원</td>";
 	pay+= "</tr>";
 	pay+= "<tr class=\"pay_change\">";
 	pay+= "	 <td>거스름돈</td>";

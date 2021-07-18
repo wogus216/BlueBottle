@@ -38,10 +38,10 @@
 	
 	<!-- 메뉴 게시글 수 갖고오기 -->
 	<select id="getMbCnt" parameterType="hashmap" resultType="Integer">
-	SELECT COUNT(*) AS CNT
-	FROM POS_MENU PM INNER JOIN POS_CATE PC
-                        	 ON PM.POS_CATE_NO = PC.CATE_NO
-	WHERE 1 = 1 AND PM.DEL_FLAG = 1
+		SELECT COUNT(*) AS CNT
+		FROM POS_MENU PM INNER JOIN POS_CATE PC
+	                        	 ON PM.POS_CATE_NO = PC.CATE_NO
+		WHERE 1 = 1 AND PM.DEL_FLAG = 1
 	<if test ="search_input !=null and search_input != ''">
 		<choose>
 			<when test="search_Filter == 0">
