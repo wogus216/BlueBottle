@@ -164,7 +164,6 @@ td{
 input{
 	width:200px;
 	height:40px;
-
 }
 
 .input_btn_area{
@@ -173,7 +172,8 @@ text-align: left;
 }
 
 .filter_area{
-float : right;
+	display : inline-block;
+	float : right;
 	text-align: right;
 	margin-bottom: 20px;
 }
@@ -183,11 +183,19 @@ float : right;
 	width: 30px;
 	vertical-align: middle;
 }
-
 label{
 	vertical-align: middle;
 }
-.search_btn, .input_btn{
+.search_btn{
+display : inline-block;
+	height: 40px;
+	margin: 0 ; 	
+	padding: 0;
+	vertical-align: bottom;
+}
+
+.input_btn{
+	display : inline-block;
 	height: 40px;
 	margin: 0 ; 	
 	padding: 0;
@@ -195,7 +203,7 @@ label{
 }
 
 select{
-	font-size: 15px;	
+	font-size: 15px;
 	height: 40px;
 	width : 100px;
 }
@@ -207,6 +215,7 @@ select{
 }
 /* 일반버튼 */
 input[type='button']{
+	display : inline-block;
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -214,18 +223,17 @@ input[type='button']{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
+	margin : 0px 0px 0px 10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
 }
 /* 검색 과 페이지 */
-
-.search_area,.paing_wrap, .page_btn{
+.search_area, .page_btn{
 	text-align: center;
 }
-
 .page_btn button{
+	background-color : white;
 	color: black;
 	width: 40px;
 	height: 40px;
@@ -273,14 +281,16 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
-	$(".paging_Wrap").on("click","span",function(){
-		$("#page").val($(this).attr("nno"));
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		console.log($(this).attr("page"));
 		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 	});
 	
 	$("#writeBtn").on("click", function () {
-		location.href = "Notice_Write";
+		$("#searchTxt").val($("#searchOldTxt").val());
+		//location.href = "Notice_Write";
 		$("#actionForm").attr("action", "Notice_Write");
 		$("#actionForm").submit();
 	});
@@ -320,7 +330,7 @@ function drawList(list) {
 		html += "<td>" + d.TXT_NO+ "</td>";
 		html += "<td>" + d.TITLE + "</td>";
 		html += "<td>" + d.S_DT + "</td>";
-		html += "<td>" + d.USER_NO + "</td>";
+		html += "<td>" + d.USER_NAME + "</td>";
 		html += "</tr>";
 		
 		
@@ -331,32 +341,34 @@ function drawList(list) {
 
 function drawPaging(pb) {
 	var html="";
+	//처음
+	html += "<button page=\"1\"><<</button>";
 	
-	html += "<span name=\"1\">처음</span>";
-	
+	//이전페이지
 	if($("#page").val() == "1"){
-		html += "<span name=\"1\">이전</span>";
+		html += "<button page=\"1\"><</button>";
 	} else {
-		html += "<span name=\"" + ($("#page").val() -1) + "\">이전</span>";
+		html += "<button page=\"" + ($("#page").val() -1) + "\"><</button>";
 	}
-	
+	//처음페이지
 	for(var i = pb.startPcount; i<=pb.endPcount; i++){
 		if($("#page").val() == i){
-			html += "<span class=\"" + i + "\"><b>" + i + "</b></span>";		} else {
-			html += "<span name=\"" + i + "\">" + i + "</span>";
+			html += "<button page=\"" + i + "\"><b>" + i + "</b></button>";		
+			} 
+		else {
+			html += "<button page=\"" + i + "\">" + i + "</button>";
 		}
 	}
 	
 	if($("#page").val() == pb.maxPCount){
-		html += "<span name=\"" + pb.maxPCount + "\">다음</span>";
+		html += "<button page=\"" + pb.maxPCount + "\">></button>";
 	} else {
-		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
+		html += "<button page=\"" + ($("#page").val() * 1 + 1) + "\">></button>";
 	}
 	
+	html += "<button page=\"" + pb.maxPCount + "\">>></button>";
 	
-	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
-	
-	$(".paging_Wrap").html(html);
+	$(".page_btn").html(html);
 }
 
 
@@ -365,7 +377,6 @@ function drawPaging(pb) {
 <body>
 <!-- 상단 -->
   <div class="top">
-    
    </div>
 
 
@@ -374,9 +385,9 @@ function drawPaging(pb) {
 <div class="content">
 <h1>공지사항</h1>
 <div class="input_btn_area">
-<button class="input_btn" id="writeBtn">작성</button>
+<input type="button" value="작성" id="writeBtn" class="input_btn"/>
 </div>
-
+	
 	<div class="filter_area">
 			<select class="cate">
 				<option value="0" selected="selected">전체</option>
@@ -388,8 +399,9 @@ function drawPaging(pb) {
 			</select>
 			<input type = "date" value="2021-01-01" class="start_date" />
 			<input type = "date" value="2021-01-01" class="end_date"/>
-			<button class="search_btn">검색</button>
+			<input type="button" value="검색" id="Date_searchBtn" class="search_btn"/>
 		</div>
+		
 <div class="list_wrap">
 <table>
 	<colgroup>
@@ -410,8 +422,8 @@ function drawPaging(pb) {
 	</tbody>
 </table>
 </div>
-	<div class="search_area" style = "margin-top : 30px;">
-		<form action="#" id="actionForm" method="post">
+<form action="#" id="actionForm" method="post">
+<div class="search_area" style = "margin-top : 30px;">
 	<input type="hidden" id="nNo" name="nNo"/>
 	<input type="hidden" id="page" name="page" value="${page}">
 			<select id="searchGbn" name="searchGbn" class="search_filter">
@@ -420,18 +432,13 @@ function drawPaging(pb) {
 				<option value="2">내용</option>
 				<option value="3">작성자</option>
 			</select>
+			<input type="hidden" id="searchOldTxt" value="${param.searchTxt}"/>
 			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
 			<input type="button" value="검색" id="searchBtn" class="search_btn"/>
-			</form>
-	</div>
+</div>
+</form>
 <div class="paging_wrap">
 		<div class="page_btn">
-		
-		<button style="background-color: white"><</button>
-		<button style="background-color: white">1</button>
-		<button style="background-color: white">2</button>
-		<button style="background-color: white">3</button>
-		<button style="background-color: white">></button>
 		</div>
 </div>
 	</div>

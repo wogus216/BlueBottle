@@ -203,22 +203,6 @@ src= "resources/script/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" 
 		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
-	
-	
-}); //ready end
 
 $(document).ready(function () {
 	CKEDITOR.replace("nCon", {
@@ -228,6 +212,12 @@ $(document).ready(function () {
 		width : "1255",
 		height : "500"
 	});
+	
+	$("#cateNo").on("change",function(){
+		console.log($("#cateNo").val());
+		$("#nCate").val($("#cateNo").val());
+		
+		});
 	
 	$("#fileBtn").on("click", function () {
 		$("#att").click();
@@ -286,6 +276,7 @@ $(document).ready(function () {
 						data:params, //보낼 데이터(문자열 형태)
 						success : function (res) {//성공 시 다음함수 실행
 							if (res.msg == "success") {
+								console.log(res);
 								location.href = "Notice";
 							} else if(res.msg == "failed") {
 								alert("작성에 실패하였습니다.")
@@ -455,15 +446,6 @@ $(document).ready(function () {
 <div class="content_area">
 <div class="content">
 <h1>공지사항</h1>
-
-<select class="cate" id="nCate" name="nCate">
-	<option value="0">전체</option>
-	<option value="1">이벤트</option>
-	<option value="2">주문</option>
-	<option value="3">재고</option>
-	<option value="4">시스템</option>
-	<option value="5">기타</option>
-</select>
 <form id="fileForm" action="fileUploadAjax" 
 	method="post" enctype="multipart/form-data">
 	<input type="file" name="att" id="att" />
@@ -474,11 +456,20 @@ $(document).ready(function () {
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 </form>
 <form action="#" id="addForm" method="post">
+<select class="cate" id="cateNo" name="cateNo" >
+	<option value="0">전체</option>
+	<option value="1">이벤트</option>
+	<option value="2">주문</option>
+	<option value="3">재고</option>
+	<option value="4">시스템</option>
+	<option value="5">기타</option>
+</select>
 <input type="text" id="nTitle" name="nTitle" class="title_input" placeholder="제목을 입력하시오.">
 <textarea class="txt_content_input" rows="40" cols="40" id="nCon" name="nCon"></textarea>
 <input type="button" value="첨부파일" id="fileBtn" class="file_add"/>
 <span id="fileName"></span>
 <input type="hidden" name="nFile" id="nFile"/>
+<input type="hidden" name="nCate" id="nCate"/>
 </form>
 <div class="submit">
 <input type="button" value="등록" id="addBtn" class="submit_btn" />

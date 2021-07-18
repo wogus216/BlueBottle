@@ -3,12 +3,14 @@
 <mapper namespace="SG">
 <select id="getNCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*) AS CNT
-	FROM NOTICE
+	FROM NOTICE N INNER JOIN HQ_USER U
+	ON N.USER_NO = U.USER_NO
 	WHERE 1=1
 	<if test="searchTxt != null and searchTxt != ''">
 	<choose>
 		<when test="searchGbn == 0">
-		AND ITEM_NAME LIKE '%' || #{searchTxt} || '%'
+		AND TITLE LIKE '%' || #{searchTxt} || '%'
+		OR CONTENT LIKE '%' || #{searchTxt} || '%'
 		</when>
 		<when test="searchGbn == 1">
 		AND TITLE LIKE '%' || #{searchTxt} || '%'
@@ -17,7 +19,7 @@
 		AND CONTENT LIKE '%' || #{searchTxt} || '%'
 		</when>
 		<when test="searchGbn == 3">
-		AND USER_NO LIKE '%' || #{searchTxt} || '%'
+		AND USER_NAME LIKE '%' || #{searchTxt} || '%'
 		</when>
 	</choose>
 </if>
@@ -25,7 +27,7 @@
 
 
 <select id ="getNList" parameterType="hashmap" resultType="hashmap">
-SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME AS USER_NO
+SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME
 FROM(SELECT TXT_NO, TITLE, TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS S_DT,H.USER_NAME
         , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM
     FROM NOTICE O INNER JOIN HQ_USER H
@@ -35,6 +37,7 @@ WHERE 1=1
 	<choose>
 		<when test="searchGbn == 0">
 		AND TITLE LIKE '%' || #{searchTxt} || '%'
+		OR CONTENT LIKE '%' || #{searchTxt} || '%'
 		</when>
 		<when test="searchGbn == 1">
 		AND TITLE LIKE '%' || #{searchTxt} || '%'
@@ -43,7 +46,7 @@ WHERE 1=1
 		AND CONTENT LIKE '%' || #{searchTxt} || '%'
 		</when>
 		<when test="searchGbn == 3">
-		AND USER_NO LIKE '%' || #{searchTxt} || '%'
+		AND USER_NAME LIKE '%' || #{searchTxt} || '%'
 		</when>
 	</choose>
 </if>
@@ -52,21 +55,27 @@ WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 
 <insert id="addN" parameterType="hashmap">
-INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT, ATT_FILE)
-VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, #{nUser}, #{nTitle}, #{nCon}, #{nFile})
+INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT)
+VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, 4, #{nTitle}, #{nCon})
 </insert>
 
 <select id="getN" parameterType="hashmap" resultType="hashmap">
 SELECT TXT_NO, TITLE, CONTENT, TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') AS S_DT, 
-	ATT_FILE, SUBSTR(ATT_FILE, 21) AS ATT_UFILE
-FROM NOTICE
+	ATT_FILE, SUBSTR(ATT_FILE, 21) AS ATT_UFILE, H.USER_NAME AS USER_NAME
+FROM NOTICE N INNER JOIN HQ_USER H
+ON N.USER_NO = H.USER_NO
 WHERE TXT_NO = #{nNo}
 </select>
 
 <update id="updateN" parameterType="hashmap">
-UPDATE NOTICE SET TITLE = #{nTitle}, CONTENT = #{nCon}, ATT_FILE = #{nFile}
+UPDATE NOTICE SET TITLE = #{nTitle}, CONTENT = #{nCon}
 WHERE TXT_NO = #{nNo}
 </update>
+
+<delete id="deleteN" parameterType="hashmap">
+DELETE FROM NOTICE
+WHERE TXT_NO = #{nNo}
+</delete>
 
 
 
@@ -77,23 +86,34 @@ WHERE TXT_NO = #{nNo}
 
 
 <select id="getUCnt" parameterType="hashmap" resultType="Integer">
-	SELECT COUNT(*) AS CNT
-	FROM HQ_USER
-	WHERE 1=1
+SELECT COUNT(*) AS CNT
+FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, USER_NAME, ID 
+FROM HQ_USER U INNER JOIN HQ_DEP D
+ON U.DEP_NO = D.DEP_NO
+UNION ALL
+SELECT BRCH_NO AS USER_NO, BRCH_NAME AS NAME, MGR_NAME AS USER_NAME, ID 
+FROM BRCH) C
+WHERE 1=1
 	<if test="searchTxt != null and searchTxt != ''">
 	<choose>
 		<when test="searchGbn == 0">
-		AND USER_NO LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 1">
-		AND BRCH_NAME LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 2">
-		AND CONTENT LIKE '%' || #{searchTxt} || '%'
-		</when>
-		<when test="searchGbn == 3">
-		AND USER_NO LIKE '%' || #{searchTxt} || '%'
-		</when>
+    	AND USER_NO LIKE '%' || #{searchTxt} || '%'
+    	OR DEP_NAME LIKE '%' || #{searchTxt} || '%'
+    	OR USER_NAME LIKE '%' || #{searchTxt} || '%'
+    	OR ID  LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 1">
+    	AND USER_NO LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 2">
+    	AND NAME LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 3">
+    	AND USER_NAME LIKE '%' || #{searchTxt} || '%'
+    	</when>
+    	<when test="searchGbn == 4">
+    	AND ID LIKE '%' || #{searchTxt} || '%'
+    	</when>
 	</choose>
 </if>
 </select>

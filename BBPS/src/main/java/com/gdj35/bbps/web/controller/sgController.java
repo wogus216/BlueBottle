@@ -58,7 +58,7 @@ public class sgController {
 		int cnt = isgService.getNCnt(params);
 
 		// 페이징 정보 취득
-		PagingBean pb = ipagingService.getPagingBean(page, cnt, 2, 3);
+		PagingBean pb = ipagingService.getPagingBean(page, cnt, 3, 5);
 		
 		// 게시글 시작번호, 종료 번호 할당
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
@@ -68,7 +68,8 @@ public class sgController {
 		
 		modelMap.put("list", list);
 		modelMap.put("pb", pb);
-		System.out.println("list"+list);
+		
+		System.out.println("list를 보자"+list);
 		return mapper.writeValueAsString(modelMap);
 	}
 	
@@ -103,6 +104,7 @@ public class sgController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		} //addObjec가 modelMap으로 바뀐 거 빼고는 똑같다
+		System.out.println("params"+params);
 		
 		return mapper.writeValueAsString(modelMap);
 	}

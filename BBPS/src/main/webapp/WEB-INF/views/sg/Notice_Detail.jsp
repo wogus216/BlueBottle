@@ -259,25 +259,6 @@ width: 100%;
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
-	
-	
-}); //ready end
-
-
-
 
 $(document).ready(function() {
 	$("#listBtn").on("click", function() {
@@ -302,9 +283,9 @@ $(document).ready(function() {
 					if (res.msg == "success") {
 						location.href = "Notice";
 					} else if(res.msg == "failed") {
-						alert("작성에 실패하였습니다.")
+						alert("삭제에 실패하였습니다.")
 					} else {
-						alert("작성중 문제가 발생하였습니다.");
+						alert("삭제 중 문제가 발생하였습니다.");
 					}
 				},
 				error : function (request, status, error) { //실패 시 다음함수 실행
@@ -347,7 +328,7 @@ $(document).ready(function() {
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
-<td>${data.USER_NO}</td>
+<td>${data.USER_NAME}</td>
 <td>&nbsp;</td>
 <td>${data.S_DT}</td>
 <td>&nbsp;</td>

@@ -217,11 +217,13 @@ input[type='button']{
 }
 /* 검색 과 페이지 */
 
-.search_info,.page_area, .page_btn{
+.search_info ,.page_btn{
 	text-align: center;
 }
 
+
 .page_btn button{
+	background-color : white;
 	color: black;
 	width: 40px;
 	height: 40px;
@@ -282,8 +284,9 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
-	$("#paging_Wrap").on("click","span",function(){
-		$("#page").val($(this).attr("uno"));
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		console.log($(this).attr("page"));
 		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 	});
@@ -310,6 +313,7 @@ function reloadList() {
 
 function drawList(list) {
 	var html = "";
+	
 	for(var d of list){
 		html += "<tr uno=\"" + d.USER_NO + "\">";
 		html += "<td>" + d.USER_NO+ "</td>";
@@ -325,32 +329,34 @@ function drawList(list) {
 
 function drawPaging(pb) {
 	var html="";
+	//처음
+	html += "<button page=\"1\"><<</button>";
 	
-	html += "<span name=\"1\">처음</span>";
-	
+	//이전페이지
 	if($("#page").val() == "1"){
-		html += "<span name=\"1\">이전</span>";
+		html += "<button page=\"1\"><</button>";
 	} else {
-		html += "<span name=\"" + ($("#page").val() -1) + "\">이전</span>";
+		html += "<button page=\"" + ($("#page").val() -1) + "\"><</button>";
 	}
-	
+	//처음페이지
 	for(var i = pb.startPcount; i<=pb.endPcount; i++){
 		if($("#page").val() == i){
-			html += "<span class=\"" + i + "\"><b>" + i + "</b></span>";		} else {
-			html += "<span name=\"" + i + "\">" + i + "</span>";
+			html += "<button page=\"" + i + "\"><b>" + i + "</b></button>";		
+			} 
+		else {
+			html += "<button page=\"" + i + "\">" + i + "</button>";
 		}
 	}
 	
 	if($("#page").val() == pb.maxPCount){
-		html += "<span name=\"" + pb.maxPCount + "\">다음</span>";
+		html += "<button page=\"" + pb.maxPCount + "\">></button>";
 	} else {
-		html += "<span name=\"" + ($("#page").val() * 1 + 1) + "\">다음</span>";
+		html += "<button page=\"" + ($("#page").val() * 1 + 1) + "\">></button>";
 	}
 	
+	html += "<button page=\"" + pb.maxPCount + "\">>></button>";
 	
-	html += "<span name=\"" + pb.maxPCount + "\">마지막</span>";
-	
-	$("#paging_Wrap").html(html);
+	$(".page_btn").html(html);
 }
 
 
@@ -375,9 +381,11 @@ function drawPaging(pb) {
 				<option value="2">지점</option>
 			</select>
 		</div>
+		
 	<div class="add_btn_area">
 	<input type="button" class="add_btn" value="등록" id="addBtn"/>
 	</div>
+	
 <div class="list_wrap">	
 <table cellspacing="0">
 	<colgroup>
@@ -399,9 +407,9 @@ function drawPaging(pb) {
 </table>
 </div>
 <form action="#" id="actionForm" method="post">
-<input type="hidden" id="uNo" name="uNo"/>
-<input type="hidden" id="page" name="page" value="${page}">
-	<div class="search_area" style = "margin-top : 30px;">
+<div class="search_area" style = "margin-top : 30px;">
+	<input type="hidden" id="uNo" name="uNo"/>
+	<input type="hidden" id="page" name="page" value="${page}">
 		<div class="search_info">
 			<select  name="searchGbn" class="search_filter">
 				<option value="0" selected="selected">전체</option>
@@ -416,13 +424,8 @@ function drawPaging(pb) {
 		</div>
 	</div>
 	</form>
-	<div class="page_area" id="paging_Wrap">
+	<div class="paging_wrap">
 		<div class="page_btn">
-		<button style="background-color: white"><</button>
-		<button style="background-color: white">1</button>
-		<button style="background-color: white">2</button>
-		<button style="background-color: white">3</button>
-		<button style="background-color: white">></button>
 		</div>
 	</div>
 	
