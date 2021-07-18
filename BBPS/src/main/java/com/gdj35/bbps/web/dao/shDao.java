@@ -43,8 +43,8 @@ public class shDao implements IshDao{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectList("SH.getOWholeList", params);
+	public HashMap<String, String> getOWholeList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SH.getOWholeList", params);
 	}
 
 	@Override
@@ -68,13 +68,58 @@ public class shDao implements IshDao{
 	}
 
 	@Override
-	public int sendO(HashMap<String, Object> insertMap) throws Throwable {
-		return sqlSession.update("SH.sendO", insertMap);
+	public int sendO(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.sendO", params);
 	}
 
 	@Override
 	public int sendExp(HashMap<String, Object> insertMap) throws Throwable {
 		return sqlSession.update("SH.sendExp", insertMap);
+	}
+
+	@Override
+	public int getBOCnt(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SH.getBOCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBOList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getBOList", params);
+	}
+
+	@Override
+	public HashMap<String, String> getBODtl(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SH.getBODtl", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBODtlList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getBODtlList", params);
+	}
+
+	@Override
+	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SH.getBRDtl", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBRDtlList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getBRDtlList", params);
+	}
+
+	@Override
+	public int cnlO(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.cnlO", params);
+	}
+
+	@Override
+	public int cnlRef(HashMap<String, String> params) throws Throwable {
+		return sqlSession.update("SH.cnlRef", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRefItem(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getRefItem", params);
 	}
 }
 

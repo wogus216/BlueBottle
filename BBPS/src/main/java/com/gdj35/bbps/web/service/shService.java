@@ -44,7 +44,7 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable {
+	public HashMap<String, String> getOWholeList(HashMap<String, String> params) throws Throwable {
 		return ishDao.getOWholeList(params);
 	}
 
@@ -69,12 +69,57 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public int sendO(HashMap<String, Object> insertMap) throws Throwable {
-		return ishDao.sendO(insertMap);
+	public int sendO(HashMap<String, String> params) throws Throwable {
+		return ishDao.sendO(params);
 	}
 
 	@Override
 	public int sendExp(HashMap<String, Object> insertMap) throws Throwable {
 		return ishDao.sendExp(insertMap);
+	}
+
+	@Override
+	public int getBOCnt(HashMap<String, String> params) throws Throwable {
+		return ishDao.getBOCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBOList(HashMap<String, String> params) throws Throwable {
+		return ishDao.getBOList(params);
+	}
+
+	@Override
+	public HashMap<String, String> getBODtl(HashMap<String, String> params) throws Throwable {
+		return ishDao.getBODtl(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBODtlList(HashMap<String, String> params) throws Throwable {
+		return ishDao.getBODtlList(params);
+	}
+
+	@Override
+	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable {
+		return ishDao.getBRDtl(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBRDtlList(HashMap<String, String> params) throws Throwable {
+		return ishDao.getBRDtlList(params);
+	}
+
+	@Override
+	public int cnlO(HashMap<String, String> params) throws Throwable {
+		return ishDao.cnlO(params);
+	}
+
+	@Override
+	public int cnlRef(HashMap<String, String> params) throws Throwable {
+		return ishDao.cnlRef(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRefItem(HashMap<String, String> params) throws Throwable {
+		return ishDao.getRefItem(params);
 	}
 }

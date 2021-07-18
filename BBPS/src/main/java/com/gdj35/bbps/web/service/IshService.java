@@ -16,7 +16,7 @@ public interface IshService {
 
 	public HashMap<String, String> getRDtl(HashMap<String, String> params) throws Throwable;
 
-	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable;
+	public HashMap<String, String> getOWholeList(HashMap<String, String> params) throws Throwable;
 
 	public int apvOrd(HashMap<String, String> params) throws Throwable;
 
@@ -26,7 +26,25 @@ public interface IshService {
 
 	public int nonApvRef(HashMap<String, String> params) throws Throwable;
 
-	public int sendO(HashMap<String, Object> insertMap) throws Throwable;
+	public int sendO(HashMap<String, String> params) throws Throwable;
 
 	public int sendExp(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int getBOCnt(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBOList(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getBODtl(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBODtlList(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBRDtlList(HashMap<String, String> params) throws Throwable;
+
+	public int cnlO(HashMap<String, String> params) throws Throwable;
+
+	public int cnlRef(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getRefItem(HashMap<String, String> params) throws Throwable;
 	} 

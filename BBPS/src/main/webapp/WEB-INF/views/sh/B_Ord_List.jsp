@@ -5,24 +5,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>본사주문조회</title>
+<title>지점주문조회</title>
 <style type="text/css">
-/*상단바*/
 .top {
    width: 100%;
    padding: 0;
    margin: 0;
    background-color: white;
    display: inline-block;
-   min-width: 1820px;
-   height: 62px;
+   min-width: 1300px;
+    height: 62px;
 }
 
 .top_menu{
 	display: inline-block;
 	vertical-align: top;
 	float: right ;
-	width: 1500px;
+	width: 800px;
 }
 
 body {
@@ -46,7 +45,6 @@ ul:after {
 
 li {
    float: left;
-   height: 62px;
 }
 
 .main_menu{
@@ -58,10 +56,6 @@ li {
    font-size: 17px;
 }
 
-.menu_f li .sub {
-	width: 162px;
-}
-
 .main_menu:hover {
    background-color: #f1f1f1;
 }
@@ -69,6 +63,8 @@ li {
 
 .logo {
    padding: 13px 30px;
+  
+  
 }
 
 .sub {
@@ -88,7 +84,6 @@ li {
     display: block;
     
 }
-
 .log_out{
 	display:inline-block;
 	text-decoration: none;
@@ -96,16 +91,14 @@ li {
 	padding:10px 20px;
 	line-height: 42px;
 }
-
 .sub a:hover {
      background-color: #f1f1f1;
 }
 
 .menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub, .menu_h:hover .sub , .menu_i:hover .sub {
+.menu_e:hover .sub  {
     display: block;
 }
-/* 미들 부분 */
 .content_area{
 	width: 1250px;
 	height: 900px;
@@ -119,7 +112,6 @@ li {
     margin-left: 30px;
      width: 1250px;
 }
-
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
@@ -131,6 +123,7 @@ table {
 	margin: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
+	
 }
 tbody td{
 	cursor: pointer;
@@ -162,48 +155,29 @@ input{
 	text-align: right;
 	margin-bottom: 10px;
 }
-[name=ref], [name=ord]{
-	margin: 0;
+[name=r]{
+	margin-right: 10px;
 	height: 20px;
 	width: 30px;
 	vertical-align: middle;
 	cursor: pointer;
 }
-fieldset{
-	display:inline;
-	border:1px solid;
-	margin:0;
-	padding-right:10px;
-	padding-left:10px;
-}
-legend{
-	font-size:15px;
-}
+
 label{
-	margin-right:5px;
 	vertical-align: middle;
 	cursor: pointer;
 }
-button:focus{outline:none;}
-
 .search_btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
 	vertical-align: bottom;
 }
-
 select{
 	font-size: 15px;	
 	height: 40px;
 	width : 100px;
 }
-.start_date, .end_date{
-	width: 150px;
-	font-size: 15px;
-	height: 36px;
-}
-/* 일반버튼 */
 button{
 	color: white;
 	width: 100px;
@@ -217,6 +191,13 @@ button{
 	background-color: #01a1dd;
 	outline:none;
 }
+.start_date, .end_date{
+	width: 150px;
+	font-size: 15px;
+	height: 36px;
+}
+button:focus{outline:none;}
+
 /*검색영역*/
 .search_info,.page_area, .page_btn{
 	text-align: center;
@@ -258,14 +239,12 @@ button{
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-var ord_ck_arr = [];
-var ref_ck_arr = [];
+var radioVal=0;
 $(document).ready(function(){
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
-	ord_ckBox_check();
-	ref_ckBox_check();
+	ord_radio_check();
 	reloadList();
 	
 	$("#search_btn").on("click",function(){
@@ -278,48 +257,14 @@ $(document).ready(function(){
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
-	$("#ck1").on("click",function(){
-		if($("input:checkbox[id='ck1']").prop("checked")){
-			$("input[name=ord]").prop("checked", true);
-		}else{
-			$("input[name=ord]").prop("checked", false);
-		}
-		ord_ckBox_check();
-		ref_ckBox_check();
-		reloadList();
-	});
-	$("#ck7").on("click",function(){
-		if($("input:checkbox[id='ck7']").prop("checked")){
-			$("input[name=ref]").prop("checked", true);
-		}else{
-			$("input[name=ref]").prop("checked", false);
-		}
-		ord_ckBox_check();
-		ref_ckBox_check();
-		reloadList();
-	});
-	$(".ord").click(function(){ 
-		   if($("input[class=ord]:checked").length==5){ 
-		       $("#ck1").prop("checked",true); 
-		    }else{ 
-		       $("#ck1").prop("checked",false); 
-		    }
-		   ord_ckBox_check();
+	$("[name=r]").click(function(){  
+		   ord_radio_check();
 		   reloadList();
-		});
-	$(".ref").click(function(){ 
-		   if($("input[class=ref]:checked").length==4){ 
-		       $("#ck7").prop("checked",true); 
-		    }else{ 
-		       $("#ck7").prop("checked",false); 
-		    }
-			ref_ckBox_check();
-			reloadList();
 		});
 	$("tbody").on("click","tr",function(){
 		$("#oNo").val($(this).attr("ord_no"));
 		$("#search_input").val($("#search_old_txt").val());
-		$("#actionForm").attr("action","Ord_Mang_dtl");
+		$("#actionForm").attr("action","B_Ord_dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
 }); //ready end
@@ -328,7 +273,7 @@ function reloadList(){
 	var params = $("#actionForm").serialize();
 	
 	$.ajax({
-		url : "Ord_Mangs",
+		url : "B_Ord_Lists",
 		type : "post",  
 		dataType :"json",
 		data : params,
@@ -341,54 +286,40 @@ function reloadList(){
 		}
 	});
 }
-function ord_ckBox_check(){
-ord_ck_arr = [];
-$(".ord:checked").each(function(){
-	ord_ck_arr.push(this.value*1);
-});
-console.log(ord_ck_arr);
-}
-function ref_ckBox_check(){
-ref_ck_arr = [];
-$(".ref:checked").each(function(){
-	ref_ck_arr.push(this.value*1);
-	
-});
-console.log(ref_ck_arr);
+function ord_radio_check(){
+	radioVal = $('input[name="r"]:checked').val();
 }
 function drawList(list){
 	var html ="";
 	for(var d of list){
-		for(var i=0; i<ord_ck_arr.length; i++){
-			if(d.CODE_S_CATE == ord_ck_arr[i]){
+	if(radioVal==0){
+			html += "<tr ord_no = \""+d.ORD_NO+"\">";
+			html += "<td>"+d.ORD_NO+"</td>";
+			html += "<td>"+d.ENROLL_DATE+"</td>";
+			html += "<td>"+d.PRICE+"</td>";
+			html += "<td>"+d.CODE_NAME+"</td>";
+			html += "</tr>";
+	}else if(radioVal==1){
+			if(d.STAT_CODE<5){
 				html += "<tr ord_no = \""+d.ORD_NO+"\">";
 				html += "<td>"+d.ORD_NO+"</td>";
 				html += "<td>"+d.ENROLL_DATE+"</td>";
-				html += "<td>"+d.BRCH_NAME+"</td>";
+				html += "<td>"+d.PRICE+"</td>";
 				html += "<td>"+d.CODE_NAME+"</td>";
-				if(d.PROCESS_DATE == null){
-					html += "<td></td>"
-				}else{
-				html += "<td>"+d.PROCESS_DATE+"</td>"
-				}
 				html += "</tr>";
 			}
-		}
-		for(var i=0; i<ref_ck_arr.length; i++){
-			if(d.CODE_S_CATE == ref_ck_arr[i]){
+		else{
+			if(d.STAT_CODE>4){
 				html += "<tr ord_no = \""+d.ORD_NO+"\">";
 				html += "<td>"+d.ORD_NO+"</td>";
 				html += "<td>"+d.ENROLL_DATE+"</td>";
-				html += "<td>"+d.BRCH_NAME+"</td>";
-				html += "<td>"+d.CODE_NAME+"</th>";
-				if(d.PROCESS_DATE == null){
-					html += "<td></td>"
-				}else{
-				html += "<td>"+d.PROCESS_DATE+"</td>"
-				}
+				html += "<td>"+d.PRICE+"</td>";
+				html += "<td>"+d.CODE_NAME+"</td>";
 				html += "</tr>";
-			}
+				}
 		}
+	}
+		
 	}
 	$("tbody").html(html);
 }
@@ -421,17 +352,16 @@ function drawPaging(pb){
 
 	html += "<button page = \""+ pb.maxPcount +"\" style=\"background-color: white\">>></button>";
 
-	$(".page_btn").html(html);
+	$(".page_btn").html(html); //
 }
 </script>
 </head>
 <body>
-<!-- 상단 -->
-  <div class="top">
+   <div class="top">
      <ul>
          <li>
          <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
+         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
          </li>
          
          <div class="top_menu">
@@ -439,118 +369,53 @@ function drawPaging(pb){
          <div class="menu_a">
          <li>
          	<a class="main_menu" href="#">
-         		발주관리</a>
+         			재고관리</a>
 	         <div class="sub">
+	        	 <a href="#">
+	            	현재재고조회</a>
 	            <a href="#">
-	            	발주요청조회</a>
+	            	입고재고조회</a>
 	             <a href="#">
-	            	발주완료조회</a>
-	         </div>
-          </li>
+	            	사용재고조회</a>
+	             <a href="#">
+	            	폐기조회</a>
+	      </div>
+         </li>
          </div>
          
          <div class="menu_b">
          <li>
-         	<a class="main_menu" href="#">
-         		발송관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발송요청조회</a>
-	             <a href="#">
-	            	발송완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_c">
-         <li>
-         	<a class="main_menu" href="#">
-         		환불관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
+         	<a class="main_menu" style="padding: 20px 40px;" href="#">
+         			주문관리 </a>
 	          	<div class="sub">
      			<a href="#">		
-	            	재고조회</a>
+	            	주문조회 및 환불</a>
      			<a href="#">
-	            	재고등록</a>
+	            	주문요청</a>
 	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
+	            	환불조회</a>
+	         
 	            </div>
           </li>
          </div>
          
-         <div class="menu_e">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		품목관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	품목조회</a>
-		            <a href="#">
-		            	품목등록</a>
-		            </div>
-	          </li>
-         </div>
-         
-            <div class="menu_f">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		카테고리관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	공지카테고리</a>
-		            <a href="#">
-		            	품목카테고리</a>
-		            <a href="#">
-		            	메뉴카테고리</a>
-		            </div>
-	          </li>
-         </div>
-         
-         <div class="menu_g">
+           <div class="menu_c">
          <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
+		<a class="main_menu" href="#"> 
+	        		매출조회</a>
+	          	<div class="sub">
+	            </div>
           </li>
          </div>
-          <div class="menu_h">
+        
+          <div class="menu_d">
          	<li>
          		<a class="main_menu" href="#"> 
          			공지사항</a>
 	        </li>
          </div>
-         <div class="menu_i">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_j">
+      
+          <div class="menu_e">
           <li>
           <a class="main_menu" href="#"> 
          		마이페이지</a>
@@ -564,58 +429,27 @@ function drawPaging(pb){
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-
 <div class="filter_area">
-	<select class="brch">
-		<option value="0" selected="selected">지점명</option>
-		<option value="1">광화문점</option>
-		<option value="2">난곡점</option>
-		<option value="3">망원점</option>
-		<option value="4">삼청한옥점</option>
-		<option value="5">서인천점</option>
-		<option value="6">성수점</option>
-		<option value="7">압구정점</option>
-		<option value="8">여의도점</option>
-		<option value="9">부천점</option>
-		<option value="10">방화점</option>
-	</select>
-	<input class="start_date" type = "date" value="2021-01-01"/>
-	<input class="end_date" type = "date" value="2021-01-01"/>
-	<button class="search_btn">검색</button>
+			<input type = "radio" id="r1" name="r" value="0" checked="checked"/><label id="l1" for="r1">전체</label>
+			<input type = "radio" id="r2" name="r" value="1"/><label id="l2" for="r2">주문요청</label>
+			<input type = "radio" id="r3" name="r"	value="2"/><label id="l3" for="r3" style="margin-right: 30px">환불요청</label>
+<input class="start_date" type = "date" value="2021-01-01"/>
+<input class="end_date" type = "date" value="2021-01-01"/>
+<button class="search_btn">검색</button>
 </div>
-<fieldset style = "margin-right:10px;">
-				<legend>주문선택</legend>
-		<input type = "checkbox" id="ck1" name="ord" checked="checked"/><label id="ck1" for="ck1">전체</label>
-		<input type = "checkbox" id="ck2" class="ord" name="ord" value="0" checked="checked"/><label for="ck2">주문요청</label>
-		<input type = "checkbox" id="ck3" class="ord" name="ord" value="1" checked="checked"/><label for="ck3">주문요청취소</label>
-		<input type = "checkbox" id="ck4" class="ord" name="ord" value="2" checked="checked"/><label for="ck4">주문승인</label>
-		<input type = "checkbox" id="ck5" class="ord" name="ord" value="3" checked="checked"/><label for="ck5">주문승인거부</label>
-		<input type = "checkbox" id="ck6" class="ord" name="ord" value="4" checked="checked"/><label style = "margin-right:0px;" for="ck6">발송완료</label>
-		
-	</fieldset>
-	<fieldset style =  "float:right; margin-bottom: 20px;">
-		<legend>환불선택</legend>
-		<input type = "checkbox" id="ck7" name="ref" checked="checked"/><label id="ck6" for="ck7">전체</label>
-		<input type = "checkbox" id="ck8" class="ref" name="ref" value="5" checked="checked"/><label for="ck8">환불요청</label>
-		<input type = "checkbox" id="ck9" class="ref" name="ref" value="6" checked="checked"/><label for="ck9">환불요청취소</label>
-		<input type = "checkbox" id="ck10" class="ref" name="ref" value="7" checked="checked"/><label for="ck10">환불승인</label>
-		<input type = "checkbox" id="ck11" class="ref" name="ref" value="8" checked="checked"/><label style = "margin-right:0px;" for="ck11">환불승인거부</label>
-	</fieldset>
 <table cellspacing="0">
 	<colgroup>
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
-		<col width="20%" />
+		<col width="25%" />
+		<col width="25%" />
+		<col width="25%" />
+		<col width="25%" />
 	</colgroup>
 	<thead>
 	<tr>
 		<th scope=col style= "border-left: none;" scope=col>주문번호</th>
 		<th scope=col>주문날짜</th>
-		<th scope=col>지점명</th>
+		<th scope=col>주문금액</th>
 		<th scope=col>처리상태</th>
-		<th scope=col>처리날짜</th>
 	</tr>
 	</thead>
 	<tbody></tbody>
@@ -636,7 +470,7 @@ function drawPaging(pb){
 </div>
 <div class="page_area">
 		<div class="page_btn"></div>
-</div>
+	</div>
 </div>
 </div>
 </body>

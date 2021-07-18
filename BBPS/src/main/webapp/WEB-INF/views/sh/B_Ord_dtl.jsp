@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>본사주문상세조회</title>
+<title>지점주문상세조회</title>
 <style type="text/css">
 /* 상단 바 */
 .top {
@@ -234,7 +234,7 @@ textarea:focus{
 .list_btn{
 	margin-top:100px;
 }
-.apv_btn, .non_apv_btn, .ref_apv_btn, .non_ref_apv_btn, .send_btn{
+.ord_cnl_btn, .ref_btn, .ref_cnl_btn, .stor_btn, .cnl_list_bnt{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -249,7 +249,7 @@ textarea:focus{
 	cursor: pointer;
 }
 
-.non_apv_btn, .non_ref_apv_btn{
+.ord_cnl_btn, .ref_cnl_btn{
 	background-color: #bf4040;
 }
 .btn_area{
@@ -342,7 +342,7 @@ button:focus{outline:none;}
 	font-size: 25px;
 	cursor: pointer;
 }
-.apv_com, .send_com{
+.ord_cnl_com_btn, .ref_cnl_com_btn{
 	cursor : default;
 }
 </style>
@@ -371,25 +371,28 @@ $(document).ready(function(){
 		});
 	});
 	$(".list_btn").on("click",function(){
-		location.href="Ord_Mang";
+		location.href="B_Ord_List";
 	});
-	$(".apv_btn").on("click",function(){
-		if(confirm("주문을 승인하시겠습니까?")){ //팝업 변경 필요
+	$(".cnl_list_bnt").on("click",function(){
+		location.href="B_Ord_List";
+	});
+	$(".ord_cnl_btn").on("click",function(){
+		if(confirm("주문을 취소하시겠습니까?")){ //팝업 변경 필요
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
-			url : "ord_apv",
+			url : "ord_cnl",
 			type : "post",  
 			dataType :"json",
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인되었습니다.");
+					alert("주문이 취소되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인에 실패하였습니다.");
+					alert("주문취소에 실패하였습니다.");
 				}else {
-					alert("승인 중 문제가 발생하였습니다.")
+					alert("주문취소 중 문제가 발생하였습니다.")
 				}
 			},
 			error : function(request,status,error){
@@ -398,54 +401,23 @@ $(document).ready(function(){
 		});
 		}
 	});
-	$(".non_apv_btn").on("click",function(){
-		if($.trim($("#oRsn").val())=="") {
-			alert("승인거부 이유를 입력해주세요.");
-			$("#oRsn").focus();
-		}else{
-		if(confirm("승인거부 처리하시겠습니까?")){ //팝업 변경 필요
-			
-		var params = $("#OrsnForm").serialize();
-		console.log($("#OrsnForm").serialize());
-		$.ajax({
-			url : "ord_non_apv",
-			type : "post",  
-			dataType :"json",
-			data : params,
-			success : function(res){
-				if(res.msg == "success"){
-					alert("승인거부 처리되었습니다.");
-					$("#OrsnForm").submit();
-				}else if (res.msg == "failed"){
-					alert("승인거부에 실패하였습니다.");
-				}else {
-					alert("승인거부 중 문제가 발생하였습니다.")
-				}
-			},
-			error : function(request,status,error){
-				console.log(error);
-			}
-		});
-		}
-	}
-	});
-	$(".ref_apv_btn").on("click",function(){
-		if(confirm("환불을 승인하시겠습니까?")){ //팝업 변경 필요
+	$(".ref_cnl_btn").on("click",function(){
+		if(confirm("환불을 취소하시겠습니까?")){ //팝업 변경 필요
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
-			url : "ref_apv",
+			url : "ref_cnl",
 			type : "post",  
 			dataType :"json",
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인되었습니다.");
+					alert("환불이 취소되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인에 실패하였습니다.");
+					alert("환불취소에 실패하였습니다.");
 				}else {
-					alert("승인 중 문제가 발생하였습니다.")
+					alert("환불취소 중 문제가 발생하였습니다.")
 				}
 			},
 			error : function(request,status,error){
@@ -454,27 +426,23 @@ $(document).ready(function(){
 		});
 		}
 	});
-	$(".non_ref_apv_btn").on("click",function(){
-		if($.trim($("#rRsn").val())=="") {
-			alert("승인거부 이유를 입력해주세요.");
-			$("#rRsn").focus();
-		}else{
-		if(confirm("승인거부 처리하시겠습니까?")){ //팝업 변경 필요
-		var params = $("#RrsnForm").serialize();
+	$(".stor_btn").on("click",function(){
+		if(confirm("입고하시겠습니까?")){ //팝업 변경 필요
+		var params = $("#goForm").serialize();
 		
 		$.ajax({
-			url : "ref_non_apv",
+			url : "ord_item_stor",
 			type : "post",  
 			dataType :"json",
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인거부 처리되었습니다.");
-					$("#RrsnForm").submit();
+					alert("입고가 완료되었습니다.");
+					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인거부에 실패하였습니다.");
+					alert("입고에 실패하였습니다.");
 				}else {
-					alert("승인거부 중 문제가 발생하였습니다.")
+					alert("입고 중 문제가 발생하였습니다.")
 				}
 			},
 			error : function(request,status,error){
@@ -482,38 +450,11 @@ $(document).ready(function(){
 			}
 		});
 		}
-	}
 	});
-	$(".send_btn").on("click",function(){
-		if($.trim($("#expDate").val())=="") {
-			alert("유통기한을 입력해주세요.");
-			$("#expDate").focus();
-		}else{
-		if(confirm("발송 처리하시겠습니까?")){ //팝업 변경 필요
-		var params = $("#sendForm").serialize();
-		console.log($("#sendForm").serialize());
-
-		$.ajax({
-			url : "ord_send",
-			type : "post",  
-			dataType :"json",
-			data : params,
-			success : function(res){
-				if(res.msg == "success"){
-					alert("발송 처리되었습니다.");
-					location.href="Ord_Mang_dtl";
-				}else if (res.msg == "failed"){
-					alert("발송처리에 실패하였습니다.");
-				}else {
-					alert("발송처리 중 문제가 발생하였습니다.")
-				}
-			},
-			error : function(request,status,error){
-				console.log(error);
-			}
-		});
-		}
-		}
+	$(".ref_btn").on("click",function(){
+		$("#search_input").val($("#search_old_txt").val());
+		$("#goForm").attr("action","B_Ref");
+		$("#goForm").submit();
 	});
 }); //ready end
 
@@ -760,6 +701,7 @@ function closePopup() {
    </div>
 <form action = # id = "goForm" method = "post">
 	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
+	<input type = "hidden" id = "erDate" name = "erDate" value="${data.ENROLL_DATE}"/>
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
@@ -772,7 +714,6 @@ function closePopup() {
 <ul class="ord_info">
 <li><strong>주문번호 : </strong>${data.ORD_NO}</li>
 <li><strong>주문날짜 : </strong>${data.ENROLL_DATE}</li>
-<li><strong>지점명 : </strong>${data.BRCH_NAME}</li>
 <li class="apv_info"><strong>처리상태 : </strong><span class="apv_stat" style="color:red">${data.CODE_NAME}</span></li>
 <c:choose>
 <c:when test ="${data.PROCESS_DATE ne null}"><li class="apv_date_info"><strong>처리날짜 : </strong>${data.PROCESS_DATE}</li></c:when>
@@ -806,26 +747,7 @@ function closePopup() {
 		<td>${data1.CNT}</td>
 		<td>${data1.PRICE}</td>
 		<c:choose>
-			<c:when test="${data1.EXPIRY_DATE eq null}">
-				<c:choose>
-					<c:when test="${data.CODE_NAME eq '주문승인'}">
-					<c:choose>
-						<c:when test="${data1.CATE_NO eq 0 or data1.CATE_NO eq 1 or data1.CATE_NO eq 2}">
-							<td style="text-align: center;">
-							<input type="date" id="expDate" name="expDate"/>
-							<input type = "hidden" id = "oNo1" name = "oNo1" value="${data.ORD_NO}"/>
-							</td>
-						</c:when>
-					<c:otherwise>
-						<td></td>
-					</c:otherwise>
-					</c:choose>
-					</c:when>
-					<c:otherwise>
-						<td></td>
-					</c:otherwise>
-				</c:choose>
-			</c:when>
+			<c:when test="${data1.EXPIRY_DATE eq null}"><td></td></c:when>
 			<c:otherwise>
 				<td>${data1.EXPIRY_DATE}</td>
 			</c:otherwise>
@@ -838,43 +760,27 @@ function closePopup() {
 <ul class="tot_price">
 <li><strong>전체 상품 금액 : </strong>${data.TOT_PRICE} 원</li>
 </ul>
+<c:if test="${data.CODE_NAME eq '주문승인거부'}">
 <div class="rsn_area">
-	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
+	<div class="rsn_title">승인거부 사유</div>
 	<div class="rsn_content_area">
-	<c:choose>
-	<c:when test="${data.CODE_NAME eq '주문요청'}">
-		<form action = "#" id = "OrsnForm" method = "post">
-		<textarea class="rsn_content" id = "oRsn" name="oRsn"></textarea>
-		<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
-		</form>
-	</c:when>
-	<c:otherwise>
-	<textarea class="rsn_content" id = "oRsn" disabled=disabled>${data.NON_APV_RSN}</textarea>
-	</c:otherwise>
-	</c:choose>
+		<textarea class="rsn_content" id = "oRsn" name="oRsn" disabled=disabled>${data.NONE_APV_RSN}</textarea>
 </div>
 </div>
-<c:choose>
-<c:when test="${data.CODE_NAME eq '주문요청'}">
+</c:if>
 <div class="btn_area">
-	<button class="apv_btn">승인</button>
-	<button class="non_apv_btn">승인거부</button>
+<c:if test="${data.CODE_NAME eq '주문요청'}">
+	<button class="ord_cnl_btn">주문취소</button>
+	<button class="cnl_list_bnt">목록</button>
+</c:if>
+<c:if test="${data.CODE_NAME eq '주문취소'}">
+	<button class="ord_cnl_com_btn" style="background-color: #b3b3b3;">주문취소완료</button>
+</c:if>
+<c:if test="${data.CODE_NAME eq '발송완료'}">
+	<button class="ref_btn">환불요청</button>
+	<button class="stor_btn">입고</button>
+</c:if>
 </div>
-</c:when>
-<c:otherwise>
-<div class="btn_area">
-<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-<c:choose>
-<c:when test="${data.CODE_NAME eq '주문승인'}">
-<button class="send_btn">발송</button>
-</c:when>
-<c:otherwise>
-<button class="send_com" style="background-color: #b3b3b3;">발송완료</button>
-</c:otherwise>
-</c:choose>
-</div>
-</c:otherwise>
-</c:choose>
 </div>
 <c:choose>
 <c:when test="${data2.REF_NO ne null}">
@@ -925,48 +831,30 @@ function closePopup() {
 	<ul class="tot_price">
 		<li><strong>총 환불예상 금액 : </strong>${data2.TOT_PRICE} 원</li>
 </ul>
+<c:if test="${data2.CODE_NAME eq '환불승인거부'}">
 <div class="rsn_area">
-	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
+	<div class="rsn_title">승인거부 사유</div>
 	<div class="rsn_content_area">
-	<c:choose>
-	<c:when test="${data2.CODE_NAME eq '환불요청'}">
-	<form action = "#" id = "RrsnForm" method = "post">
-	<textarea class="rsn_content" id = "rRsn" name="rRsn"></textarea>
-	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
-	</form>
-	</c:when>
-	<c:otherwise>
 	<textarea class="rsn_content" id = "rRsn" disabled=disabled>${data2.NON_APV_RSN}</textarea>
-	</c:otherwise>
-	</c:choose>
 </div>
 </div>
-<c:choose>
-<c:when test="${data.CODE_NAME eq '환불요청'}">
+</c:if>
 <div class="btn_area">
-	<button class="ref_apv_btn">승인</button>
-	<button class="non_ref_apv_btn">승인거부</button>
+	<c:if test="${data.CODE_NAME eq '환불요청'}">
+	<button class="ref_cnl_btn" style="background-color: #b3b3b3;">환불요청취소</button>
+	</c:if>
+	<c:if test="${data.CODE_NAME eq '환불요청취소'}">
+	<button class="ref_cnl_com_btn" style="background-color: #b3b3b3;">환불요청취소완료</button>
+	</c:if>
 </div>
-</c:when>
-<c:otherwise>
-<div class="btn_area">
-	<c:choose>
-		<c:when test="${data.CODE_NAME eq '환불요청취소'}">
-			<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-		</c:when>
-		<c:otherwise>
-			<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-		</c:otherwise>
-	</c:choose>
-</div>
-</c:otherwise>
-</c:choose>
 </div>
 </c:when>
 </c:choose>
+<c:if test="${data.CODE_NAME ne '주문요청'}">
 <div class="list_btn">
 <button>목록</button>
 </div>
+</c:if>
 </div>
 </div>
 </body>
