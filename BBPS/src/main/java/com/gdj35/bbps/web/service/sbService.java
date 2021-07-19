@@ -114,6 +114,41 @@ public class sbService implements IsbService{
 		return isbdao.getBSEList(params);
 	}
 
+	@Override
+	public int EidtBStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.EidtBStock(insertMap);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockExpList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockExpList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockUseList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockUseList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockDiscardList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockDiscardList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockStorList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockStorList(params);
+	}
+
+	@Override
+	public int BDiscardStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.BDiscardStock(insertMap);
+	}
+
+	@Override
+	public int BSSEdit(HashMap<String, String> params) throws Throwable {
+		return isbdao.BSSEdit(params);
+	}
+
 	
 
 }

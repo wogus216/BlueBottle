@@ -113,5 +113,40 @@ public class sbDao implements IsbDao{
 		return sqlsession.selectList("sb.getBSEList",params);
 	}
 
+	@Override
+	public int EidtBStock(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlsession.insert("sb.EidtBStock",insertMap);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockExpList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockExpList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockUseList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockUseList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockDiscardList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockDiscardList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockStorList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockStorList",params);
+	}
+
+	@Override
+	public int BDiscardStock(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlsession.insert("sb.BDiscardStock",insertMap);
+	}
+
+	@Override
+	public int BSSEdit(HashMap<String, String> params) throws Throwable {
+		return sqlsession.update("sb.BSSEdit",params);
+	}
+
 
 }

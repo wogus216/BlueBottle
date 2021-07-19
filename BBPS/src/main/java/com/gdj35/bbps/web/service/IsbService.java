@@ -43,4 +43,18 @@ public interface IsbService {
 	public List<HashMap<String, String>> getBSList(HashMap<String, String> params) throws Throwable;
 
 	public List<HashMap<String, String>> getBSEList(HashMap<String, String> params) throws Throwable;
+
+	public int EidtBStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public List<HashMap<String, String>> getBStockExpList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBStockUseList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBStockDiscardList(HashMap<String, String> params) throws Throwable;
+
+	public List<HashMap<String, String>> getBStockStorList(HashMap<String, String> params) throws Throwable;
+
+	public int BDiscardStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int BSSEdit(HashMap<String, String> params) throws Throwable;
 }

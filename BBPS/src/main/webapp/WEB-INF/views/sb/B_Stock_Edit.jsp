@@ -138,7 +138,7 @@ table {
 	border-bottom: 2px solid #d9d9d9;
 }
 
-td:nth-child(4),td:nth-child(5){
+td:nth-child(4){
 	padding : 0px;
 	text-align: center;
 }
@@ -264,23 +264,10 @@ $(document).ready(function(){
         $(this).css("background-color","white");
      });
 	
-	$(document).on("dblclick",".editsafeCnt",function(){
-        $(this).attr("readonly",false);//더블클릭 시 수정이 가능하도록 disabled 해제
-        $(this).css("background-color","white");
-     });
-
-	
 	$(document).click(function(e){
         if (!$(e.target).is(".editcurCnt")) {
         	$(".editcurCnt").attr("readonly",true); //해당 클래스가 없는 곳 클릭 시 인풋 disabled설정
         	$(".editcurCnt").css("background-color","#e6e6e6");
-        }
-    });
-	
-	$(document).click(function(e){
-         if(!$(e.target).is(".editsafeCnt")){
-        	$(".editsafeCnt").attr("readonly",true); //해당 클래스가 없는 곳 클릭 시 인풋 disabled설정
-        	$(".editsafeCnt").css("background-color","#e6e6e6");
         }
     });
 	
@@ -298,18 +285,9 @@ $(document).ready(function(){
 			}
 		});
 		
-		$(".editsafeCnt").each(function(){
-			if($(this).val() == ""){
-				chksafeCnt++;
-			}
-		});
-		
 		if(chkcurCnt > 0){
 			alert("재고 수량이 빈 항목이 존재합니다.");
 		   $(".editcurCnt").focus;
-		}else if(chksafeCnt > 0){
-			alert("안전 재고 수량이 빈 항목이 존재합니다.");
-		   $(".editsafeCnt").focus;
 		}else{
 			
 		   var params = $("#tb_Form").serialize();
@@ -390,7 +368,7 @@ function drawbrchstockeditList(list,result){
 			html += "<td>"+d.ITEM_NO+"<input type = \"hidden\" name = \"itemNo\" value = \""+d.ITEM_NO+"\"/></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td><input readonly type = \"number\" class = \"editcurCnt\" name = \"editcurCnt\" min = \"0\" value = \""+d.CURCNT+"\"/><input type = \"hidden\" name = \"chkcurCnt\" value = \""+d.CURCNT+"\"/></td>";
-			html += "<td><input readonly type = \"number\" class = \"editsafeCnt\" name = \"editsafeCnt\" min = \"0\" value = \""+d.SAFECNT+"\"/><input type = \"hidden\" name = \"chkcurCnt\" value = \""+d.SAFECNT+"\"/></td>";
+			html += "<td>"+d.SAFECNT+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\"/></td>";
 			html += "</tr>";
 		}
