@@ -441,7 +441,7 @@ public class jhController {
 		
 	}
 	
-	//메뉴 이미지 변경Menu_Imgs
+	
 	
 	@RequestMapping(value="/Menu_Imgs",
 			method = RequestMethod.POST,

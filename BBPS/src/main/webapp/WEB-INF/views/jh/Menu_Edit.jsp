@@ -418,7 +418,7 @@ $(document).ready(function(){
 				<img id="m_img" name="m_img" src="resources/upload/${data.MIMG}">
 				<input type="button" value="이미지파일선택" id="fileBtn"/>
 			</td>
-			<td><input type="text" id="m_Note" name="m_Note" value="${data.NOTE}"></td>
+			<td><input type="text" id="m_note" name="m_note" value="${data.NOTE}"></td>
 		</tr>
 		</table>
 		<input type="hidden" id="userNo" name="userNo" value="${sUSERNo}"/>
