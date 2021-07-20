@@ -142,6 +142,7 @@ table {
 	
 }
 
+/*팝업디자인*/
 .popup_Content table{
 	width: 100%;
     background: #ffffff;
@@ -667,7 +668,7 @@ function drawrelList(Rellist,result){
 	} else if (result > 0){
 		for(var d of Rellist){ //결과 행이 존재하는 경우
 			html += "<tr>";
-			html += "<td><a href = \"#\" ordNo = \""+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
+			html += "<td><a href = \"http://localhost:8090/bbps/Ord_Mang_dtl?oNo="+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
 			html += "<td>"+d.ITEM_NO+"</td>";
 			html += "<td>"+d.ITEM_NAME+"</th>";
 			html += "<td>"+d.CNT+"</td>";
@@ -755,7 +756,6 @@ function drawdiscardList(discardlist,result){
 	html += "<th>유통기한</th>";
 	html += "<th>비고</th>";
 	html += "<th>변경자</th>";
-	html += "<th></th>";
 	html += "</tr>";
 	
 	$(".stock_discard_history thead").html(html);
@@ -774,7 +774,6 @@ function drawdiscardList(discardlist,result){
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			html += "<td>"+d.NOTE+"</td>";
 			html += "<td>"+d.ID+"</td>";
-			html += "<td></td>";
 			html += "</tr>";	
 		}
 	}

@@ -148,5 +148,40 @@ public class sbDao implements IsbDao{
 		return sqlsession.update("sb.BSSEdit",params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBSSList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSSList",params);
+	}
+
+	@Override
+	public int getBSSCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getBSSCnt",params);
+	}
+
+	@Override
+	public int getBSUCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getBSUCnt",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSUList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSUList",params);
+	}
+
+	@Override
+	public int getBSDCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getBSDCnt",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSDList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSDList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSHList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSHList",params);
+	}
+
 
 }

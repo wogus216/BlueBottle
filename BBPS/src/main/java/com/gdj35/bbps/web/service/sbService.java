@@ -149,6 +149,41 @@ public class sbService implements IsbService{
 		return isbdao.BSSEdit(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBSSList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSSList(params);
+	}
+
+	@Override
+	public int getBSSCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSSCnt(params);
+	}
+
+	@Override
+	public int getBSUCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSUCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSUList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSUList(params);
+	}
+
+	@Override
+	public int getBSDCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSDCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSDList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSDList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSHList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSHList(params);
+	}
+
 	
 
 }

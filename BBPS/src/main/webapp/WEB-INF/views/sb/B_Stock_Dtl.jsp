@@ -596,7 +596,7 @@ $(document).ready(function(){
 			      data : params,///보낼데이터(문자열 형태)
 			      success : function(res){
 			         if(res.msg == "success"){
-			        	 makePopup("안전재고수정","재고수정에 성공하였습니다.",function(){
+			        	 makePopup("안전재고수정","안전재고수정에 성공하였습니다.",function(){
 			        		 
 			        	 });
 			      	  }else if (res.msg == "failed"){
@@ -722,7 +722,7 @@ function drawstorList(storlist,result){
 		for(var d of storlist){ //결과 행이 존재하는 경우
 			
 			html += "<tr>";
-			html += "<td><a href = \"#\">"+d.ORD_NO+"</a></td>";
+			html += "<td><a href = \"http://localhost:8090/bbps/B_Ord_dtl?oNo="+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td>"+d.CNT+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
@@ -905,7 +905,7 @@ function storHistoryloadList(){
 	var params = $("#storHistoryForm").serialize();
 	
 	$.ajax({
-		url : "Stock_Stor_History",
+		url : "B_Stock_Stor_History",
 		type : "post",  
 		dataType :"json",
 		data : params,
@@ -926,18 +926,18 @@ function drawstorHistory(StorHistorylist){
 	shhtml += "<table cellspacing=\"0\">";
 	shhtml += "<thead>";
 	shhtml += "<tr>";
-	shhtml += "<th style=\"border-left: none;\">입고날짜</th>";
+	shhtml += "<th style=\"border-left: none;\">주문번호</th>";
 	shhtml += "<th>입고수량</th>";
-	shhtml += "<th>변경자</th>";
+	shhtml += "<th>입고날짜</th>";
 	shhtml += "</tr>";
 	shhtml += "</thead>";
 	
 	shhtml += "<tbody>";
 	for(var d of StorHistorylist){
 	shhtml += "<tr>";
-	shhtml += "<td>"+d.ENROLL_DATE+"</td>";
+	shhtml += "<td>"+d.ORD_NO+"</td>";
 	shhtml += "<td>"+d.CNT+"</td>";
-	shhtml += "<td>"+d.ID+"</td>";
+	shhtml += "<td>"+d.ENROLL_DATE+"</td>";
 	shhtml += "</tr>";
 	} 
 	shhtml += "</tbody>";

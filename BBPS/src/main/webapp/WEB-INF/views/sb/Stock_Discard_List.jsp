@@ -223,31 +223,26 @@ td{
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-var today = new Date(); //오늘날짜 체크
 
-var dd = today.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
-var mm = today.getMonth()+1;
-var yyyy = today.getFullYear();
-	if(dd < 10){
-		dd = "0" + dd;
-	}
-	if(mm < 10){
-		mm = "0" + mm;
-	} //1월인 경우 01로 표기
-
-	today = yyyy+"-"+mm+"-"+dd;
-	
 $(document).ready(function(){
 	
-	console.log($(".cate").val());
-	
-	$(".cate").val(7);
 	
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
 	
+	if("${param.cate}" != ""){
+		$(".cate").val("${param.cate}");
+	}
+	
 	reloadList();
+	
+	$(".cate").change(function(){
+		$("#cate").val($(".cate").val());
+		$(".search_input").val($("#Old_search_input").val());
+		$("#page").val(1);
+ 		reloadList();
+ 	});
 	
 	$(".search_btn").on("click",function(){
 		$("#cate").val($(".cate").val());
@@ -257,13 +252,6 @@ $(document).ready(function(){
 		console.log($("#actionForm").serialize());
 		reloadList();	
 	});
-	
-	/* $(".filter_search_btn").on("click",function(){
-		console.log($("#filter_Form").serialize());
-		$("#page").val(1);
-		$(".search_input").val($("#Old_search_input").val());
-		reloadList();	
-	});  */
 	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
@@ -284,6 +272,8 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
+	$(".start_date").val(lastWeek());
+	$(".end_date").val(today());
 }); //ready end
 
 function reloadList(){
@@ -314,19 +304,7 @@ function drawstockdiscardList(list,result){
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
 			html += "<tr>";
-			
-			if(d.CATE_NO == 0){
-				html += "<td>음료재료</td>";
-			} else if(d.CATE_NO == 1){
-				html += "<td>제과</td>";	
-			} else if(d.CATE_NO == 2){
-				html += "<td>원두</td>";	
-			} else if(d.CATE_NO == 3){
-				html += "<td>굿즈</td>";		
-			} else if(d.CATE_NO == 4){
-				html += "<td>기타</td>";
-			}
-			
+			html += "<td>"+d.CATE_NAME+"</a></td>";
 			html += "<td>"+d.ITEM_NO+"</a></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td>"+d.CNT+"</td>";
@@ -376,6 +354,34 @@ function drawdiscardPaging(pb){
 	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
 	
 	$(".page_btn").html(html);
+}
+
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
+
+function lastWeek() { //일주일전 날짜 구하기
+	  var d = new Date();
+	  var dayOfMonth = d.getDate();
+	  d.setDate(dayOfMonth - 7);
+	  return splitdate(d);
+}
+
+function splitdate(resdate){
+	
+	var dd = resdate.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm = resdate.getMonth()+1;
+	var yyyy = resdate.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+		
+	return yyyy+"-"+mm+"-"+dd;
 }
 
 </script>
@@ -482,16 +488,15 @@ function drawdiscardPaging(pb){
 <form action = "#" id = "filter_Form" method = "post">
 <div class="filter_area">
 			<select class="cate" name = "cate">
-			<option selected="selected" value="7">카테고리명</option>
-			<option value="7">전체</option>
+			<option selected="selected" value="">전체</option>
 			<option value="0">음료재료</option>
 			<option value="1">제과</option>
 			<option value="2">원두</option>
 			<option value="3">굿즈</option>
 			<option value="4">기타</option>
 			</select>
-			<input type = "date" name = "start_date"  class="start_date" value = "2001-01-01"/>
-			<input type = "date" name = "end_date"  class="end_date" value = "2999-01-01" />
+			<input type = "date" name = "start_date"  class="start_date" />
+			<input type = "date" name = "end_date"  class="end_date" />
 		</div>
 </form>
 <div class = "Discard_List">

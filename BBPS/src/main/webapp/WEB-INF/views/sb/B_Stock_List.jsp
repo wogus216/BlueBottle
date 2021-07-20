@@ -259,10 +259,12 @@ td{
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$(".cate").val(7);
-	
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
+	}
+	
+	if("${param.cate}" != ""){
+		$(".cate").val("${param.cate}");
 	}
 	
 	reloadList();
@@ -273,6 +275,13 @@ $(document).ready(function(){
 		$("#page").val(1);
 		reloadList();	
 	});
+	
+	$(".cate").change(function(){
+		$("#cate").val($(".cate").val());
+		$(".search_input").val($("#Old_search_input").val());
+		$("#page").val(1);
+ 		reloadList();
+ 	});
 	
 	
 	$(".top_menu").on("click","a",function(){
@@ -302,11 +311,11 @@ $(document).ready(function(){
 		$("#actionForm").submit();
 	}); 
 	
-	$(".edit_btn").on("click",function(){
+	/* $(".edit_btn").on("click",function(){
 		$(".search_input").val($("#Old_search_input").val());
 		$("#actionForm").attr("action","B_Stock_Edit");
 		$("#actionForm").submit();
-	}); //나중에 마감 시 나오는 페이지로 변경 예정
+	}); //나중에 마감 시 나오는 페이지로 변경 예정 */
 	
 }); //ready end
 
@@ -334,17 +343,31 @@ function drawbrchstockList(list,result){
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"5\" style = \"text-align: center;\">검색조건에 맞는 결과가 존재하지 않습니다.</td>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
 			
-			html += "<tr itemNo = \""+d.ITEM_NO+"\" safeCnt = \""+d.SAFECNT+"\">";
+			var to_exp = "";
+			to_exp = splitdate(d.EXPIRY_DATE);
+			
+			html += "<tr itemNo = \""+d.ITEM_NO+"\" safeCnt = \""+d.SAFECNT+"\"" ;
+			
+			if(to_exp < 3){ //현재일 기준 유통기한이 3일 이하로 남은 재고
+				html += "style = \"background-color:#F6CED8;\"";
+			}
+			
+			html += ">";
 			html += "<td>"+d.CATE_NAME+"</td>";
 			html += "<td>"+d.ITEM_NO+"</td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td>"+d.HSTOCK+"</td>";
-			html += "<td>"+d.SAFECNT+"</td>";
+			if(d.HSTOCK<d.SAFECNT){//재고수량이 안전재고 수량보다 작은경우
+				html += "<td style = \"color:red; font-weight : bold;\">"+d.HSTOCK+"</td>";
+				html += "<td style = \"color:red; font-weight : bold;\">"+d.SAFECNT+"</td>";
+			}else{
+				html += "<td>"+d.HSTOCK+"</td>";
+				html += "<td>"+d.SAFECNT+"</td>";
+			}
 			html += "</tr>";
 		}
 		
@@ -384,6 +407,42 @@ function drawdiscardPaging(pb){
 	
 	$(".page_btn").html(html);
 }
+
+function curdate(){ //현재 날짜 yyyy-mm-dd 형태로 구하기
+	var today = new Date(); //오늘날짜 체크
+
+	var dd = today.getDate();
+	var mm = today.getMonth()+1;
+	var yyyy = today.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+
+		today = yyyy+"-"+mm+"-"+dd;
+		
+		return today;
+}
+
+function splitdate(splitarr){
+	
+	var today = curdate(); //현재날짜 yyyy mm dd 형태로
+	
+	todayarr = today.split('-');//오늘날짜 배열 잘라넣기
+	exparr = splitarr.split('-'); //유통기한 배열 잘라넣기
+	
+	var split_arr = new Date(exparr[0],(exparr[1]*1)-1,exparr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	var today_arr = new Date(todayarr[0],(todayarr[1]*1)-1,todayarr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	
+	var cha = split_arr.getTime() - today_arr.getTime(); //결과값 밀리세컨 단위
+	var chadate = cha/(1000*60*60*24); //결과로 받은 밀리세컨 일자로 표현되도록 계산
+	
+	return chadate; //날짜 차이 일수 리턴
+}
+
+
 </script>
 </head>
 <body>
@@ -487,21 +546,13 @@ function drawdiscardPaging(pb){
 <h1>재고 목록</h1>
 <div class="filter_area">
 			<select class="cate" name = "cate">
-			<option selected="selected" value="7">카테고리명</option>
-			<option value="7">전체</option>
+			<option selected="selected" value="">전체</option>
 			<option value="0">음료재료</option>
 			<option value="1">제과</option>
 			<option value="2">원두</option>
 			<option value="3">굿즈</option>
 			<option value="4">기타</option>
 			</select>
-			<input type= "button" class="edit_btn" value = "수정하기"/>
-			<input type= "button" class="discard_btn" value = "폐기하기"/>
-			<input type= "button" class="edit_submit_btn" value = "수정완료"/>
-			<input type= "button" class="edit_cnl_btn" value = "수정취소"/>
-			<input type= "button" class="discard_submit_btn" value = "폐기완료"/>
-			<input type= "button" class="discard_cnl_btn" value = "폐기취소"/>
-			
 		</div>
 <div class = "Stock_List">
 <table cellspacing="0">

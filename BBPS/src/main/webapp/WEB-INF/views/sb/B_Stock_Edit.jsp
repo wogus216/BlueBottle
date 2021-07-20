@@ -359,8 +359,6 @@ function drawbrchstockeditList(list,result){
 			html += "<tr ";
 			if(chadate <= 3){// 현재 날짜 기준 유통기한이 3일이 남은 재고는 리스트에 표시하기
 				html += "style = \"background-color:#F6CED8;\"";
-			}else if(d.CURCNT<d.SAFECNT){//재고수량이 안전재고 수량보다 작은경우
-				html += "style = \"background-color:#E3CEF6;\"";
 			}
 				
 			html += ">";
