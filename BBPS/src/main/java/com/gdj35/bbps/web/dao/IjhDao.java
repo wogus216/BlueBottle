@@ -29,5 +29,7 @@ public interface IjhDao {
 
 	public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Throwable;
 
+	public int addOrd(HashMap<String, Object> insertMap) throws Throwable;
+
 
 }
