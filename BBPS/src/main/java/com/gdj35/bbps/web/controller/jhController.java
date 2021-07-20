@@ -191,6 +191,7 @@ public class jhController {
 			session.setAttribute("sBRCHNo", data.get("BRCH_NO"));
 			session.setAttribute("sId", data.get("ID"));
 			session.setAttribute("sBRCHNm", data.get("BRCH_NAME"));
+			session.setAttribute("sMGRNm", data.get("MGR_NAME"));
 			System.out.println(session.getAttribute("sBRCHNm"));
 			
 			modelMap.put("resMsg", "success");
@@ -346,6 +347,61 @@ public class jhController {
 		
 	}
 	
+	
+	//주문 번호 생성
+	
+	@RequestMapping(value="/makeOrdNo",
+	method = RequestMethod.POST,
+	produces = "text/json;charset=UTF-8")
+	
+	@ResponseBody
+	public String makeOrdNo() throws Throwable{
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+	// 오더 취득
+	HashMap<String, String>ordNum= ijhService.getOrdNum();
+	
+	modelMap.put("ordNum", ordNum);
+	System.out.println("주문 번호 보자"+ordNum);
+	return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	//주문 금액 넣기
+	
+		@RequestMapping(value="/input_Moneys",
+						method = RequestMethod.POST,
+						produces = "text/json;charset=UTF-8")
+	
+		@ResponseBody 
+		public String input_Moneys(
+			HttpSession session,
+			@RequestParam HashMap<String, String> params) throws Throwable {
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		try {
+			System.out.println("주문금액보자"+params);
+			
+			int cnt = ijhService.addSales(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+		
+		}
+		
+	
 	//주문 세일즈 메뉴에 넣기
 	
 	@RequestMapping(value="/input_Menus",
@@ -353,8 +409,9 @@ public class jhController {
 					produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String input_Menus(
-			@RequestParam ArrayList<String> oMNo, //jsp에 있는 네임값과 일치해야한다
-			@RequestParam ArrayList<String> oMCnt) throws Throwable{
+			@RequestParam ArrayList<String> menuNo, //jsp에 있는 네임값과 일치해야한다
+			@RequestParam ArrayList<String> oMCnt,
+			@RequestParam ArrayList<String> ordNo) throws Throwable{
 		
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -362,8 +419,11 @@ public class jhController {
 	HashMap<String,Object> insertMap = new HashMap<String, Object>();
 	
 			try {
-				for(int i = 0; i < oMNo.size(); i++) {
-					insertMap.put("oMNo", oMNo.get(i));
+					//오더 번호는 하나 이기때문에 굳이 for문이 필요없다.
+					insertMap.put("ordNo", ordNo.get(0));
+				
+				for(int i = 0; i < menuNo.size(); i++) {
+					insertMap.put("menuNo", menuNo.get(i));
 					insertMap.put("oMCnt", oMCnt.get(i));
 					
 					System.out.println("결제품목목록보자"+ insertMap);
@@ -371,8 +431,10 @@ public class jhController {
 					int cnt = ijhService.addOrd(insertMap);
 				
 				if(cnt > 0) {
+					
 					modelMap.put("msg", "success");
 				} else {
+					
 					modelMap.put("msg", "failed");
 					}
 				}

@@ -31,5 +31,9 @@ public interface IjhDao {
 
 	public int addOrd(HashMap<String, Object> insertMap) throws Throwable;
 
+	public int addSales(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getOrdNum() throws Throwable;
+
 
 }

@@ -31,5 +31,9 @@ public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Th
 
 public int addOrd(HashMap<String, Object> insertMap) throws Throwable;
 
+public int addSales(HashMap<String, String> params) throws Throwable;
+
+public HashMap<String, String> getOrdNum() throws Throwable;
+
 
 }
