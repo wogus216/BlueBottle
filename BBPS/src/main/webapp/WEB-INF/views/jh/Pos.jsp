@@ -319,9 +319,13 @@ var ordResCnt = 0 ; //총 주문 갯수
 var ordResPay = 0 ; // 총 주문금액
 var payMoney = 0; // 받은 금액
 var changeMoney = 0; // 거스름돈
+var today = new Date(); 
+var year =  today.getFullYear(); //월
+var month =  today.getMonth() + 1; //월
+var date =  today.getDate() ; //날짜
+var ordNum = 1;
 $(document).ready(function(){
 
-	
 	reloadList();
 	ordPay();
 	
@@ -331,18 +335,18 @@ $(document).ready(function(){
 	}); //pos_off end
 	
 	//현재주문 상황에 넣기
-	var cnt = 0; //품목주문개수
+		var nowCnt = 0; //품목주문개수
 	$("body").on("click",".menu_name",function(){
-		console.log(cnt);
-		if(cnt < 7){
-			
+		
+		if(nowCnt < 7){
 			$("#menuNo").val($(this).attr("mno"));
+			$("#ordMNo").val($(this).attr("mno"));
 			$(this).hide(); //메뉴 이름 숨기기
 			$(this).parent().children().eq(3).show(); //주문 메뉴입니다.
-			reloadOrd();
-		
-			cnt++;
 			
+			reloadOrd();
+			nowCnt++;
+			console.log("품목주문개수"+nowCnt);
 		}else{
 			ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
 		}
@@ -398,14 +402,36 @@ $(document).ready(function(){
 		$(this).parent().parent().remove();
 		
 		ordPay();
-		cnt--;
+		nowCnt--;
+		//주문 입니다 다시 돌려 놓기
+		$(this).show(); //메뉴 이름 숨기기
+		$(this).parent().children().eq(3).hide(); //주문 메뉴입니다.
 		
 	});
+	// 날짜 --> 주문번호를 위해서 -> ordNo.val() 로 넣기
+	console.log(year+""+month+""+date+ordNum);
+	
 	//현금, 카드 결제
 	$("body").on("click",".cash_pay, .card_pay",function(){
-		
+		var noCnt = 0; //품목명 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
+		var menuCnt = 0; 
+		//주문번호 생성
+		$("#ordNo").val(year+""+month+""+date+ordNum);
+		console.log($("#ordNo").val());
+		ordNum++;
 		//거스름 돈
 		changeMoney = ordResPay - $(".recNum").val(); 
+		
+		//주문 품목 전달
+	
+		if($(".recNum").val() == ""){
+			
+			alert("작동되나?");
+			$(".recNum").focus;
+		} else{
+				
+			inputOrdMenu();
+		
 		// 총주문개수, 결제금액 초기화
 		ordResPay = 0;
 		ordResCnt = 0;
@@ -415,8 +441,7 @@ $(document).ready(function(){
 		ordPopup("", "결제완료되었습니다.",function(){
 			location.reload();
 		});
-		
-		
+	}
 	});
 	// 숫자에서 처리 하고 확인
 	$(".table_num").on("click", ".confirm",function(){
@@ -499,24 +524,23 @@ function drawMenu(list){
 	
 	$(".menu_area").html(menu);
 }
-
 //현재 주문 넣기
 function inputOrd(ord){
 	var order ="";
 	
 	// "+ + "
 	order+= 		"<div class=\"ord_stat\">";
-	order+= 			"<div class=\"ord_img\" mNo=\""+ ord.MNO +"\">";
+	order+= 			"<div class=\"ord_img\" mNo=\""+ ord.MNO +"\" >";
 	order+= 				"<img src=\"resources/upload/"+ord.MIMG+"\" class=\"choice_img\">";
 	order+= 			"</div>";
 	order+= 			"<div class=\"ord_div\">";
-	order+= 				"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\" >";
 	order+= 			"</div>";
 	order+= 			"<div class=\"ord_div\">";
 	order+= 				"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
 	order+= 			"</div >";
 	order+= 			"<div class=\"ord_div\">";
-	order+= 				"<select class=\"ord_cnt\" name=\"ord_cnt\">";
+	order+= 				"<select class=\"ord_cnt\" name=\"oMCnt\" value=\"\">";
 	order+= 					"<option value=\"1\" selected=\"selected\">1</option>";
 	order+= 					"<option value=\"2\">2</option>";
 	order+= 					"<option value=\"3\">3</option>";
@@ -597,6 +621,34 @@ function ordPay(){
 	$(".table_pay tbody").html(pay);
 	
 }
+//주문 넣는 함수
+
+function inputOrdMenu(){
+	
+	  var params = $("#menu_form").serialize();
+	   console.log(params);
+	   $.ajax({
+		   
+	      url : "input_Menus",//접속주소
+	      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+	      dataType :"json", //받아올 데이터 형식
+	      data : params,///보낼데이터(문자열 형태)
+	      success : function(res){
+	         if(res.msg == "success"){
+	        	 $("#menu_form").attr("action","Pos");
+				$("#menu_form").submit();
+	         }else if (res.msg == "failed"){
+	            alert("등록에 실패하였습니다."); // 팝업 변경 필요
+	         }else {
+	            alert("등록 중 문제가 발생하였습니다."); // 팝업 변경 필요
+	         }
+	      },
+	      error : function(request,status,error){
+	         console.log(error);
+	      }
+	   });
+
+}
 
 function makePopup(title, contents, func) {
 	var html ="";
@@ -635,6 +687,7 @@ function closePopup() {
 
 function ordPopup(title, contents, func) {
 	var html ="";
+	
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"popup_area\">";	
 	html+= "<div class=\"popup_head\">"+ title +"";	
@@ -681,8 +734,9 @@ function closePopup() {
 	</div>
 		<div class=content>
 	<form action="#" id="menu_form" method="post">
+	<input type="hidden" id="ordNo" name="ordNo"/>
+	<input type="hidden" id="ordMNo" name="oMNo"/>
 		<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/> 
-		<input type="hidden" id="menuCnt" name="menuCnt" /> 
 			<div class="left">
 					<div class="ord_area"></div>
 					<table class="table_pay" border="2" cellspacing="0">
@@ -716,6 +770,7 @@ function closePopup() {
 							<input type="button" value="BEAN"/>
 						</div>
 				</div>
+				<!--  
 				<table class="table_num" border="2" cellspacing="0">
 					<colgroup>
 						<col width="10%">
@@ -747,6 +802,7 @@ function closePopup() {
 						</tr>
 					</tbody>
 			</table>
+			-->
 				<div class="menu_area"></div>
 			</div>
 		</form>

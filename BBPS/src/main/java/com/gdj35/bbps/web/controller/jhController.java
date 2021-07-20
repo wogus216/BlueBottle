@@ -1,5 +1,6 @@
 package com.gdj35.bbps.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -208,7 +209,6 @@ public class jhController {
 			System.out.println(session.getAttribute("sBRCHNm"));
 			session.invalidate();
 				
-				
 			mav.setViewName("redirect:Pos_Login");
 			return mav;
 		}	
@@ -346,7 +346,47 @@ public class jhController {
 		
 	}
 	
-
+	//주문 세일즈 메뉴에 넣기
+	
+	@RequestMapping(value="/input_Menus",
+					method = RequestMethod.POST,
+					produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String input_Menus(
+			@RequestParam ArrayList<String> oMNo, //jsp에 있는 네임값과 일치해야한다
+			@RequestParam ArrayList<String> oMCnt) throws Throwable{
+		
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+	HashMap<String,Object> insertMap = new HashMap<String, Object>();
+	
+			try {
+				for(int i = 0; i < oMNo.size(); i++) {
+					insertMap.put("oMNo", oMNo.get(i));
+					insertMap.put("oMCnt", oMCnt.get(i));
+					
+					System.out.println("결제품목목록보자"+ insertMap);
+					
+					int cnt = ijhService.addOrd(insertMap);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+					}
+				}
+				
+			} catch (Throwable e) {
+				e.printStackTrace();
+				
+				modelMap.put("msg", "error");
+			}
+			
+			return mapper.writeValueAsString(modelMap);
+	}
+	
+	
 	//POS메뉴관리
 	 @RequestMapping(value="/Menu_List")
 	 public ModelAndView Menu_List(
@@ -440,7 +480,6 @@ public class jhController {
 		return mav;
 		
 	}
-	
 	
 	
 	@RequestMapping(value="/Menu_Imgs",

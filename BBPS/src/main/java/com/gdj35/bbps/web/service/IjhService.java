@@ -29,5 +29,7 @@ public List<HashMap<String, String>> getPMenu(HashMap<String, String> params) th
 
 public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Throwable;
 
+public int addOrd(HashMap<String, Object> insertMap) throws Throwable;
+
 
 }

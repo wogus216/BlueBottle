@@ -178,4 +178,10 @@
 		WHERE PM.MENU_NO = #{menuNo}
 	</select>
 	
+	<!-- 오더 품목 넣기 -->
+	<insert id="addOrd" parameterType="hashmap">
+		INSERT INTO SALES_MENU(SALES_NO,MENU_NO,CNT)
+		VALUES (210703020006, #{oMNo}, #{oMCnt})
+	</insert>
+	
 </mapper> 
