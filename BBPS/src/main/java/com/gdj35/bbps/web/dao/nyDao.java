@@ -128,5 +128,11 @@ public class nyDao implements InyDao{
 		return sqlSession.selectList("NY.getTotSales", params);
 	}
 
+	@Override
+	public int cnlSales(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.update("NY.cnlSales", params);
+	}
+
 		
 }

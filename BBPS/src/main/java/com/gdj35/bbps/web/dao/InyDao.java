@@ -43,5 +43,7 @@ public interface InyDao {
 
 	List<HashMap<String, String>> getTotSales(HashMap<String, String> params) throws Throwable;
 
+	int cnlSales(HashMap<String, String> params) throws Throwable;
+
 	
 }

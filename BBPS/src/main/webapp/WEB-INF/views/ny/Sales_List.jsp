@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>지점매출조회</title>
+<title>본사-지점매출조회</title>
 <style type="text/css">
 
 /* 상단 바 */
@@ -134,6 +134,9 @@ table {
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
 }
+tbody td{
+	cursor: pointer;
+}
 tr {
     display: table-row;
 }
@@ -153,22 +156,13 @@ td{
 td:first-child{
 	border-left: none;
 }
-tbody span {
-	text-decoration:underline;
-	text-underline-position: under;
-}
-tbody span:hover{
-	cursor: pointer;
-	color: blue;
-}
 tbody td {
 	text-align: right;
 }
 tbody td:first-child{
 	text-align: center;
 }
-
-input{
+ input{
 	width:150px;
 	height:40px;
 	margin:10px 5px;
@@ -357,28 +351,29 @@ $(document).ready(function() {
 		totSales();
 	});// search_btn click end
 	
-	$("tbody").on("click", "span", function() {
+	$("tbody").on("click", "td", function() {
 		if($(this).html() == "0") {
 			makePopup("", "해당 일자의 매출 정보가 없습니다.", null);
 		} 
 		else{
-			if($(this).parent().attr("id") == "sales") {
-				$("#enroll_date").val($(this).parent().parent().attr("date"));
+			if($(this).attr("id") == "sales") {
+				$("#enroll_date").val($(this).parent().attr("date"));
 				$("#actionForm").attr("action","B_Sales_Detail");
 				$("#actionForm").submit();		
 			}
-			if($(this).parent().attr("id") == "expense") {
-				$("#enroll_date").val($(this).parent().parent().attr("date"));
+			if($(this).attr("id") == "expense") {
+				$("#enroll_date").val($(this).parent().attr("date"));
 				$("#actionForm").attr("action","");
 				$("#actionForm").submit();		
 			}
 		}
 				
-	 });// td click end 
+	});// td click end
 	
 	
 });// document ready end
-	
+
+		
 function reloadList() {
 
 	var params = $("#actionForm").serialize();
@@ -411,8 +406,8 @@ function drawList(list) {
 		
 		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
 		html += "<td>" + d.ENROLL_DATE + "</td>     ";
-		html += "<td id=\"sales\"><span>" + S + "</span></td>     ";
-		html += "<td id=\"expense\"><span>" + O + "</span></td>     ";
+		html += "<td id=\"sales\">" + S + "</td>     ";
+		html += "<td id=\"expense\">" + O + "</td>     ";
 		html += "<td>" + N + "</td>     ";
 		html += "</tr>                ";
 	}
@@ -511,21 +506,22 @@ function makePopup(title, contents, func) {
 	html+= "</div>";	
 	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
-	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\" class=\"cnl_btn\" style=\"background-color: rgb(190, 190, 190)\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\" style=\"background-color: rgb(41, 128, 185)\">";	
 	html+= 	 	"</div>";
 	html+= "</div>";	
 	
 	$("body").prepend(html);
 	$(".popup_area").hide().show();
 	
-	$(".popup_btn, .close_btn").on("click",function(){
+	$(".cnl_btn, .close_btn").on("click",function(){
+		closePopup();		
+	$(".confirm_btn").on("click",function(){
 		if(func !=null){
 			func.call();
 		}
 		closePopup();
 		});
-	$(".confirm_btn").on("click",function(){
-		closePopup();
 	});
 	}
 
@@ -597,12 +593,17 @@ function closePopup() {
 <!--컨텐츠 -->
 	<div class="content_area">
 	<div class="content">
-	<h1 >매출조회 및 환불</h1>
+	<h1 >지점 매출조회</h1>
 	<div class="sales_info">
 		<form action="#" method="post" id="actionForm">
 			<input type="hidden" id="enroll_date" name="enroll_date" />
 			<input type="hidden" id="page" name="page" value="${page}" />
 			<input type="button" class="reset_btn" value="초기화" />
+			<select name="brch_choice">
+			  <option value="first" selected>First Value</option>
+			  <option value="second" >Second Value</option>
+			  <option value="third">Third Value</option>
+			</select>
 			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" />
 			<span>부터</span>
 			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />

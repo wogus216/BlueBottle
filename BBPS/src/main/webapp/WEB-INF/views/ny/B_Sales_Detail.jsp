@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>일자별 매출조회</title>
+<title>일자별 매출조회 및 환불</title>
 <style type="text/css">
 
 /* 상단 바 */
@@ -118,7 +118,7 @@ li {
 	vertical-align: top;
     margin-left: 30px;
     margin-right: 15px;
-    width: 55%;
+    width: 90%;
 }
 
 .contentB {
@@ -133,19 +133,24 @@ li {
 	vertical-align: top;
 }
 h1 {
- margin-bottom: 40px;
+ margin-bottom: 42px;
  font-size: 30px;
  float: left;
 }
+
+.contentB h1{
+	margin-bottom: 0px;
+}
 table {
+
     width: 100%;
     table-layout: fixed;
     background: #ffffff;
 	margin: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
-	
 }
+
 
 tr {
     display: table-row;
@@ -161,15 +166,20 @@ td{
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
-	cursor:pointer;
+	text-align: center;
 }
 
 td:first-child{
 	border-left: none;
 }
 
-table td {
-	text-align: center;
+tbody span{
+	text-decoration:underline;
+	text-underline-position: under;
+}
+tbody span:hover{
+	cursor: pointer;
+	color: blue;
 }
 
 .sales_info {
@@ -177,14 +187,45 @@ table td {
 	font-weight: 500;
 	width: 100%;
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: bottom;
 }
 
 .sales_info .info{
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: bottom;
 	margin-left: 5px;
 	float:left
+}
+
+.contentB .sales_info .info{
+	display: inline-block;
+	vertical-align: bottom;
+	margin-top: 42px;
+	text-align: left;
+}
+
+.contentB .sales_info .info span{
+	vertical-align: bottom;
+	margin-right: 10px;
+}
+.ref_area{
+	float: right;
+	text-align: right;
+	display: inline-block;
+	vertical-align: bottom;
+	margin-top: 25px;
+}
+
+.ref_area span{
+	vertical-align: bottom;
+	color: red;
+	font-size: 20px;
+	margin-right: 3px;
+}
+
+#ref_btn{
+	background-color: #bf4040;
+	margin: 0px;
 }
 .tot_price #tot_pay{
 	color: red;
@@ -211,46 +252,6 @@ input[type='button']{
 	outline:none;
 }
 
-.page_area{
-	text-align: center;
-	margin-top: 30px;
-}
-.page_btn{
-	display: inline-block;
-	text-align: center;
-	vertical-align: bottom;
-	margin: 10px 0px;
-	margin-right: 80px;
-	float: middle;
-}
-
-.page_btn button{
-	color: black;
-	width: 40px;
-	height: 40px;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:0px 3px;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
-}
-.page_btn button:hover{
-	color: #01a1dd;
-	cursor: pointer;
-}
-
-.page_btn button:focus{
-	outline:none;
-}
-
-.page_btn button{
-	background-color: white;
-}
-
-.on {
-	font-weight: bold;
-}
-
 .list_btn {
 	width:200px;
 	height: 50px;
@@ -261,6 +262,74 @@ input[type='button']{
 	vertical-align: bottom;
 	margin: 0px;
 }
+
+/*팝업*/
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn input[type='button']{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+input[type='button']:focus{outline:none;}
+
+.popup_head .close_btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
+
 
 </style>
 
@@ -280,13 +349,39 @@ $(document).ready(function() {
 		$("#actionForm").submit();
 	}); 
 	
-	$(".contentA tbody").on("click", "tr", function() {
-		$("#sales_no").val($(this).attr("salesNo"));
+	$(".contentA tbody").on("click", "span", function() {
+		$("#sales_no").val($(this).parent().parent().attr("salesNo"));
+		$("#sales_price").val($(this).parent().parent().attr("salesPrice"));
+		$(".contentA").css("width","55%");
 		$(".contentB").css("display", "inline-block");
 		reloadListB();	
 	});// tr click end
 	
+	$(".contentB .sales_info .ref_area").on("click", "#ref_btn", function() {
+		makePopup("환불","해당 판매를 전체 환불하시겠습니까?", function() {
+			
+			var params = $(".contentA #actionForm").serialize();
+			
+			$.ajax({
+				url: "cnlSales",
+				type: "post",
+				dataType: "json",
+				data: params,
+				success: function(res) {
+					reloadListA();
+					reloadListB();
+				},
+				error: function(request, status, error) {
+					console.log(error);
+				}
+				
+			}); //ajax end
+		}); // makePopup end
+		
+	}); //ref_btn click end
+	
 });//document ready end
+
 
 function reloadListA(){
 	var params = $(".contentA #actionForm").serialize();
@@ -299,7 +394,6 @@ function reloadListA(){
 		success: function(res) {
 			totSales();
 			drawListA(res.list);
-			drawPagingA(res.pb);
 		},
 		error: function(request, status, error) {
 			console.log(error);
@@ -355,7 +449,7 @@ function getTotSales(list) {
 }
 
 function drawListA(list) {
-	
+	console.log(list);
 	var html = "";
 	
 	for(d of list) {	
@@ -363,71 +457,95 @@ function drawListA(list) {
 		var cash = addComma(d.CASH_PAY);
 		var tot = addComma(d.TOT_PAY);
 		
-		html += "<tr salesNo = \""+ d.SALES_NO +"\">";
-		html += "<td>"+ d.NUM +"</td>     ";
-		html += "<td>"+ d.ENROLL_TIME +"</td>";
-		html += "<td>"+ d.SALES_NO +"</td>   ";
-		html += "<td>"+ card +"</td>   ";
-		html += "<td>"+ cash +"</td>   ";
-		html += "<td>"+ tot +"</td>    ";
-		html += "</tr>";
+		if(d.CNL_DATE == "11/11/11") {
+			html += "<tr salesNo = \""+ d.SALES_NO +"\" salesPrice = \""+ tot +"\" cnlDate = \""+ d.CNL_DATE +"\">";
+			html += "<td>"+ d.NUM +"</td>     ";
+			html += "<td>"+ d.ENROLL_TIME +"</td>";
+			html += "<td><span>"+ d.SALES_NO +"</span></td>   ";
+			html += "<td>"+ card +"</td>   ";
+			html += "<td>"+ cash +"</td>   ";
+			html += "<td>"+ tot +"</td>    ";
+			html += "</tr>";
+		} 
+		else{
+			html += "<tr style=\"color:red;\"salesNo = \""+ d.SALES_NO +"\" salesPrice = \""+ tot +"\" cnlDate = \""+ d.CNL_DATE +"\">";
+			html += "<td>"+ d.NUM +"</td>     ";
+			html += "<td>"+ d.ENROLL_TIME +"</td>";
+			html += "<td><span>"+ d.SALES_NO +"</span></td>   ";
+			html += "<td>"+ card +"</td>   ";
+			html += "<td>"+ cash +"</td>   ";
+			html += "<td>"+ tot +"(환불)</td>    ";
+			html += "</tr>";
+		}		
 	}
 	
 	$(".contentA tbody").html(html);
+	
 }
 
 function drawListB(list) {
-	
+	console.log(list);
 	var html = "";
 	
 	for(d of list) {	
 		var price = addComma(d.PRICE);
 		
-		html += "<tr>";
+		html += "<tr cnlDate=\""+ d.CNL_DATE + "\">";
 		html += "<td>"+ d.ROWNUM +"</td>";
 		html += "<td>"+ d.MENU_NAME +"</td>     ";
 		html += "<td>"+ d.CNT +"</td>";
 		html += "<td>"+ d.PRICE +"</td>   ";
 		html += "</tr>";
-	}
-	
-	$(".contentB .sales_info .info span").html($("#sales_no").val());
+	}	
 	$(".contentB tbody").html(html);
+	$(".contentB .sales_info .info").html("<span><strong>판매번호: </strong>"+ $("#sales_no").val() + "</span>");
+	$(".contentB .sales_info .info").append("<span><strong>판매금액: </strong>"+ $("#sales_price").val() + "</span>");
+	
+	if($(".contentB tbody tr").attr("cnlDate") == "11/11/11") {
+		$(".contentB .sales_info .ref_area").html("<input type=\"button\" id=\"ref_btn\" value=\"환불\"/>");
+	}
+	else{
+		$(".contentB .sales_info .ref_area").html("<span><strong>환불완료</strong></span>");
+	}
+		
 }
 
-function drawPagingA(pb){
-	var html = "";
-	                                    
-	html += "<button page = \"1\">|<</button>";
-	if($("#page").val()=="1"){
-		html += "<button page = \"1\"><</button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()-1) + "\" ><</button>";
-		
+//팝업
+function makePopup(title, contents, func) {
+	
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\"  class=\"cnl_btn\" style=\"background-color: rgb(190, 190, 190)\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\" style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 	 	"</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".cnl_btn, .close_btn").on("click",function(){
+		closePopup();
+	});	
+	$(".confirm_btn").on("click",function(){
+		if(func !=null){
+			func.call();
 	}
-	
-	for(var i = pb.startPcount; i <= pb.endPcount; i++){
-		if($("#page").val() == i){ //현재 페이지의 값이랑 같을 때
-			html += "<button class = \"on\" page = \""+ i +"\" >"+ i +"</button>";	
-		}else{
-			html += "<button  page = \""+ i +"\" >"+ i +"</button>";	
-		}
-		
-	}
-	
-	if($("#page").val() == pb.maxPcount){
-		html += "<button page = \""+ pb.maxPcount +"\" >></button>";
-	}else{
-		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
-	}
-	
-	
-	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
-	
-	$(".contentA .page_btn").html(html);
+		closePopup();
+	});
 }
 
+
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
+}	
 //천단위 콤마 찍기
 function addComma(value){
 	value = String(value);
@@ -498,11 +616,12 @@ function addComma(value){
 <div class="content_area">
 <div class="contentA">
 <form action="#" method="post" id="actionForm">
-	<input type="hidden" id="page" name="page" value="${page}" />
+	<input type="hidden" id="page" name="page" value="${param.page}" />
 	<input type="hidden" id="enroll_date" name="enroll_date" value="${param.enroll_date}" />
 	<input type ="hidden" id="start_date" name="start_date" value="${param.start_date}" />
 	<input type="hidden" id="end_date" name="end_date" value="${param.end_date}" />
 	<input type="hidden" id="sales_no" name="sales_no"/>
+	<input type="hidden" id="sales_price" name="sales_price"/>
 </form>
 <div class="head"><h1 >일자별 매출액조회</h1></div>
 <div class="sales_info">
@@ -516,60 +635,59 @@ function addComma(value){
 	</div>
 </div>
 <table cellspacing="0">
-	<colgroup>
-		<col width="10%">
-		<col width="13%">
-		<col width="20%">
-		<col width="18%">
-		<col width="18%">
-		<col width="18%">
-	</colgroup>
-	<thead>
-		<tr>
-			<th scope="col" style="border-left: none;">No.</th>
-			<th scope="col">판매시간</th>
-			<th scope="col">판매번호</th>
-			<th scope="col">카드매출(원)</th>
-			<th scope="col">현금매출(원)</th>
-			<th scope="col">총매출(원)</th>
-		</tr>
-	<thead>
-	<tbody>
-	</tbody>
-</table>
-	<div class="page_area">
-		<div class="page_btn">
-		</div>	
-		<input type="button" class="list_btn" value="목록"/>
-	</div>	
+		<colgroup>
+			<col width="10%">
+			<col width="13%">
+			<col width="25%">
+			<col width="18%">
+			<col width="18%">
+			<col width="18%">
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col" style="border-left: none;">No.</th>
+				<th scope="col">판매시간</th>
+				<th scope="col">판매번호</th>
+				<th scope="col">카드결제(원)</th>
+				<th scope="col">현금결제(원)</th>
+				<th scope="col">총결제금액(원)</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+<input type="button" class="list_btn" value="목록"/>
+
 </div> <!--contentA end  -->
 
 <div class="contentB">
 
-	<div class="head"><h1 >상세조회</h1></div>
+	<div class="head"><h1 >상세조회 및 환불</h1></div>
 	<div class="sales_info">
 		<div class="info">
-			<strong>판매번호 : </strong><span></span>
+		</div>
+		<div class="ref_area">
 		</div>
 	</div>
 	<table cellspacing="0">
 		<colgroup>
 			<col width="15%">
-			<col width="45%">
+			<col width="35%">
 			<col width="20%">
-			<col width="40%">
+			<col width="30%">
 		</colgroup>
 		<thead>
 			<tr>
 				<th scope="col" style="border-left: none;">No.</th>
-					<th scope="col">품목</th>
-					<th scope="col">수량</th>
-					<th scope="col">가격</th>
-				</tr>
-			<thead>
-			<tbody>
-			</tbody>
-		</table>
+				<th scope="col">품목</th>
+				<th scope="col">수량</th>
+				<th scope="col">가격</th>
+			</tr>
+		<thead>
+		<tbody>
+		</tbody>
+	</table>
+	
 </div><!--contentB end -->
 	
 </div> <!--content_area end -->
