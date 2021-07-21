@@ -7,7 +7,7 @@
 	SELECT COUNT(DISTINCT I.ITEM_NO)
 	FROM ITEM I INNER JOIN ITEM_PRICE IP
      ON I.ITEM_NO = IP.ITEM_NO
-    WHERE 1=1
+    AND I.DEL_FLAG = 1
     <if test = "search_input != null and search_input != ''">
 		<choose>
 			<when test = "search_filter == 0">
@@ -18,18 +18,39 @@
 			</when>
 		</choose>
 	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
 	</select>
 	
 	<!-- 품목리스트 -->
 	<select id ="getPList" parameterType="hashmap" resultType="hashmap">
-	SELECT ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT
+	SELECT CATE_NAME,ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT
 	FROM(
-		SELECT ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,ROW_NUMBER() OVER(ORDER BY ITEM_NO DESC) AS RNK
+		SELECT CATE_NAME,ITEM_NO,CATE_NO,ITEM_NAME,PRICE,MIN_ORD_UNIT,ROW_NUMBER() OVER(ORDER BY ITEM_NO DESC) AS RNK
         FROM(
-        SELECT I.ITEM_NO,I.CATE_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,ROW_NUMBER() OVER(partition by I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC) AS RNK
+        SELECT IC.CATE_NAME,I.ITEM_NO,I.CATE_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,ROW_NUMBER() OVER(partition by I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC) AS RNK
 		FROM ITEM I INNER JOIN ITEM_PRICE IP
     	 ON I.ITEM_NO = IP.ITEM_NO
-    	 AND I.DEL_FLAG = 1)
+    	 AND I.DEL_FLAG = 1
+    	 INNER JOIN ITEM_CATE IC
+    	 ON I.CATE_NO = IC.CATE_NO)
          WHERE RNK = 1
    		 <if test = "search_input != null and search_input != ''">
 		<choose>
@@ -38,6 +59,25 @@
 			</when>
 			<when test = "search_filter == 1">
 			AND ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+		</if>
+		<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  CATE_NO = #{cate}
 			</when>
 		</choose>
 	</if>
@@ -72,10 +112,10 @@
 	
 	<!-- 품목추가 --><!-- 사용자 번호는 로그인된  대상으로 수정 필요  및 현재 시퀀스는 테스트용으로 만든 시퀀스로 쓴 것이므로 나중에 진짜 시퀀스로 바꿔야함-->
 	<insert id="AddItem" parameterType="hashmap">	
-	INSERT INTO ITEM VALUES (TEST_SEQ.NEXTVAL,#{itemCate},4,#{itemName},#{itemMinOrdUnit},SYSDATE,#{itemComProdFlag},DEFAULT)
+	INSERT INTO ITEM VALUES (ITEM_SEQ.NEXTVAL,#{itemCate},4,#{itemName},#{itemMinOrdUnit},SYSDATE,#{itemComProdFlag},DEFAULT)
 	</insert>
 	<insert id="AddItemPrice" parameterType="hashmap">	
-	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,TEST_SEQ.CURRVAL,4,#{itemPrice},SYSDATE)
+	INSERT INTO ITEM_PRICE VALUES (ITEM_PRICE_SEQ.NEXTVAL,ITEM_SEQ.CURRVAL,4,#{itemPrice},SYSDATE)
 	</insert>
 	
 	<!-- 품목수정 -->
@@ -85,7 +125,7 @@
 	</update>
 	<!-- 수정 시 가격변동이 있는 경우 품목_가격 테이블에 해당 이력(변경가격) 추가 --><!-- 테스트 시퀀스로 시퀀스 변경 필요 -->
 	<insert id="EditItemPrice" parameterType="hashmap">	
-	INSERT INTO ITEM_PRICE VALUES (TEST_SEQ2.NEXTVAL,#{itemNo},4,#{itemPrice},SYSDATE)
+	INSERT INTO ITEM_PRICE VALUES (ITEM_PRICE_SEQ.NEXTVAL,#{itemNo},4,#{itemPrice},SYSDATE)
 	</insert>
 	
 	<!-- 품목 삭제  / 삭제여부 변경-->
@@ -118,6 +158,7 @@
                                                                             ON P.EXPIRY_DATE = S.EXPIRY_DATE) A INNER JOIN ITEM I
                                                                                                                  ON A.ITEM_NO = I.ITEM_NO
                                                                             WHERE A.PPSUM > 0
+                                                                            ORDER BY EXPIRY_DATE
 	</select>
 	
 	<!-- 재고상세 / 출고재고 리스트 -->
@@ -167,7 +208,7 @@
 	FROM HQ_STOR HS INNER JOIN HQ_USER HU
                 ON HS.USER_NO = HU.USER_NO
                 AND HS.ITEM_NO = #{itemNo}
-                AND HS.EXPIRY_DATE = #{expDate}                   
+                AND TO_CHAR(HS.EXPIRY_DATE,'YYYY-MM-DD') = #{expDate}                   
 	</select>
 	
 	<!-- 본사 폐기리스트 행 개수 -->
@@ -188,22 +229,22 @@
 			</when>
 		</choose>
 	</if>
-	<if test = "cate != null and cate != '' and cate != 7">
+	<if test = "cate != null and cate != ''">
 		<choose>
 			<when test = "cate == 0">
-			AND  I.CATE_NO = 0
+			AND  I.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 1">
-			AND  I.CATE_NO = 1
+			AND  I.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 2">
-			AND  I.CATE_NO = 2
+			AND  I.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 3">
-			AND  I.CATE_NO = 3
+			AND  I.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 4">
-			AND  I.CATE_NO = 4
+			AND  I.CATE_NO = #{cate}
 			</when>
 		</choose>
 	</if>	
@@ -214,13 +255,15 @@
 	
 	<!-- 본사 폐기 목록 조회 -->
 	<select id = "getHSDList" parameterType="hashmap" resultType="hashmap">
-	SELECT CATE_NO,ITEM_NO,ITEM_NAME,TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE ,CNT,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,NOTE,RNUM
+	SELECT CATE_NAME,CATE_NO,ITEM_NO,ITEM_NAME,TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE ,CNT,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,NOTE,RNUM
 	FROM(
-		SELECT I.CATE_NO,I.ITEM_NO,I.ITEM_NAME,HD.ENROLL_DATE,HD.CNT,HS.EXPIRY_DATE,HD.NOTE,ROW_NUMBER() OVER(ORDER BY HD.ENROLL_DATE DESC )AS RNUM
+		SELECT IC.CATE_NAME,I.CATE_NO,I.ITEM_NO,I.ITEM_NAME,HD.ENROLL_DATE,HD.CNT,HS.EXPIRY_DATE,HD.NOTE,ROW_NUMBER() OVER(ORDER BY HD.ENROLL_DATE DESC )AS RNUM
 		FROM HQ_DISCARD HD INNER JOIN HQ_STOR HS
          	           ON HD.STOR_NO = HS.STOR_NO
           	          INNER JOIN ITEM I
-         	           ON HS.ITEM_NO  = I.ITEM_NO
+         	           ON HS.ITEM_NO = I.ITEM_NO
+         	          INNER JOIN ITEM_CATE IC
+         	           ON I.CATE_NO = IC.CATE_NO
         <if test = "search_input != null and search_input != ''">
 		<choose>
 			<when test = "search_filter == 0">
@@ -231,22 +274,22 @@
 			</when>
 		</choose>
 	</if>
-	<if test = "cate != null and cate != '' and cate != 7">
-	<choose>
+	<if test = "cate != null and cate != ''">
+		<choose>
 			<when test = "cate == 0">
-			AND  I.CATE_NO = 0
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 1">
-			AND  I.CATE_NO = 1
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 2">
-			AND  I.CATE_NO = 2
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 3">
-			AND  I.CATE_NO = 3
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 4">
-			AND  I.CATE_NO = 4
+			AND  IC.CATE_NO = #{cate}
 			</when>
 		</choose>
 	</if>
@@ -295,94 +338,212 @@
 			</when>
 		</choose>
 	</if>
-	<if test = "cate != null and cate != '' and cate != 7">
+	<if test = "cate != null and cate != ''">
 		<choose>
 			<when test = "cate == 0">
-			AND  IT.CATE_NO = 0
+			AND  IT.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 1">
-			AND  IT.CATE_NO = 1
+			AND  IT.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 2">
-			AND  IT.CATE_NO = 2
+			AND  IT.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 3">
-			AND  IT.CATE_NO = 3
+			AND  IT.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 4">
-			AND  IT.CATE_NO = 4
-			</when>
-		</choose>
-	</if>	
-	</select>
-	
-	<!-- 지점 재고리스트 -->
-	<select id = "getBSList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
-	SELECT CATE_NAME, ITEM_NO, ITEM_NAME, CURCNT, SAFECNT, TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE
-	FROM(
-	    SELECT IC.CATE_NAME, IT.ITEM_NO, IT.ITEM_NAME, (ISUM - NVL(PSUM,0) - NVL(SSUM,0)) AS CURCNT ,NVL(ISS.SAFE_STOCK_CNT,0) AS SAFECNT, I.EXPIRY_DATE, ROW_NUMBER() OVER(ORDER BY I.EXPIRY_DATE) AS RNK
-	    FROM (SELECT BS.ITEM_NO, BS.EXPIRY_DATE , SUM(BS.CNT) AS ISUM              
-	          FROM BRCH_STOR BS   INNER JOIN ORD O
-	                                ON BS.ORD_NO = O.ORD_NO
-	                                AND O.BRCH_NO = 3
-	          GROUP BY BS.ITEM_NO, BS.EXPIRY_DATE ) I LEFT OUTER JOIN (SELECT BS.ITEM_NO, BS.EXPIRY_DATE, SUM(BD.CNT) AS PSUM
-	                                                                    FROM BRCH_DISCARD BD INNER JOIN BRCH_STOR BS
-	                                                                                         ON BD.STOR_NO = BS.STOR_NO
-	                                                                                         INNER JOIN ORD O
-	                                                                                         ON BS.ORD_NO = O.ORD_NO
-	                                                                                         AND O.BRCH_NO = 3
-	                                                                    GROUP BY BS.ITEM_NO, BS.EXPIRY_DATE) P
-	                                                ON I.ITEM_NO = P.ITEM_NO
-	                                                AND I.EXPIRY_DATE = P.EXPIRY_DATE
-	                                                                    LEFT OUTER JOIN (SELECT BS.ITEM_NO, BS.EXPIRY_DATE, SUM(BUI.CNT) AS SSUM
-	                                                                                        FROM BRCH_STOR BS INNER JOIN BRCH_USE_ITEM BUI
-	                                                                                                             ON BS.STOR_NO = BUI.STOR_NO
-	                                                                                                             INNER JOIN ORD O
-	                                                                                                             ON BS.ORD_NO = O.ORD_NO
-	                                                                                                             AND O.BRCH_NO = 3
-	                                                                                        GROUP BY BS.ITEM_NO, BS.EXPIRY_DATE)S
-	                                                                       ON I.ITEM_NO = S.ITEM_NO      
-	                                                                         AND I.EXPIRY_DATE = S.EXPIRY_DATE
-	                                                                                    INNER JOIN ITEM IT
-	                                                                                    ON I.ITEM_NO = IT.ITEM_NO
-	                                                                                    INNER JOIN ITEM_CATE IC
-	                                                                                    ON IT.CATE_NO = IC.CATE_NO
-	                                                                                    LEFT OUTER JOIN ITEM_SAFE_STOCK ISS
-	                                                                                    ON I.ITEM_NO = ISS.ITEM_NO
-	                                                                                    AND ISS.BRCH_NO = 3
-   	WHERE (ISUM - NVL(PSUM,0) - NVL(SSUM,0)) > 0 
-    <if test = "search_input != null and search_input != ''">
-		<choose>
-			<when test = "search_filter == 0">
-			AND IT.ITEM_NO LIKE '%'|| #{search_input} ||'%'
-			</when>
-			<when test = "search_filter == 1">
-			AND IT.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			AND  IT.CATE_NO = #{cate}
 			</when>
 		</choose>
 	</if>
-	<if test = "cate != null and cate != '' and cate != 7">
+	</select>
+	
+	<!-- 지점 재고리스트 --><!-- 품목별 -->
+	<select id = "getBSList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
+	SELECT CATE_NAME, ITEM_NO, ITEM_NAME, HSTOCK, SAFECNT, EXPIRY_DATE
+	FROM (
+        SELECT IC.CATE_NAME, I.ITEM_NO, I.ITEM_NAME, A.HSTOCK, NVL(ISS.SAFE_STOCK_CNT,0) AS SAFECNT, ROW_NUMBER() OVER (ORDER BY I.ITEM_NO) AS RNK, B.EXPIRY_DATE
+        FROM (SELECT BS.ITEM_NO, (SCNT-PCNT-UCNT)AS HSTOCK
+	        FROM (SELECT BS.ITEM_NO,SUM(BS.CNT) SCNT
+	              FROM BRCH_STOR BS INNER JOIN ORD O
+	                                ON BS.ORD_NO = O.ORD_NO
+	                                AND O.BRCH_NO = 3
+	              GROUP BY BS.ITEM_NO) BS INNER JOIN  (SELECT BS.ITEM_NO,SUM(NVL(BD.CNT,0)) AS PCNT
+	                                                   FROM BRCH_STOR BS INNER JOIN ORD O
+	                                                                      ON BS.ORD_NO = O.ORD_NO
+	                                                                      AND O.BRCH_NO = 3
+	                                                                      LEFT OUTER JOIN  BRCH_DISCARD BD
+	                                                                      ON BS.STOR_NO = BD.STOR_NO
+	                                                   GROUP BY  BS.ITEM_NO) BD
+	                                      ON BS.ITEM_NO = BD.ITEM_NO
+	                                      INNER JOIN (SELECT BS.ITEM_NO,SUM(NVL(BUI.CNT,0)) AS UCNT
+	                                                  FROM BRCH_STOR BS INNER JOIN ORD O
+	                                                                    ON BS.ORD_NO = O.ORD_NO
+	                                                                    AND O.BRCH_NO = 3
+	                                                                    LEFT OUTER JOIN  BRCH_USE_ITEM BUI
+	                                                                    ON BS.STOR_NO = BUI.STOR_NO
+	                                                  GROUP BY  BS.ITEM_NO) BUI
+	                                      ON BS.ITEM_NO = BUI.ITEM_NO) A INNER JOIN ITEM I
+	                                                                     ON A.ITEM_NO = I.ITEM_NO
+	                                                                     INNER JOIN ITEM_CATE IC
+	                                                                     ON I.CATE_NO = IC.CATE_NO
+	                                                                     LEFT OUTER JOIN ITEM_SAFE_STOCK ISS
+	                                                                     ON A.ITEM_NO = ISS.ITEM_NO
+	                                                                     AND ISS.BRCH_NO = 3
+	                                                                     INNER JOIN (SELECT ITEM_NO,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE
+                                                                                        FROM(
+                                                                                            SELECT I.ITEM_NO,I.ITEM_NAME ,A.HSTOCK, A.EXPIRY_DATE, ROW_NUMBER () OVER (PARTITION BY ITEM_NAME ORDER BY A.EXPIRY_DATE) AS RNK
+                                                                                            FROM(
+                                                                                                SELECT BS.ITEM_NO, BS.EXPIRY_DATE,(SCNT-PCNT-UCNT)AS HSTOCK
+                                                                                                FROM (SELECT BS.ITEM_NO,BS.EXPIRY_DATE,SUM(BS.CNT) SCNT
+                                                                                                                      FROM BRCH_STOR BS INNER JOIN ORD O
+                                                                                                                                        ON BS.ORD_NO = O.ORD_NO
+                                                                                                                                        AND O.BRCH_NO = 3
+                                                                                                                                       
+                                                                                                                      GROUP BY BS.ITEM_NO,BS.EXPIRY_DATE) BS INNER JOIN (SELECT BS.ITEM_NO,BS.EXPIRY_DATE,SUM(NVL(BD.CNT,0)) AS PCNT
+                                                                                                                                                                         FROM BRCH_STOR BS INNER JOIN ORD O
+                                                                                                                                                                                           ON BS.ORD_NO = O.ORD_NO
+                                                                                                                                                                                           AND O.BRCH_NO = 3
+                                                                                                                                                                                         
+                                                                                                                                                                                           LEFT OUTER JOIN  BRCH_DISCARD BD
+                                                                                                                                                                                           ON BS.STOR_NO = BD.STOR_NO
+                                                                                                                                                                         GROUP BY  BS.ITEM_NO,BS.EXPIRY_DATE) BD
+                                                                                                                                                             ON BS.EXPIRY_DATE = BD.EXPIRY_DATE
+                                                                                                                                                             INNER JOIN (SELECT BS.ITEM_NO,BS.EXPIRY_DATE,SUM(NVL(BUI.CNT,0)) AS UCNT
+                                                                                                                                                                         FROM BRCH_STOR BS INNER JOIN ORD O
+                                                                                                                                                                                           ON BS.ORD_NO = O.ORD_NO
+                                                                                                                                                                                           AND O.BRCH_NO = 3
+                                                                                                                                                                                          
+                                                                                                                                                                                           LEFT OUTER JOIN  BRCH_USE_ITEM BUI
+                                                                                                                                                                                           ON BS.STOR_NO = BUI.STOR_NO
+                                                                                                                                                                         GROUP BY  BS.ITEM_NO,BS.EXPIRY_DATE) BUI
+                                                                                                                                                             ON BS.EXPIRY_DATE = BUI.EXPIRY_DATE) A INNER JOIN ITEM I
+                                                                                                                                                                                                    ON A.ITEM_NO = I.ITEM_NO
+                                                                                            WHERE HSTOCK > 0                                                                                                        
+                                                                                            ORDER BY EXPIRY_DATE)
+                                                                                        WHERE RNK = 1) B
+                                                                            ON I.ITEM_NO = B.ITEM_NO  
+    WHERE HSTOCK > 0
+    <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
 		<choose>
 			<when test = "cate == 0">
-			AND  IT.CATE_NO = 0
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 1">
-			AND  IT.CATE_NO = 1
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 2">
-			AND  IT.CATE_NO = 2
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 3">
-			AND  IT.CATE_NO = 3
+			AND  IC.CATE_NO = #{cate}
 			</when>
 			<when test = "cate == 4">
-			AND  IT.CATE_NO = 4
+			AND  IC.CATE_NO = #{cate}
 			</when>
 		</choose>
 	</if>)  
     WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
-    ORDER BY EXPIRY_DATE
 	</select>
+	
+	
+	<!-- 지점 재고 상세 유통기한 별 재고 리스트 -->
+	<select id = "getBStockExpList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
+	SELECT I.ITEM_NAME ,A.HSTOCK, TO_CHAR(A.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE
+	FROM(
+	    SELECT BS.ITEM_NO, BS.EXPIRY_DATE,(SCNT-PCNT-UCNT)AS HSTOCK
+	    FROM (SELECT BS.ITEM_NO,BS.EXPIRY_DATE,SUM(BS.CNT) SCNT
+	                          FROM BRCH_STOR BS INNER JOIN ORD O
+	                                            ON BS.ORD_NO = O.ORD_NO
+	                                            AND O.BRCH_NO = 3
+	                                            AND BS.ITEM_NO = #{itemNo}
+	                          GROUP BY BS.ITEM_NO,BS.EXPIRY_DATE) BS INNER JOIN (SELECT BS.ITEM_NO,BS.EXPIRY_DATE,SUM(NVL(BD.CNT,0)) AS PCNT
+	                                                                             FROM BRCH_STOR BS INNER JOIN ORD O
+	                                                                                               ON BS.ORD_NO = O.ORD_NO
+	                                                                                               AND O.BRCH_NO = 3
+	                                                                                               AND BS.ITEM_NO = #{itemNo}
+	                                                                                               LEFT OUTER JOIN  BRCH_DISCARD BD
+	                                                                                               ON BS.STOR_NO = BD.STOR_NO
+	                                                                             GROUP BY  BS.ITEM_NO,BS.EXPIRY_DATE) BD
+	                                                                 ON BS.EXPIRY_DATE = BD.EXPIRY_DATE
+	                                                                 INNER JOIN (SELECT BS.ITEM_NO,BS.EXPIRY_DATE,SUM(NVL(BUI.CNT,0)) AS UCNT
+	                                                                             FROM BRCH_STOR BS INNER JOIN ORD O
+	                                                                                               ON BS.ORD_NO = O.ORD_NO
+	                                                                                               AND O.BRCH_NO = 3
+	                                                                                               AND BS.ITEM_NO = #{itemNo}
+	                                                                                               LEFT OUTER JOIN  BRCH_USE_ITEM BUI
+	                                                                                               ON BS.STOR_NO = BUI.STOR_NO
+	                                                                             GROUP BY  BS.ITEM_NO,BS.EXPIRY_DATE) BUI
+	                                                                 ON BS.EXPIRY_DATE = BUI.EXPIRY_DATE) A INNER JOIN ITEM I
+	                                                                                                        ON A.ITEM_NO = I.ITEM_NO
+	WHERE HSTOCK > 0    	                                                                                                        
+	ORDER BY EXPIRY_DATE                                                                                                          
+	</select>
+	
+	<!-- 지점 재고 사용 이력 -->
+	<select id = "getBStockUseList" parameterType="hashmap" resultType="hashmap"> <!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
+	SELECT I.ITEM_NO, I.ITEM_NAME, BUI.CNT, TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,TO_CHAR(BUI.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM BRCH_USE_ITEM BUI INNER JOIN BRCH_STOR BS
+	                    ON BS.STOR_NO = BUI.STOR_NO
+	                    AND BS.ITEM_NO = #{itemNo}
+	                    INNER JOIN ORD O
+	                    ON BS.ORD_NO = O.ORD_NO
+	                    AND O.BRCH_NO = 3
+	                    INNER JOIN ITEM I
+	                    ON BS.ITEM_NO = I.ITEM_NO
+	ORDER BY ENROLL_DATE DESC
+	</select>
+	
+	<!-- 지점 재고 폐기 이력 -->
+	<select id = "getBStockDiscardList" parameterType="hashmap" resultType="hashmap">
+	SELECT I.ITEM_NAME, BD.CNT, TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,BD.NOTE,TO_CHAR(BD.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM BRCH_DISCARD BD INNER JOIN BRCH_STOR BS
+	                    ON BS.STOR_NO = BD.STOR_NO
+	                    AND BS.ITEM_NO = #{itemNo}
+	                    INNER JOIN ORD O
+	                    ON BS.ORD_NO = O.ORD_NO
+	                    AND O.BRCH_NO = 3
+	                    INNER JOIN ITEM I
+	                    ON BS.ITEM_NO = I.ITEM_NO
+	ORDER BY ENROLL_DATE DESC
+	</select>
+	
+	<!-- 지점 재고 입고 이력 -->
+	<select id = "getBStockStorList" parameterType="hashmap" resultType="hashmap">
+	SELECT O.ORD_NO,I.ITEM_NAME,BS.CNT, TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE, TO_CHAR(BS.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM BRCH_STOR BS INNER JOIN ORD O
+	                    ON BS.ORD_NO = O.ORD_NO
+	                    AND O.BRCH_NO = 3
+	                    AND BS.ITEM_NO = #{itemNo}
+	                    INNER JOIN ITEM I
+	                    ON BS.ITEM_NO = I.ITEM_NO
+	ORDER BY ENROLL_DATE DESC
+	</select> 
+	
+	<!-- 지점 재고 폐기 기능 -->
+	<insert id="BDiscardStock" parameterType="hashmap">
+	INSERT INTO BRCH_DISCARD(DISCARD_NO,STOR_NO,CNT,NOTE,ENROLL_DATE)
+	SELECT BRCH_DISCARD_SEQ.NEXTVAL,STOR_NO,#{discardCnt},#{discardNote},SYSDATE
+	FROM(
+	SELECT BS.*,ROW_NUMBER()OVER(ORDER BY BS.ENROLL_DATE) AS RNK
+	FROM BRCH_STOR BS INNER JOIN ORD O
+	                  ON BS.ORD_NO = O.ORD_NO
+	                  AND O.BRCH_NO = 3
+	                  AND BS.ITEM_NO = #{itemNo}
+	                  AND BS.EXPIRY_DATE = #{expDate})        
+	WHERE RNK = 1
+	</insert>
 	
 	<!-- 지점 재고 수정 리스트 그리기 (페이징 x)  -->
 	<select id = "getBSEList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
@@ -449,6 +610,318 @@
 		</choose>
 	</if>)
     ORDER BY EXPIRY_DATE
+	</select>
 	
+	<!-- 지점 재고 수정 -->
+	<insert id="EidtBStock" parameterType="hashmap">
+	INSERT INTO BRCH_USE_ITEM(USE_ITEM_NO,STOR_NO,CNT,ENROLL_DATE)
+	SELECT BRCH_USE_ITEM_SEQ.NEXTVAL,STOR_NO,#{chkcurCnt}-#{editcurCnt},SYSDATE
+	FROM(
+	SELECT BS.*,ROW_NUMBER()OVER(ORDER BY BS.ENROLL_DATE) AS RNK
+	FROM BRCH_STOR BS INNER JOIN ORD O
+	                  ON BS.ORD_NO = O.ORD_NO
+	                  AND O.BRCH_NO = 3
+	                  AND BS.ITEM_NO = #{itemNo}
+	                  AND BS.EXPIRY_DATE = #{expDate})        
+	WHERE RNK = 1
+	</insert>
+	
+	<!-- 지점 안전재고 수정 -->
+	<update id = "BSSEdit" parameterType="hashmap">
+	UPDATE ITEM_SAFE_STOCK SET SAFE_STOCK_CNT = #{safeCnt}
+	WHERE BRCH_NO = 3
+	AND ITEM_NO = #{itemNo}
+	</update>
+	
+	
+	<!-- 지점 입고 재고 리스트 행 개수 -->
+	<select id = "getBSSCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*)
+    FROM BRCH_STOR BS INNER JOIN ORD O
+                      ON BS.ORD_NO = O.ORD_NO
+                      AND O.BRCH_NO = 3
+                      INNER JOIN ITEM I
+                      ON BS.ITEM_NO = I.ITEM_NO
+                      INNER JOIN ITEM_CATE IC
+                      ON I.CATE_NO = IC.CATE_NO
+	<if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND BS.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>
+	</select>
+	
+	<!-- 지점 입고 재고 리스트 -->
+	<select id = "getBSSList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
+	SELECT ORD_NO,CATE_NAME,ITEM_NO,ITEM_NAME,CNT,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM(
+	    SELECT O.ORD_NO,IC.CATE_NAME, I.ITEM_NO, I.ITEM_NAME, BS.CNT,BS.EXPIRY_DATE,BS.ENROLL_DATE,ROW_NUMBER() OVER (ORDER BY BS.ENROLL_DATE DESC) AS RNK
+	    FROM BRCH_STOR BS INNER JOIN ORD O
+	                      ON BS.ORD_NO = O.ORD_NO
+	                      AND O.BRCH_NO = 3
+	                      INNER JOIN ITEM I
+	                      ON BS.ITEM_NO = I.ITEM_NO
+	                      INNER JOIN ITEM_CATE IC
+	                      ON I.CATE_NO = IC.CATE_NO
+	    <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND BS.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>)
+	WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
+	<!-- 지점 재고 사용 리스트 행 개수 -->
+	<select id = "getBSUCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*)
+	FROM BRCH_USE_ITEM BUI INNER JOIN BRCH_STOR BS
+	                        ON BUI.STOR_NO = BS.STOR_NO
+	                        INNER JOIN ORD O
+	                        ON BS.ORD_NO = O.ORD_NO
+	                        AND O.BRCH_NO = 3
+	                        INNER JOIN ITEM I
+	                        ON BS.ITEM_NO = I.ITEM_NO
+	                        INNER JOIN ITEM_CATE IC
+	                        ON I.CATE_NO = IC.CATE_NO 
+	<if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND BUI.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>
+	</select>
+	
+	<!-- 지점 재고 사용 리스트-->
+	<select id = "getBSUList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
+	SELECT CATE_NAME,ITEM_NO,ITEM_NAME,CNT,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE ,TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM(
+	SELECT IC.CATE_NAME, I.ITEM_NO, I.ITEM_NAME, BUI.CNT, BS.EXPIRY_DATE, BUI.ENROLL_DATE,ROW_NUMBER() OVER (ORDER BY BUI.ENROLL_DATE DESC) AS RNK
+	FROM BRCH_USE_ITEM BUI INNER JOIN BRCH_STOR BS
+	                        ON BUI.STOR_NO = BS.STOR_NO
+	                        INNER JOIN ORD O
+	                        ON BS.ORD_NO = O.ORD_NO
+	                        AND O.BRCH_NO = 3
+	                        INNER JOIN ITEM I
+	                        ON BS.ITEM_NO = I.ITEM_NO
+	                        INNER JOIN ITEM_CATE IC
+	                        ON I.CATE_NO = IC.CATE_NO 
+	    <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND BUI.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>)
+	WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
+	<!-- 지점 재고 폐기 리스트 행 개수 -->
+	<select id = "getBSDCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*)
+	FROM BRCH_DISCARD BD INNER JOIN BRCH_STOR BS
+	                        ON BD.STOR_NO = BS.STOR_NO
+	                        INNER JOIN ORD O
+	                        ON BS.ORD_NO = O.ORD_NO
+	                        AND O.BRCH_NO = 3
+	                        INNER JOIN ITEM I
+	                        ON BS.ITEM_NO = I.ITEM_NO
+	                        INNER JOIN ITEM_CATE IC
+	                        ON I.CATE_NO = IC.CATE_NO 
+	<if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND BD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>
+	</select>
+	
+	<!-- 지점 재고 폐기 리스트-->
+	<select id = "getBSDList" parameterType="hashmap" resultType="hashmap"><!-- 지점번호 3 처리된 부분 로그인된 계정과 동일하게 수정처리 필요 -->
+	SELECT CATE_NAME,ITEM_NO,ITEM_NAME,CNT,TO_CHAR(EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,NOTE,TO_CHAR(ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM(
+	SELECT IC.CATE_NAME, I.ITEM_NO, I.ITEM_NAME, BD.CNT, BS.EXPIRY_DATE, BD.NOTE, BD.ENROLL_DATE,ROW_NUMBER() OVER (ORDER BY BD.ENROLL_DATE DESC) AS RNK
+	FROM BRCH_DISCARD BD INNER JOIN BRCH_STOR BS
+	                        ON BD.STOR_NO = BS.STOR_NO
+	                        INNER JOIN ORD O
+	                        ON BS.ORD_NO = O.ORD_NO
+	                        AND O.BRCH_NO = 3
+	                        INNER JOIN ITEM I
+	                        ON BS.ITEM_NO = I.ITEM_NO
+	                        INNER JOIN ITEM_CATE IC
+	                        ON I.CATE_NO = IC.CATE_NO 
+	    <if test = "search_input != null and search_input != ''">
+		<choose>
+			<when test = "search_filter == 0">
+			AND I.ITEM_NO LIKE '%'|| #{search_input} ||'%'
+			</when>
+			<when test = "search_filter == 1">
+			AND I.ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+			</when>
+		</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+		<choose>
+			<when test = "cate == 0">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 1">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 2">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 3">
+			AND  I.CATE_NO = #{cate}
+			</when>
+			<when test = "cate == 4">
+			AND  I.CATE_NO = #{cate}
+			</when>
+		</choose>
+	</if>
+	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND BD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+	</if>)
+	WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
+	</select>
+	
+	<!-- 지점 입고이력 버튼 클릭 시 나오는 리스트 -->
+	<select id = "getBSHList" parameterType="hashmap" resultType="hashmap">
+	SELECT O.ORD_NO, BS.CNT, TO_CHAR(BS.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE
+	FROM BRCH_STOR BS INNER JOIN ORD O
+	                  ON BS.ORD_NO = O.ORD_NO
+	                  AND O.BRCH_NO = 3
+	                  AND BS.ITEM_NO = #{itemNo}
+	                  AND TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') = #{expDate}
 	</select>
 </mapper> 

@@ -113,5 +113,75 @@ public class sbDao implements IsbDao{
 		return sqlsession.selectList("sb.getBSEList",params);
 	}
 
+	@Override
+	public int EidtBStock(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlsession.insert("sb.EidtBStock",insertMap);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockExpList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockExpList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockUseList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockUseList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockDiscardList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockDiscardList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockStorList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBStockStorList",params);
+	}
+
+	@Override
+	public int BDiscardStock(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlsession.insert("sb.BDiscardStock",insertMap);
+	}
+
+	@Override
+	public int BSSEdit(HashMap<String, String> params) throws Throwable {
+		return sqlsession.update("sb.BSSEdit",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSSList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSSList",params);
+	}
+
+	@Override
+	public int getBSSCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getBSSCnt",params);
+	}
+
+	@Override
+	public int getBSUCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getBSUCnt",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSUList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSUList",params);
+	}
+
+	@Override
+	public int getBSDCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getBSDCnt",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSDList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSDList",params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSHList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSHList",params);
+	}
+
 
 }

@@ -142,7 +142,6 @@ table {
 	
 }
 
-/*팝업디자인*/
 .popup_Content table{
 	width: 100%;
     background: #ffffff;
@@ -205,13 +204,13 @@ td{
 	width : 100%;
 }
 
-.stock_rel_history thead,.stock_discard_history thead{
+.stock_use_history thead,.stock_discard_history thead,.stock_stor_history thead{
 	display : table;
 	table-layout : fixed;
 	width : 1250px;
 }
 
-.stock_rel_history tbody,.stock_discard_history tbody{
+.stock_use_history tbody,.stock_discard_history tbody,.stock_stor_history tbody{
 	display : block;
 	max-height : 287px;
 	width : 1250px;
@@ -219,7 +218,7 @@ td{
 	overflow-x : hidden;
 }
 
-.stock_rel_history tr,.stock_discard_history tr{
+.stock_use_history tr,.stock_discard_history tr,.stock_stor_history tr{
 	display : table;
 	table-layout : fixed;
 	width : 1250px;
@@ -233,21 +232,15 @@ td:first-child{
 	padding : 0px;
 	text-align: center;
 }
-
-.discard_cnt,.discard_{
-	width:220px;
-	height:20px;
-}
-
-.stock_discard_btn{
+.discard_btn,.discard_cnl_btn{
 	color: white;
-	width: 60px;
-	height: 30px;
+	width: 100px;
+	height: 40px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:15px;
-	margin:0px;
+	font-size:18px;
+	margin:10px;
 	cursor: pointer;
 	background-color: #bf4040;
 	outline:none;
@@ -281,36 +274,52 @@ label{
 	max-width: 1000px; 
 }
 
-.stock_add_btn,.discard_btn,.discard_cnl_btn,.discard_submit_btn{
+.safeCnt{
+	width : 50px;
+	background-color: #e6e6e6;
+}
+
+.safeCnt_edit_btn{
+	color: white;
+	width: 50px;
+	height: 21px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:14px;
+	margin:10px;
+	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
+}
+
+.safeCnt,.safeCnt_edit_btn{
+	vertical-align: middle;
+}
+
+.safeCnt_area{
+	float : right;
+}
+
+.discard_btn,.discard_cnl_btn,.discard_submit_btn{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
-	vertical-align: bottom;
-}
-
-.discard_btn,.discard_cnl_btn{
-	background-color: #bf4040;
+	vertical-align: middle;
 }
 
 .discard_cnl_btn,.discard_submit_btn{
 	display: none;
 }
 
-.discard_cnl2_btn{ /* 원복 버튼에 사용할 것 이름 다시 지어야함*/
-	background-color: #bf4040;
-	width: 50px;
-	height: 30px;
-	font-size:15px;
-	margin: 0px;
-}
 select{
 	font-size: 15px;	
 	height: 40px;
 	width : 100px;
 	
 }
-/* 일반버튼 */
-button{
+
+.discard_submit_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -455,7 +464,8 @@ input[type='button']:focus{outline:none;}
 $(document).ready(function(){
 	
 	stockloadList(); //유통기한별 재고 리스트 그리기
-	relloadList(); // 재고 출고 리스트 그리기
+	storloadList(); // 재고 입고 리스트 그리기
+	useloadList(); // 재고 출고 리스트 그리기
 	discardloadList(); //폐기 리스트 그리기
 	
 	$(".top_menu").on("click","a",function(){
@@ -477,14 +487,13 @@ $(document).ready(function(){
 	});
 	
 	$(".list_btn").on("click",function(){
-		$("#goForm").attr("action","Item_List");
+		$("#goForm").attr("action","B_Stock_List");
 		$("#goForm").submit();
 	});
 	
 	$(".discard_btn").on("click",function(){
 		stockdiscardloadList();
 		$(".discard_btn").hide();
-		$(".stock_add_btn").hide();
 		$(".discard_cnl_btn").show();
 		$(".discard_submit_btn").show();
 	});
@@ -492,7 +501,6 @@ $(document).ready(function(){
 	$(".discard_cnl_btn").on("click",function(){
 		stockloadList();
 		$(".discard_btn").show();
-		$(".stock_add_btn").show();
 		$(".discard_cnl_btn").hide();
 		$(".discard_submit_btn").hide();
 	});
@@ -500,7 +508,6 @@ $(document).ready(function(){
 	$(".discard_submit_btn").on("click",function(){
 		stockloadList();
 		$(".discard_btn").show();
-		$(".stock_add_btn").show();
 		$(".discard_cnl_btn").hide();
 		$(".discard_submit_btn").hide();
 	});
@@ -523,38 +530,36 @@ $(document).ready(function(){
 		   $(".discardCnt").focus;
 		   stockdiscardloadList();
 		  	$(".discard_btn").hide();
-			$(".stock_add_btn").hide();
 			$(".discard_cnl_btn").show();
 			$(".discard_submit_btn").show();
-		   
+			
 		}else if(cnt2 == $(".stock_tb tbody tr").size()){
 			alert("현재 폐기수량이 모두 0입니다.");
 			stockdiscardloadList();
 		  	$(".discard_btn").hide();
-			$(".stock_add_btn").hide();
 			$(".discard_cnl_btn").show();
 			$(".discard_submit_btn").show();
 		}else{
 		 var params = $("#tb_Form").serialize();
 		   
 		 $.ajax({
-		      url : "Stock_Discards",//접속주소
+		      url : "B_Stock_Discards",//접속주소
 		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
 		      dataType :"json", //받아올 데이터 형식
 		      data : params,///보낼데이터(문자열 형태)
 		      success : function(res){
 		         if(res.msg == "success"){
 		        	 stockloadList();
+		        	 storloadList();
 		        	 discardloadList();
-		        	 relloadList();
+		        	 useloadList();
 					$(".discard_btn").show();
-					$(".stock_add_btn").show();
 					$(".discard_cnl_btn").hide();
 					$(".discard_submit_btn").hide();
 		      	  }else if (res.msg == "failed"){
 		            alert("재고폐기에 실패하였습니다."); // 팝업 변경 필요
 		         }else {
-		            alert("재고페기 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		            alert("재고폐기 중 문제가 발생하였습니다."); // 팝업 변경 필요
 		         }
 		      },
 		      error : function(request,status,error){
@@ -564,6 +569,49 @@ $(document).ready(function(){
 		 
 		}
 	});
+	
+	$(document).on("dblclick",".safeCnt",function(){
+        $(this).attr("readonly",false);//더블클릭 시 수정이 가능하도록 disabled 해제
+        $(this).css("background-color","white");
+     });
+	
+	$(document).click(function(e){
+        if (!$(e.target).is(".safeCnt")) {
+        	$(".safeCnt").attr("readonly",true); //해당 클래스가 없는 곳 클릭 시 인풋 disabled설정
+        	$(".safeCnt").css("background-color","#e6e6e6");
+        }
+    });
+	
+	$(".safeCnt_edit_btn").on("click",function(){
+		if($.trim($(".safeCnt").val()) == ""){
+			alert("안전재고 수량을 입력해주세요.");
+		   $(".itemName").focus;
+		}else{
+			var params = $("#safeCntForm").serialize();
+			   
+			 $.ajax({
+			      url : "B_Safe_Stock_edit",//접속주소
+			      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+			      dataType :"json", //받아올 데이터 형식
+			      data : params,///보낼데이터(문자열 형태)
+			      success : function(res){
+			         if(res.msg == "success"){
+			        	 makePopup("안전재고수정","안전재고수정에 성공하였습니다.",function(){
+			        		 
+			        	 });
+			      	  }else if (res.msg == "failed"){
+			            alert("안전재고 수정에 실패하였습니다."); // 팝업 변경 필요
+			         }else {
+			            alert("안전재고 수정 중 문제가 발생하였습니다."); // 팝업 변경 필요
+			         }
+			      },
+			      error : function(request,status,error){
+			         console.log(error);
+			      }
+			   });
+		}
+	});
+	
 	
 	  $(document).on("click",".stor_history_btn",function(){
 		$("#itemNo").val($(this).parent().parent().attr("itemNo"));
@@ -578,7 +626,7 @@ function stockloadList(){
 	var params = $("#goForm").serialize();
 	
 	$.ajax({
-		url : "Item_Stock_List",
+		url : "B_Stock_ExpList",
 		type : "post",  
 		dataType :"json",
 		data : params,
@@ -611,9 +659,17 @@ function drawstockList(stocklist,result){
 		html += "</tr>";	
 	} else if (result > 0){
 		for(var d of stocklist){ //결과 행이 존재하는 경우
-			html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
+			
+			var to_exp = "";
+			to_exp = splitdate(d.EXPIRY_DATE);
+			
+			if(to_exp < 3){ //현재일 기준 유통기한이 3일 이하로 남은 재고
+				html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\" style = \"color:red; font-weight : bold;\">";
+			} else{
+				html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
+			}
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td>"+d.PPSUM+"</td>";
+			html += "<td>"+d.HSTOCK+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			html += "<td><input type = \"button\" class = \"stor_history_btn\" value = \"이력확인\"/></td>";
 			html += "</tr>";
@@ -625,17 +681,17 @@ function drawstockList(stocklist,result){
 	$(".stock_tb tbody").html(html);
 }
 
-//출고재고리스트 그리기
-function relloadList(){
+//재고 입고 리스트 그리기
+function storloadList(){
 	var params = $("#goForm").serialize();
 	
 	$.ajax({
-		url : "Item_Rel_List",
+		url : "B_Stock_StorList",
 		type : "post",  
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawrelList(res.Rellist,res.result);
+			drawstorList(res.storlist,res.result);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -643,43 +699,93 @@ function relloadList(){
 	});
 }
 
-function drawrelList(Rellist,result){
+function drawstorList(storlist,result){
 	var html ="";
 	
 	html += "<tr>";
 	html += "<th style=\"border-left: none;\">주문번호</th>";
-	html += "<th>품목코드</th>";
 	html += "<th>품목명</th>";
-	html += "<th>수량</th>";
+	html += "<th>입고수량</th>";
 	html += "<th>유통기한</th>";
-	html += "<th>등록일</th>";
-	html += "<th>지점명</th>";
+	html += "<th>입고일자</th>";
 	html += "</tr>";
 	
-	
-	$(".stock_rel_history thead").html(html);
+	$(".stock_stor_history thead").html(html);
 	
 	html ="";
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"7\" style = \"text-align: center;\">해당 품목의 출고 이력이 존재하지 않습니다.</td>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">해당 품목의 재고가 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){
-		for(var d of Rellist){ //결과 행이 존재하는 경우
+		for(var d of storlist){ //결과 행이 존재하는 경우
+			
 			html += "<tr>";
-			html += "<td><a href = \"http://localhost:8090/bbps/Ord_Mang_dtl?oNo="+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
-			html += "<td>"+d.ITEM_NO+"</td>";
+			html += "<td><a href = \"http://localhost:8090/bbps/B_Ord_dtl?oNo="+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
+			html += "<td>"+d.ITEM_NAME+"</td>";
+			html += "<td>"+d.CNT+"</td>";
+			html += "<td>"+d.EXPIRY_DATE+"</td>";
+			html += "<td>"+d.ENROLL_DATE+"</td>";
+			html += "</tr>";
+		}
+	}
+	
+	
+	
+	$(".stock_stor_history tbody").html(html);
+}
+
+
+//재고사용리스트 그리기
+function useloadList(){
+	var params = $("#goForm").serialize();
+	
+	$.ajax({
+		url : "B_Stock_UseList",
+		type : "post",  
+		dataType :"json",
+		data : params,
+		success : function(res){
+			drawuseList(res.uselist,res.result);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawuseList(uselist,result){
+	var html ="";
+	
+	html += "<tr>";
+	html += "<th style=\"border-left: none;\">품목명</th>";
+	html += "<th>사용수량</th>";
+	html += "<th>유통기한</th>";
+	html += "<th>사용일</th>";
+	html += "</tr>";
+	
+	
+	$(".stock_use_history thead").html(html);
+	
+	html ="";
+	
+	if(result == 0){ //결과 행이 존재하지 않는 경우
+		html += "<tr>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">해당 품목의 출고 이력이 존재하지 않습니다.</td>";
+		html += "</tr>";	
+	} else if (result > 0){
+		for(var d of uselist){ //결과 행이 존재하는 경우
+			html += "<tr>";
 			html += "<td>"+d.ITEM_NAME+"</th>";
 			html += "<td>"+d.CNT+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
-			html += "<td>"+d.ORD_ENROLL_DATE+"</td>";
-			html += "<td>"+d.BRCH_NAME+"</td>";
+			html += "<td>"+d.ENROLL_DATE+"</td>";
 			html += "</tr>";	
 		}
 	}
 	
-	$(".stock_rel_history tbody").html(html);
+	$(".stock_use_history tbody").html(html);
 }
 
 //폐기기능 리스트 그리기
@@ -687,12 +793,12 @@ function stockdiscardloadList(){
 	var params = $("#goForm").serialize();
 	
 	$.ajax({
-		url : "Item_Stock_Discard_List",
+		url : "B_Stock_Discard",
 		type : "post",  
 		dataType :"json",
 		data : params,
 		success : function(res){
-			drawstockdiscardList(res.stockdiscardlist);
+			drawstockdiscardList(res.stockdiscardlist,res.result);
 		},
 		error : function(request,status,error){
 			console.log(error);
@@ -700,7 +806,7 @@ function stockdiscardloadList(){
 	});
 }
 
-function drawstockdiscardList(stockdiscardlist){
+function drawstockdiscardList(stockdiscardlist,result){
 	var html ="";
 	
 	html += "<tr>";
@@ -715,26 +821,40 @@ function drawstockdiscardList(stockdiscardlist){
 	
 	html ="";
 	
+	if(result == 0){ //결과 행이 존재하지 않는 경우
+		html += "<tr>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">폐기할 재고가  존재하지 않습니다.</td>";
+		html += "</tr>";	
+	} else if (result > 0){
+	
 	for(var d of stockdiscardlist){
-		html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
+		
+		var to_exp = "";
+		to_exp = splitdate(d.EXPIRY_DATE);
+		
+		if(to_exp < 3){ //현재일 기준 유통기한이 3일 이하로 남은 재고
+			html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\" style = \"color:red; font-weight : bold;\">";
+		} else{
+			html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
+		}
 		html += "<td>"+d.ITEM_NAME+"<input type = \"hidden\" name = \"itemNo\" value = \""+${param.itemNo}+"\"/></td>";
-		html += "<td>"+d.PPSUM+"</td>";
+		html += "<td>"+d.HSTOCK+"</td>";
 		html += "<td><input type = \"number\" min = 0 class = \"discardCnt\" id = \"discardCnt\" name = \"discardCnt\" value = \"0\"/></td>";
 		html += "<td><input type = \"text\" id = \"discardNote\" name = \"discardNote\"/></td>";
 		html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" id = \"expDate\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\" /></td>";
 		html += "</tr>";	
+		}
 	}
-	
 	$(".stock_tb tbody").html(html);
 }
 
 
-//폐기 목록 리스트(기능xx) @@@@@@@여기가 폐기 목록임@@@@@@@
+//재고 폐기 목록 리스트(기능xx) @@@@@@@여기가 폐기 목록임@@@@@@@
 function discardloadList(){
 	var params = $("#goForm").serialize();
 	
 	$.ajax({
-		url : "Item_Discard_List",
+		url : "B_Stock_DiscardList",
 		type : "post",  
 		dataType :"json",
 		data : params,
@@ -751,11 +871,11 @@ function drawdiscardList(discardlist,result){
 	var html ="";
 	
 	html += "<tr>";
-	html += "<th style=\"border-left: none;\">폐기날짜</th>";
+	html += "<th style=\"border-left: none;\">품목명</th>";
 	html += "<th>폐기수량</th>";
 	html += "<th>유통기한</th>";
 	html += "<th>비고</th>";
-	html += "<th>변경자</th>";
+	html += "<th>폐기날짜</th>";
 	html += "</tr>";
 	
 	$(".stock_discard_history thead").html(html);
@@ -764,16 +884,16 @@ function drawdiscardList(discardlist,result){
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"6\" style = \"text-align: center;\">해당 품목의 폐기 이력이 존재하지 않습니다.</td>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">해당 품목의 폐기 이력이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){
 		for(var d of discardlist){
 			html += "<tr>";
-			html += "<td>"+d.ENROLL_DATE+"</td>";
+			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td>"+d.CNT+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			html += "<td>"+d.NOTE+"</td>";
-			html += "<td>"+d.ID+"</td>";
+			html += "<td>"+d.ENROLL_DATE+"</td>";
 			html += "</tr>";	
 		}
 	}
@@ -785,7 +905,7 @@ function storHistoryloadList(){
 	var params = $("#storHistoryForm").serialize();
 	
 	$.ajax({
-		url : "Stock_Stor_History",
+		url : "B_Stock_Stor_History",
 		type : "post",  
 		dataType :"json",
 		data : params,
@@ -806,18 +926,18 @@ function drawstorHistory(StorHistorylist){
 	shhtml += "<table cellspacing=\"0\">";
 	shhtml += "<thead>";
 	shhtml += "<tr>";
-	shhtml += "<th style=\"border-left: none;\">입고날짜</th>";
+	shhtml += "<th style=\"border-left: none;\">주문번호</th>";
 	shhtml += "<th>입고수량</th>";
-	shhtml += "<th>변경자</th>";
+	shhtml += "<th>입고날짜</th>";
 	shhtml += "</tr>";
 	shhtml += "</thead>";
 	
 	shhtml += "<tbody>";
 	for(var d of StorHistorylist){
 	shhtml += "<tr>";
-	shhtml += "<td>"+d.ENROLL_DATE+"</td>";
+	shhtml += "<td>"+d.ORD_NO+"</td>";
 	shhtml += "<td>"+d.CNT+"</td>";
-	shhtml += "<td>"+d.ID+"</td>";
+	shhtml += "<td>"+d.ENROLL_DATE+"</td>";
 	shhtml += "</tr>";
 	} 
 	shhtml += "</tbody>";
@@ -857,6 +977,41 @@ function closePopup() {
 		$(".bg, .popup_Area").remove();
 	}); //popup_Btn end
 }
+
+function curdate(){ //현재 날짜 yyyy-mm-dd 형태로 구하기
+	var today = new Date(); //오늘날짜 체크
+
+	var dd = today.getDate();
+	var mm = today.getMonth()+1;
+	var yyyy = today.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+
+		today = yyyy+"-"+mm+"-"+dd;
+		
+		return today;
+}
+
+function splitdate(splitarr){
+	
+	var today = curdate(); //현재날짜 yyyy mm dd 형태로
+	
+	todayarr = today.split('-');//오늘날짜 배열 잘라넣기
+	exparr = splitarr.split('-'); //유통기한 배열 잘라넣기
+	
+	var split_arr = new Date(exparr[0],(exparr[1]*1)-1,exparr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	var today_arr = new Date(todayarr[0],(todayarr[1]*1)-1,todayarr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	
+	var cha = split_arr.getTime() - today_arr.getTime(); //결과값 밀리세컨 단위
+	var chadate = cha/(1000*60*60*24); //결과로 받은 밀리세컨 일자로 표현되도록 계산
+	
+	return chadate; //날짜 차이 일수 리턴
+}
+
 
 </script>
 </head>
@@ -975,10 +1130,9 @@ function closePopup() {
 <li><strong>품목번호 : </strong>${param.itemNo}</li>
 </ul>
 <div class="button_area">
-			<button class="stock_add_btn">추가</button>
-			<button class="discard_btn" style= "margin:0px 0px 0px 10px;">폐기</button>
-			<button class="discard_submit_btn" >완료</button>
-			<button class="discard_cnl_btn" style= "margin:0px 0px 0px 10px;">취소</button>
+			<input type = "button" class="discard_btn" style= "margin:0px 0px 0px 10px;" value = "폐기"/>
+			<input type = "button" class="discard_submit_btn" value = "완료" />
+			<input type= "button" class="discard_cnl_btn" style= "margin:0px 0px 0px 10px;" value = "취소"/>
 		</div>
 
 <form action = "#" id = "tb_Form" method = "post">
@@ -990,8 +1144,21 @@ function closePopup() {
 </table>
 </div>
 </form>
-<div class = "stock_rel_history">
-<h2 style ="padding-top: 50px;">재고출고이력</h2>
+<form action = "#" id = "safeCntForm" method = "post">
+<div class = "safeCnt_area">
+안전재고수량 : <input readonly type = "number" min = "0" class = "safeCnt" name = "safeCnt" value = "${param.safeCnt}"/><input type = "button" class = "safeCnt_edit_btn"value = "저장"/>
+<input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
+</div>
+</form>
+<div class = "stock_stor_history">
+<h2 style ="padding-top: 50px;">재고입고이력</h2>
+<table cellspacing="0">
+	<thead></thead>
+	<tbody></tbody>
+</table>
+</div>
+<div class = "stock_use_history">
+<h2 style ="padding-top: 50px;">재고사용이력</h2>
 <table cellspacing="0">
 	<thead></thead>
 	<tbody></tbody>

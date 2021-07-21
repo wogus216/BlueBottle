@@ -114,6 +114,76 @@ public class sbService implements IsbService{
 		return isbdao.getBSEList(params);
 	}
 
+	@Override
+	public int EidtBStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.EidtBStock(insertMap);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockExpList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockExpList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockUseList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockUseList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockDiscardList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockDiscardList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBStockStorList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBStockStorList(params);
+	}
+
+	@Override
+	public int BDiscardStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.BDiscardStock(insertMap);
+	}
+
+	@Override
+	public int BSSEdit(HashMap<String, String> params) throws Throwable {
+		return isbdao.BSSEdit(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSSList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSSList(params);
+	}
+
+	@Override
+	public int getBSSCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSSCnt(params);
+	}
+
+	@Override
+	public int getBSUCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSUCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSUList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSUList(params);
+	}
+
+	@Override
+	public int getBSDCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSDCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSDList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSDList(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSHList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSHList(params);
+	}
+
 	
 
 }

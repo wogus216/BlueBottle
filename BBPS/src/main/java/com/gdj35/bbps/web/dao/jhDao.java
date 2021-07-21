@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mysql.fabric.xmlrpc.base.Params;
+
 @Repository
 public class jhDao implements IjhDao {
 
@@ -84,6 +86,25 @@ public class jhDao implements IjhDao {
 	public HashMap<String, String> getMOrd(HashMap<String, String> params) throws Throwable {
 		System.out.println("오더메뉴db돌았습니다.");
 		return sqlsession.selectOne("JH.getMOrd",  params);
+	}
+
+	@Override
+	public int addOrd(HashMap<String, Object> insertMap) throws Throwable {
+		System.out.println("주문품목db돌았습니다.");
+		System.out.println("insertmap"+insertMap);
+		return sqlsession.insert("JH.addOrd", insertMap);
+	}
+
+	@Override
+	public int addSales(HashMap<String, String> params) throws Throwable {
+		System.out.println("주문금액db돌았습니다.");
+		return sqlsession.insert("JH.addSales", params);
+	}
+
+	@Override
+	public HashMap<String, String> getOrdNum() throws Throwable {
+		System.out.println("주문번호 갖고오자");
+		return sqlsession.selectOne("JH.getOrdNum");
 	}
 
 	

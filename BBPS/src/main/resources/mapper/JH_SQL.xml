@@ -12,7 +12,7 @@
 	
 	<!-- 지점,포스로그인 -->
 	<select id="getB" parameterType="hashmap" resultType="hashmap">
-		SELECT BRCH_NO,ID,BRCH_NAME
+		SELECT BRCH_NO,ID,BRCH_NAME,MGR_NAME
 		FROM BRCH
 		WHERE ID = #{bId}
 		AND PW = #{bPw}
@@ -112,7 +112,7 @@
 	
 	<!-- 수정 -->
 	<update id="editM" parameterType="hashmap">
-		UPDATE POS_MENU SET MENU_NAME = #{m_name}, MENU_PRICE = #{m_price},MENU_IMG = #{m_file},NOTE = #{m_note}
+		UPDATE POS_MENU SET MENU_NAME = #{m_name}, MENU_PRICE = #{m_price}, MENU_IMG = #{m_file}, NOTE = #{m_note}
 		WHERE MENU_NO = #{menuNo}
 	</update>
 	
@@ -175,7 +175,27 @@
 		SELECT  PM.MENU_NO AS MNO, PM.MENU_NAME AS MNAME, PC.CATE_NAME AS CNAME, PM.MENU_PRICE AS MPRICE, PM.MENU_IMG AS MIMG,PC.CATE_NO AS CNO
 		FROM POS_MENU PM INNER JOIN POS_CATE PC
 	                         ON PM.POS_CATE_NO = PC.CATE_NO
-		WHERE PM.MENU_NO = #{menuNo}
+		WHERE PM.MENU_NO = #{mNo}
+	</select>
+	
+	
+	<!-- 주문 금액 넣기 -->
+	<insert id="addSales" parameterType="hashmap">
+		INSERT INTO SALES(SALES_NO,BRCH_NO,PAY_METHOD)
+		VALUES (#{ordNo},#{brchNo},#{methodNo})
+	</insert>
+	
+	
+	<!-- 주문 메뉴 넣기 -->
+	<insert id="addOrd" parameterType="hashmap">
+		INSERT INTO SALES_MENU(SALES_NO,MENU_NO,CNT)
+		VALUES (#{ordNo}, #{menuNo}, #{oMCnt})
+	</insert>
+	
+	<!-- 주문번호 -->
+	<select id="getOrdNum" parameterType="hashmap" resultType="hashmap">
+		SELECT  TO_CHAR(SYSDATE, 'YYMMDD') || SALES_MENU_SEQ.NEXTVAL AS SNO
+		FROM DUAL
 	</select>
 	
 </mapper> 

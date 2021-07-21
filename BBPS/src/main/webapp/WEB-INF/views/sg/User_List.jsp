@@ -291,6 +291,13 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
+	$("#cate").on("change", function () {
+		$("#cateNo").val($("#cate").val());
+		console.log($("#cateNo").val());
+		reloadList();
+		
+	});
+	
 }); //ready end
 
 function reloadList() {
@@ -373,15 +380,17 @@ function drawPaging(pb) {
 <div class="content_area">
 <div class="content">
 <h1>사용자 조회</h1>
-
+<!-- 
+<form action="User_List" id="goForm" method="post"></form>
+	 -->
 	<div class="filter_area">
-			<select class="cate">
-				<option value="0" selected="selected">전체</option>
-				<option value="1">본사</option>
-				<option value="2">지점</option>
+			<select class="cate" id="cate">
+				<option selected="selected" value="2">전체</option>
+				<option value="0">본사</option>
+				<option value="1">지점</option>
 			</select>
 		</div>
-		
+
 	<div class="add_btn_area">
 	<input type="button" class="add_btn" value="등록" id="addBtn"/>
 	</div>
@@ -409,6 +418,7 @@ function drawPaging(pb) {
 <form action="#" id="actionForm" method="post">
 <div class="search_area" style = "margin-top : 30px;">
 	<input type="hidden" id="uNo" name="uNo"/>
+	<input type="hidden" id="cateNo" name="cateNo"/>
 	<input type="hidden" id="page" name="page" value="${page}">
 		<div class="search_info">
 			<select  name="searchGbn" class="search_filter">

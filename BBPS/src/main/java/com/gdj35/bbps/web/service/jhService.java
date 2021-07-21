@@ -74,4 +74,19 @@ public class jhService implements IjhService {
 		return ijhDao.getMOrd(params);
 	}
 
+	@Override
+	public int addOrd(HashMap<String, Object> insertMap) throws Throwable {
+		return ijhDao.addOrd(insertMap);
+	}
+
+	@Override
+	public int addSales(HashMap<String, String> params) throws Throwable {
+		return ijhDao.addSales(params);
+	}
+
+	@Override
+	public HashMap<String, String> getOrdNum() throws Throwable {
+		return ijhDao.getOrdNum();
+	}
+
 }

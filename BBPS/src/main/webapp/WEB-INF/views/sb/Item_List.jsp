@@ -229,6 +229,10 @@ $(document).ready(function(){
 		$("#search_filter").val("${param.search_filter}");
 	}
 	
+	if("${param.cate}" != ""){
+		$(".cate").val("${param.cate}");
+	}
+	
 	reloadList();
 	
 	$(".search_btn").on("click",function(){
@@ -236,6 +240,13 @@ $(document).ready(function(){
 		$("#Old_search_input").val($(".search_input").val());
 		reloadList();	
 	});
+	
+	$(".cate").change(function(){
+		$("#cate").val($(".cate").val());
+		$(".search_input").val($("#Old_search_input").val());
+		$("#page").val(1);
+ 		reloadList();
+ 	});
 	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
@@ -303,19 +314,7 @@ function drawproductList(list){
 	for(var d of list){
 		html += "<tr itemNo = \""+d.ITEM_NO+"\">";
 		html += "<td><a href = \"#\" itemNo = \""+d.ITEM_NO+"\">"+d.ITEM_NO+"</a></td>";
-		
-		if(d.CATE_NO == 0){
-			html += "<td>음료재료</td>";
-		} else if(d.CATE_NO == 1){
-			html += "<td>제과</td>";	
-		} else if(d.CATE_NO == 2){
-			html += "<td>원두</td>";	
-		} else if(d.CATE_NO == 3){
-			html += "<td>굿즈</td>";		
-		} else if(d.CATE_NO == 4){
-			html += "<td>기타</td>";
-		}
-		
+		html += "<td>"+d.CATE_NAME+"</th>";
 		html += "<td itemNo = \""+d.ITEM_NO+"\" itemName = \""+d.ITEM_NAME+"\">"+d.ITEM_NAME+"</td>";
 		html += "<td>"+d.PRICE+"</th>";
 		html += "<td>"+d.MIN_ORD_UNIT+"</td>";
@@ -460,14 +459,14 @@ function drawproductPaging(pb){
 <div class="content">
 <h1>품목조회</h1>
 <div class="filter_area">
-<select class="cate" name = "cate">
-	<option selected="selected">카테고리명</option>
-	<option value="0">음료재료</option>
-	<option value="1">제과</option>
-	<option value="2">원두</option>
-	<option value="3">굿즈</option>
-	<option value="4">기타</option>
-</select>
+			<select class="cate" name = "cate">
+			<option selected="selected" value="">전체</option>
+			<option value="0">음료재료</option>
+			<option value="1">제과</option>
+			<option value="2">원두</option>
+			<option value="3">굿즈</option>
+			<option value="4">기타</option>
+			</select>
 <button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
 </div>
 <table cellspacing="0">
@@ -500,6 +499,7 @@ function drawproductPaging(pb){
 				<option value="0" selected="selected">품목코드</option>
 				<option value="1">품목명</option>
 			</select>
+			<input type = "hidden" id = "cate" name = "cate"/>
 			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
 			<button class="search_btn">검색</button>
 			</form>

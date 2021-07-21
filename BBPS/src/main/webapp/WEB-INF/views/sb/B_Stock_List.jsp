@@ -118,9 +118,7 @@ li {
 	text-align: right;
 	margin-bottom: 10px;
 }
-.search_btn{
-	
-}
+
 select{
 	font-size: 15px;	
 	height: 40px;
@@ -143,12 +141,16 @@ table {
 	border-top: 2px solid #3498db;
 	border-bottom: 2px solid #d9d9d9;
 }
-tbody td:nth-child(3){
-	cursor: pointer;
-}
+
 tr {
     display: table-row;
+    cursor: pointer;
 }
+
+tr:hover{
+	background-color: #f1f1f1;
+}
+
 th{
 	background: #e8e8e8;
     padding: 10px;
@@ -257,19 +259,29 @@ td{
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$(".cate").val(7);
-	
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
+	}
+	
+	if("${param.cate}" != ""){
+		$(".cate").val("${param.cate}");
 	}
 	
 	reloadList();
 	
 	$(".search_btn").on("click",function(){
 		$("#cate").val($(".cate").val());
+		$("#Old_search_input").val($(".search_input").val());
 		$("#page").val(1);
 		reloadList();	
 	});
+	
+	$(".cate").change(function(){
+		$("#cate").val($(".cate").val());
+		$(".search_input").val($("#Old_search_input").val());
+		$("#page").val(1);
+ 		reloadList();
+ 	});
 	
 	
 	$(".top_menu").on("click","a",function(){
@@ -291,11 +303,19 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
-	$(".edit_btn").on("click",function(){
+	$("tbody").on("click","tr",function(){
+		$("#itemNo").val($(this).attr("itemNo"));
+		$("#safeCnt").val($(this).attr("safeCnt"));
+		$(".search_input").val($("#Old_search_input").val());
+		$("#actionForm").attr("action","B_Stock_Dtl");
+		$("#actionForm").submit();
+	}); 
+	
+	/* $(".edit_btn").on("click",function(){
 		$(".search_input").val($("#Old_search_input").val());
 		$("#actionForm").attr("action","B_Stock_Edit");
 		$("#actionForm").submit();
-	});
+	}); //나중에 마감 시 나오는 페이지로 변경 예정 */
 	
 }); //ready end
 
@@ -321,39 +341,33 @@ function drawbrchstockList(list,result){
 	
 	var html ="";
 	
-	var today = curdate(); //현재 날짜 구한 것을 배열로 잘라 날짜 객체 생성한 것을 리턴 받은 것을 today에 넣음
-	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"6\" style = \"text-align: center;\">검색조건에 맞는 결과가 존재하지 않습니다.</td>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
 			
-			var exp = ""; //초기화
-			exp = d.EXPIRY_DATE;
+			var to_exp = "";
+			to_exp = splitdate(d.EXPIRY_DATE);
 			
-			arr2 = exp.split('-'); //유통기한 배열 잘라넣기
+			html += "<tr itemNo = \""+d.ITEM_NO+"\" safeCnt = \""+d.SAFECNT+"\"" ;
 			
-			var exp1 = new Date(arr2[0],(arr2[1]*1)-1,arr2[2]);
-			
-			var cha = exp1.getTime() - today.getTime(); //결과값 밀리세컨 단위
-			var chadate = cha/(1000*60*60*24); //결과로 받은 밀리세컨 일자로 표현되도록 계산
-			
-			html += "<tr ";
-			if(chadate <= 3){// 현재 날짜 기준 유통기한이 3일이 남은 재고는 리스트에 표시하기
+			if(to_exp < 3){ //현재일 기준 유통기한이 3일 이하로 남은 재고
 				html += "style = \"background-color:#F6CED8;\"";
-			}else if(d.CURCNT<d.SAFECNT){//재고수량이 안전재고 수량보다 작은경우
-				html += "style = \"background-color:#E3CEF6;\"";
 			}
-				
+			
 			html += ">";
 			html += "<td>"+d.CATE_NAME+"</td>";
 			html += "<td>"+d.ITEM_NO+"</td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td>"+d.CURCNT+"</td>";
-			html += "<td>"+d.SAFECNT+"</td>";
-			html += "<td>"+d.EXPIRY_DATE+"</td>";
+			if(d.HSTOCK<d.SAFECNT){//재고수량이 안전재고 수량보다 작은경우
+				html += "<td style = \"color:red; font-weight : bold;\">"+d.HSTOCK+"</td>";
+				html += "<td style = \"color:red; font-weight : bold;\">"+d.SAFECNT+"</td>";
+			}else{
+				html += "<td>"+d.HSTOCK+"</td>";
+				html += "<td>"+d.SAFECNT+"</td>";
+			}
 			html += "</tr>";
 		}
 		
@@ -394,7 +408,7 @@ function drawdiscardPaging(pb){
 	$(".page_btn").html(html);
 }
 
-function curdate(){
+function curdate(){ //현재 날짜 yyyy-mm-dd 형태로 구하기
 	var today = new Date(); //오늘날짜 체크
 
 	var dd = today.getDate();
@@ -408,12 +422,26 @@ function curdate(){
 		} //1월인 경우 01로 표기
 
 		today = yyyy+"-"+mm+"-"+dd;
-		arr1 = today.split('-'); //오늘날짜 배열 잘라넣기
-	
-		var today1 = new Date(arr1[0],(arr1[1]*1)-1,arr1[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
 		
-		return today1;
+		return today;
 }
+
+function splitdate(splitarr){
+	
+	var today = curdate(); //현재날짜 yyyy mm dd 형태로
+	
+	todayarr = today.split('-');//오늘날짜 배열 잘라넣기
+	exparr = splitarr.split('-'); //유통기한 배열 잘라넣기
+	
+	var split_arr = new Date(exparr[0],(exparr[1]*1)-1,exparr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	var today_arr = new Date(todayarr[0],(todayarr[1]*1)-1,todayarr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	
+	var cha = split_arr.getTime() - today_arr.getTime(); //결과값 밀리세컨 단위
+	var chadate = cha/(1000*60*60*24); //결과로 받은 밀리세컨 일자로 표현되도록 계산
+	
+	return chadate; //날짜 차이 일수 리턴
+}
+
 
 </script>
 </head>
@@ -518,31 +546,22 @@ function curdate(){
 <h1>재고 목록</h1>
 <div class="filter_area">
 			<select class="cate" name = "cate">
-			<option selected="selected" value="7">카테고리명</option>
-			<option value="7">전체</option>
+			<option selected="selected" value="">전체</option>
 			<option value="0">음료재료</option>
 			<option value="1">제과</option>
 			<option value="2">원두</option>
 			<option value="3">굿즈</option>
 			<option value="4">기타</option>
 			</select>
-			<input type= "button" class="edit_btn" value = "수정하기"/>
-			<input type= "button" class="discard_btn" value = "폐기하기"/>
-			<input type= "button" class="edit_submit_btn" value = "수정완료"/>
-			<input type= "button" class="edit_cnl_btn" value = "수정취소"/>
-			<input type= "button" class="discard_submit_btn" value = "폐기완료"/>
-			<input type= "button" class="discard_cnl_btn" value = "폐기취소"/>
-			
 		</div>
 <div class = "Stock_List">
 <table cellspacing="0">
 	<colgroup>
-	<col width = "15%">
-	<col width = "15%">
-	<col width = "25%">
-	<col width = "15%">
-	<col width = "15%">
-	<col width = "15%">
+	<col width = "18%">
+	<col width = "18%">
+	<col width = "28%">
+	<col width = "18%">
+	<col width = "18%">
 	</colgroup>
 	<thead>
 	<tr>
@@ -551,7 +570,6 @@ function curdate(){
 		<th scope = "col">품목명</th>
 		<th scope = "col">현재 재고 수량</th>
 		<th scope = "col">안전 재고 수량</th>
-		<th scope = "col">유통기한</th>
 	</tr>
 	</thead>
 	<tbody></tbody>
@@ -569,6 +587,8 @@ function curdate(){
 			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
 			<input type= "button" class="search_btn" value = "검색"/>
 			<input type = "hidden" id = "cate" name = "cate"/>
+			<input type = "hidden" id = "itemNo" name = "itemNo"/>
+			<input type = "hidden" id = "safeCnt" name = "safeCnt"/>
 			</form>
 		</div>
 	</div>

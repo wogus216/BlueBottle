@@ -98,7 +98,7 @@ WHERE 1=1
 	<choose>
 		<when test="searchGbn == 0">
     	AND USER_NO LIKE '%' || #{searchTxt} || '%'
-    	OR DEP_NAME LIKE '%' || #{searchTxt} || '%'
+    	OR NAME LIKE '%' || #{searchTxt} || '%'
     	OR USER_NAME LIKE '%' || #{searchTxt} || '%'
     	OR ID  LIKE '%' || #{searchTxt} || '%'
     	</when>
@@ -122,22 +122,24 @@ WHERE 1=1
 
 
 <select id ="getUList" parameterType="hashmap" resultType="hashmap">
-SELECT U.USER_NO, U.NAME, U.USER_NAME, U.ID
-FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, ROW_NUMBER() OVER(ORDER BY U.USER_NO DESC) AS RNUM
-    FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID
-        FROM  HQ_DEP D INNER JOIN HQ_USER U
-        ON D.DEP_NO = U.DEP_NO
-        UNION
-        SELECT BRCH_NO AS USER_NO, BRCH_NAME AS NAME, MGR_NAME AS USER_NAME, ID
-        FROM BRCH) U
-    WHERE 1=1 
+SELECT U.USER_NO, U.NAME, U.USER_NAME, U.ID, U.DIVI
+FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, 
+        ROW_NUMBER() OVER(ORDER BY U.USER_NO DESC) AS RNUM, U.DIVI AS DIVI
+     FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, U.DIVISION AS DIVI
+          FROM  HQ_DEP D INNER JOIN HQ_USER U
+                                 ON D.DEP_NO = U.DEP_NO
+          UNION
+          SELECT BRCH_NO AS USER_NO, BRCH_NAME AS NAME, MGR_NAME AS USER_NAME, ID, DIVISION AS DIVI
+          FROM BRCH) U
+    WHERE 1=1
     <if test="searchTxt != null and searchTxt != ''"> 
 	<choose>
 		<when test="searchGbn == 0">
     	AND USER_NO LIKE '%' || #{searchTxt} || '%'
-    	OR AND NAME LIKE '%' || #{searchTxt} || '%'
+    	OR NAME LIKE '%' || #{searchTxt} || '%'
     	OR USER_NAME LIKE '%' || #{searchTxt} || '%'
     	OR ID  LIKE '%' || #{searchTxt} || '%'
+    	
     	</when>
     	<when test="searchGbn == 1">
     	AND USER_NO LIKE '%' || #{searchTxt} || '%'
@@ -153,6 +155,19 @@ FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID
     	</when>
     	</choose>
 	</if>
+	 <if test="cateNo != null and cateNo != ''"> 
+	<choose>
+		<when test="cateNo == 0">
+    	AND DIVI = #{cateNo}
+    	</when>
+    	<when test="cateNo == 1">
+    	AND DIVI = #{cateNo}
+    	</when>
+    	<when test="cateNo == 2">
+    	AND DIVI IN (0,1)
+    	</when>
+    	</choose>
+		</if>
 )U
 WHERE U.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
