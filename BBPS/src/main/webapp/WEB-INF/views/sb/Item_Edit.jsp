@@ -452,43 +452,18 @@ function drawpricehistory(pricehistorylist){
 	</tr>
 	<tr>
 	<td><select name = "itemCate" id = "itemCate">
-	<c:choose>
-			<c:when test = "${data.CATE_NO eq 0}">
-				<option selected = "selected" value = "0">음료재료</option>
-				<option value = "1">제과</option>
-				<option value = "2">원두</option>
-				<option value = "3">굿즈</option>
-				<option value = "4">기타</option>
-			</c:when>
-			<c:when test = "${data.CATE_NO eq 1}">
-				<option value = "0">음료재료</option>
-				<option selected = "selected" value = "1">제과</option>
-				<option value = "2">원두</option>
-				<option value = "3">굿즈</option>
-				<option value = "4">기타</option>
-			</c:when>
-			<c:when test = "${data.CATE_NO eq 2}">
-				<option value = "0">음료재료</option>
-				<option value = "1">제과</option>
-				<option selected = "selected"  value = "2">원두</option>
-				<option value = "3">굿즈</option>
-				<option value = "4">기타</option>
-			</c:when>
-			<c:when test = "${data.CATE_NO eq 3}">
-				<option value = "0">음료재료</option>
-				<option value = "1">제과</option>
-				<option value = "2">원두</option>
-				<option selected = "selected" value = "3">굿즈</option>
-				<option value = "4">기타</option>
-			</c:when>
-			<c:when test = "${data.CATE_NO eq 4}">
-				<option value = "0">음료재료</option>
-				<option value = "1">제과</option>
-				<option value = "2">원두</option>
-				<option value = "3">굿즈</option>
-				<option selected = "selected" value = "4">기타</option>
-			</c:when>
-	</c:choose>
+        <c:forEach items="${catelist}" var = "d">
+       	 <c:choose>
+			<c:when test = "${data.CATE_NO eq d.CATE_NO}">
+                 <option selected = "selected" value="${d.CATE_NO}">
+                 <c:out value="${d.CATE_NAME}"/> </option>
+             </c:when>
+             <c:otherwise>
+             	<option value="${d.CATE_NO}">
+             	<c:out value="${d.CATE_NAME}"/> </option>
+             </c:otherwise>
+    		</c:choose>        
+        </c:forEach>
 		</select></td>
 	<td><input class = "itemName" type="text" maxlength="10"  name = "itemName" value="${data.ITEM_NAME}"></td>
 	<td><input class = "itemPrice" type="number" maxlength="10" name = "itemPrice" value="${data.PRICE}">

@@ -164,7 +164,7 @@ td{
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 }
-button{
+.add_btn,.search_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -202,7 +202,6 @@ button{
 }
 .search_filter{
 	width : 120px;
-	vertical-align: middle;
 }
 
 .search_input{
@@ -210,6 +209,10 @@ button{
 	vertical-align: middle;
 	width : 280px;
 	outline:none;
+}
+
+.search_filter,.search_input,.search_btn{
+	vertical-align: middle;
 }
 
 .page_btn button{
@@ -361,7 +364,7 @@ function drawproductPaging(pb){
 </head>
 <body>
 <div class="top">
-     <ul>
+<ul>
          <li>
          <a href="#">
          <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
@@ -454,20 +457,20 @@ function drawproductPaging(pb){
          		로그아웃</a>
       	</div>
       </ul>
-   </div>
+ </div>
 <div class="content_area">
 <div class="content">
 <h1>품목조회</h1>
 <div class="filter_area">
-			<select class="cate" name = "cate">
-			<option selected="selected" value="">전체</option>
-			<option value="0">음료재료</option>
-			<option value="1">제과</option>
-			<option value="2">원두</option>
-			<option value="3">굿즈</option>
-			<option value="4">기타</option>
-			</select>
-<button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
+			<select class= "cate">
+               <option selected="selected" value = "">전체</option>
+                  <c:forEach items="${catelist}" var = "d">
+                   <option value="${d.CATE_NO}">
+                   <c:out value="${d.CATE_NAME}"/> </option>
+                  </c:forEach>
+            </select>
+
+<input type = "button" class="add_btn" style="margin:0px 0px 0px 10px;" value = "추가"/>
 </div>
 <table cellspacing="0">
 	<colgroup>
@@ -501,7 +504,7 @@ function drawproductPaging(pb){
 			</select>
 			<input type = "hidden" id = "cate" name = "cate"/>
 			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
-			<button class="search_btn">검색</button>
+			<input type = "button" class="search_btn" value = "검색"/>
 			</form>
 		</div>
 	</div>

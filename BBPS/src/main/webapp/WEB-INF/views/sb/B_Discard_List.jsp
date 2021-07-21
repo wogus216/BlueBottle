@@ -479,14 +479,13 @@ function splitdate(resdate){
 <h1>폐기 목록</h1>
 <form action = "#" id = "filter_Form" method = "post">
 <div class="filter_area">
-			<select class="cate" name = "cate">
-			<option selected="selected" value="">전체</option>
-			<option value="0">음료재료</option>
-			<option value="1">제과</option>
-			<option value="2">원두</option>
-			<option value="3">굿즈</option>
-			<option value="4">기타</option>
-			</select>
+			<select class= "cate">
+               <option selected="selected" value = "">전체</option>
+                  <c:forEach items="${catelist}" var = "d">
+                   <option value="${d.CATE_NO}">
+                   <c:out value="${d.CATE_NAME}"/> </option>
+                  </c:forEach>
+            </select>
 			<input type = "date" name = "start_date"  class="start_date" />
 			<input type = "date" name = "end_date"  class="end_date" />
 		</div>

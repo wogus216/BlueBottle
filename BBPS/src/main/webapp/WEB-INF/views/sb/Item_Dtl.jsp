@@ -279,7 +279,7 @@ input[type='button']:focus{outline:none;}
 
 
 /* 일반버튼 */
-button{
+.del_btn,.edit_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -339,11 +339,11 @@ button{
 }
 
 /* 최하단 목록 버튼*/
-.list_btn{
+.list_btn_area{
 	text-align:center;
 }
 
-.list_btn button{
+.list_btn {
 	width:200px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -375,7 +375,7 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 	
-	$(".list_btn").on("click","button",function(){
+	$(".list_btn").on("click",function(){
 		$("#goForm").submit();
 	});
 	
@@ -611,8 +611,8 @@ function closePopup() {
 <h1>품목조회</h1>
 <div class="btn_area">
 <span class = "Item_Name">품목번호 : ${data.ITEM_NO}</span>
-<button class="del_btn" style="margin-right: 0px;">삭제</button>
-<button class="edit_btn">수정</button>
+<input type = "button" class="del_btn" style="margin-right: 0px;" value = "삭제"/>
+<input type = "button" class="edit_btn" value = "수정"/>
 </div>
 <table cellspacing="0">
 	<colgroup>
@@ -668,8 +668,8 @@ function closePopup() {
 	<tbody></tbody>
 </table>
 </div>
-<div class="list_btn">
-<button style = "margin:50px 0 50px 0;">목록</button>
+<div class="list_btn_area">
+<input class = "list_btn"type ="button" style = "margin:50px 0 50px 0;" value = "목록"/>
 		</div>
 </div>
 </div>

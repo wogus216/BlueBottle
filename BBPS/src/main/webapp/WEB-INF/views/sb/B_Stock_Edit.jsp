@@ -143,10 +143,10 @@ td:nth-child(4){
 	text-align: center;
 }
 
-.editcurCnt,.editsafeCnt{
+.editcurCnt{
 	height: 30px;
 	margin: 0px;
-	width : 80%;
+	width : 60%;
 	cursor: pointer;
 	background-color: #e6e6e6;
 	border-radius: 2px;
@@ -167,6 +167,27 @@ td{
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 }
+
+thead{
+    display : table;
+    table-layout : fixed;
+    width : 800px;
+}
+
+tbody{
+    display : block;
+    max-height : 600px;
+    width : 800px;
+    overflow : auto;
+    overflow-x : hidden;
+}
+
+tr{
+    display : table;
+    table-layout : fixed;
+    width : 800px;
+}
+
 .search_info{
 	text-align: center;
 }
@@ -177,7 +198,7 @@ td{
 
 .search_input{
 	height: 34px;
-	width : 280px;
+	width : 200px;
 	outline:none;
 }
 
@@ -191,6 +212,7 @@ td{
 /*최하단 버튼*/
 .submit_area{
 	text-align: center;
+	width: 800px;
 }
 
 .edit_btn,.edit_cnl_btn,.search_btn{
@@ -225,13 +247,23 @@ td{
     font-weight: bold;
     font-size: 22px;
 }
+
+.today_sell{
+	width: 300px;
+	height: 100px;
+}
+
+.Stock_List,.submit_area{
+	width: 800px;
+	float: right;
+	
+}
+
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	$(".cate").val(7);
 	
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
@@ -244,6 +276,13 @@ $(document).ready(function(){
 		$("#page").val(1);
 		reeditloadList();	
 	});
+	
+	$(".cate").change(function(){
+		$("#cate").val($(".cate").val());
+		$(".search_input").val($("#Old_search_input").val());
+		$("#page").val(1);
+		reeditloadList();
+ 	});
 	
 	
 	$(".top_menu").on("click","a",function(){
@@ -337,27 +376,19 @@ function drawbrchstockeditList(list,result){
 	
 	var html ="";
 	
-	var today = curdate(); //현재 날짜 구한 것을 배열로 잘라 날짜 객체 생성한 것을 리턴 받은 것을 today에 넣음
-	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"6\" style = \"text-align: center;\">데이터가 존재하지 않습니다.</td>";
+		html += "<td colspan = \"6\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
 			
-			var exp = ""; //초기화
-			exp = d.EXPIRY_DATE;
-			
-			arr2 = exp.split('-'); //유통기한 배열 잘라넣기
-			
-			var exp1 = new Date(arr2[0],(arr2[1]*1)-1,arr2[2]);
-			
-			var cha = exp1.getTime() - today.getTime(); //결과값 밀리세컨 단위
-			var chadate = cha/(1000*60*60*24); //결과로 받은 밀리세컨 일자로 표현되도록 계산
+			var to_exp = "";
+			to_exp = splitdate(d.EXPIRY_DATE);
 			
 			html += "<tr ";
-			if(chadate <= 3){// 현재 날짜 기준 유통기한이 3일이 남은 재고는 리스트에 표시하기
+			
+			if(to_exp < 3){ //현재일 기준 유통기한이 3일 이하로 남은 재고
 				html += "style = \"background-color:#F6CED8;\"";
 			}
 				
@@ -373,9 +404,10 @@ function drawbrchstockeditList(list,result){
 		
 	}
 	
-	$("tbody").html(html);
+	$(".Stock_List tbody").html(html);
 }
-function curdate(){
+
+function curdate(){ //현재 날짜 yyyy-mm-dd 형태로 구하기
 	var today = new Date(); //오늘날짜 체크
 
 	var dd = today.getDate();
@@ -389,11 +421,39 @@ function curdate(){
 		} //1월인 경우 01로 표기
 
 		today = yyyy+"-"+mm+"-"+dd;
-		arr1 = today.split('-'); //오늘날짜 배열 잘라넣기
-	
-		var today1 = new Date(arr1[0],(arr1[1]*1)-1,arr1[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
 		
-		return today1;
+		return today;
+}
+
+function splitdate(splitarr){
+	
+	var today = curdate(); //현재날짜 yyyy mm dd 형태로
+	
+	todayarr = today.split('-');//오늘날짜 배열 잘라넣기
+	exparr = splitarr.split('-'); //유통기한 배열 잘라넣기
+	
+	var split_arr = new Date(exparr[0],(exparr[1]*1)-1,exparr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	var today_arr = new Date(todayarr[0],(todayarr[1]*1)-1,todayarr[2]); //*1 -1 처리는 date객체가 되면서 알아서 month에+1 되는 것으로 보여서 해당 처리 진행
+	
+	var cha = split_arr.getTime() - today_arr.getTime(); //결과값 밀리세컨 단위
+	var chadate = cha/(1000*60*60*24); //결과로 받은 밀리세컨 일자로 표현되도록 계산
+	
+	return chadate; //날짜 차이 일수 리턴
+}
+
+function today_sell(){
+	
+	var today = new Date(); //오늘날짜 체크
+	
+	var todaystring =""; // 날짜 문자열로 받을 것
+	
+	var dd = today.getDate();
+	var mm = today.getMonth()+1;
+	var yyyy = today.getFullYear();
+	
+	todaystring = yyyy+"년"+mm+"월"+dd+"일  판매목록";
+	
+	$(".sell_string").html(todaystring);
 }
 
 </script>
@@ -503,24 +563,26 @@ function curdate(){
 		<form action = "#" id = "actionForm" method = "post">
 			<input type = "hidden" id = "Old_search_input" name = "Old_search_input" value ="${param.search_input}" />
 			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
-		<select class="cate" name = "cate">
-			<option selected="selected" value="7">카테고리명</option>
-			<option value="7">전체</option>
-			<option value="0">음료재료</option>
-			<option value="1">제과</option>
-			<option value="2">원두</option>
-			<option value="3">굿즈</option>
-			<option value="4">기타</option>
-			</select>
+			<select class= "cate">
+               <option selected="selected" value = "">전체</option>
+                  <c:forEach items="${catelist}" var = "d">
+                   <option value="${d.CATE_NO}">
+                   <c:out value="${d.CATE_NAME}"/> </option>
+                  </c:forEach>
+            </select>
 		<select id="search_filter" name = "search_filter">
 				<option value="0" selected="selected">품목코드</option>
 				<option value="1">품목명</option>
 			</select>
 			<input type="text" class="search_input" name = "search_input" value = "${param.search_input}"/>
 			<input type= "button" class="search_btn" value = "검색"/>
+			<input type = "hidden" id = "cate" name = "cate"/>
 			</form>
 		</div>
 	</div>
+<div class = "today_sell">
+<h1 class = "sell_string"></h1>
+</div>	
 <div class = "Stock_List">
 <form action = "#" id = "tb_Form" method = "post">
 <table cellspacing="0">
