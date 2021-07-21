@@ -129,6 +129,12 @@ public class nyService implements InyService{
 		return iNyDao.getTotSales(params);
 	}
 
+	@Override
+	public int cnlSales(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.cnlSales(params);
+	}
+
 
 
 }
