@@ -330,11 +330,12 @@ public class sgController {
 	public ModelAndView User_Detail_Hq(
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) throws Throwable{
+		
 		HashMap<String, String> data = isgService.getH(params);
 		
 		mav.addObject("data", data);
 		System.out.println(data + " 본사 상세보기 data가져옴");
-		mav.setViewName("sg/User_Update_Hq");
+		mav.setViewName("sg/User_Detail_Hq");
 		
 		return mav;
 	}

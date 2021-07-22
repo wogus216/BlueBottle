@@ -171,6 +171,22 @@ margin : 0px 300px;
 .btm_info_area > div{
 margin : 55px 20px;
 }
+.wrap{
+	width: 400px;
+	display: inline-block;
+}
+.left{
+	display: inline-block;
+    width: 200px;
+    height: 100%;
+    float: left;
+}
+.right{
+	display: inline-block;
+    float: right;
+    line-height: 50px;
+    font-size: 30px;
+}
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -196,11 +212,27 @@ $(document).ready(function(){
 
 <!-- 본문 -->
 <div class="main_content_area">
+<div class="wrap">
+	<div class="left">
+		<div class="user_no"><h3>사용자 번호</h3></div>
+	</div>
+	<div class="right">
+		<div class="user_no">${data.USER_NO}</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="dep_no"><h3>부서번호</h3></div>
+		</div>
+		<div class="right">
+			<div class="auth_no">${data.AUTH_NO} </div>
+		</div>
+	</div>
+</div>
+<!-- 
 <div class="top_info_area">
-	<div class="user_no"><h3>사용자 번호</h3></div>
 	<div class="auth_no"><h3>권한번호</h3></div>
 	<div class="dep_no"><h3>부서번호</h3></div>
-	<div class="dep_no"><h3>부서명</h3></div>
+	<div class="dep_nm"><h3>부서명</h3></div>
 	<div class="id"><h3>ID</h3></div>
 	<div class="pw"><h3>PW</h3></div>
 	<div class="user_name"><h3>사용자명</h3></div>
@@ -212,7 +244,7 @@ $(document).ready(function(){
 	<div class="user_no">${data.USER_NO}</div>
 	<div class="auth_no">${data.AUTH_NO} </div>
 	<div class="dep_no">${data.DEP_NO}</div>
-	<div class="dep_no">${data.DEP_NAME}</div>
+	<div class="dep_nm">${data.DEP_NAME}</div>
 	<div class="id">${data.ID}</div>
 	<div class="pw">${data.PW}</div>
 	<div class="user_name">${data.USER_NAME}</div>
@@ -221,7 +253,7 @@ $(document).ready(function(){
 	<div class="del_date">${data.DEL_DATE}</div>
 </div>
 </div>
-
+ -->
 <!-- 버튼 -->
 	<div class="btm_btn_area">
 	<button class="edit_btn">수정</button>
