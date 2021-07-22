@@ -229,7 +229,7 @@ $(document).ready(function(){
 			alert("이름을 입력주세요");
 			$("#uNm").focus();
 		} else{
-			function reloadList() {
+			
 				var params = $("#addForm").serialize();
 				
 				$.ajax({
@@ -250,7 +250,7 @@ $(document).ready(function(){
 						console.log(error);
 					}
 				});
-			}
+			
 		}
 	}); //addBtn end
 	

@@ -71,6 +71,13 @@ public class sgDao implements IsgDao {
 		return sqlSession.insert("SG.addB", params);
 	}
 
+	@Override
+	public HashMap<String, String> getH(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사상세보기받아옴");
+		System.out.println(params);
+		return sqlSession.selectOne("SG.getH", params);
+	}
+
 	
 	
 }

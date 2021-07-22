@@ -188,4 +188,16 @@ VALUES
 </insert>
 
 
+
+<select id="getH" parameterType="hashmap" resultType="hashmap">
+SELECT U.*
+FROM (SELECT H.USER_NO, H.AUTH_NO, H.DEP_NO, D.DEP_NAME, H.ID, H.PW, H.USER_NAME, H.PHONE_NUM, H.ENROLL_DATE, H.DEL_DATE
+      FROM HQ_USER H INNER JOIN HQ_DEP D
+                             ON H.DEP_NO = D.DEP_NO) U
+WHERE U.USER_NO IN #{uNo}
+</select>
+    
+    
+    
+    
 </mapper>

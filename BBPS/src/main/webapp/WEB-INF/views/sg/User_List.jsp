@@ -263,8 +263,13 @@ $(document).ready(function(){
 	reloadList();
 	
 	$(".list_wrap tbody").on("click", "tr", function(){
-		$("#uNo").val($(this).attr("uno"));
-		$("#actionForm").attr("action", "User_Detail");
+		$("#uNo").val($(this).attr("uno")); //회원번호
+		$("#dNo").val($(this).attr("dno")); //소속번
+		if($("#dNo").val() == 0){
+			$("#actionForm").attr("action", "User_Detail_Hq");
+		} else{
+			$("#actionForm").attr("action", "User_Detail_Brch");
+		}
 		$("#actionForm").submit();
 	});
 	
@@ -316,9 +321,9 @@ function reloadList() {
 
 function drawList(list) {
 	var html = "";
-	
+	//+ 데이터 +
 	for(var d of list){
-		html += "<tr uno=\"" + d.USER_NO + "\">";
+		html += "<tr uno=\"" + d.USER_NO + "\" dno=\"" + d.DIVI + "\">";
 		html += "<td>" + d.USER_NO+ "</td>";
 		html += "<td>" + d.NAME + "</td>";
 		html += "<td>" + d.USER_NAME + "</td>";
@@ -414,6 +419,7 @@ function drawPaging(pb) {
 <form action="#" id="actionForm" method="post">
 <div class="search_area" style = "margin-top : 30px;">
 	<input type="hidden" id="uNo" name="uNo"/>
+	<input type="hidden" id="dNo" name="dNo"/>
 	<input type="hidden" id="cateNo" name="cateNo"/>
 	<input type="hidden" id="page" name="page" value="${page}">
 		<div class="search_info">
