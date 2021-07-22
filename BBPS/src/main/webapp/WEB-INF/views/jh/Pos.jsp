@@ -79,8 +79,10 @@ body {
 }
 .ord_area {
 	display: inline-block;
-	width: 100%;
+	width: 97%;
 	height: 450px;
+	border: outset;
+	margin-bottom: 15px;
 }
 .ord_stat {
    width: 100%;
@@ -92,17 +94,18 @@ body {
 	vertical-align: bottom;
 }
 .ord_cnt{
-	width: 100px;
+	width: 72px;
     height: 62px;
     font-size: 16px;
+   
 }
 .choice_img{
-	width: 60px;
+	width: 65px;
 	height: 60px;
 }
 .choice_menu,.choice_num,.choice_price{
-	font-size: 15px;
-	height: 54px;
+	font-size: 17px;
+	height: 57px;
 	text-align: center;
 }
 .choice_num{
@@ -114,8 +117,12 @@ body {
 }
 
 .choice_cnl{
-	width: 80px;
+	font-size: 20px;
+    width: 75px;
     height: 60px;
+    background-color: #f2f2f2;
+    color: black;
+    line-height: 20px;
 }
 .table_pay {
 	display: inline-block;
@@ -124,10 +131,14 @@ body {
 	height: 208.4px;
 }
 .cash_pay,.card_pay,.ref{
-	height: 82px;
-    font-size: 20px;
+	height: 78px;
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
     width: 100%;
     cursor: pointer;
+    background-color: #cc6600;
+    border: outset;
 }
 .ta2-1, .ta2-2, .ta2-3 {
 	height: 66px;
@@ -341,35 +352,46 @@ $(document).ready(function(){
 	$(".date").html(year+"년"+month+"월"+date+"일");
 	
 	$(".pos_off_btn").on("click",function(){
-		makePopup("POS종료", "POS를 종료하시겠습니까?",function(){
-		});
+		makePopup("POS종료", "POS를 종료하시겠습니까?",function(){});
 	}); //pos_off end
 	
 	//현재주문 상황에 넣기
-		var nowCnt = 0; //품목주문개수
+	var nowCnt = 0; //품목주문개수
+	var ordMno =0;
+	var arrMno = new Array();  //품목주문배열
+ 
+	
 	$("body").on("click",".menu_name",function(){
 		
 		if(nowCnt < 7){
-			$("#mNo").val($(this).attr("mno"));
-			$(this).attr("class","menu_name_off");
 			
-			reloadOrd();
-			nowCnt++;
-			
-			console.log("품목주문개수"+nowCnt);
-		}else{
-			ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
+				if($(".ord_stat[mno='" + $(this).attr("mno") + "']").length == 0){
+				// 주문한게 없는 경우
+					nowCnt++;
+					$("#mNo").val($(this).attr("mno"));
+					reloadOrd();
+				
+				} else{
+					//주문한게 있는 경우
+					ordPopup("", "이미주문했습니다.",function(){});
+					}
 		}
-		
-	});
+		else{
+			ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
+			
+		} 
+	
+	}); 	
+
 	
 	//셀렉트에서 주문 갯
 		$("body .ord_area").on("focus",".ord_cnt",function(){
 		//전 갯수 적용
 			if(ordResCnt > 0){
 				var preCnt = ($(this).val() * 1); // 변경 전 갯수
+				ordMoney = ($(this).parent().parent().children().eq(2).children().val() * 1);
+			
 				ordResCnt -= preCnt; // 총 갯수에서 제외
-				
 				ordPrice = ordMoney * preCnt; // 갯수 * 금액
 				
 				//결제금액 넣어주기
@@ -382,8 +404,8 @@ $(document).ready(function(){
 			}).on("change",".ord_cnt",function(){
 				//바뀐 갯수 적용
 				var nowCnt = ($(this).val() * 1); // 변경 후 갯수
+					ordMoney = ($(this).parent().parent().children().eq(2).children().val() * 1);
 					ordResCnt += nowCnt; // 총 갯수에서 제외
-				
 					 ordPrice = ordMoney * nowCnt; // 갯수 * 금액
 				
 				 //결제금액 넣어주기
@@ -400,9 +422,9 @@ $(document).ready(function(){
 
 	
 	//주문 취소
-	$(".ord_area").on("click",".choice_cnl",function(){
 		var mCnt = 0;
 		var mPrice = 0;
+	$(".ord_area").on("click",".choice_cnl",function(){
 		console.log("취소시 총갯수"+ordResCnt);
 		console.log("취소시 총금액"+ordResPay);
 		//취소 갯수
@@ -437,8 +459,8 @@ $(document).ready(function(){
 				ordResCnt = 0;
 			}
 		
-		//주문 입니다 다시 돌려 놓기
-		$(".menu_area input[type='button'][mno='" + cnlM + "']").attr("class","menu_name");
+		//주문 입니다 다시 돌려 놓기 필요없어졌지만, 살려놓자 공부용
+		//$(".menu_area input[type='button'][mno='" + cnlM + "']").attr("class","menu_name");
 		
 	});
 	
@@ -448,27 +470,42 @@ $(document).ready(function(){
 			$(".table_num").show();
 			$(".menu_cate").css("margin-bottom", "100px");
 			
-			$(".table_num").on("click", "input[type='button']",function(){
-				//받은 금액 넣기
-				
-				if(recMoney == ""){
-					recMoney = $(this).val();
-					ordPay();
-				} else if($(this).val() == "clear"){
-					recMoney = "0";	 //클리어
-					ordPay();
-				} else if($(this).val() == "할인"){
-					recMoney = recMoney * 0.5;	//50^할인
-					ordPay();
-				}
-				else{
-					recMoney += $(this).val();
-					ordPay();
-					} 
-				
-					console.log("숫자"+recMoney);
-				});
+			if($(this).val() == "현금결제"){
+				//현금 1번
+				$("#methodNo").attr("value", 1);
+				console.log($("#methodNo").val());
+			} else{
+				//카드 0번
+				$("#methodNo").attr("value", 0);
+				console.log($("#methodNo").val());
+			}
+			
+			
 		});
+		
+		$(".table_num").on("click", "input[type='button']",function(){
+				//받은 금액 넣기
+					if($(this).val() == "clear"){
+						recMoney = "0" * 1;	 //클리어
+						ordPay();
+					} else if($(this).val() == "할인"){
+						ordResPay = ordResPay * 0.5;	//50퍼할인
+						ordPay();
+					}else if($(this).val() == "취소"){
+						$(".table_num").hide();
+						$(".menu_cate").css("margin-bottom", "20px");
+						ordPay();
+					} else if($(this).val() == "확인"){
+						$(".table_num").hide();
+						$(".menu_cate").css("margin-bottom", "20px");
+						
+					}
+				
+					else{
+						recMoney += $(this).val();
+						ordPay();
+					} 
+				});
 	
 	// 숫자에서 처리 하고 확인
 	$(".table_num").on("click", ".confirm",function(){
@@ -481,37 +518,34 @@ $(document).ready(function(){
 		//거스름 돈
 		changeMoney = ordResPay - (recMoney * 1); 
 		
-		if($(this).val() == "현금결제"){
-			//현금 0번
-			$("#methodNo").attr("value", 1);
-			console.log($("#methodNo").val());
-		} else{
-			//카드 1번
-			$("#methodNo").attr("value", 0);
-			console.log($("#methodNo").val());
-		}
 		
 		//주문 품목 전달
 	
 		if($(".recNum").val() == ""){
 			
 			ordPopup("", "받은금액을 먼저 입력해주세요.",function(){});
-			$(".rec_money").focus;
+			$(".rec_money").focus();
 		} 
 		else{
 			//주문 금액 넣기
-			inputOrdMoney();
+			if(recMoney >= ordResPay ){
 				
-			//주문 메뉴 넣기
-			inputOrdMenu();
-		// 총주문개수, 결제금액 초기화
-			ordResPay = 0;
-			ordResCnt = 0;
-		
-			ordPopup("", "결제완료되었습니다.",function(){
-		
-				
-			});
+				inputOrdMoney();
+					
+				//주문 메뉴 넣기
+				inputOrdMenu();
+			// 총주문개수, 결제금액 초기화
+				ordResPay = 0;
+				ordResCnt = 0;
+				recMoney = 0;
+				ordPopup("", "결제완료되었습니다.",function(){});
+				location.reload();
+			}else{
+				ordPopup("", "금액이 부족합니다.",function(){});
+				recMoney = (0 * 1); //받은 금액 초기화
+				changeMoney = (0 * 1); //거스름돈 초기화
+				ordPay();
+			}
 			
 		}
 		
@@ -632,7 +666,7 @@ function inputOrd(ord){
 	order+= 				"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
 	order+= 			"</div >";
 	order+= 			"<div class=\"ord_div\">";
-	order+= 				"<select class=\"ord_cnt\" name=\"oMCnt\" value=\"\">";
+	order+= 				"<select class=\"ord_cnt\" name=\"oMCnt\" mNo=\""+ ord.MNO +"\" value=\"\">";
 	order+= 					"<option value=\"1\" selected=\"selected\">1</option>";
 	order+= 					"<option value=\"2\">2</option>";
 	order+= 					"<option value=\"3\">3</option>";
@@ -685,10 +719,10 @@ function ordRes(){
 //결제
 function ordPay(){
 	var pay ="";
-	
+	//recMoney = recMoney * 1; //금액 처리를 위해서
 	//"+ +"
 	pay+= "<tr class=\"pay_info\">";
-	pay+= "	 <td class=\"rec_money\">"+ recMoney +"원</td>";
+	pay+= "	 <td class=\"rec_money\">"+ recMoney * 1 +"원</td>";
 	pay+= "	 <td rowspan=\"3\">"+ ordResCnt +"개</td>";
 	pay+= "	 <td rowspan=\"3\">"+ ordResPay +"원</td>";
 	pay+= "</tr>";
@@ -696,7 +730,7 @@ function ordPay(){
 	pay+= "	 <td>거스름돈</td>";
 	pay+= "</tr>";
 	pay+= "<tr class=\"change_price\">";
-	pay+= "	 <td>"+ changeMoney  +"</td>";
+	pay+= "	 <td>"+Math.abs(changeMoney)+"원</td>";
 	pay+= "</tr>";
 	pay+= "<tr class=\"pay_method\">";
 	pay+= "	<td>";
@@ -916,7 +950,8 @@ function closePopup() {
 							<td><input type="button" value="7" class="num" ></td>
 							<td><input type="button" value="8" class="num" ></td>
 							<td><input type="button" value="9" class="num" ></td>
-							<td colspan="2"><input type="button" value="00" class="num"></td>
+							<td><input type="button" value="00" class="num"></td>
+							<td><input type="button" value="취소" class="num"></td>
 						</tr>
 					</tbody>
 			</table>

@@ -417,11 +417,11 @@ public class jhController {
 	Map<String, Object> modelMap = new HashMap<String, Object>();
 	
 	HashMap<String,Object> insertMap = new HashMap<String, Object>();
-	
+		System.out.println("메뉴번호"+menuNo);
 			try {
 					//오더 번호는 하나 이기때문에 굳이 for문이 필요없다.
 					insertMap.put("ordNo", ordNo.get(0));
-				
+					
 				for(int i = 0; i < menuNo.size(); i++) {
 					insertMap.put("menuNo", menuNo.get(i));
 					insertMap.put("oMCnt", oMCnt.get(i));
