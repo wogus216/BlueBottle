@@ -58,7 +58,7 @@ public class sgController {
 		int cnt = isgService.getNCnt(params);
 
 		// 페이징 정보 취득
-		PagingBean pb = ipagingService.getPagingBean(page, cnt, 3, 5);
+		PagingBean pb = ipagingService.getPagingBean(page, cnt, 10, 5);
 		
 		// 게시글 시작번호, 종료 번호 할당
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
@@ -238,4 +238,89 @@ public class sgController {
 		System.out.println("list"+list);
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	@RequestMapping(value="/User_Select")
+	public ModelAndView User_Select(
+			ModelAndView mav)  {
+		
+		mav.setViewName("sg/User_Select");
+		
+		return mav;
+	}
+	
+	
+	
+	@RequestMapping(value="/User_Add_Hq")
+	public ModelAndView User_Add_Hq(ModelAndView mav) { //db붙을 거 아니라 throws~~필요없음
+		
+		mav.setViewName("sg/User_Add_Hq");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/User_Add_Hqs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Add_Hqs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.addU(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		} //addObjec가 modelMap으로 바뀐 거 빼고는 똑같다
+		System.out.println("params"+params);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/User_Add_Brch")
+	public ModelAndView User_Add_Brch(ModelAndView mav) { //db붙을 거 아니라 throws~~필요없음
+		
+		mav.setViewName("sg/User_Add_Brch");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/User_Add_Brchs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Add_Brchs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.addB(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		} //addObjec가 modelMap으로 바뀐 거 빼고는 똑같다
+		System.out.println("params"+params);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 }

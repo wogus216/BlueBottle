@@ -172,5 +172,20 @@ FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID
 WHERE U.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 
+<insert id="addU" parameterType="hashmap">
+INSERT INTO HQ_USER
+(USER_NO, AUTH_NO, DEP_NO, ID, PW, USER_NAME, PHONE_NUM, ENROLL_DATE, DIVISION)
+VALUES
+(HQ_USER_SEQ.NEXTVAL, #{uAuto}, #{uDep}, #{uId}, #{uPw}, #{uNm}, #{uPhone}, SYSDATE, 0)
+</insert>
+
+
+<insert id="addB" parameterType="hashmap">
+INSERT INTO BRCH
+(BRCH_NO, ID, PW, BRCH_NAME, POST_NUM, DFT_ADDRESS, DTL_ADDRESS, CALL_NUM, MGR_NAME, MGR_PHONE_NUM, DIVISION)
+VALUES
+(BRCH_SEQ.NEXTVAL, #{bId}, #{bPw}, #{bNm}, #{bPost}, #{bDft}, #{bDtl}, #{bCall}, #{bMgrNm}, 1)
+</insert>
+
 
 </mapper>

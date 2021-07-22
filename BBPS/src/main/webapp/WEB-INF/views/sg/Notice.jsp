@@ -161,10 +161,6 @@ td{
  td:first-child{
 	border-left: none;
 }
-input{
-	width:200px;
-	height:40px;
-}
 
 .input_btn_area{
 display: inline-block;
@@ -185,21 +181,6 @@ text-align: left;
 }
 label{
 	vertical-align: middle;
-}
-.search_btn{
-display : inline-block;
-	height: 40px;
-	margin: 0 ; 	
-	padding: 0;
-	vertical-align: bottom;
-}
-
-.input_btn{
-	display : inline-block;
-	height: 40px;
-	margin: 0 ; 	
-	padding: 0;
-	vertical-align: bottom;
 }
 
 select{
@@ -227,6 +208,9 @@ input[type='button']{
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
+	padding: 0;
+	vertical-align: bottom;
+	font-weight: bold;
 }
 /* 검색 과 페이지 */
 .search_area, .page_btn{

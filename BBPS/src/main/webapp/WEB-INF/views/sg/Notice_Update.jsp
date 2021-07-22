@@ -193,7 +193,7 @@ margin : 10px 0px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
-	width:130px;
+	width:150px;
 	height: 50px;
 	background-color: #01a1dd;
 	font-weight: bold;
@@ -202,7 +202,7 @@ margin : 10px 0px;
 .cnl_btn{
 	color: white;
 	background-color: #b3b3b3;
-    width: 130px;
+    width: 150px;
     height: 50px;
     font-weight: bold;
     font-size: 22px;
@@ -402,7 +402,7 @@ $(document).ready(function () {
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
-<td>admin</td>
+<td>${data.USER_NAME}</td>
 <td>${data.S_DT}</td>
 <td>597&nbsp;</td>
 </tr>

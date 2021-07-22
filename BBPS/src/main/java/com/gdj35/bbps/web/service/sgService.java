@@ -55,6 +55,15 @@ public class sgService implements IsgService {
 		return isgDao.getUList(params);
 	}
 
+	@Override
+	public int addU(HashMap<String, String> params) throws Throwable {
+		return isgDao.addU(params);
+	}
+
+	@Override
+	public int addB(HashMap<String, String> params) throws Throwable {
+		return isgDao.addB(params);
+	}
 	
 	
 

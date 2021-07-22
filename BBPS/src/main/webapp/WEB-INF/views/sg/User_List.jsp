@@ -183,13 +183,6 @@ label{
 	height:40px;
 
 }
-.search_btn{
-	height: 40px;
-	width :60px;
-	margin: 0 ;
-	padding: 0;
-	vertical-align: bottom;
-}
 
 select{
 	font-size: 15px;	
@@ -214,6 +207,9 @@ input[type='button']{
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
+	margin: 0 ;
+	padding: 0;
+	vertical-align: bottom;
 }
 /* 검색 과 페이지 */
 
@@ -274,7 +270,7 @@ $(document).ready(function(){
 	
 	$("#addBtn").on("click",function(){
 		$("#searchTxt").val($("#searchOldTxt").val());
-		$("#actionForm").attr("action", "User_Detail");
+		$("#actionForm").attr("action", "User_Select");
 		$("#actionForm").submit();
 	});
 	
