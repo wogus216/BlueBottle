@@ -147,6 +147,7 @@ $(document).ready(function(){
 		$(this).attr("class","menu1_wrap_on");
 	});
 	
+
 	//2뎁스 호버 시 효과
 	$(".top_menu .menu_depth2_area").children().hover(function(){
 		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "#f2f2f2");
@@ -154,9 +155,16 @@ $(document).ready(function(){
 		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
 	});
 	
-	//메뉴이동
-	$(".top_menu").on("click", ".menu_depth1",".menu_depth2",function(){
+	// 1뎁스 클릭 시 메뉴이동
+	$(".top_menu").on("click", ".menu_depth1",function(){
 		$("#h_menu_form").attr("action",$(this).parent().parent().attr("addr"));
+		$(this).parent().parent().css("color","#01a1dd");
+		$("#h_menu_form").submit();
+	});
+	
+	// 2뎁스 클릭 시 메뉴이동
+	$(".top_menu").on("click", ".menu_depth2",function(){
+		$("#h_menu_form").attr("action",$(this).attr("addr"));
 		$(this).parent().parent().css("color","#01a1dd");
 		$("#h_menu_form").submit();
 	});
@@ -228,14 +236,17 @@ function drawMenu(menu){
 							}
 							html +=		"<div class=\"menu2_title\">";
 							html +=			"<div class= \"menu_depth2_area \">";
-									if(menu[i].SITE_MENU_NO == 2){
-							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+									if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() == "0"){
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j+1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
+									}
+									else if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() != "0" ){
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									} 
 									else if(menu[i].SITE_MENU_NO == 5){
-							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j-1].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j-2].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j-2].MADDR + "\">" + menu[j-2].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j-1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									}
 							html +=			"</div>";
 							html +=		"</div>";
