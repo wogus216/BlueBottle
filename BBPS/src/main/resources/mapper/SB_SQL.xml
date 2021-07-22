@@ -521,6 +521,21 @@
 	WHERE RNK = 1
 	</insert>
 	
+	<!-- 지점 재고 수정 페이지 내 금일 판매목록-->
+	<select id = "getBSSellList" resultType="hashmap"><!-- 날짜 정보와 지점 정보 수정 필요 지점:db내 아이디, 날짜 : sysdate -->
+	SELECT PC.CATE_NAME,PM.MENU_NAME ,SUM(SM.CNT) AS CNT
+	FROM SALES S INNER JOIN SALES_MENU SM
+	             ON S.SALES_NO = SM.SALES_NO
+	             AND S.BRCH_NO = 3
+	             AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = '2021-07-22'
+	             INNER JOIN POS_MENU PM
+	             ON PM.MENU_NO = SM.MENU_NO
+	             INNER JOIN POS_CATE PC
+	             ON PC.CATE_NO = PM.POS_CATE_NO
+	GROUP BY PM.MENU_NAME,PC.CATE_NAME
+	ORDER BY PC.CATE_NAME
+	</select>
+	
 	<!-- 지점 안전재고 수정 -->
 	<update id = "BSSEdit" parameterType="hashmap">
 	UPDATE ITEM_SAFE_STOCK SET SAFE_STOCK_CNT = #{safeCnt}
@@ -723,4 +738,5 @@
 	                  AND BS.ITEM_NO = #{itemNo}
 	                  AND TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') = #{expDate}
 	</select>
+	
 </mapper> 

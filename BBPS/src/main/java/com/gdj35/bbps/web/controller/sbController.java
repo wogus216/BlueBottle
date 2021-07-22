@@ -785,6 +785,24 @@ public class sbController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	//지점 재고수정 페이지 내 금일 판매목록 그리기
+	@RequestMapping(value = "/B_Stock_sell_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String BSSellList() throws Throwable{
+									
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		List<HashMap<String,String>> Selllist = isbservice.getBSSellList();
+			
+		int result = Selllist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
+		modelMap.put("Selllist",Selllist);
+		modelMap.put("result",result);
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	
 	//지점 재고 입고 리스트
 	@RequestMapping(value = "/B_Stor_List")

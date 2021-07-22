@@ -189,6 +189,11 @@ public class sbService implements IsbService{
 		return isbdao.getCateList();
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBSSellList() throws Throwable {
+		return isbdao.getBSSellList();
+	}
+
 	
 
 }

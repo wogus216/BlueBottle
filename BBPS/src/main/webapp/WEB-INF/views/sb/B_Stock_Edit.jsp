@@ -129,6 +129,11 @@ h1 {
  margin-bottom: 40px;
  font-size: 30px;
 }
+
+.sell_string{
+	margin: 10px;
+ 	font-size: 20px;
+}
 table {
     width: 100%;
     table-layout: fixed;
@@ -176,7 +181,7 @@ thead{
 
 tbody{
     display : block;
-    max-height : 600px;
+    max-height : 400px;
     width : 800px;
     overflow : auto;
     overflow-x : hidden;
@@ -249,8 +254,13 @@ tr{
 }
 
 .today_sell{
-	width: 300px;
-	height: 100px;
+	width: 50px;
+	height: 50px;
+}
+
+.today_sell_tb_area{
+	width: 200px;
+	height: 100%;
 }
 
 .Stock_List,.submit_area{
@@ -258,6 +268,36 @@ tr{
 	float: right;
 	
 }
+
+.today_sell_tb_area,.Stock_List{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.today_sell_tb_area table{
+	width: 400px;
+}
+
+.today_sell_tb_area thead{
+    display : table;
+    table-layout : fixed;
+    width : 400px;
+}
+
+.today_sell_tb_area tbody{
+    display : block;
+    max-height : 400px;
+    width : 400px;
+    overflow : auto;
+    overflow-x : hidden;
+}
+
+.today_sell_tb_area tr{
+    display : table;
+    table-layout : fixed;
+    width : 400px;
+}
+
 
 </style>
 <script type="text/javascript"
@@ -270,6 +310,8 @@ $(document).ready(function(){
 	}
 	
 	reeditloadList();
+	today_sell();
+	resellloadList();
 	
 	$(".search_btn").on("click",function(){
 		$("#cate").val($(".cate").val());
@@ -378,7 +420,7 @@ function drawbrchstockeditList(list,result){
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"6\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
+		html += "<td colspan = \"5\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
@@ -397,7 +439,6 @@ function drawbrchstockeditList(list,result){
 			html += "<td>"+d.ITEM_NO+"<input type = \"hidden\" name = \"itemNo\" value = \""+d.ITEM_NO+"\"/></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td><input readonly type = \"number\" class = \"editcurCnt\" name = \"editcurCnt\" min = \"0\" value = \""+d.CURCNT+"\"/><input type = \"hidden\" name = \"chkcurCnt\" value = \""+d.CURCNT+"\"/></td>";
-			html += "<td>"+d.SAFECNT+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\"/></td>";
 			html += "</tr>";
 		}
@@ -405,6 +446,43 @@ function drawbrchstockeditList(list,result){
 	}
 	
 	$(".Stock_List tbody").html(html);
+}
+
+function resellloadList(){
+	
+	$.ajax({
+		url : "B_Stock_sell_List", 
+		type : "post",  
+		dataType :"json",
+		success : function(res){
+			drawbrchstocksellList(res.Selllist,res.result);
+		},
+		error : function(request,status,error){
+			console.log(error);
+		}
+	});
+}
+
+function drawbrchstocksellList(Selllist,result){
+	
+	var html ="";
+	
+	if(result == 0){ //결과 행이 존재하지 않는 경우
+		html += "<tr>";
+		html += "<td colspan = \"3\" style = \"text-align: center;\">해당 일자에 판매된 품목이 존재하지 않습니다.</td>";
+		html += "</tr>";	
+	} else if (result > 0){ //결과 행이 존재하는 경우 
+		for(var d of Selllist){
+			
+			html += "<tr> ";
+			html += "<td>"+d.CATE_NAME+"</td>";
+			html += "<td>"+d.MENU_NAME+"<input type = \"hidden\" name = \"itemNo\" value = \""+d.ITEM_NO+"\"/></td>";
+			html += "<td>"+d.CNT+"</td>";
+			html += "</tr>";
+		}
+	}
+	
+	$(".today_sell_tb_area tbody").html(html);
 }
 
 function curdate(){ //현재 날짜 yyyy-mm-dd 형태로 구하기
@@ -557,7 +635,7 @@ function today_sell(){
 <div class="content_area">
 <div class="content">
 <h1>재고 수정</h1>
-<div class="filter_area"></div>
+<div class="filter_area">
 <div class="search_area" style = "margin-top : 30px;">
 		<div class="search_info">
 		<form action = "#" id = "actionForm" method = "post">
@@ -580,19 +658,31 @@ function today_sell(){
 			</form>
 		</div>
 	</div>
-<div class = "today_sell">
+</div>
+<div class = "today_sell"></div>
 <h1 class = "sell_string"></h1>
-</div>	
+<div class = "today_sell_tb_area">
+<table cellspacing="0">
+	
+	<thead>
+	<tr>
+		<th scope=col style= "border-left: none;">카테고리</th>
+		<th scope=col>메뉴명</th>
+		<th scope=col>수량</th>
+	</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+</div>
 <div class = "Stock_List">
 <form action = "#" id = "tb_Form" method = "post">
 <table cellspacing="0">
 	<colgroup>
 	<col width = "15%">
+	<col width = "10%">
+	<col width = "40%">
 	<col width = "15%">
-	<col width = "25%">
-	<col width = "15%">
-	<col width = "15%">
-	<col width = "15%">
+	<col width = "20%">
 	</colgroup>
 	<thead>
 	<tr>
@@ -600,7 +690,6 @@ function today_sell(){
 		<th scope = "col">품목코드</th>
 		<th scope = "col">품목명</th>
 		<th scope = "col">현재 재고 수량</th>
-		<th scope = "col">안전 재고 수량</th>
 		<th scope = "col">유통기한</th>
 	</tr>
 	</thead>
