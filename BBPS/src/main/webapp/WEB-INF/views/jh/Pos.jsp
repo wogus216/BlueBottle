@@ -369,7 +369,6 @@ $(document).ready(function(){
 				// 주문한게 없는 경우
 					nowCnt++;
 					$("#mNo").val($(this).attr("mno"));
-					$(this).attr("class",".menu_name_off");
 					reloadOrd();
 				
 				} else{
@@ -569,7 +568,10 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
-	//
+	// 마감 
+	$(".finish_btn").on("click",function(){
+		location.href = "B_Stock_Edit";
+	});
 	
 });//ready end
 

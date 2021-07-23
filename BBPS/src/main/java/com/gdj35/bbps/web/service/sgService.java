@@ -69,6 +69,11 @@ public class sgService implements IsgService {
 	public HashMap<String, String> getH(HashMap<String, String> params) throws Throwable {
 		return isgDao.getH(params);
 	}
+
+	@Override
+	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable {
+		return isgDao.getB(params);
+	}
 	
 	
 

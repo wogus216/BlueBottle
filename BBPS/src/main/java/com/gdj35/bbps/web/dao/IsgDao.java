@@ -27,4 +27,6 @@ public interface IsgDao {
 
 	HashMap<String, String> getH(HashMap<String, String> params) throws Throwable;
 
+	HashMap<String, String> getB(HashMap<String, String> params) throws Throwable;
+
 }

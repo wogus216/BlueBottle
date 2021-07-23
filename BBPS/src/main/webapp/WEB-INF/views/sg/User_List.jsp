@@ -294,7 +294,7 @@ $(document).ready(function(){
 	
 	$("#cate").on("change", function () {
 		$("#cateNo").val($("#cate").val());
-		console.log($("#cateNo").val());
+		console.log("카테고리번호"+$("#cateNo").val());
 		reloadList();
 		
 	});
