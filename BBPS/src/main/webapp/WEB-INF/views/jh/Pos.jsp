@@ -369,6 +369,7 @@ $(document).ready(function(){
 				// 주문한게 없는 경우
 					nowCnt++;
 					$("#mNo").val($(this).attr("mno"));
+					$(this).attr("class",".menu_name_off");
 					reloadOrd();
 				
 				} else{
