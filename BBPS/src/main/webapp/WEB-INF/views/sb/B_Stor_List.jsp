@@ -1,35 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/B_Menu.jsp">
+	<c:param name="menuno" value="16"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>지점 입고 조회</title>
 <style type="text/css">
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1400px;
-    height: 62px;
-}
-
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1050px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
 ul {
    list-style-type: none;
    margin: 0;
@@ -45,61 +25,6 @@ ul:after {
 
 li {
    float: left;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
 }
 .content_area{
 	width: 1250px;
@@ -302,7 +227,7 @@ function drawstockstorList(list,result){
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
 			html += "<tr>";
-			html += "<td><a href = \"#\">"+d.ORD_NO+"</a></td>";
+			html += "<td><a href = \"http://localhost:8090/bbps/B_Ord_dtl?oNo="+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
 			html += "<td>"+d.CATE_NAME+"</a></td>";
 			html += "<td>"+d.ITEM_NO+"</a></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
@@ -381,101 +306,7 @@ function splitdate(resdate){
 </script>
 </head>
 <body>
-<div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         	주문관리</a>
-	         <div class="sub">
-	        	 <a href="#">
-	            	주문조회</a>
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	      </div>
-         </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-           <div class="menu_c">
-         <li>
-		<a class="main_menu" href="#"> 
-	        		품목관리</a>
-	          	<div class="sub">
-				<a href="#">
-	            	품목조회</a>
-	            <a href="#">
-	            	품목등록</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_e">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_f">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_g">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
-   </div>
+<div class="top"></div>
 <div class="content_area">
 <div class="content">
 <h1>입고 목록</h1>
@@ -497,10 +328,10 @@ function splitdate(resdate){
 	<colgroup>
 	<col width = "10%">
 	<col width = "10%">
-	<col width = "20%">
+	<col width = "10%">
+	<col width = "30%">
 	<col width = "10%">
 	<col width = "15%">
-	<col width = "20%">
 	<col width = "15%">
 	</colgroup>
 	<thead>
@@ -531,6 +362,7 @@ function splitdate(resdate){
 			<input type = "hidden" id = "cate" name = "cate"/>
 			<input type = "hidden" id = "start_date" name = "start_date"/>
 			<input type = "hidden" id = "end_date" name = "end_date"/>
+			<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 			</form>
 		</div>
 	</div>

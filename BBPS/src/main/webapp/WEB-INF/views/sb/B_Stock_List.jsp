@@ -1,106 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/B_Menu.jsp">
+	<c:param name="menuno" value="14"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1400px;
-    height: 62px;
-}
 
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1050px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
-ul {
-   list-style-type: none;
-   margin: 0;
-   padding: 0;
-  
-}
-
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
-}
-
-li {
-   float: left;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
-}
 .content_area{
 	width: 1250px;
 	height: 900px;
@@ -259,6 +169,8 @@ td{
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	console.log(${sBRCHNo});
+	
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
@@ -342,7 +254,7 @@ function drawbrchstockList(list,result){
 	var html ="";
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
-		html += "<tr>";
+		html += "<tr onclick=\"event.cancelBubble=true\" style = \"pointer-events: none;\">";
 		html += "<td colspan = \"5\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
@@ -447,9 +359,6 @@ function splitdate(splitarr){
 </head>
 <body>
 <div class="top">
-<c:import url="../jh/B_Menu.jsp">
-	<c:param name="menuno" value="15"></c:param>
-</c:import>
    </div>
 <div class="content_area">
 <div class="content">
@@ -498,6 +407,7 @@ function splitdate(splitarr){
 			<input type = "hidden" id = "cate" name = "cate"/>
 			<input type = "hidden" id = "itemNo" name = "itemNo"/>
 			<input type = "hidden" id = "safeCnt" name = "safeCnt"/>
+			<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 			</form>
 		</div>
 	</div>

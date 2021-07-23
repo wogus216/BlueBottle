@@ -189,8 +189,8 @@ public class sbDao implements IsbDao{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getBSSellList() throws Throwable {
-		return sqlsession.selectList("sb.getBSSellList");
+	public List<HashMap<String, String>> getBSSellList(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectList("sb.getBSSellList",params);
 	}
 
 

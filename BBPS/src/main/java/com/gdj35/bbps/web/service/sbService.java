@@ -190,8 +190,8 @@ public class sbService implements IsbService{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getBSSellList() throws Throwable {
-		return isbdao.getBSSellList();
+	public List<HashMap<String, String>> getBSSellList(HashMap<String, String> params) throws Throwable {
+		return isbdao.getBSSellList(params);
 	}
 
 	
