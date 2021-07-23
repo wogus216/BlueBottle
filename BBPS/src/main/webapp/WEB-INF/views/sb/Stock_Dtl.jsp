@@ -285,7 +285,11 @@ label{
 	height: 40px;
 	margin: 0 ;
 	padding: 0;
-	vertical-align: bottom;
+	vertical-align: middle;
+}
+
+.stock_add_btn,.discard_submit_btn{
+	background-color: #01a1dd;
 }
 
 .discard_btn,.discard_cnl_btn{
@@ -310,7 +314,7 @@ select{
 	
 }
 /* 일반버튼 */
-button{
+.stock_add_btn,.discard_btn,.discard_submit_btn,.discard_cnl_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -318,9 +322,8 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
+	margin: 10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
 }
 
@@ -975,10 +978,10 @@ function closePopup() {
 <li><strong>품목번호 : </strong>${param.itemNo}</li>
 </ul>
 <div class="button_area">
-			<button class="stock_add_btn">추가</button>
-			<button class="discard_btn" style= "margin:0px 0px 0px 10px;">폐기</button>
-			<button class="discard_submit_btn" >완료</button>
-			<button class="discard_cnl_btn" style= "margin:0px 0px 0px 10px;">취소</button>
+			<input type = "button" class="stock_add_btn" value = "추가"/>
+			<input type = "button" class="discard_btn" style= "margin:0px 0px 0px 10px;" value = "폐기"/>
+			<input type = "button" class="discard_submit_btn" value = "완료"/>
+			<input type = "button" class="discard_cnl_btn"style= "margin:0px 0px 0px 10px;"  value = "취소"/>
 		</div>
 
 <form action = "#" id = "tb_Form" method = "post">

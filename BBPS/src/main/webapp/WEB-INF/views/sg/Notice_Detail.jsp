@@ -190,7 +190,7 @@ outline:none;
 width:100px;
 height: 40px;
 font-weight: bold;
-font-size: 15px;
+font-size: 18px;
 }
 
 
@@ -217,7 +217,7 @@ float: right;
 	width:100px;
 	height: 40px;
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 18px;
 }
  .del_btn{
 	color: white;
@@ -225,7 +225,7 @@ float: right;
     width: 100px;
     height: 40px;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 18px;
     text-align:center;
 	border: 0;
 	border-radius: 3px;
@@ -258,6 +258,8 @@ width: 100%;
  
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" 
+		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function() {

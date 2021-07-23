@@ -183,13 +183,6 @@ label{
 	height:40px;
 
 }
-.search_btn{
-	height: 40px;
-	width :60px;
-	margin: 0 ;
-	padding: 0;
-	vertical-align: bottom;
-}
 
 select{
 	font-size: 15px;	
@@ -214,6 +207,9 @@ input[type='button']{
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
+	margin: 0 ;
+	padding: 0;
+	vertical-align: bottom;
 }
 /* 검색 과 페이지 */
 
@@ -267,14 +263,19 @@ $(document).ready(function(){
 	reloadList();
 	
 	$(".list_wrap tbody").on("click", "tr", function(){
-		$("#uNo").val($(this).attr("uno"));
-		$("#actionForm").attr("action", "User_Detail");
+		$("#uNo").val($(this).attr("uno")); //회원번호
+		$("#dNo").val($(this).attr("dno")); //소속번
+		if($("#dNo").val() == 0){
+			$("#actionForm").attr("action", "User_Detail_Hq");
+		} else{
+			$("#actionForm").attr("action", "User_Detail_Brch");
+		}
 		$("#actionForm").submit();
 	});
 	
 	$("#addBtn").on("click",function(){
 		$("#searchTxt").val($("#searchOldTxt").val());
-		$("#actionForm").attr("action", "User_Detail");
+		$("#actionForm").attr("action", "User_Select");
 		$("#actionForm").submit();
 	});
 	
@@ -320,9 +321,9 @@ function reloadList() {
 
 function drawList(list) {
 	var html = "";
-	
+	//+ 데이터 +
 	for(var d of list){
-		html += "<tr uno=\"" + d.USER_NO + "\">";
+		html += "<tr uno=\"" + d.USER_NO + "\" dno=\"" + d.DIVI + "\">";
 		html += "<td>" + d.USER_NO+ "</td>";
 		html += "<td>" + d.NAME + "</td>";
 		html += "<td>" + d.USER_NAME + "</td>";
@@ -418,6 +419,7 @@ function drawPaging(pb) {
 <form action="#" id="actionForm" method="post">
 <div class="search_area" style = "margin-top : 30px;">
 	<input type="hidden" id="uNo" name="uNo"/>
+	<input type="hidden" id="dNo" name="dNo"/>
 	<input type="hidden" id="cateNo" name="cateNo"/>
 	<input type="hidden" id="page" name="page" value="${page}">
 		<div class="search_info">

@@ -122,14 +122,6 @@ h1 {
  font-size: 30px;
 }
 
-.row_add, .row_del{
-	background-color: #01a1dd;
-	float: right;
-}
-.row_del{
-	background-color: #bf4040;
-}
-
 table {
     width: 100%;
     table-layout: fixed;
@@ -187,7 +179,7 @@ input{
 	 color:red;
 }
 /* 이게일반 */
-button{
+.row_add, .row_del,.submit,.cnl_btn{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -200,6 +192,14 @@ button{
 	background-color: #01a1dd;
 	outline:none;
 }
+
+.row_add, .row_del{
+	float: right;
+}
+.row_del{
+	background-color: #bf4040;
+}
+
 .submit_area{
 	text-align: center;
 }
@@ -230,6 +230,11 @@ input[type=radio]{
 	vertical-align: middle;
 }
 
+#itemCate{
+	width : 100px;
+	height : 40px;
+	text-align: middle;
+}
 
 </style>
 <script type="text/javascript"
@@ -254,7 +259,18 @@ $(document).ready(function(){
 	});
 
 	$(".row_add").on("click",function(){
-		add_tb();
+		
+		$.ajax({
+		      url : "Stock_Addcate",//접속주소
+		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
+		      dataType :"json", //받아올 데이터 형식
+		      success : function(res){
+		    	  add_tb(res.catelist);
+		      },
+		      error : function(request,status,error){
+		         console.log(error);
+		      }
+		   });
 	});
 	
 	$(".row_del").on("click",function(){
@@ -328,7 +344,7 @@ $(document).ready(function(){
 	
 }); //ready end
 
-function add_tb(){
+function add_tb(catelist){
 	
 	if(cnt_tr < 15){
 		cnt_tr ++;
@@ -336,13 +352,16 @@ function add_tb(){
 		var insertTr = "";
 		
 		insertTr += "<tr>";
-		insertTr += "<td><select name = \"itemCate\" id = \"itemCate\">";
-		insertTr += "<option value = \"0\">음료재료</option>";
-		insertTr += "<option value = \"1\">제과</option>";
-		insertTr += "<option value = \"2\">원두</option>";
-		insertTr += "<option value = \"3\">굿즈</option>";
-		insertTr += "<option value = \"4\">기타</option>";
-		insertTr += "</select></td>";
+		insertTr += "<td>";
+		
+		insertTr += "<select name = \"itemCate\" id = \"itemCate\">";
+			
+			for(var d of catelist){
+				insertTr += "<option  value = \""+d.CATE_NO+"\">"+d.CATE_NAME+"</option>";
+			}
+		
+		insertTr += "</select>";
+		insertTr += "</td>";
 		insertTr += "<td><input class = \"itemName\"type=\"text\" name = \"itemName\" maxlength=\"30\"></td>";
 		insertTr += "<td><input class = \"itemPrice\"type=\"number\" min = 1 name = \"itemPrice\" maxlength=\"10\"></td>";
 		insertTr += "<td><input class = \"itemMinOrdUnit\"type=\"number\" name = \"itemMinOrdUnit\" maxlength=\"10\"></td>";
@@ -474,8 +493,8 @@ function del_tb(){
 <div class="content">
 <h1>품목등록</h1>
 <div class="btn_area">
-<button class="row_del" style="margin-right: 0px;">행삭제</button>
-<button class="row_add">행추가</button>
+<input type="button" class="row_del" style="margin-right: 0px;" value = "행삭제"/>
+<input type="button" class="row_add" value = "행추가"/>
 </div>
 <form action = "#" id = "tb_Form" method = "post"><!-- tbody에 있는 내용 넘기기위해 -->
 <div class = "tb_area">
@@ -494,11 +513,11 @@ function del_tb(){
 	<tbody>	
 	<tr>
 	<td><select name = "itemCate" id = "itemCate">
-		<option value = "0">음료재료</option>
-		<option value = "1">제과</option>
-		<option value = "2">원두</option>
-		<option value = "3">굿즈</option>
-		<option value = "4">기타</option>
+           <c:forEach items="${catelist}" var = "d">
+              <option value="${d.CATE_NO}">
+               <c:out value="${d.CATE_NAME}"/>
+              </option>
+           </c:forEach>
 		</select></td>
 	<td><input type="text" class = "itemName" name = "itemName" maxlength="30"></td>
 	<td><input type="number" class = "itemPrice" name = "itemPrice" maxlength="10"></td>
@@ -512,8 +531,8 @@ function del_tb(){
 </div>
 </form>
 	<div class="submit_area">
-	<button class="submit">등록</button>
-	<button class="cnl_btn">취소</button>
+	<input type = "button" class="submit" value = "등록"/>
+	<input type = "button" class="cnl_btn" value = "취소"/>
 	</div>
 </div>
 </div>

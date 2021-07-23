@@ -72,5 +72,9 @@ public interface IsbDao {
 
 	public List<HashMap<String, String>> getBSHList(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getCateList() throws Throwable;
+
+	public List<HashMap<String, String>> getBSSellList() throws Throwable;
+
 
 }

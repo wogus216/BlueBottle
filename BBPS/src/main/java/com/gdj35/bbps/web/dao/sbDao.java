@@ -183,5 +183,15 @@ public class sbDao implements IsbDao{
 		return sqlsession.selectList("sb.getBSHList",params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getCateList() throws Throwable {
+		return sqlsession.selectList("sb.getCateList");
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBSSellList() throws Throwable {
+		return sqlsession.selectList("sb.getBSSellList");
+	}
+
 
 }

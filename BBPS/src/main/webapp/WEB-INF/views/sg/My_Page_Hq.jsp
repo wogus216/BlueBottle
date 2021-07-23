@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!-- saved from url=(0197)file:///C:/Users/%EA%B6%8C%EC%9E%AC%ED%98%84/Dropbox/GDJ35/10.%20%ED%8C%80%EA%B3%B5%EC%9C%A0%ED%8F%B4%EB%8D%94/04.%20%EC%9C%A0%ED%86%B5%EB%AC%BC%EB%A5%98/%EA%B9%80%EC%8B%9C%ED%9B%88/user_order.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html>
+<head>
+<meta charset="UTF-8">
 <title>본사마이페이지</title>
 <style type="text/css">
 /* 상단 바 */
@@ -129,7 +129,7 @@ h1 {
 
 
 /* 이게일반 */
-button{
+input[type='button']{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -190,145 +190,12 @@ $(document).ready(function(){
 			$("li").css("background-color","white");
 	});
 	
-	
 }); //ready end
 </script>
 </head>
 <body>
 <!-- 상단 -->
   <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         		발주관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발주요청조회</a>
-	             <a href="#">
-	            	발주완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		발송관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발송요청조회</a>
-	             <a href="#">
-	            	발송완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_c">
-         <li>
-         	<a class="main_menu" href="#">
-         		환불관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_e">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		품목관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	품목조회</a>
-		            <a href="#">
-		            	품목등록</a>
-		            </div>
-	          </li>
-         </div>
-         
-            <div class="menu_f">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		카테고리관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	공지카테고리</a>
-		            <a href="#">
-		            	품목카테고리</a>
-		            <a href="#">
-		            	메뉴카테고리</a>
-		            </div>
-	          </li>
-         </div>
-         
-         <div class="menu_g">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_h">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_i">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_j">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
    </div>
 
 <!--컨텐츠 -->
@@ -364,7 +231,8 @@ $(document).ready(function(){
 
 <!-- 버튼 -->
 	<div class="btm_btn_area">
-	<button class="edit_btn">수정</button>
+	<input type="button" class="edit_btn" value="수정" id="" name="">
+	
 	</div>
 </div>
 </div>

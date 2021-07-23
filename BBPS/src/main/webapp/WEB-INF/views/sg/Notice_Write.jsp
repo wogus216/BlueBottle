@@ -157,11 +157,10 @@ margin : 20px 0px;
 	text-align:center;
 }
 .submit_btn{
-	width:180px;
-	height: 55px;
-	background-color: #01a1dd;
+	width:150px;
+	height: 50px;
 	font-weight: bold;
-	 font-size: 22px;
+	 font-size: 20px;
 	 color: white;
 	text-align:center;
 	border: 0;
@@ -173,17 +172,16 @@ margin : 20px 0px;
 }
 .list_btn {
 	width : 100px;
-	height : 45px;
-	background-color: #01a1dd;
+	height : 40px;
+	background-color: #b3b3b3;;
 	font-weight: bold;
-	 font-size: 20px;
+	 font-size: 18px;
 	 color: white;
 	text-align:center;
 	border: 0;
 	border-radius: 3px;
 	margin:10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
 }
 button:focus{outline:none;}
@@ -308,138 +306,6 @@ $(document).ready(function () {
 <body>
 <!-- 상단 -->
   <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         		발주관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발주요청조회</a>
-	             <a href="#">
-	            	발주완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		발송관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발송요청조회</a>
-	             <a href="#">
-	            	발송완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_c">
-         <li>
-         	<a class="main_menu" href="#">
-         		환불관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_e">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		품목관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	품목조회</a>
-		            <a href="#">
-		            	품목등록</a>
-		            </div>
-	          </li>
-         </div>
-         
-            <div class="menu_f">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		카테고리관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	공지카테고리</a>
-		            <a href="#">
-		            	품목카테고리</a>
-		            <a href="#">
-		            	메뉴카테고리</a>
-		            </div>
-	          </li>
-         </div>
-         
-         <div class="menu_g">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_h">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_i">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_j">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
    </div>
    
 <!--컨텐츠 -->

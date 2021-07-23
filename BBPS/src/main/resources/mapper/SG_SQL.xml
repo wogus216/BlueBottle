@@ -172,5 +172,32 @@ FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID
 WHERE U.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 
+<insert id="addU" parameterType="hashmap">
+INSERT INTO HQ_USER
+(USER_NO, AUTH_NO, DEP_NO, ID, PW, USER_NAME, PHONE_NUM, ENROLL_DATE, DIVISION)
+VALUES
+(HQ_USER_SEQ.NEXTVAL, #{uAuto}, #{uDep}, #{uId}, #{uPw}, #{uNm}, #{uPhone}, SYSDATE, 0)
+</insert>
 
+
+<insert id="addB" parameterType="hashmap">
+INSERT INTO BRCH
+(BRCH_NO, ID, PW, BRCH_NAME, POST_NUM, DFT_ADDRESS, DTL_ADDRESS, CALL_NUM, MGR_NAME, MGR_PHONE_NUM, DIVISION)
+VALUES
+(BRCH_SEQ.NEXTVAL, #{bId}, #{bPw}, #{bNm}, #{bPost}, #{bDft}, #{bDtl}, #{bCall}, #{bMgrNm}, 1)
+</insert>
+
+
+
+<select id="getH" parameterType="hashmap" resultType="hashmap">
+	SELECT U.USER_NO, U.AUTH_NO, U.DEP_NO, U.DEP_NAME, U.ID, U.PW, U.USER_NAME, U.PHONE_NUM, U.ENROLL_DATE, U.DEL_DATE
+	FROM (SELECT H.USER_NO, H.AUTH_NO, H.DEP_NO, D.DEP_NAME, H.ID, H.PW, H.USER_NAME, H.PHONE_NUM, H.ENROLL_DATE, H.DEL_DATE
+	      FROM HQ_USER H INNER JOIN HQ_DEP D
+	                             ON H.DEP_NO = D.DEP_NO) U
+	WHERE U.USER_NO IN #{uNo}
+</select>
+    
+    
+    
+    
 </mapper>

@@ -36,6 +36,9 @@ public class sbController {
 			page = Integer.parseInt(params.get("page"));
 		}
 		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.addObject("page",page);
 		mav.setViewName("sb/Item_List");
 		
@@ -98,7 +101,10 @@ public class sbController {
 	//품목추가  (기능x 화면전환)
 	@RequestMapping(value = "/Item_Add")
 	public ModelAndView HPAdd (ModelAndView mav) throws Throwable{
-			
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.setViewName("sb/Item_Add");
 			
 		return mav;
@@ -150,7 +156,10 @@ public class sbController {
 	public ModelAndView HPEdit (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
 			
 		HashMap<String,String> data = isbservice.getPDetail(params);
-			
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.addObject("data",data);
 		mav.setViewName("sb/Item_Edit");
 				
@@ -308,9 +317,28 @@ public class sbController {
 	@RequestMapping(value = "/Stock_Add")
 	public ModelAndView HSAdd(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
 		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.setViewName("sb/Stock_Add");
 		
 		return mav;
+	}
+	
+	//본사 재고 추가  행 추가 시 카테고리 계속 불러오기
+	@RequestMapping(value = "/Stock_Addcate", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String HSAddcate() throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		modelMap.put("catelist", catelist);
+		
+		return mapper.writeValueAsString(modelMap);
+		
 	}
 	
 	//본사재고추가(기능)
@@ -420,6 +448,10 @@ public class sbController {
 			page = Integer.parseInt(params.get("page"));
 		}
 		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
+		
 		mav.addObject("page",page);
 		mav.setViewName("sb/Stock_Discard_List");
 			
@@ -466,7 +498,10 @@ public class sbController {
 		if(params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
-			
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.addObject("page",page);
 		mav.setViewName("sb/B_Stock_List");
 				
@@ -492,6 +527,7 @@ public class sbController {
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
 				
 		List<HashMap<String,String>> list = isbservice.getBSList(params);
+		
 			
 		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
 			
@@ -604,7 +640,7 @@ public class sbController {
 	}
 	
 
-	//본사 재고 폐기
+	//지점 재고 폐기
 	@RequestMapping(value = "/B_Stock_Discards", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String BSDiscards (@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
@@ -678,7 +714,10 @@ public class sbController {
 	//지점재고 수정
 	@RequestMapping(value = "/B_Stock_Edit")
 	public ModelAndView BSEList(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
-			
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.setViewName("sb/B_Stock_Edit");
 			
 		return mav;
@@ -746,6 +785,24 @@ public class sbController {
 		return mapper.writeValueAsString(modelMap);
 	}
 	
+	//지점 재고수정 페이지 내 금일 판매목록 그리기
+	@RequestMapping(value = "/B_Stock_sell_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String BSSellList() throws Throwable{
+									
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+			
+		List<HashMap<String,String>> Selllist = isbservice.getBSSellList();
+			
+		int result = Selllist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
+		modelMap.put("Selllist",Selllist);
+		modelMap.put("result",result);
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	
 	//지점 재고 입고 리스트
 	@RequestMapping(value = "/B_Stor_List")
@@ -756,6 +813,10 @@ public class sbController {
 		if(params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		
 		mav.addObject("page",page);
 		mav.setViewName("sb/B_Stor_List");
@@ -803,6 +864,10 @@ public class sbController {
 		if(params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
 			
 		mav.addObject("page",page);
 		mav.setViewName("sb/B_Use_List");
@@ -841,7 +906,7 @@ public class sbController {
 	}
 	
 	
-	//지점 재고 사용 리스트
+	//지점 재고 폐기 리스트
 	@RequestMapping(value = "/B_Discard_List")
 	public ModelAndView BDSList(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
 				
@@ -850,14 +915,18 @@ public class sbController {
 		if(params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
-				
+		
+		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		
+		mav.addObject("catelist",catelist);
+		
 		mav.addObject("page",page);
 		mav.setViewName("sb/B_Discard_List");
 					
 		return mav;
 	}
 			
-	//지점 재고 사용 리스트 그리기
+	//지점 재고 폐기 리스트 그리기
 	@RequestMapping(value = "/B_Discard_Lists",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
 	public String BDSLists(@RequestParam HashMap<String,String> params) throws Throwable{

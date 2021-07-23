@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="sb"><!-- namespace: 클래스명과동일 -->
 	
+	<!-- 아이템 카테고리 불러오기 -->
+	<select id = "getCateList" resultType="hashmap">
+	SELECT CATE_NO,CATE_NAME
+	FROM ITEM_CATE
+	WHERE DEL_FLAG = 1
+	</select>
+	
 	<!-- 품목리스트 행 개수 -->
 	<select id ="getPCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(DISTINCT I.ITEM_NO)
@@ -19,23 +26,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	</select>
 	
@@ -63,23 +54,7 @@
 		</choose>
 		</if>
 		<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
     	 )A 
 	WHERE A.RNK BETWEEN  #{startCnt} AND #{endCnt}
@@ -230,23 +205,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>	
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND HD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -275,23 +234,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND HD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -339,23 +282,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  IT.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  IT.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  IT.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  IT.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  IT.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	</select>
 	
@@ -436,23 +363,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  IC.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>)  
     WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
 	</select>
@@ -590,24 +501,8 @@
 			</when>
 		</choose>
 	</if>
-	<if test = "cate != null and cate != '' and cate != 7">
-		<choose>
-			<when test = "cate == 0">
-			AND  IT.CATE_NO = 0
-			</when>
-			<when test = "cate == 1">
-			AND  IT.CATE_NO = 1
-			</when>
-			<when test = "cate == 2">
-			AND  IT.CATE_NO = 2
-			</when>
-			<when test = "cate == 3">
-			AND  IT.CATE_NO = 3
-			</when>
-			<when test = "cate == 4">
-			AND  IT.CATE_NO = 4
-			</when>
-		</choose>
+	<if test = "cate != null and cate != ''">
+			AND  IT.CATE_NO = #{cate}
 	</if>)
     ORDER BY EXPIRY_DATE
 	</select>
@@ -625,6 +520,21 @@
 	                  AND BS.EXPIRY_DATE = #{expDate})        
 	WHERE RNK = 1
 	</insert>
+	
+	<!-- 지점 재고 수정 페이지 내 금일 판매목록-->
+	<select id = "getBSSellList" resultType="hashmap"><!-- 날짜 정보와 지점 정보 수정 필요 지점:db내 아이디, 날짜 : sysdate -->
+	SELECT PC.CATE_NAME,PM.MENU_NAME ,SUM(SM.CNT) AS CNT
+	FROM SALES S INNER JOIN SALES_MENU SM
+	             ON S.SALES_NO = SM.SALES_NO
+	             AND S.BRCH_NO = 3
+	             AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = '2021-07-22'
+	             INNER JOIN POS_MENU PM
+	             ON PM.MENU_NO = SM.MENU_NO
+	             INNER JOIN POS_CATE PC
+	             ON PC.CATE_NO = PM.POS_CATE_NO
+	GROUP BY PM.MENU_NAME,PC.CATE_NAME
+	ORDER BY PC.CATE_NAME
+	</select>
 	
 	<!-- 지점 안전재고 수정 -->
 	<update id = "BSSEdit" parameterType="hashmap">
@@ -655,23 +565,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND BS.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -701,23 +595,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND BS.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -748,23 +626,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND BUI.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -796,23 +658,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND BUI.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -843,23 +689,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND BD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -891,23 +721,7 @@
 		</choose>
 	</if>
 	<if test = "cate != null and cate != ''">
-		<choose>
-			<when test = "cate == 0">
 			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 1">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 2">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 3">
-			AND  I.CATE_NO = #{cate}
-			</when>
-			<when test = "cate == 4">
-			AND  I.CATE_NO = #{cate}
-			</when>
-		</choose>
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND BD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
@@ -924,4 +738,5 @@
 	                  AND BS.ITEM_NO = #{itemNo}
 	                  AND TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') = #{expDate}
 	</select>
+	
 </mapper> 

@@ -183,7 +183,7 @@ input{
 	height: 40px;
 }
 /* 이게일반 */
-button{
+.row_del,.row_add{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -193,7 +193,6 @@ button{
 	font-size:18px;
 	margin:10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
 }
 
@@ -490,8 +489,8 @@ function del_tb(){
 </form>
 <h1>재고등록</h1>
 <div class="btn_area" style = "height:40px;">
-<button class="row_del" style= "margin:0px 0px 0px 10px;">행삭제</button>
-<button class="row_add" style= "margin:0px 0px 0px 10px;">행추가</button>
+<input type = "button" class="row_del" style= "margin:0px 0px 0px 10px;" value = "행삭제"/>
+<input type = "button" class="row_add" style= "margin:0px 10px 0px 0px;" value = "행추가"/>
 </div>
 <form action = "#" id = "tb_Form" method = "post">
 <table cellspacing="0">

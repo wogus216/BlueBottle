@@ -22,4 +22,11 @@ public interface IsgService {
 
 	public List<HashMap<String, String>> getUList(HashMap<String, String> params) throws Throwable;
 
+	public int addU(HashMap<String, String> params) throws Throwable;
+
+	public int addB(HashMap<String, String> params) throws Throwable;
+
+	public HashMap<String, String> getH(HashMap<String, String> params) throws Throwable;
+
+
 }

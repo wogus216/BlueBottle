@@ -447,112 +447,21 @@ function splitdate(splitarr){
 </head>
 <body>
 <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         	주문관리</a>
-	         <div class="sub">
-	        	 <a href="#">
-	            	주문조회</a>
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	      </div>
-         </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-           <div class="menu_c">
-         <li>
-		<a class="main_menu" href="#"> 
-	        		품목관리</a>
-	          	<div class="sub">
-				<a href="#">
-	            	품목조회</a>
-	            <a href="#">
-	            	품목등록</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_e">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_f">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_g">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
+<c:import url="../jh/B_Menu.jsp">
+	<c:param name="menuno" value="15"></c:param>
+</c:import>
    </div>
 <div class="content_area">
 <div class="content">
 <h1>재고 목록</h1>
 <div class="filter_area">
-			<select class="cate" name = "cate">
-			<option selected="selected" value="">전체</option>
-			<option value="0">음료재료</option>
-			<option value="1">제과</option>
-			<option value="2">원두</option>
-			<option value="3">굿즈</option>
-			<option value="4">기타</option>
-			</select>
+			<select class= "cate">
+               <option selected="selected" value = "">전체</option>
+                  <c:forEach items="${catelist}" var = "d">
+                   <option value="${d.CATE_NO}">
+                   <c:out value="${d.CATE_NAME}"/> </option>
+                  </c:forEach>
+            </select>
 		</div>
 <div class = "Stock_List">
 <table cellspacing="0">
