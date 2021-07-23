@@ -120,7 +120,7 @@ body {
 	font-size: 20px;
     width: 75px;
     height: 60px;
-    background-color: #f2f2f2;
+    background-color: #b3b3b3;
     color: black;
     line-height: 20px;
 }

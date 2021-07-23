@@ -35,5 +35,9 @@ public interface IjhDao {
 
 	public HashMap<String, String> getOrdNum() throws Throwable;
 
+	public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable;
+
+	public int editHU(HashMap<String, String> params) throws Throwable;
+
 
 }

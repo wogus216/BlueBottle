@@ -89,4 +89,14 @@ public class jhService implements IjhService {
 		return ijhDao.getOrdNum();
 	}
 
+	@Override
+	public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getHUser(params);
+	}
+
+	@Override
+	public int editHU(HashMap<String, String> params) throws Throwable {
+		return ijhDao.editHU(params);
+	}
+
 }

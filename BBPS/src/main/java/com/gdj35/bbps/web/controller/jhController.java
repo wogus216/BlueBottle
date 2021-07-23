@@ -677,4 +677,43 @@ public class jhController {
 	return mapper.writeValueAsString(modelMap);
 	
 	}
+	
+	//마이페이지
+	
+	@RequestMapping(value="/My_Page")
+	public ModelAndView My_Page(
+			HttpSession session,
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) {
+		
+		HashMap<String, String> data;
+		try {
+			params.put("sUSERNo", String.valueOf(session.getAttribute("sUSERNo")));
+			data = ijhService.getHUser(params);
+			mav.addObject("data", data);
+			System.out.println("마이페이지"+data);
+			
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		mav.setViewName("jh/My_Page");
+		System.out.println("유저번호:"+session.getAttribute("sUSERNo"));
+		return mav;
+		
+	}
+	//마이페이지 수정
+	
+	@RequestMapping(value="/My_Page_Edit")
+	public ModelAndView My_Page_Edit(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) {
+		
+		//int cnt = ijhService.editHU(params);
+		
+		mav.setViewName("jh/My_Page_Edit");
+		return mav;
+	}
+	
+
 }

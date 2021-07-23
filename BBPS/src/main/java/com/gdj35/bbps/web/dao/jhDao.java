@@ -107,5 +107,20 @@ public class jhDao implements IjhDao {
 		return sqlsession.selectOne("JH.getOrdNum");
 	}
 
+	@Override
+	public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사 마이페이지 갖고오자");
+		System.out.println("본사마이params"+params);
+		return sqlsession.selectOne("JH.getHUser", params);
+		
+	}
+
+	@Override
+	public int editHU(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사 마이수정페이지 갖고오자");
+		System.out.println("본사마이수정params"+params);
+		return sqlsession.update("JH.editHU", params);
+	}
+
 	
 }

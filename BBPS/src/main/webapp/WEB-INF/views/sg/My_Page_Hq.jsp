@@ -231,8 +231,7 @@ $(document).ready(function(){
 
 <!-- 버튼 -->
 	<div class="btm_btn_area">
-	<input type="button" class="edit_btn" value="수정" id="" name="">
-	
+		<input type="button" class="edit_btn" value="수정" id="" name="">
 	</div>
 </div>
 </div>
