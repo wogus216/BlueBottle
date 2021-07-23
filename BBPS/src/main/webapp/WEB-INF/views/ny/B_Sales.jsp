@@ -212,12 +212,6 @@ input{
 	background-color: #b3b3b3;
 }
 
-#todayA, #todayB {
-    width: 150px;
-    font-size: 15px;
-    height: 36px;
-}
-
 input[type='date'] hover {
     cursor: pointer;
 }
@@ -341,6 +335,7 @@ input[type='button']:focus{outline:none;}
 $(document).ready(function() {
 	
 	reloadList();
+	totSales();
 	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
@@ -354,8 +349,15 @@ $(document).ready(function() {
 	
 	$(".search_btn").on("click", function() {
 		reloadList();
+		$(".tot_sales_price").html("");
+		$(".tot_expense_price").html("");
+		$(".tot_price").html("");
 		totSales();
 	});// search_btn click end
+	
+	$(".graph_btn").on("click",function() {
+		location.href = "B_Chart";
+	});
 	
 	$("tbody").on("click", "span", function() {
 		if($(this).html() == "0") {
@@ -600,13 +602,14 @@ function closePopup() {
 	<h1 >매출조회 및 환불</h1>
 	<div class="sales_info">
 		<form action="#" method="post" id="actionForm">
+			<input type="hidden" id="brch_choice" name="brch_choice"/>
 			<input type="hidden" id="enroll_date" name="enroll_date" />
 			<input type="hidden" id="page" name="page" value="${page}" />
 			<input type="button" class="reset_btn" value="초기화" />
+			<span>시작일</span>
 			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" />
-			<span>부터</span>
+			<span>종료일</span>
 			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />
-			<span>까지</span>
 			<input type="button" class="search_btn" value="검색" />
 			<input type="button" class="graph_btn" value="그래프" />
 		</form>

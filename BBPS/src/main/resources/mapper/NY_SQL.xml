@@ -87,118 +87,170 @@
 	</update>
 	
 	<select id="getSalesList" parameterType="hashmap" resultType="hashmap">
-	SELECT ENROLL_DATE, SUM(SALES_PRICE) AS SALES_PRICE, SUM(ORD_PRICE) AS ORD_PRICE, 
-	       (SUM(SALES_PRICE)-SUM(ORD_PRICE)) AS NET_PRICE
-	FROM (SELECT CASE WHEN S.ENROLL_DATE IS NULL THEN TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') 
-	                  ELSE TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') END AS ENROLL_DATE,
-	           CASE WHEN S.SALES_PRICE IS NULL THEN 0 ELSE S.SALES_PRICE END AS SALES_PRICE,
-	           CASE WHEN O.ORD_PRICE IS NULL THEN 0 ELSE O.ORD_PRICE END AS ORD_PRICE
-	    FROM (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
-	            FROM SALES S INNER JOIN SALES_MENU SM
-	                            ON S.SALES_NO = SM.SALES_NO
-	                         INNER JOIN POS_MENU PM
-	                            ON SM.MENU_NO = PM.MENU_NO
-	                         INNER JOIN BRCH B
-	                            ON S.BRCH_NO = B.BRCH_NO
-	            WHERE S.CNL_DATE IS NULL
-	            AND B.BRCH_NO = 2 
-	            GROUP BY S.ENROLL_DATE) S 
-	    FULL OUTER JOIN (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
-	                    FROM ORD O INNER JOIN ORD_ITEM OI
-	                                 ON O.ORD_NO = OI.ORD_NO
-	                               INNER JOIN BRCH B
-	                                 ON O.BRCH_NO = B.BRCH_NO
-	                    WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
-	                          OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
-	                    AND O.BRCH_NO = 2
-	                    GROUP BY O.ENROLL_DATE) O
-	    ON S.ENROLL_DATE = O.ENROLL_DATE)
-	<choose>
-		<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-	    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
-		</when>
-		<when test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-		WHERE ENROLL_DATE <![CDATA[ >=]]> TO_DATE(#{start_date}, 'YY/MM/DD')
-		</when>
-		<when test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-		WHERE ENROLL_DATE <![CDATA[ <=]]> TO_DATE(#{end_date}, 'YY/MM/DD')
-		</when>
-	</choose>
-	GROUP BY ENROLL_DATE
-	ORDER BY ENROLL_DATE
+	SELECT RNUM, BRCH_NAME, ENROLL_DATE, SALES_PRICE, ORD_PRICE, NET_PRICE
+	FROM (SELECT ROW_NUMBER() OVER(ORDER BY ENROLL_DATE DESC) AS RNUM, 
+	           BRCH_NAME, ENROLL_DATE, SALES_PRICE, ORD_PRICE, (SALES_PRICE-ORD_PRICE) AS NET_PRICE
+		FROM(SELECT NVL(O.BRCH_NAME,S.BRCH_NAME) AS BRCH_NAME, 
+		           NVL(TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD'),TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'))AS ENROLL_DATE,
+		           NVL(ORD_PRICE,0) AS ORD_PRICE,
+		           NVL(SALES_PRICE,0) AS SALES_PRICE
+		    FROM (SELECT B.BRCH_NAME, O.ENROLL_DATE, SUM(I.PRICE) AS ORD_PRICE
+		            FROM ORD O INNER JOIN ORD_ITEM I
+		                         ON O.ORD_NO = I.ORD_NO
+		                       INNER JOIN BRCH B
+		                         ON O.BRCH_NO = B.BRCH_NO
+		             WHERE (O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+                            OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8)
+                   <choose>
+	                   <when test="brch_choice != null and brch_choice != ''">
+			           		<if test="brch_choice != 9999" >
+			           		AND O.BRCH_NO = #{brch_choice}
+			           		</if>
+			           </when>
+			           <otherwise>
+			           		AND O.BRCH_NO = 2
+			           </otherwise>
+                   </choose>
+		            GROUP BY B.BRCH_NAME, O.ENROLL_DATE)O
+		    FULL OUTER JOIN (SELECT B.BRCH_NAME, S.ENROLL_DATE, SUM(M.CNT * P.MENU_PRICE) AS SALES_PRICE
+		                    FROM SALES S INNER JOIN SALES_MENU M 
+		                                    ON S.SALES_NO = M.SALES_NO
+		                                 INNER JOIN POS_MENU P
+		                                    ON M.MENU_NO = P.MENU_NO
+		                                 INNER JOIN BRCH B
+		                                    ON S.BRCH_NO = B.BRCH_NO
+		                    WHERE S.CNL_DATE IS NULL
+				           <choose>
+			                   <when test="brch_choice != null and brch_choice != ''">
+					           		<if test="brch_choice != 9999" >
+					           		AND S.BRCH_NO = #{brch_choice}
+					           		</if>
+					           </when>
+					           <otherwise>
+					           		AND S.BRCH_NO = 2
+					           </otherwise>
+		                   </choose>
+		                    GROUP BY B.BRCH_NAME, S.ENROLL_DATE) S
+		    ON O.BRCH_NAME = S.BRCH_NAME AND O.ENROLL_DATE = S.ENROLL_DATE)
+		  <choose>
+				<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+			    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
+				</when>
+				<when test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+				WHERE ENROLL_DATE <![CDATA[ >=]]> TO_DATE(#{start_date}, 'YY/MM/DD')
+				</when>
+				<when test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+				WHERE ENROLL_DATE <![CDATA[ <=]]> TO_DATE(#{end_date}, 'YY/MM/DD')
+				</when>
+			</choose>)
+	WHERE RNUM BETWEEN #{startCnt} AND #{endCnt}
 	</select>
 	
 	<select id="getSalesCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*)
-	FROM (SELECT ENROLL_DATE, SUM(SALES_PRICE) AS SALES_PRICE, SUM(ORD_PRICE) AS ORD_PRICE, 
-		       (SUM(SALES_PRICE)-SUM(ORD_PRICE)) AS NET_PRICE
-		FROM (SELECT CASE WHEN S.ENROLL_DATE IS NULL THEN TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') 
-		                  ELSE TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') END AS ENROLL_DATE,
-		           CASE WHEN S.SALES_PRICE IS NULL THEN 0 ELSE S.SALES_PRICE END AS SALES_PRICE,
-		           CASE WHEN O.ORD_PRICE IS NULL THEN 0 ELSE O.ORD_PRICE END AS ORD_PRICE
-		    FROM (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
-		            FROM SALES S INNER JOIN SALES_MENU SM
-		                            ON S.SALES_NO = SM.SALES_NO
-		                         INNER JOIN POS_MENU PM
-		                            ON SM.MENU_NO = PM.MENU_NO
-		                         INNER JOIN BRCH B
-		                            ON S.BRCH_NO = B.BRCH_NO
-		            WHERE S.CNL_DATE IS NULL
-		            AND B.BRCH_NO = 2 
-		            GROUP BY S.ENROLL_DATE) S 
-		    FULL OUTER JOIN (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
-		                    FROM ORD O INNER JOIN ORD_ITEM OI
-		                                 ON O.ORD_NO = OI.ORD_NO
-		                               INNER JOIN BRCH B
-		                                 ON O.BRCH_NO = B.BRCH_NO
-		                    WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
-		                          OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
-		                    AND O.BRCH_NO = 2
-		                    GROUP BY O.ENROLL_DATE) O
-		    ON S.ENROLL_DATE = O.ENROLL_DATE)
-	<choose>
-		<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-	    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
-		</when>
-		<when test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
-		WHERE ENROLL_DATE <![CDATA[ >=]]> TO_DATE(#{start_date}, 'YY/MM/DD')
-		</when>
-		<when test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
-		WHERE ENROLL_DATE <![CDATA[ <=]]> TO_DATE(#{end_date}, 'YY/MM/DD')
-		</when>
-	</choose>    
-	GROUP BY ENROLL_DATE
-    ORDER BY ENROLL_DATE)
+	FROM (SELECT ROW_NUMBER() OVER(ORDER BY ENROLL_DATE DESC) AS RNUM, 
+	           BRCH_NAME, ENROLL_DATE, SALES_PRICE, ORD_PRICE, (SALES_PRICE-ORD_PRICE) AS NET_PRICE
+		FROM(SELECT NVL(O.BRCH_NAME,S.BRCH_NAME) AS BRCH_NAME, 
+		           NVL(TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD'),TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'))AS ENROLL_DATE,
+		           NVL(ORD_PRICE,0) AS ORD_PRICE,
+		           NVL(SALES_PRICE,0) AS SALES_PRICE
+		    FROM (SELECT B.BRCH_NAME, O.ENROLL_DATE, SUM(I.PRICE) AS ORD_PRICE
+		            FROM ORD O INNER JOIN ORD_ITEM I
+		                         ON O.ORD_NO = I.ORD_NO
+		                       INNER JOIN BRCH B
+		                         ON O.BRCH_NO = B.BRCH_NO
+		             WHERE (O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+                            OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8)
+                   <choose>
+	                   <when test="brch_choice != null and brch_choice != ''">
+			           		<if test="brch_choice != 9999" >
+			           		AND O.BRCH_NO = #{brch_choice}
+			           		</if>
+			           </when>
+			           <otherwise>
+			           		AND O.BRCH_NO = 2
+			           </otherwise>
+                   </choose>
+		            GROUP BY B.BRCH_NAME, O.ENROLL_DATE)O
+		    FULL OUTER JOIN (SELECT B.BRCH_NAME, S.ENROLL_DATE, SUM(M.CNT * P.MENU_PRICE) AS SALES_PRICE
+		                    FROM SALES S INNER JOIN SALES_MENU M 
+		                                    ON S.SALES_NO = M.SALES_NO
+		                                 INNER JOIN POS_MENU P
+		                                    ON M.MENU_NO = P.MENU_NO
+		                                 INNER JOIN BRCH B
+		                                    ON S.BRCH_NO = B.BRCH_NO
+		                    WHERE S.CNL_DATE IS NULL
+				           <choose>
+			                   <when test="brch_choice != null and brch_choice != ''">
+					           		<if test="brch_choice != 9999" >
+					           		AND S.BRCH_NO = #{brch_choice}
+					           		</if>
+					           </when>
+					           <otherwise>
+					           		AND S.BRCH_NO = 2
+					           </otherwise>
+		                   </choose>
+		                    GROUP BY B.BRCH_NAME, S.ENROLL_DATE) S
+		    ON O.BRCH_NAME = S.BRCH_NAME AND O.ENROLL_DATE = S.ENROLL_DATE)
+		  <choose>
+				<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+			    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
+				</when>
+				<when test="start_date != null and start_date != '' and (end_date == null or end_date == '')">
+				WHERE ENROLL_DATE <![CDATA[ >=]]> TO_DATE(#{start_date}, 'YY/MM/DD')
+				</when>
+				<when test="end_date != null and end_date != '' and (start_date == null or start_date == '')">
+				WHERE ENROLL_DATE <![CDATA[ <=]]> TO_DATE(#{end_date}, 'YY/MM/DD')
+				</when>
+			</choose>)
 	</select>
 	
 	<select id="getTotSales" parameterType="hashmap" resultType="hashmap">
 	SELECT SUM(SALES_PRICE) AS SALES_PRICE, SUM(ORD_PRICE) AS ORD_PRICE, 
 	       (SUM(SALES_PRICE)-SUM(ORD_PRICE)) AS NET_PRICE
-	FROM (SELECT CASE WHEN S.ENROLL_DATE IS NULL THEN TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') 
-	                  ELSE TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') END AS ENROLL_DATE,
-	           CASE WHEN S.SALES_PRICE IS NULL THEN 0 ELSE S.SALES_PRICE END AS SALES_PRICE,
-	           CASE WHEN O.ORD_PRICE IS NULL THEN 0 ELSE O.ORD_PRICE END AS ORD_PRICE
-	    FROM (SELECT S.ENROLL_DATE, SUM(SM.CNT * PM.MENU_PRICE) AS SALES_PRICE
-	            FROM SALES S INNER JOIN SALES_MENU SM
-	                            ON S.SALES_NO = SM.SALES_NO
-	                         INNER JOIN POS_MENU PM
-	                            ON SM.MENU_NO = PM.MENU_NO
-	                         INNER JOIN BRCH B
-	                            ON S.BRCH_NO = B.BRCH_NO
-	            WHERE S.CNL_DATE IS NULL
-	            AND B.BRCH_NO = 2 
-	            GROUP BY S.ENROLL_DATE) S 
-	    FULL OUTER JOIN (SELECT O.ENROLL_DATE, SUM(OI.PRICE) AS ORD_PRICE
-	                    FROM ORD O INNER JOIN ORD_ITEM OI
-	                                 ON O.ORD_NO = OI.ORD_NO
-	                               INNER JOIN BRCH B
-	                                 ON O.BRCH_NO = B.BRCH_NO
-	                    WHERE O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
-	                          OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8
-	                    AND O.BRCH_NO = 2
-	                    GROUP BY O.ENROLL_DATE) O
-	    ON S.ENROLL_DATE = O.ENROLL_DATE)
-	<choose>
+	FROM(SELECT NVL(O.BRCH_NAME,S.BRCH_NAME) AS BRCH_NAME, 
+	           NVL(TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD'),TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'))AS ENROLL_DATE,
+	           NVL(ORD_PRICE,0) AS ORD_PRICE,
+	           NVL(SALES_PRICE,0) AS SALES_PRICE
+	    FROM (SELECT B.BRCH_NAME, O.ENROLL_DATE, SUM(I.PRICE) AS ORD_PRICE
+	            FROM ORD O INNER JOIN ORD_ITEM I
+	                         ON O.ORD_NO = I.ORD_NO
+	                       INNER JOIN BRCH B
+	                         ON O.BRCH_NO = B.BRCH_NO
+	             WHERE (O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+	                    OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8)
+	             <choose>
+	                   <when test="brch_choice != null and brch_choice != ''">
+			           		<if test="brch_choice != 9999" >
+			           		AND O.BRCH_NO = #{brch_choice}
+			           		</if>
+			           </when>
+			           <otherwise>
+			           		AND O.BRCH_NO = 2
+			           </otherwise>
+                  </choose> 
+	            GROUP BY B.BRCH_NAME, O.ENROLL_DATE)O
+	    FULL OUTER JOIN (SELECT B.BRCH_NAME, S.ENROLL_DATE, SUM(M.CNT * P.MENU_PRICE) AS SALES_PRICE
+	                    FROM SALES S INNER JOIN SALES_MENU M 
+	                                    ON S.SALES_NO = M.SALES_NO
+	                                 INNER JOIN POS_MENU P
+	                                    ON M.MENU_NO = P.MENU_NO
+	                                 INNER JOIN BRCH B
+	                                    ON S.BRCH_NO = B.BRCH_NO
+	                    WHERE S.CNL_DATE IS NULL
+	                    <choose>
+		                   <when test="brch_choice != null and brch_choice != ''">
+				           		<if test="brch_choice != 9999" >
+				           		AND S.BRCH_NO = #{brch_choice}
+				           		</if>
+				           </when>
+				           <otherwise>
+				           		AND S.BRCH_NO = 2
+				           </otherwise>
+	                   </choose> 
+	                    GROUP BY B.BRCH_NAME, S.ENROLL_DATE) S
+	    ON O.BRCH_NAME = S.BRCH_NAME AND O.ENROLL_DATE = S.ENROLL_DATE)
+   <choose>
 		<when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
 	    WHERE ENROLL_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
 		</when>
@@ -227,8 +279,8 @@
                                  INNER JOIN POS_MENU PM
                                   ON SM.MENU_NO = PM.MENU_NO
                     WHERE PAY_METHOD = 0
-                    AND BRCH_NO = 2 
-                    AND S.ENROLL_DATE = TO_DATE('2021-07-01', 'YY/MM/DD')
+                    AND S.BRCH_NO = 2
+                    AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
                     GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.CNL_DATE
                     ORDER BY S.SALES_NO) A 
 	             FULL OUTER JOIN (SELECT S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE,
@@ -238,8 +290,8 @@
                                              INNER JOIN POS_MENU PM
                                               ON SM.MENU_NO = PM.MENU_NO
                                 WHERE PAY_METHOD = 1
-                                AND BRCH_NO = 2 
-                                AND S.ENROLL_DATE = TO_DATE('2021-07-01', 'YY/MM/DD')
+                                AND S.BRCH_NO = 2
+                                AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
                                 GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.CNL_DATE
                                 ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
 	                                                   AND A.BRCH_NO = B.BRCH_NO
@@ -263,7 +315,7 @@
                                      INNER JOIN POS_MENU PM
                                       ON SM.MENU_NO = PM.MENU_NO
                         WHERE PAY_METHOD = 0
-                        AND BRCH_NO = 2 
+                        AND S.BRCH_NO = 2
                         AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
                         GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
                         ORDER BY S.SALES_NO) A 
@@ -273,7 +325,7 @@
                                                  INNER JOIN POS_MENU PM
                                                   ON SM.MENU_NO = PM.MENU_NO
                                     WHERE PAY_METHOD = 1
-                                    AND BRCH_NO = 2 
+	                                AND S.BRCH_NO = 2
                                     AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
                                     GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
                                     ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
@@ -296,7 +348,7 @@
                                   ON SM.MENU_NO = PM.MENU_NO
                     WHERE PAY_METHOD = 0
                     AND S.CNL_DATE IS NULL
-                    AND BRCH_NO = 2 
+                    AND S.BRCH_NO = 2
                     AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
                     GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
                     ORDER BY S.SALES_NO) A 
@@ -307,7 +359,7 @@
                                               ON SM.MENU_NO = PM.MENU_NO
                                 WHERE PAY_METHOD = 1
                                 AND S.CNL_DATE IS NULL
-                                AND BRCH_NO = 2
+                                AND S.BRCH_NO = 2
                                 AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
                                 GROUP BY S.BRCH_NO, S.ENROLL_DATE, S.SALES_NO, S.PAY_METHOD
                                 ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
@@ -333,4 +385,10 @@
 	CNL_DATE = SYSDATE
 	WHERE SALES_NO = #{sales_no}
 	</update>
+	
+	<select id="getBrchList" resultType="hashmap">
+	SELECT BRCH_NO, BRCH_NAME
+	FROM BRCH
+	</select>
+	
 </mapper> 

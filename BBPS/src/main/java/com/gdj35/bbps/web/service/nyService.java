@@ -135,6 +135,30 @@ public class nyService implements InyService{
 		return iNyDao.cnlSales(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBrchList() throws Throwable {
+
+		return iNyDao.getBrchList();
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBrchSalesList(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getBrchSalesList(params);
+	}
+
+	@Override
+	public int getBrchSalesCnt(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getBrchSalesCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBrchTotSales(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getBrchTotSales(params);
+	}
+
 
 
 }

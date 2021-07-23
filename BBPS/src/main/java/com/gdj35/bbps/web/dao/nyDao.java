@@ -134,5 +134,29 @@ public class nyDao implements InyDao{
 		return sqlSession.update("NY.cnlSales", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getBrchList() throws Throwable {
+
+		return sqlSession.selectList("NY.getBrchList");
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBrchSalesList(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getBrchSalesList", params);
+	}
+
+	@Override
+	public int getBrchSalesCnt(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectOne("NY.getBrchSalesCnt", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBrchTotSales(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getBrchTotSales", params);
+	}
+
 		
 }

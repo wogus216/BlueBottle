@@ -620,6 +620,7 @@ function addComma(value){
 	<input type="hidden" id="enroll_date" name="enroll_date" value="${param.enroll_date}" />
 	<input type ="hidden" id="start_date" name="start_date" value="${param.start_date}" />
 	<input type="hidden" id="end_date" name="end_date" value="${param.end_date}" />
+	<input type="hidden" id="brch_no" name="brch_no" value="${param.brch_choice}"/>
 	<input type="hidden" id="sales_no" name="sales_no"/>
 	<input type="hidden" id="sales_price" name="sales_price"/>
 </form>

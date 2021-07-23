@@ -134,9 +134,7 @@ table {
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
 }
-tbody td{
-	cursor: pointer;
-}
+
 tr {
     display: table-row;
 }
@@ -156,18 +154,34 @@ td{
 td:first-child{
 	border-left: none;
 }
+
 tbody td {
 	text-align: right;
 }
-tbody td:first-child{
+tbody td:nth-child(1), tbody td:nth-child(2){
 	text-align: center;
 }
- input{
+input{
 	width:150px;
 	height:40px;
 	margin:10px 5px;
 }
+input:focus{
+	outline: none;
+}
+input[type='date']{
+	font-size: 15px;
+}
+select{
+	width: 154px;
+	height: 44px;
+	margin: 10px 5px;
+	font-size: 15px;
+}
 
+select:focus {
+	outline: none;
+}
 .sales_info, .tot_sales{
 	width: 90%;
 	float: center;
@@ -334,7 +348,7 @@ input[type='button']:focus{outline:none;}
 <script type="text/javascript"> 
 $(document).ready(function() {
 	
-	reloadList();
+	brchList();
 	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
@@ -344,36 +358,50 @@ $(document).ready(function() {
 	$(".reset_btn").on("click", function() {
 		$("#start_date").val("");
 		$("#end_date").val("");
+		brchList();
 	});//reset_btn click end
 	
 	$(".search_btn").on("click", function() {
 		reloadList();
+		$(".tot_sales_price").html("");
+    	$(".tot_expense_price").html("");
+    	$(".tot_price").html("");
 		totSales();
 	});// search_btn click end
-	
-	$("tbody").on("click", "td", function() {
-		if($(this).html() == "0") {
-			makePopup("", "해당 일자의 매출 정보가 없습니다.", null);
-		} 
-		else{
-			if($(this).attr("id") == "sales") {
-				$("#enroll_date").val($(this).parent().attr("date"));
-				$("#actionForm").attr("action","B_Sales_Detail");
-				$("#actionForm").submit();		
-			}
-			if($(this).attr("id") == "expense") {
-				$("#enroll_date").val($(this).parent().attr("date"));
-				$("#actionForm").attr("action","");
-				$("#actionForm").submit();		
-			}
-		}
-				
-	});// td click end
 	
 	
 });// document ready end
 
+function brchList() {
+
+	$.ajax({
+		url: "getBrchList",
+		type: "post",
+		dataType: "json",
+		success: function(res) {
+			
+			console.log(res.list);
+			
+			var html = "";
+			
+			html += "<option value=\"9999\" selected>전체</option>";
+			
+			for(d of res.list) {
+				html += "<option value=" + d.BRCH_NO + ">" + d.BRCH_NAME + "</option>";
+			}
+
+			$(".sales_info #actionForm select").html(html);
+			
+			reloadList();
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
 		
+	}); //ajax end
+
+}
+
 function reloadList() {
 
 	var params = $("#actionForm").serialize();
@@ -397,6 +425,7 @@ function reloadList() {
 
 function drawList(list) {
 	var html = "";
+
 	console.log(list);
 	for(var d of list) {
 		
@@ -405,9 +434,10 @@ function drawList(list) {
 		var N = addComma(d.NET_PRICE);
 		
 		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
+		html += "<td>" + d.BRCH_NAME + "</td>     ";
 		html += "<td>" + d.ENROLL_DATE + "</td>     ";
-		html += "<td id=\"sales\">" + S + "</td>     ";
-		html += "<td id=\"expense\">" + O + "</td>     ";
+		html += "<td id=\"sales\"><span>" + S + "</span></td>     ";
+		html += "<td id=\"expense\"><span>" + O + "</span></td>     ";
 		html += "<td>" + N + "</td>     ";
 		html += "</tr>                ";
 	}
@@ -436,6 +466,8 @@ function totSales() {
 }
 function totPrice(list){
 	
+	console.log(list);
+	
 	var sHtml = 0;
 	var eHtml = 0;
 	var pHtml = 0;
@@ -446,13 +478,14 @@ function totPrice(list){
 		pHtml += parseInt(d.NET_PRICE);
 	}
 	
-	sHtml = addComma(sHtml);
-	eHtml = addComma(eHtml);
-	pHtml = addComma(pHtml);
+    	sHtml = addComma(sHtml);
+    	eHtml = addComma(eHtml);
+    	pHtml = addComma(pHtml);
+    	
+    	$(".tot_sales_price").html("총매출액: " + sHtml + "원");
+    	$(".tot_expense_price").html("총지출액: " + eHtml + "원");
+    	$(".tot_price").html("순매출액: " + pHtml + "원");
 	
-	$(".tot_sales_price").html("총매출액: " + sHtml + "원");
-	$(".tot_expense_price").html("총지출액: " + eHtml + "원");
-	$(".tot_price").html("순매출액: " + pHtml + "원");
 }
 
 function drawPaging(pb){
@@ -599,29 +632,29 @@ function closePopup() {
 			<input type="hidden" id="enroll_date" name="enroll_date" />
 			<input type="hidden" id="page" name="page" value="${page}" />
 			<input type="button" class="reset_btn" value="초기화" />
-			<select name="brch_choice">
-			  <option value="first" selected>First Value</option>
-			  <option value="second" >Second Value</option>
-			  <option value="third">Third Value</option>
+			<span>지점선택</span>
+			<select id="brch_choice" name="brch_choice">
 			</select>
+			<span>시작일</span>
 			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" />
-			<span>부터</span>
+			<span>종료일</span>
 			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />
-			<span>까지</span>
 			<input type="button" class="search_btn" value="검색" />
 			<input type="button" class="graph_btn" value="그래프" />
 		</form>
 	</div>
 	<table cellspacing="0">
 		<colgroup>
-			<col width="25%">
-			<col width="25%">
-			<col width="25%">
-			<col width="25%">
+			<col width="15%">
+			<col width="15%">
+			<col width="23%">
+			<col width="23%">
+			<col width="24%">
 		</colgroup>
 		<thead>
 			<tr>
-				<th scope="col" style="border-left: none;">날짜</th>
+				<th scope="col" style="border-left: none;">지점명</th>
+				<th scope="col">날짜</th>
 				<th scope="col">매출액(원)</th>
 				<th scope="col">지출액(원)</th>
 				<th scope="col">순매출액(원)</th>

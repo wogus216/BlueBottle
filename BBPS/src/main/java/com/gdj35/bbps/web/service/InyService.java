@@ -45,6 +45,15 @@ public interface InyService {
 
 	int cnlSales(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> getBrchList() throws Throwable;
+
+	List<HashMap<String, String>> getBrchSalesList(HashMap<String, String> params) throws Throwable;
+
+	int getBrchSalesCnt(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getBrchTotSales(HashMap<String, String> params) throws Throwable;
+
+
 
 	;
 }

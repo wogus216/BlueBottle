@@ -478,6 +478,50 @@ public class nyController {
 
 	}
 	
+	@RequestMapping(value = "/Sales_List")
+	public ModelAndView Sales_List(@RequestParam HashMap<String,String> params, ModelAndView mav) {
+		
+		int page = 1;
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		mav.addObject("page", page);
+		mav.setViewName("ny/Sales_List");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/getBrchList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getBrchList() throws Throwable {
+	
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+		try {
+			
+			List<HashMap<String,String>> list = iNyService.getBrchList();
+			
+			modelMap.put("list", list);
+			
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+
+	}
+	
+	@RequestMapping(value="/B_Chart")
+	public ModelAndView B_Chart(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable{
+		
+		mav.setViewName("ny/B_Chart");
+		
+		return mav;
+	}
 	
 	
 }
