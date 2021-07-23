@@ -3,7 +3,7 @@
 <mapper namespace="NY">
 	<!-- 공지 카테고리 목록 불러오기 -->
 	<select id="getNoticeCate" resultType="hashmap">
-	SELECT CATE_NO, CATE_NAME
+	SELECT ROW_NUMBER() OVER(ORDER BY CATE_NO) AS RNUM, CATE_NO, CATE_NAME
 	FROM NOTICE_CATE
 	WHERE CATE_NO > 0 
 	AND DEL_FLAG = 1
@@ -34,7 +34,7 @@
 	
 	<!-- 품목카테고리 불러오기 -->
 	<select id="getItemCate"  resultType="hashmap">
-	SELECT CATE_NO, CATE_NAME
+	SELECT ROW_NUMBER() OVER(ORDER BY CATE_NO) AS RNUM, CATE_NO, CATE_NAME
 	FROM ITEM_CATE
 	WHERE DEL_FLAG = 1
 	ORDER BY CATE_NO		
@@ -61,7 +61,7 @@
 	</update>
 	
 	<select id="getMenuCate" resultType="hashmap">
-	SELECT CATE_NO, CATE_NAME
+	SELECT ROW_NUMBER() OVER(ORDER BY CATE_NO) AS RNUM, CATE_NO, CATE_NAME
 	FROM POS_CATE
 	WHERE DEL_FLAG = 1
 	ORDER BY CATE_NO

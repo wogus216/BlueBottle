@@ -144,7 +144,7 @@ th{
     border-left: 1px solid #ffffff;
 }
 td{
-	font-size:15px;
+	font-size:17px;
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
@@ -212,9 +212,19 @@ input{
 	background-color: #b3b3b3;
 }
 
-input[type='date'] hover {
-    cursor: pointer;
+.graph_info{
+	width: 104%;
+	text-align: right;
+	color: red;
+	visibility: hidden;
 }
+
+input[type='date']{
+	font-size: 16px;
+	width: 140px;
+	padding-left: 5px;
+}
+
 input[type='button']{
 	color: white;
 	width: 100px;
@@ -335,7 +345,6 @@ input[type='button']:focus{outline:none;}
 $(document).ready(function() {
 	
 	reloadList();
-	totSales();
 	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
@@ -354,6 +363,12 @@ $(document).ready(function() {
 		$(".tot_price").html("");
 		totSales();
 	});// search_btn click end
+	
+	$(".graph_btn").hover(function() {
+		$(".graph_info").css("visibility", "visible");
+	}, function() {
+		$(".graph_info").css("visibility", "hidden");
+	});
 	
 	$(".graph_btn").on("click",function() {
 		location.href = "B_Chart";
@@ -394,6 +409,22 @@ function reloadList() {
 		success: function(res) {
 			drawList(res.list);
 			drawPaging(res.pb);
+			
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+			 if(dd<10){
+			        dd='0'+dd
+			    } 
+			    if(mm<10){
+			        mm='0'+mm
+			    } 
+
+			today = yyyy+'-'+mm+'-'+dd;
+			$("#start_date").attr("max", today);
+			$("#end_date").attr("max", today);
+			
 		},
 		error: function(request, status, error) {
 			console.log(error);
@@ -537,6 +568,7 @@ function closePopup() {
 	}); //popup_btn end
 }	
 
+
 </script>
 
 </head>
@@ -601,15 +633,16 @@ function closePopup() {
 	<div class="content">
 	<h1 >매출조회 및 환불</h1>
 	<div class="sales_info">
+		<div class="graph_info">"매출정보를 그래프형으로 조회"</div>
 		<form action="#" method="post" id="actionForm">
 			<input type="hidden" id="brch_choice" name="brch_choice"/>
 			<input type="hidden" id="enroll_date" name="enroll_date" />
 			<input type="hidden" id="page" name="page" value="${page}" />
 			<input type="button" class="reset_btn" value="초기화" />
 			<span>시작일</span>
-			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" />
+			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" min="1990-01-01" />
 			<span>종료일</span>
-			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />
+			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" min="1990-01-01" />
 			<input type="button" class="search_btn" value="검색" />
 			<input type="button" class="graph_btn" value="그래프" />
 		</form>
