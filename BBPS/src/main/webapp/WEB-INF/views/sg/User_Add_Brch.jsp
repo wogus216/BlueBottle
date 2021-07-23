@@ -237,12 +237,11 @@ $(document).ready(function(){
 		} else if($.trim($("#bMgrNm").val()) == ""){
 			alert("매니저 이름을 입력해주세요.");
 			$("#bMgrNm").focus();
-		} else{
-			function reloadList() {
+		} else {
 				var params = $("#addForm").serialize();
 				
 				$.ajax({
-					url:"User_Add_Hqs", //접속주소
+					url:"User_Add_Brchs", //접속주소
 					type:"post", //전송방식 : get, post
 					dataType:"json", //받아올데이터형식
 					data:params, //보낼 데이터(문자열 형태)
@@ -260,7 +259,6 @@ $(document).ready(function(){
 						console.log(error);
 					}
 				});
-			}	
 		}
 		
 	}); //addBtn end

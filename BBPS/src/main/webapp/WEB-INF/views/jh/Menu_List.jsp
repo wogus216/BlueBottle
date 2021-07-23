@@ -159,6 +159,15 @@ $(document).ready(function(){
 	}
 
 	reloadList();
+	//카테고리 선택하고 상세보기 갔다가 돌아 왔을 때 유지
+	if($("#cateNo").val() != ""){
+		$(".cate").val("${param.cateNo}").prop("selected",true);
+	}
+	
+	//if("${param.cate}" != ""){
+	//$(".cate").val("${param.cate}");
+	//}
+	
 	//페이지 변경	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
@@ -167,6 +176,7 @@ $(document).ready(function(){
  	//카테고리 변경 시 value 값 넣어주기
  	$(".cate").change(function(){
  		$("#cateNo").val($(".cate").val());
+ 		$("#page").val(1);
  		reloadList();
  	});
  	
@@ -275,7 +285,7 @@ function drawPaging(pb){
 
 	<div class="filter_area">
 		<select class="cate" name ="cate">
-			<option selected="selected">카테고리명</option>
+			<option value="4" selected="selected">전체</option>
 			<option value="0">음료</option>
 			<option value="1">제과</option>
 			<option value="2">굿즈</option>
@@ -305,7 +315,7 @@ function drawPaging(pb){
 		<div class="search_Area" style = "margin-top : 30px;">
 			<form action="#" id="menu_form" method="post">
 				<input type="hidden" id="menuNo" name="menuNo" value="${param.menuNo}"/>
-				<input type="hidden" id="cateNo" name="cateNo"/>
+				<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/>
 				<input type="hidden" id="page" name="page" value="${page}"/>
 			<div class="search_Info">
 				<select id="search_Filter" name="search_Filter">
@@ -320,43 +330,7 @@ function drawPaging(pb){
 		</form>
 		</div>
 		<div class="page_Area">
-			<div class="page_btn">
-			<%--  
-				<button page="1"  style="background-color: white"><<</button>
-				<!-- 이전페이지 -->
-				<c:choose>
-					<c:when test="${page eq 1 }">
-						<button  page="1" style="background-color: white"><</button>
-					</c:when>
-					<c:otherwise>
-						<button page="${page -1}" style="background-color: white"><</button>
-					</c:otherwise>
-				</c:choose>
-				<!-- 페이지들 -->
-				<c:forEach var="i" begin="${pb.startPcount}" end="${pb.endPcount}" step="1">
-				<!-- 현재 페이지인 경우 볼드 처리-->
-				<c:choose>
-					<c:when test="${i eq page}">
-						<button page="${i}"  style="background-color: white"><b>${i}</b></button>
-					</c:when>
-					<c:otherwise>
-						<button page="${i}"  style="background-color: white">${i}</button>
-					</c:otherwise>
-				</c:choose>
-				</c:forEach>
-				<!-- 다음페이지  -->
-					<c:choose>
-						<c:when test="${page eq pb.maxPcount}">
-							<button page="${pb.maxPcount}" style="background-color: white">></button>
-						</c:when>
-						<c:otherwise>
-							<button  page="${page + 1}" style="background-color: white">></button>
-						</c:otherwise>
-					</c:choose>
-					<!-- 마지막 페이지 -->
-					<button  page="${pb.maxPcount}" style="background-color: white">>></button>
-					 --%>
-			</div>
+			<div class="page_btn"></div>
 		</div>
 		
 		</div> <!--content end  -->

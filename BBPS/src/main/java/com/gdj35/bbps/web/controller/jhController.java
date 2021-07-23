@@ -73,10 +73,10 @@ public class jhController {
 	
 	System.out.println("로그인data :"+ data);
 	if(data != null) { //사용자 정보가 있음
-		session.setAttribute("sUSERNo", data.get("USER_NO"));
-		session.setAttribute("sAUTHNo", data.get("AUTH_NO"));
-		session.setAttribute("sDEPNo", data.get("DEP_NO"));
-		session.setAttribute("sId", data.get("ID"));
+		session.setAttribute("sUSERNo", data.get("USER_NO")); //유저번호
+		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //권한번호
+		session.setAttribute("sDEPNo", data.get("DEP_NO"));	// 부서 번호
+		session.setAttribute("sId", data.get("ID")); // 아이디
 		System.out.println("유저번호:"+session.getAttribute("sUSERNo"));
 		
 		
@@ -131,10 +131,10 @@ public class jhController {
 	
 	System.out.println("data :"+ data);
 	if(data != null) { //사용자 정보가 있음
-		session.setAttribute("sBRCHNo", data.get("BRCH_NO"));
-		session.setAttribute("sId", data.get("ID"));
-		session.setAttribute("sBRCHNm", data.get("BRCH_NAME"));
-		System.out.println(session.getAttribute("sBRCHNm"));
+		session.setAttribute("sBRCHNo", data.get("BRCH_NO")); //지점번호
+		session.setAttribute("sId", data.get("ID")); //지점 아이디
+		session.setAttribute("sBRCHNm", data.get("BRCH_NAME")); //지점명
+		System.out.println(session.getAttribute("sBRCHNm")); //지점장 이름
 		
 		modelMap.put("resMsg", "success");
 	} else { // 사용자 정보가 없음
@@ -497,6 +497,7 @@ public class jhController {
 		
 		modelMap.put("list", list);
 		modelMap.put("pb", pb);
+		System.out.println("페이지"+params);
 		System.out.println("list 목록 보자"+list);
 		return mapper.writeValueAsString(modelMap);
 			

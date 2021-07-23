@@ -172,7 +172,7 @@ margin : 0px 300px;
 margin : 55px 20px;
 }
 .wrap{
-	width: 400px;
+	width: 450px;
 	display: inline-block;
 }
 .left{
@@ -184,8 +184,8 @@ margin : 55px 20px;
 .right{
 	display: inline-block;
     float: right;
-    line-height: 50px;
-    font-size: 30px;
+    line-height: 60px;
+    font-size: 20px;
 }
 </style>
 <script type="text/javascript"
@@ -221,39 +221,78 @@ $(document).ready(function(){
 	</div>
 	<div class="wrap">
 		<div class="left">
-			<div class="dep_no"><h3>부서번호</h3></div>
+			<div class="auth_no"><h3>권한번호</h3></div>
 		</div>
 		<div class="right">
 			<div class="auth_no">${data.AUTH_NO} </div>
 		</div>
 	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="dep_no"><h3>부서번호</h3></div>
+		</div>
+		<div class="right">
+			<div class="dep_no">${data.DEP_NO}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="dep_nm"><h3>부서명</h3></div>
+		</div>
+		<div class="right">
+			<div class="dep_nm">${data.DEP_NAME}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="id"><h3>ID</h3></div>
+		</div>
+		<div class="right">
+			<div class="id">${data.ID}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="pw"><h3>PW</h3></div>
+		</div>
+		<div class="right">
+			<div class="pw">${data.PW}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="user_name"><h3>사용자명</h3></div>
+		</div>
+		<div class="right">
+			<div class="user_name">${data.USER_NAME}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="phone_num"><h3>휴대폰 번호</h3></div>
+		</div>
+		<div class="right">
+			<div class="phone_num">${data.PHONE_NUM}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="enroll_date"><h3>등록일</h3></div>
+		</div>
+		<div class="right">
+			<div class="enroll_date">${data.E_DT}</div>
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="left">
+			<div class="del_date"><h3>삭제일</h3></div>
+		</div>
+		<div class="right">
+			<div class="del_date">${data.D_DT}</div>
+		</div>
+	</div>
 </div>
-<!-- 
-<div class="top_info_area">
-	<div class="auth_no"><h3>권한번호</h3></div>
-	<div class="dep_no"><h3>부서번호</h3></div>
-	<div class="dep_nm"><h3>부서명</h3></div>
-	<div class="id"><h3>ID</h3></div>
-	<div class="pw"><h3>PW</h3></div>
-	<div class="user_name"><h3>사용자명</h3></div>
-	<div class="phone_num"><h3>휴대폰 번호</h3></div>
-	<div class="enroll_date"><h3>등록일</h3></div>
-	<div class="del_date"><h3>삭제일</h3></div>
 </div>
-<div class="btm_info_area">
-	<div class="user_no">${data.USER_NO}</div>
-	<div class="auth_no">${data.AUTH_NO} </div>
-	<div class="dep_no">${data.DEP_NO}</div>
-	<div class="dep_nm">${data.DEP_NAME}</div>
-	<div class="id">${data.ID}</div>
-	<div class="pw">${data.PW}</div>
-	<div class="user_name">${data.USER_NAME}</div>
-	<div class="phone_num">${data.PHONE_NUM}</div>
-	<div class="enroll_date">${data.ENROLL_DATE}</div>
-	<div class="del_date">${data.DEL_DATE}</div>
-</div>
-</div>
- -->
 <!-- 버튼 -->
 	<div class="btm_btn_area">
 	<button class="edit_btn">수정</button>

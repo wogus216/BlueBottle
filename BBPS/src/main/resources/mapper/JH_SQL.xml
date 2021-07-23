@@ -55,6 +55,25 @@
 			</when>
 		</choose>
 	</if>
+	<if test = "cateNo != null and cateNo != ''">
+		<choose>
+			<when  test ="cateNo == 0">
+				AND  CATE_NO = #{cateNo}
+			</when>
+			<when  test ="cateNo == 1" >
+				AND  CATE_NO = #{cateNo}
+			</when>
+			<when  test ="cateNo == 2">
+				AND  CATE_NO = #{cateNo}
+			</when>
+			<when  test ="cateNo == 3">
+				AND  CATE_NO = #{cateNo}
+			</when>
+			<when  test ="cateNo == 4">
+				AND  CATE_NO IN (0,1,2,3)
+			</when>
+		</choose>
+	</if>
 	</select>
 	
 	<!-- 메뉴 게시글 갖고오기 -->
@@ -79,22 +98,22 @@
 			</when>
 		</choose>
 	</if>
-	<if test ="cateNo !=null and cateNo != ''">
+	<if test = "cateNo != null and cateNo != ''">
 		<choose>
-			<when test="cateNo == 0">
-				AND PM.POS_CATE_NO =  #{cateNo}
+			<when  test ="cateNo == 0">
+				AND  CATE_NO = #{cateNo}
 			</when>
-			<when test="cateNo == 1">
-				AND  PM.POS_CATE_NO =  #{cateNo}
+			<when  test ="cateNo == 1" >
+				AND  CATE_NO = #{cateNo}
 			</when>
-			<when test="cateNo == 2">
-				AND PM.POS_CATE_NO  =  #{cateNo}
+			<when  test ="cateNo == 2">
+				AND  CATE_NO = #{cateNo}
 			</when>
-			<when test="cateNo == 3">
-				AND PM.POS_CATE_NO =  #{cateNo}
+			<when  test ="cateNo == 3">
+				AND  CATE_NO = #{cateNo}
 			</when>
-			<when test="cateNo == 4">
-				AND PM.POS_CATE_NO =  #{cateNo}
+			<when  test ="cateNo == 4">
+				AND  CATE_NO IN (0,1,2,3)
 			</when>
 		</choose>
 	</if>

@@ -138,15 +138,11 @@ h1 {
  float: left;
 }
 
-.contentB h1{
-	margin-bottom: 0px;
-}
 table {
-
     width: 100%;
     table-layout: fixed;
     background: #ffffff;
-	margin: 10px 0;
+	margin-bottom: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
 }
@@ -186,46 +182,34 @@ tbody span:hover{
 	font-size: 18px;
 	font-weight: 500;
 	width: 100%;
+	line-height: 60px;
 	display: inline-block;
 	vertical-align: bottom;
 }
-
-.sales_info .info{
+.sales_info .info {
 	display: inline-block;
 	vertical-align: bottom;
-	margin-left: 5px;
-	float:left
+	float: left;
 }
 
-.contentB .sales_info .info{
-	display: inline-block;
-	vertical-align: bottom;
-	margin-top: 42px;
-	text-align: left;
-}
-
-.contentB .sales_info .info span{
-	vertical-align: bottom;
+.contentB .sales_info span{
+	vertical-align: middle;
 	margin-right: 10px;
+	margin-left: 3px;
+	float: left;
 }
-.ref_area{
-	float: right;
-	text-align: right;
-	display: inline-block;
-	vertical-align: bottom;
-	margin-top: 25px;
-}
-
-.ref_area span{
-	vertical-align: bottom;
+.contentB .sales_info span:nth-of-type(3){
+	vertical-align: middle;
 	color: red;
 	font-size: 20px;
+	float: right;
 	margin-right: 3px;
 }
 
 #ref_btn{
 	background-color: #bf4040;
-	margin: 0px;
+	float: right;
+	vertical-align: bottom;
 }
 .tot_price #tot_pay{
 	color: red;
@@ -247,9 +231,10 @@ input[type='button']{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	outline:none;
+	margin: 10px;
+	vertical-align: bottom;
 }
 
 .list_btn {
@@ -354,10 +339,11 @@ $(document).ready(function() {
 		$("#sales_price").val($(this).parent().parent().attr("salesPrice"));
 		$(".contentA").css("width","55%");
 		$(".contentB").css("display", "inline-block");
+		$(".contentB .sales_info").html("");
 		reloadListB();	
 	});// tr click end
 	
-	$(".contentB .sales_info .ref_area").on("click", "#ref_btn", function() {
+	$(".contentB .sales_info").on("click", "#ref_btn", function() {
 		makePopup("환불","해당 판매를 전체 환불하시겠습니까?", function() {
 			
 			var params = $(".contentA #actionForm").serialize();
@@ -498,14 +484,14 @@ function drawListB(list) {
 		html += "</tr>";
 	}	
 	$(".contentB tbody").html(html);
-	$(".contentB .sales_info .info").html("<span><strong>판매번호: </strong>"+ $("#sales_no").val() + "</span>");
-	$(".contentB .sales_info .info").append("<span><strong>판매금액: </strong>"+ $("#sales_price").val() + "</span>");
+	$(".contentB .sales_info").html("<span><strong>판매번호: </strong>" + $("#sales_no").val() + "</span>");
+	$(".contentB .sales_info").append("<span><strong>판매금액: </strong>"+ $("#sales_price").val() + "</span>");
 	
 	if($(".contentB tbody tr").attr("cnlDate") == "11/11/11") {
-		$(".contentB .sales_info .ref_area").html("<input type=\"button\" id=\"ref_btn\" value=\"환불\"/>");
+		$(".contentB .sales_info").append("<input type=\"button\" id=\"ref_btn\" value=\"환불\"/>");
 	}
 	else{
-		$(".contentB .sales_info .ref_area").html("<span><strong>환불완료</strong></span>");
+		$(".contentB .sales_info").append("<span><strong>환불완료</strong></span>");
 	}
 		
 }
@@ -664,12 +650,7 @@ function addComma(value){
 <div class="contentB">
 
 	<div class="head"><h1 >상세조회 및 환불</h1></div>
-	<div class="sales_info">
-		<div class="info">
-		</div>
-		<div class="ref_area">
-		</div>
-	</div>
+	<div class="sales_info"></div>
 	<table cellspacing="0">
 		<colgroup>
 			<col width="15%">

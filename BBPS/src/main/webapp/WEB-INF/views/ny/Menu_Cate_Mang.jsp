@@ -339,7 +339,7 @@ function drawList(list) {
 	
 	for(var d of list) {
 		html += "<tr class=\"view_tr\" cateNo=\"" + d.CATE_NO + "\"cateName=\"" + d.CATE_NAME + "\">";
-		html += "<td>" + d.CATE_NO + "</td>";
+		html += "<td>" + d.RNUM + "</td>";
 		html += "<td><input type=\"text\" id=\"name\" value=\"" + d.CATE_NAME + "\" /></td>";
 		html += "<td><input class=\"edit_btn\" type=\"button\" value=\"수정\"><input class=\"del_btn\" type=\"button\" value=\"삭제\"></td>";   
 		html += "</tr>";
