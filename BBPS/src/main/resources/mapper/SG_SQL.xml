@@ -202,8 +202,20 @@ WHERE BRCH_NO IN #{uNo}
 </select>
 
 
+<update id="updateH"  parameterType="hashmap">
+UPDATE HQ_USER SET AUTH_NO = #{hAuth}, DEP_NO = #{hDep}, ID = #{hId}, PW = #{hPw}, USER_NAME = #{hNm}, PHONE_NUM = #{hPhone}
+WHERE USER_NO IN #{uNo}
+</update>
+<delete id="deleteH" parameterType="hashmap">
+DELETE FROM HQ_USER
+WHERE USER_NO IN #{uNo}
+</delete>
 
-    
-    
-    
+<update id="updateB"  parameterType="hashmap">
+UPDATE BRCH SET ID = #{bId}, PW = #{bPw}, BRCH_NAME = #{bNm},
+ POST_NUM = #{bPost}, DFT_ADDRESS = #{bDft}, DTL_ADDRESS = #{bDtl},
+ CALL_NUM = #{bCall}, MGR_NAME = #{mgrNm}, MGR_PHONE_NUM = #{mgrPhone}
+WHERE BRCH_NO IN #{bNo}
+</update>
+
 </mapper>

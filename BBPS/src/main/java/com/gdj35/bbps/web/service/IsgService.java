@@ -30,5 +30,11 @@ public interface IsgService {
 
 	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable;
 
+	public int updateH(HashMap<String, String> params) throws Throwable;
+
+	public int deleteH(HashMap<String, String> params) throws Throwable;
+
+	public int updateB(HashMap<String, String> params) throws Throwable;
+
 
 }

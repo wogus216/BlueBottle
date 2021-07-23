@@ -129,30 +129,31 @@ h1 {
 
 
 /* 이게일반 */
-button{
+input[type='button'] {
 	color: white;
-	width: 100px;
-	height: 40px;
+	width: 150px;
+	height: 50px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:20px;
 	margin:10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
+	font-weight: bold
 }
 .btm_btn_area{
 	text-align: center;
 	margin : 40px;
 }
-
-.edit_btn, .none_act_btn{
-	width:130px;
-	height: 50px;
+.listBtn{
+	background-color: #b3b3b3;
+}
+.edit_btn{
 	background-color: #01a1dd;
-	font-weight: bold;
-	 font-size: 20px;
+}
+.none_act_btn{
+	background-color: #bf4040; 
 }
 
 button:focus{outline:none;}
@@ -194,6 +195,46 @@ margin : 55px 20px;
 		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	$("#updateBtn").on("click", function () {
+		$("#goForm").attr("action", "User_Update_Hq");
+		$("#goForm").submit();
+	});
+	
+	$("#listBtn").on("click", function () {
+		$("#goForm").attr("action", "User_List");
+		$("#goForm").submit();
+	});
+	
+	
+	
+	
+	$("#delBtn").on("click",function(){
+		if(confirm("삭제하시겠습니까?")){
+			var params = $("#goForm").serialize();
+			
+			$.ajax({
+				url:"User_Delete_Hqs", //접속주소
+				type:"post", //전송방식 : get, post
+				dataType:"json",//받아올데이터형식
+				data:params, //보낼 데이터(문자열 형태)
+				success : function (res) {//성공 시 다음함수 실행
+				if(res.msg == "success"){
+					location.href = "User_List";
+				}else if(res.msg == "failed"){
+					alert("삭제에 실패하였습니다.");
+				}else {
+					alert("삭제 중 문제가 발생하였습니다.")
+				}
+				
+				},
+				error : function (request, status, error) { //실패 시 다음함수 실행
+					console.log(error);
+				}
+			});
+		}
+	}); //del Btn end
+	
+	
 	
 	
 }); //ready end
@@ -209,6 +250,11 @@ $(document).ready(function(){
 <div class="content_area">
 <div class="content">
 <h1>사용자 조회</h1>
+<form action="#" id="goForm" method="post">
+	<input type="hidden" id="uNo" name="uNo"  value="${data.USER_NO}"/>
+	<input type="hidden" name="page" value="${param.page}" />
+	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
+	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 
 <!-- 본문 -->
 <div class="main_content_area">
@@ -293,10 +339,12 @@ $(document).ready(function(){
 	</div>
 </div>
 </div>
+</form>
 <!-- 버튼 -->
 	<div class="btm_btn_area">
-	<button class="edit_btn">수정</button>
-	<button class="none_act_btn">비활성화</button>
+	<input type="button" value="목록" class="listBtn" id="listBtn" >
+	<input type="button" value="수정" class="edit_btn" id="updateBtn" >
+	<input type="button" value="비활성화" class="none_act_btn" id="delBtn">
 	</div>
 </div>
 </div>

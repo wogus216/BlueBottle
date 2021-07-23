@@ -29,4 +29,10 @@ public interface IsgDao {
 
 	HashMap<String, String> getB(HashMap<String, String> params) throws Throwable;
 
+	int updateH(HashMap<String, String> params) throws Throwable;
+
+	int deleteH(HashMap<String, String> params) throws Throwable;
+
+	int updateB(HashMap<String, String> params) throws Throwable;
+
 }
