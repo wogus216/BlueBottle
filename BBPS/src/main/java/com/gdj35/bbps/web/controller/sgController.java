@@ -340,4 +340,19 @@ public class sgController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value="/User_Detail_Brch")
+	public ModelAndView User_Detail_Brch(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable{
+		
+		HashMap<String, String> data = isgService.getB(params);
+		
+		mav.addObject("data", data);
+		System.out.println(data + " 지점 상세보기 data가져옴");
+		mav.setViewName("sg/User_Detail_Brch");
+		
+		return mav;
+	}
+	
 }

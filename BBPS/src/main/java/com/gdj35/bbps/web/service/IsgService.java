@@ -28,5 +28,7 @@ public interface IsgService {
 
 	public HashMap<String, String> getH(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getB(HashMap<String, String> params) throws Throwable;
+
 
 }
