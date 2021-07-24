@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%> 
-<c:import url="H_Menu.jsp">
-	<c:param name="menuno" value="13"></c:param>
+<c:import url="B_Menu.jsp">
+	<c:param name="menuno" value="24"></c:param>
 </c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>본사 마이페이지 수정</title>
+<title>지점 마이페이지 수정</title>
 <style type="text/css">
 /* 미들 부분 */
 .content_area{
@@ -279,19 +279,19 @@ function makePopup(title, contents, func) {
 			</div>
 			<div class="right">
 				<div class="user_no">
-					${data.UNO}
+					${data.BNO}
 				</div>
 			</div>
 		</div>
 		<div class="wrap">
 			<div class="left">
 				<div class="dep_nm">
-					<h3>부서명</h3>
+					<h3>지점명</h3>
 				</div>
 			</div>
 			<div class="right">
 				<div class="dep_nm">
-					${data.DNM}
+					${data.BNM}
 				</div>
 			</div>
 		</div>
@@ -315,7 +315,7 @@ function makePopup(title, contents, func) {
 			</div>
 			<div class="right">
 				<div class="pw">
-						<input type="password" id="mPw" name="mPw" value="${data.PW}"/>
+						<input type="password" id="bPw" name="bPw" value="${data.PW}"/>
 				</div>
 			</div>
 		</div>
@@ -331,15 +331,63 @@ function makePopup(title, contents, func) {
 				</div>
 			</div>
 		</div>
+			<div class="wrap">
+			<div class="left">
+				<div class="post_num">
+					<h3>우편번호</h3>
+				</div>
+			</div>
+			<div class="right">
+				<div class="post_num">
+					<input type="text" id="pNum" name="pNum" value="${data.PUNM}"/>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left">
+				<div class="brch_addr">
+					<h3>주소</h3>
+				</div>
+			</div>
+			<div class="right">
+				<div class="brch_addr">
+					<input type="text" id="addr" name="addr" value="${data.DFADDR}"/>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left">
+				<div class="brch_dtl_addr">
+					<h3>상세주소주소</h3>
+				</div>
+			</div>
+			<div class="right">
+				<div class="brch_dtl_addr">
+					<input type="text" id="dtlAddr" name="dtlAddr" value="${data.DTADDR}"/>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left">
+				<div class="brch_num">
+					<h3>지점 전화 번호</h3>
+				</div>
+			</div>
+			<div class="right">
+				<div class="brch_num">
+					<input type="text" id="brchCNum" name="brchCNum" value="${data.CNUM}"/>
+				</div>
+			</div>
+		</div>
 		<div class="wrap">
 			<div class="left">
 				<div class="user_name">
-					<h3>사용자명</h3>
+					<h3>지점자명</h3>
 				</div>
 			</div>
 			<div class="right">
 				<div class="user_name">
-					<input type="text" id="mNm" name="mNm" value="${data.UNM}"/>
+					<input type="text" id="mNm" name="mNm" value="${data.MNM}"/>
 				</div>
 			</div>
 		</div>
@@ -351,7 +399,7 @@ function makePopup(title, contents, func) {
 			</div>
 			<div class="right">
 				<div class="phone_num">
-					<input type="text" id="mPNum" name="mPNum" value="${data.PNUM}"/>
+					<input type="text" id="mPNum" name="mPNum" value="${data.MGPNUM}"/>
 				</div>
 			</div>
 		</div>

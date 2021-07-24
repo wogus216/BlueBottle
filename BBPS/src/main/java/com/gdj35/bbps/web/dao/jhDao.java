@@ -129,5 +129,19 @@ public class jhDao implements IjhDao {
 		return sqlsession.selectOne("JH.getHPw", params);
 	}
 
+	@Override
+	public HashMap<String, String> getBUser(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 마이페이지 갖고오자");
+		System.out.println("지점 마이페이지params"+params);
+		return sqlsession.selectOne("JH.getBUser", params);
+	}
+
+	@Override
+	public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 비번 갖고오자");
+		System.out.println("지점 아이디 비번params"+params);
+		return sqlsession.selectOne("JH.getBPw", params);
+	}
+
 	
 }

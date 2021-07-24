@@ -153,7 +153,7 @@ public class jhController {
 			session.invalidate();
 			
 			
-			mav.setViewName("redirect:B_Logins");
+			mav.setViewName("redirect:B_Login");
 			return mav;
 		}
 		
@@ -678,7 +678,7 @@ public class jhController {
 	
 	}
 	
-	//마이페이지
+	//본사 마이페이지
 	
 	@RequestMapping(value="/My_Page")
 	public ModelAndView My_Page(
@@ -780,5 +780,56 @@ public class jhController {
 			
 			}
 	
+	//지점 마이페이지
+	
+		@RequestMapping(value="/B_My_Page")
+		public ModelAndView B_My_Page(
+				HttpSession session,
+				@RequestParam HashMap<String, String> params,
+				ModelAndView mav) {
+			
+			try {
+				
+				HashMap<String, String> data = ijhService.getBUser(params);
+				mav.addObject("data", data);
+				System.out.println("지점마이페이지"+data);
+				
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+			
+			mav.setViewName("jh/B_My_Page");
+			System.out.println("유저번호:"+session.getAttribute("sBRCHNo"));
+			return mav;
+			
+		}
+		
+		
+		
+		//지점 비밀 번호 체크
+		@RequestMapping(value="/b_Pw_Checks",
+				method = RequestMethod.POST,
+				produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String b_Pw_Checks(
+				HttpSession session,
+			@RequestParam HashMap<String, String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		
+		HashMap<String, String> data = ijhService.getBPw(params);
+		
+		System.out.println("비밀번호data :"+ data);
+		if(data != null) { //사용자 정보가 있음
+			modelMap.put("msg", "success");
+			
+		} else { // 사용자 정보가 없음pw_Checks
+			modelMap.put("msg", "failed");
+			
+		}
+		return mapper.writeValueAsString(modelMap);
+		
+		}
 
 }

@@ -272,7 +272,6 @@ function drawMenu(menu){
 </head>
 <body>
 <form action="#" id="h_menu_form" method="post">
-		<input type="hidden"  id="AuthNo" name="AuthNo" value="${hAuthNo}">
 		<input type="hidden"  id="Dt" name="Dt" value="${sDEPNo}">
 		<input type="hidden"  id="uNo" name="uNo" value="${sUSERNo}">
 </form>

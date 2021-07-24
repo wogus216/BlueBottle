@@ -104,4 +104,14 @@ public class jhService implements IjhService {
 		return ijhDao.getHPw(params);
 	}
 
+	@Override
+	public HashMap<String, String> getBUser(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getBUser(params);
+	}
+
+	@Override
+	public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getBPw(params);
+	}
+
 }

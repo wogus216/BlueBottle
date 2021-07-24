@@ -225,7 +225,7 @@
 		WHERE USER_NO = #{uNo}
 	</select>
 	
-		<!-- 비밀번호 체크 -->
+	<!-- 비밀번호 체크 -->
 	<select id="getHPw" parameterType="hashmap" resultType="hashmap">
 		SELECT USER_NO,AUTH_NO,DEP_NO,ID,PW
 		FROM HQ_USER
@@ -238,6 +238,21 @@
 		UPDATE HQ_USER SET PW = #{mPw}, USER_NAME = #{mNm}, PHONE_NUM = #{mPNum}
 		WHERE USER_NO = #{uNo}
 	</update>
+	
+		<!-- 지점 마이페이지 -->
+	<select id="getBUser" parameterType="hashmap" resultType="hashmap">
+		SELECT BRCH_NO AS BNO, ID, PW BRCH_NAME AS BNM, POST_NUM AS PNUM, DFT_ADDRESS AS DFADDR, DTL_ADDRESS AS DTADDR, CALL_NUM AS CNUM, MGR_NAME AS MNM, MGR_PHONE_NUM AS MGPNUM
+		FROM BRCH
+		WHERE BRCH_NO = #{brchNo}
+	</select>
+	
+	<!-- 비밀번호 체크 -->
+	<select id="getBPw" parameterType="hashmap" resultType="hashmap">
+		SELECT BRCH_NO AS BNO, ID, BRCH_NAME AS BNM,PW
+		FROM BRCH
+		WHERE BRCH_NO = #{brchNo}
+		AND PW = #{bPw}
+	</select>
 	
 	
 </mapper> 

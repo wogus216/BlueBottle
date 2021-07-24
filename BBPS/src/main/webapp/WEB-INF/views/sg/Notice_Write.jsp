@@ -263,6 +263,7 @@ $(document).ready(function () {
 					//올라간 파일명 저장
 					if(res.fileName.length > 0){
 						$("#nFile").val(res.fileName[0]);
+						alert("알려줘");
 					}
 					//글저장
 					var params = $("#addForm").serialize();
