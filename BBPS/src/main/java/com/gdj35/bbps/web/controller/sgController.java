@@ -460,4 +460,30 @@ public class sgController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	
+	@RequestMapping(value="/User_Delete_Brchs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Delete_Brchs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.deleteB(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
 }

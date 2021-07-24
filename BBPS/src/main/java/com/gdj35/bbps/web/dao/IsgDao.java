@@ -35,4 +35,6 @@ public interface IsgDao {
 
 	int updateB(HashMap<String, String> params) throws Throwable;
 
+	int deleteB(HashMap<String, String> params) throws Throwable;
+
 }

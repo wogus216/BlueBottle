@@ -104,6 +104,13 @@ public class sgDao implements IsgDao {
 		return sqlSession.update("SG.updateB", params);
 	}
 
+	@Override
+	public int deleteB(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점삭제함");
+		System.out.println(params);
+		return sqlSession.delete("SG.deleteB", params);
+	}
+
 	
 	
 }

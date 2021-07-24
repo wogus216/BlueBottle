@@ -260,7 +260,7 @@ $(document).ready(function(){
 <h1>사용자 수정</h1>
 
 <form action="#" id="updateForm" method="post">
-	<input type="hidden" id="bNo" name="bNo"  value="${data.BRCH_NO}"/>
+	<input type="hidden" id="uNo" name="uNo"  value="${data.BRCH_NO}"/>
 	<input type="hidden" name="page" value="${param.page}" />
 	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />

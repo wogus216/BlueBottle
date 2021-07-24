@@ -89,6 +89,11 @@ public class sgService implements IsgService {
 	public int updateB(HashMap<String, String> params) throws Throwable {
 		return isgDao.updateB(params);
 	}
+
+	@Override
+	public int deleteB(HashMap<String, String> params) throws Throwable {
+		return isgDao.deleteB(params);
+	}
 	
 	
 
