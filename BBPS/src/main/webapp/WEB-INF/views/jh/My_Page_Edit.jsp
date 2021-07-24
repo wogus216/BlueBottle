@@ -43,7 +43,6 @@ input[type='button']{
 	font-size:18px;
 	margin:10px;
 	cursor: pointer;
-	background-color: #01a1dd;
 	outline:none;
 }
 .btm_btn_area{
@@ -51,14 +50,12 @@ input[type='button']{
 	margin : 40px;
 }
 
-.edit_btn, .none_act_btn{
-	width:130px;
-	height: 50px;
+.submit_btn{
 	background-color: #01a1dd;
-	font-weight: bold;
-	font-size: 20px;
 }
-
+.cnl_btn{
+	background-color:#bf4040;
+}
 button:focus{outline:none;}
 
 
@@ -94,7 +91,7 @@ button:focus{outline:none;}
 
 /* 팝업메시지 */
 
-.bg, .o_bg{
+.bg{
 	display: inline-block;
 	width: 100%;
 	height: 100%;
@@ -105,7 +102,7 @@ button:focus{outline:none;}
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_area, .o_popup_area {
+.popup_area {
 	display: inline-block;
 	width: 400px;
 	height: 240px;
@@ -116,7 +113,7 @@ button:focus{outline:none;}
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
-.popup_head , .o_popup_head{
+.popup_head{
 	height: 30px;
 	font-size: 16pt;
 	background-color: #01a1dd;
@@ -124,11 +121,10 @@ button:focus{outline:none;}
 	padding:10px;
 	font-weight:bold;
 }
-.popup_btn, .o_popup_btn{
+.popup_btn{
 	text-align:center;
 }
-.popup_btn input[type='button'] ,
-.o_popup_btn input[type='button']{
+.popup_btn input[type='button']{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -139,7 +135,7 @@ button:focus{outline:none;}
 	margin:10px;
 	cursor: pointer;
 }
-.popup_content, .o_popup_content{
+.popup_content{
 	margin-bottom: 40px;
 	margin-top: 50px;
 	margin-left:20px;
@@ -154,8 +150,8 @@ input[type='button']:focus{outline:none;}
 	height: 30px;
 }
 
-.popup_head > .close_btn,
-.o_popup_head > .o_close_btn{
+
+.popup_head > .close_btn{
 	width: 25px;
 	height: 25px;
 	background-color: #01a1dd;
@@ -166,7 +162,6 @@ input[type='button']:focus{outline:none;}
 	color: #ffffff;
 	border: none;
 }
-
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -180,197 +175,206 @@ $(document).ready(function(){
 	}
 	*/
 	//수정버튼
-	$(".edit_btn").on("click",function(){
-		makePopup("개인정보확인",function(){});
-	});
-	
-
-	//목록버튼
-	$(".list_btn").on("click",function(){
-		history.back();
-	});
-	
-	//개인정보 확인
-	$("body").on("click", ".confirm_btn" ,function(){
+	$(".submit_btn").on("click",function(){
 		
-		if($.trim($(".confirm_pw").val()) == ""){
-			alert("비밀번호를 입력해주세요");
-		}else{
-			var params = $("#send_form").serialize();
-			console.log(params);
+		if($.trim($("#mPw").val()) == ""){
+			makePopup("", "새 비밀번호를 입력해주세요",function(){});
+			
+		} else if($.trim($("#rePw").val()) != $.trim($("#mPw").val())){
+			makePopup("", "비밀번호가 일치하지 않습니다.",function(){}); 
+			
+		} else if($.trim($("#mNm").val()) == ""){
+			makePopup("", "이름을 입력해주세요",function(){}); 
+			
+		} else if($.trim($("#mPNum").val()) == ""){
+			makePopup("", "번호를 입력해주세요",function(){}); 
+			
+		} else{
+			var params = $("#update_form").serialize();
+			
 			$.ajax({
-				url: "pw_Checks",
+				url: "My_Page_Edits",
 				type: "post",
 				dataType: "json",
 				data: params,
 				success: function(res){
-					console.log(res);
 					
 					if(res.msg == "success"){
-						$("#send_form").attr("action","My_Page_Edit");
-						$("#send_form").submit();
-					
-					} else{
-						ordPopup("", "비밀번호가 일치하지 않습니다.",function(){});
+						$("#update_form").attr("action","My_Page");
+						$("#update_form").submit();
 					}
-					console.log(res);
+					else if(res.msg == "failed"){
+						makePopup("", "수정 중 에러 발생",function(){}); 
+					}
+					else {
+						makePopup("", "수정 중 에러 발생",function(){}); 
+					}
 				},
-				 error: function(request, status, error){
-						console.log(error);
-					}
-			});
-	
+				error: function(request, status, error){
+					console.log(error);
+					console.log(request);
+					console.log(status);
+				}
+			}); //ajax end
 		}
-		
-		}); //ajax end
+	}); //수정 end
+	
+
+	//목록버튼
+	$(".cnl_btn").on("click",function(){
+		$("#update_form").attr("action","My_Page");
+		$("#update_form").submit();
+	});
 	
 	
 }); //ready end
 
 
 /* 팝업 */
-function makePopup(title, func) {
-	
-	var html ="";
-	html+= "<div class=\"bg\"></div>";	
-	html+= "<div class=\"popup_area\">";	
-	html+= "<div class=\"popup_head\">"+ title +"";	
-	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
-	html+= "</div>";	
-	html+= "<div class=\"popup_content\">";
-	html+= 		"<input type=\"password\" id=\"hPw\" name=\"hPw\" placeholder=\"비밀번호를 입력해주세요\"  class=\"confirm_pw\">";	
-	html+= "</div>";	
-	html+= 		"<div class=\"popup_btn\">";	
-	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
-	html+= 			"<input type=\"button\"  value=\"취소\" style=\"background-color: rgb(190, 190, 190)\">";	
-	html+= 	 	"</div>";
-	html+= "</div>";	
-	
-	$(".content_area").prepend(html);
-	$(".popup_area").hide().show();
-	
-	$(".popup_btn, .close_btn").on("click",function(){
-		if(func !=null){
-			func.call();
+function makePopup(title, contents, func) {
+		var html ="";
+		html+= "<div class=\"bg\"></div>";	
+		html+= "<div class=\"popup_area\">";	
+		html+= "<div class=\"popup_head\">"+ title +"";	
+		html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
+		html+= "</div>";	
+		html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+		html+= 		"<div class=\"popup_btn\">";	
+		html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+		html+= 	 	"</div>";
+		html+= "</div>";	
+		
+		$("body").prepend(html);
+		$(".popup_area").hide().show();
+		
+		$(".popup_btn, .close_btn").on("click",function(){
+			if(func !=null){
+				func.call();
+			}
+			closePopup();
+			});
 		}
-		closePopup();
-		});
-	
-	
-	}
-	
-function ordPopup(title, contents, func) {
-	var html ="";
-	
-	html+= "<div class=\"o_bg\"></div>";	
-	html+= "<div class=\"o_popup_area\">";	
-	html+= "<div class=\"o_popup_head\">"+ title +"";	
-	html+= 		"<input type=\"button\" value=\"X\" class=\"o_close_btn\">";		
-	html+= "</div>";	
-	html+= "<div class=\"o_popup_content\">"+ contents +"</div>";	
-	html+= 		"<div class=\"o_popup_btn\">";	
-	html+= 			"<input type=\"button\" value=\"확인\"  class=\"o_confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
-	html+= 	 	"</div>";	
-	html+= "</div>";	
-	
-	$("body").prepend(html);
-	$(".o_popup_area").hide().show();
-	
-	$(".o_popup_btn, .o_close_Btn").on("click",function(){
-		if(func !=null){
-			func.call();
-		}
-		oClosePopup();
-		});
 
-	}
-
-function closePopup() {
-	$(".bg, .popup_area").fadeOut(function(){
-		$(".bg, .popup_area").remove();
-	}); //popup_btn end
-}	
-
-function oClosePopup() {
-	$(".o_bg, .o_popup_area").fadeOut(function(){
-		$(".o_bg, .o_popup_area").remove();
-	}); //popup_btn end
-}	
+	function closePopup() {
+		$(".bg, .popup_area").fadeOut(function(){
+			$(".bg, .popup_area").remove();
+		}); //popup_btn end
+	}	
 </script>
 </head>
 <body>
-<form action="#" id="send_form" method="post">
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
 <h1>마이페이지</h1>
+<form action="#" id="update_form" method="post">
 <input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 <!-- 본문 -->
 	<div class="main_content_area">
 		<div class="wrap">
 			<div class="left">
-				<div class="user_no"><h3>사용자 번호</h3></div>
+				<div class="user_no">
+					<h3>사용자 번호</h3>
+				</div>
 			</div>
 			<div class="right">
-				<div class="user_no">${data.UNO}</div>
+				<div class="user_no">
+					${data.UNO}
+				</div>
 			</div>
 		</div>
 		<div class="wrap">
 			<div class="left">
-				<div class="dep_nm"><h3>부서명</h3></div>
+				<div class="dep_nm">
+					<h3>부서명</h3>
+				</div>
 			</div>
 			<div class="right">
-				<div class="dep_nm">${data.DNM}</div>
+				<div class="dep_nm">
+					${data.DNM}
+				</div>
 			</div>
 		</div>
 		<div class="wrap">
 			<div class="left">
-				<div class="id"><h3>ID</h3></div>
+				<div class="id">
+					<h3>ID</h3>
+				</div>
 			</div>
 			<div class="right">
-				<div class="id">${data.ID}</div>
-			</div>
-		</div>
-			<div class="wrap">
-			<div class="left">
-				<div class="pw"><h3>PW</h3></div>
-			</div>
-			<div class="right">
-				<div class="pw">${data.PW}</div>
+				<div class="id">
+					${data.ID}
+				</div>
 			</div>
 		</div>
 		<div class="wrap">
 			<div class="left">
-				<div class="user_name"><h3>사용자명</h3></div>
+				<div class="pw">
+					<h3>새 비밀번호</h3>
+				</div>
 			</div>
 			<div class="right">
-				<div class="user_name">${data.UNM}</div>
+				<div class="pw">
+						<input type="password" id="mPw" name="mPw" value="${data.PW}"/>
+				</div>
 			</div>
 		</div>
 		<div class="wrap">
 			<div class="left">
-				<div class="phone_num"><h3>휴대폰 번호</h3></div>
+				<div class="pw">
+					<h3>비밀번호 확인</h3>
+				</div>
 			</div>
 			<div class="right">
-				<div class="phone_num">${data.PNUM}</div>
+				<div class="pw">
+					<input type="password" id="rePw" name="rePw" value="${data.PW}"/>
+				</div>
 			</div>
 		</div>
 		<div class="wrap">
 			<div class="left">
-				<div class="enroll_date"><h3>등록일</h3></div>
+				<div class="user_name">
+					<h3>사용자명</h3>
+				</div>
 			</div>
 			<div class="right">
-				<div class="enroll_date">${data.ENROLL}</div>
+				<div class="user_name">
+					<input type="text" id="mNm" name="mNm" value="${data.UNM}"/>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left">
+				<div class="phone_num">
+					<h3>휴대폰 번호</h3>
+				</div>
+			</div>
+			<div class="right">
+				<div class="phone_num">
+					<input type="text" id="mPNum" name="mPNum" value="${data.PNUM}"/>
+				</div>
+			</div>
+		</div>
+		<div class="wrap">
+			<div class="left">
+				<div class="enroll_date">
+					<h3>등록일</h3>
+				</div>
+			</div>
+			<div class="right">
+				<div class="enroll_date">
+					${data.ENROLL}
+				</div>
 			</div>
 		</div>
 	</div>
+</form>
 <!-- 버튼 -->
 		<div class="btm_btn_area">
-			<input type="button" class="edit_btn" value="수정" >
-			<input type="button" class="list_btn" value="목록" >
+			<input type="button" class="submit_btn" value="완료" >
+			<input type="button" class="cnl_btn" value="취소" >
 		</div>
 	</div>
 </div>
-</form>
 </body>
 </html>

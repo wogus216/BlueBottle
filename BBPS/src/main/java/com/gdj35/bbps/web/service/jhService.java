@@ -99,4 +99,9 @@ public class jhService implements IjhService {
 		return ijhDao.editHU(params);
 	}
 
+	@Override
+	public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getHPw(params);
+	}
+
 }

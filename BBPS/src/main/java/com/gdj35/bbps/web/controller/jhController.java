@@ -686,10 +686,10 @@ public class jhController {
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) {
 		
-		HashMap<String, String> data;
+		params.put("sUSERNo", String.valueOf(session.getAttribute("sUSERNo")));
 		try {
-			params.put("sUSERNo", String.valueOf(session.getAttribute("sUSERNo")));
-			data = ijhService.getHUser(params);
+			
+			HashMap<String, String> data = ijhService.getHUser(params);
 			mav.addObject("data", data);
 			System.out.println("마이페이지"+data);
 			
@@ -702,18 +702,83 @@ public class jhController {
 		return mav;
 		
 	}
+	
+	
+	//비밀 번호 체크
+	@RequestMapping(value="/pw_Checks",
+			method = RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String pw_Checks(
+			HttpSession session,
+		@RequestParam HashMap<String, String> params) throws Throwable{
+	ObjectMapper mapper = new ObjectMapper();
+	Map<String, Object> modelMap = new HashMap<String, Object>();
+	//암호화
+	//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
+	
+	//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
+	
+	params.put("sUSERNo", String.valueOf(session.getAttribute("sUSERNo")));
+	
+	HashMap<String, String> data = ijhService.getHPw(params);
+	
+	System.out.println("비밀번호data :"+ data);
+	if(data != null) { //사용자 정보가 있음
+		modelMap.put("msg", "success");
+		
+	} else { // 사용자 정보가 없음pw_Checks
+		modelMap.put("msg", "failed");
+		
+	}
+	return mapper.writeValueAsString(modelMap);
+	
+	}
+	
+	
 	//마이페이지 수정
 	
-	@RequestMapping(value="/My_Page_Edit")
-	public ModelAndView My_Page_Edit(
-			@RequestParam HashMap<String, String> params,
-			ModelAndView mav) {
+		@RequestMapping(value="/My_Page_Edit")
+		public ModelAndView My_Page_Edit(
+				@RequestParam HashMap<String, String> params,
+				ModelAndView mav) throws Throwable {
+			
+			HashMap<String, String> data = ijhService.getHUser(params);
+			
+			mav.addObject("data", data);
+			System.out.println("마이페이지수정"+data);
+			mav.setViewName("jh/My_Page_Edit");
+			return mav;
+		}
 		
-		//int cnt = ijhService.editHU(params);
-		
-		mav.setViewName("jh/My_Page_Edit");
-		return mav;
-	}
+	
+
+	@RequestMapping(value="/My_Page_Edits",
+			method = RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+			@ResponseBody 
+			public String My_Page_Edits(
+				@RequestParam HashMap<String, String> params) throws Throwable {
+			ObjectMapper mapper = new ObjectMapper();
+			Map<String, Object> modelMap = new HashMap<String, Object>();
+			
+			try {
+				int cnt = ijhService.editHU(params);
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+					
+				} else {
+					modelMap.put("msg", "failed");
+				}
+				
+			} catch (Throwable e) {
+				e.printStackTrace();
+				modelMap.put("msg", "error");
+			}
+			return mapper.writeValueAsString(modelMap);
+			
+			}
 	
 
 }

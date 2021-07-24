@@ -39,5 +39,7 @@ public interface IjhDao {
 
 	public int editHU(HashMap<String, String> params) throws Throwable;
 
+	public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable;
+
 
 }

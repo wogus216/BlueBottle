@@ -110,7 +110,7 @@ public class jhDao implements IjhDao {
 	@Override
 	public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable {
 		System.out.println("본사 마이페이지 갖고오자");
-		System.out.println("본사마이params"+params);
+		System.out.println("본사마이페이지params"+params);
 		return sqlsession.selectOne("JH.getHUser", params);
 		
 	}
@@ -120,6 +120,13 @@ public class jhDao implements IjhDao {
 		System.out.println("본사 마이수정페이지 갖고오자");
 		System.out.println("본사마이수정params"+params);
 		return sqlsession.update("JH.editHU", params);
+	}
+
+	@Override
+	public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사 비번 갖고오자");
+		System.out.println("본사 아이디 비번params"+params);
+		return sqlsession.selectOne("JH.getHPw", params);
 	}
 
 	

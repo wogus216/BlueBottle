@@ -219,16 +219,25 @@
 	
 	<!-- 본사 마이페이지 -->
 	<select id="getHUser" parameterType="hashmap" resultType="hashmap">
-		SELECT HU.USER_NO AS UNO, HU.AUTH_NO AS ANO, HD.DEP_NAME AS DNM, ID, HU.PW, USER_NAME AS UNM, HU.PHONE_NUM AS PNUM, HU.ENROLL_DATE AS ENROLL
+		SELECT HU.USER_NO AS UNO,HD.DEP_NAME AS DNM, ID, HU.PW, USER_NAME AS UNM, HU.PHONE_NUM AS PNUM, HU.ENROLL_DATE AS ENROLL
 		FROM HQ_USER HU INNER JOIN HQ_DEP HD
                      			ON HU.DEP_NO = HD.DEP_NO
+		WHERE USER_NO = #{uNo}
+	</select>
+	
+		<!-- 비밀번호 체크 -->
+	<select id="getHPw" parameterType="hashmap" resultType="hashmap">
+		SELECT USER_NO,AUTH_NO,DEP_NO,ID,PW
+		FROM HQ_USER
 		WHERE USER_NO = ${sUSERNo}
+		AND PW = #{hPw}
 	</select>
 	
 	<!-- 본사마이페이지 수정 -->
-	<update id="editM" parameterType="hashmap">
-		UPDATE POS_MENU SET MENU_NAME = #{m_name}, MENU_PRICE = #{m_price}, MENU_IMG = #{m_file}, NOTE = #{m_note}
-		WHERE MENU_NO = #{menuNo}
+	<update id="editHU" parameterType="hashmap">
+		UPDATE HQ_USER SET PW = #{mPw}, USER_NAME = #{mNm}, PHONE_NUM = #{mPNum}
+		WHERE USER_NO = #{uNo}
 	</update>
+	
 	
 </mapper> 

@@ -353,7 +353,7 @@ function closePopup() {
 					<input type="button" value="로그인" class="submit">
 				</li>
 			</ul>
-			<input type="hidden"  id="hUserNo" name="hUserNo">
+			<input type="hidden"  id="uNo" name="uNo" value="${sUSERNo}">
 		</form>
 	</div>
 </div>

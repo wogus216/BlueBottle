@@ -39,5 +39,9 @@ public HashMap<String, String> getHUser(HashMap<String, String> params) throws T
 
 public int editHU(HashMap<String, String> params) throws Throwable;
 
+public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable;
+
+
+
 
 }

@@ -867,12 +867,6 @@ function ordPopup(title, contents, func) {
 
 	}
 	
-function closePopup() {
-	$(".bg, .popup_area").fadeOut(function(){
-		$(".bg, .popup_area").remove();
-	}); //popup_btn end
-}
-
 </script>
 </head>
 <body>
