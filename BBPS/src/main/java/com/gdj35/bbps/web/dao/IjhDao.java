@@ -45,5 +45,8 @@ public interface IjhDao {
 
 	public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable;
 
+	public int editBU(HashMap<String, String> params) throws Throwable;
+
+
 
 }

@@ -117,7 +117,7 @@ public class jhDao implements IjhDao {
 
 	@Override
 	public int editHU(HashMap<String, String> params) throws Throwable {
-		System.out.println("본사 마이수정페이지 갖고오자");
+		System.out.println("본사 마이페이지수정 갖고오자");
 		System.out.println("본사마이수정params"+params);
 		return sqlsession.update("JH.editHU", params);
 	}
@@ -142,6 +142,15 @@ public class jhDao implements IjhDao {
 		System.out.println("지점 아이디 비번params"+params);
 		return sqlsession.selectOne("JH.getBPw", params);
 	}
+
+	@Override
+	public int editBU(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 마이페이지수정 갖고오자")
+		;
+		System.out.println("지점 마이수정params"+params);
+		return sqlsession.update("JH.editBU", params);
+	}
+
 
 	
 }
