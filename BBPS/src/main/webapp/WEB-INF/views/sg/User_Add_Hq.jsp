@@ -283,21 +283,21 @@ $(document).ready(function(){
 	
 	$("#addBtn").on("click", function () {
 		if($.trim($("#uAuto").val())== ""){
-			makePopup("안녕","슬기야",function(){});
+			makePopup("권한번호","권한번호를 입력해주세요.",function(){});
 			$("#uAuto").focus();
 		} else if($.trim($("#uDep").val()) == ""){
-			makePopup("","슬기야 내일이면 눈 다 나을거야",function(){});
+			makePopup("부서번호","부서번호를 입력해주세요.",function(){});
 			$("#uDep").focus();
 		} else if($.trim($("#uId").val()) == ""){
 			makePopup("ID","아이디를 입력해주세요.",function(){});
 			$("#uId").focus();
 		} else if($.trim($("#uPwRe").val()) != $.trim($("#uPw").val())){
-			alert("비밀번호가 정확하지 않습니다.");
+			makePopup("PW","비밀번호가 정확하지 않습니다.",function(){});
 			$("#uPw").val("");
 			$("#uPwRe").val("");
 			$("#uPw").focus();
 		} else if($.trim($("#uNm").val()) == ""){
-			alert("이름을 입력주세요");
+			makePopup("사용자명","이름을 입력해주세요.",function(){});
 			$("#uNm").focus();
 		} else{
 			
@@ -312,9 +312,9 @@ $(document).ready(function(){
 					if(res.msg == "success"){
 						location.href = "User_List";
 					}else if(res.msg == "failed"){
-						alert("등록에 실패하였습니다.");
+						makePopup("","등록에 실패하였습니다.",function(){});
 					}else {
-						alert("등록 중 문제가 발생하였습니다.")
+						makePopup("","등록 중 문제가 발생하였습니다.",function(){});
 					}
 					},
 					error : function (request, status, error) { //실패 시 다음함수 실행

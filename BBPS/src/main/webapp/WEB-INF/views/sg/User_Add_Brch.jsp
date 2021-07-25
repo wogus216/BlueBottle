@@ -285,7 +285,7 @@ $(document).ready(function(){
 			makePopup("ID","아이디를 입력해주세요.",function(){});
 			$("#bId").focus();
 		} else if($.trim($("#bPwRe").val()) != $.trim($("#bPw").val())){
-			alert("비밀번호가 정확하지 않습니다.");
+			makePopup("PW","비밀번호가 정확하지 않습니다.",function(){});
 			$("#bPw").val("");
 			$("#bPwRe").val("");
 			$("#bPw").focus();
@@ -293,19 +293,19 @@ $(document).ready(function(){
 			makePopup("지점명","지점명을 입력해주세요.",function(){});
 			$("#bNm").focus();
 		} else if($.trim($("#bPost").val()) == ""){
-			alert("우편번호를 입력주세요");
+			makePopup("우편번호","우편번호를 입력해주세요.",function(){});
 			$("#bPost").focus();
 		} else if($.trim($("#bDft").val()) == ""){
-			alert("기본주소를 입력주세요");
+			makePopup("기본주소","기본주소를 입력해주세요.",function(){});
 			$("#bDft").focus();
 		} else if($.trim($("#bDtl").val()) == ""){
-			alert("상세주소를 입력해주세요.");
+			makePopup("상세주소","상세주소를 입력해주세요.",function(){});
 			$("#bDtl").focus();
 		} else if($.trim($("#bCall").val()) == ""){
-			alert("지점 전화번호를 입력해주세요.");
+			makePopup("지점 전화번호","지점 전화번호를 입력해주세요.",function(){});
 			$("#bCall").focus();
 		} else if($.trim($("#bMgrNm").val()) == ""){
-			alert("매니저 이름을 입력해주세요.");
+			makePopup("매니저이름","매니저이름을 입력해주세요.",function(){});
 			$("#bMgrNm").focus();
 		} else {
 				var params = $("#addForm").serialize();
@@ -319,9 +319,9 @@ $(document).ready(function(){
 					if(res.msg == "success"){
 						location.href = "User_List";
 					}else if(res.msg == "failed"){
-						alert("등록에 실패하였습니다.");
+						makePopup("","등록에 실패하였습니다.",function(){});
 					}else {
-						alert("등록 중 문제가 발생하였습니다.")
+						makePopup("","등록 중 문제가 발생하였습니다.",function(){});
 					}
 					
 					},

@@ -188,6 +188,78 @@ margin : 55px 20px;
     line-height: 60px;
     font-size: 20px;
 }
+
+
+
+
+/* 팝업메시지 */
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn input[type='button']{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black; 
+}
+
+input[type='button']:focus{outline:none;}
+
+.popup_head > .close_btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -221,9 +293,9 @@ $(document).ready(function(){
 				if(res.msg == "success"){
 					location.href = "User_List";
 				}else if(res.msg == "failed"){
-					alert("삭제에 실패하였습니다.");
+					makePopup("","삭제에 실패하였습니다.",function(){});
 				}else {
-					alert("삭제 중 문제가 발생하였습니다.")
+					makePopup("","삭제 중 문제가 발생하였습니다.",function(){});
 				}
 				
 				},
@@ -238,6 +310,53 @@ $(document).ready(function(){
 	
 	
 }); //ready end
+
+
+
+/* 팝업 */
+function makePopup(title, contents, func) {
+	
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\" class=\"close_btn\" style=\"background-color: rgb(190, 190, 190)\">";	
+	html+= 	 	"</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".popup_btn .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+			closePopup();
+		});
+	
+	$(".popup_head .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+			closePopup();
+	
+	});
+
+	$(".confirm_btn").on("click",function(){
+		closePopup();
+		});
+	}
+
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
+}	
 </script>
 </head>
 <body>
