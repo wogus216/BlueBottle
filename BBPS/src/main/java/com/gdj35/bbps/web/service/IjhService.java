@@ -45,6 +45,7 @@ public HashMap<String, String> getBUser(HashMap<String, String> params) throws T
 
 public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable;
 
+public int editBU(HashMap<String, String> params) throws Throwable;
 
 
 

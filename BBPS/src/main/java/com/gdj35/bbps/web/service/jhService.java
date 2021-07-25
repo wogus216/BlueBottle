@@ -114,4 +114,10 @@ public class jhService implements IjhService {
 		return ijhDao.getBPw(params);
 	}
 
+	@Override
+	public int editBU(HashMap<String, String> params) throws Throwable {
+		return ijhDao.editBU(params);
+	}
+
+
 }

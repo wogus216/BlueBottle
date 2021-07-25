@@ -239,9 +239,9 @@
 		WHERE USER_NO = #{uNo}
 	</update>
 	
-		<!-- 지점 마이페이지 -->
+	<!-- 지점 마이페이지 -->
 	<select id="getBUser" parameterType="hashmap" resultType="hashmap">
-		SELECT BRCH_NO AS BNO, ID, PW BRCH_NAME AS BNM, POST_NUM AS PNUM, DFT_ADDRESS AS DFADDR, DTL_ADDRESS AS DTADDR, CALL_NUM AS CNUM, MGR_NAME AS MNM, MGR_PHONE_NUM AS MGPNUM
+		SELECT BRCH_NO AS BNO, ID, PW, BRCH_NAME AS BNM, POST_NUM AS PNUM, DFT_ADDRESS AS DFADDR, DTL_ADDRESS AS DTADDR, CALL_NUM AS CNUM, MGR_NAME AS MNM, MGR_PHONE_NUM AS MGPNUM
 		FROM BRCH
 		WHERE BRCH_NO = #{brchNo}
 	</select>
@@ -253,6 +253,13 @@
 		WHERE BRCH_NO = #{brchNo}
 		AND PW = #{bPw}
 	</select>
+	
+	<!-- 지점마이페이지 수정 -->
+	<update id="editBU" parameterType="hashmap">
+		UPDATE BRCH SET PW = #{bPw}, POST_NUM = #{pNum}, DFT_ADDRESS = #{bAddr}, DTL_ADDRESS = #{dtlAddr}, CALL_NUM = #{brchCNum},
+                        MGR_NAME = #{mNm}, MGR_PHONE_NUM = #{mPNum}
+		WHERE BRCH_NO = #{brchNo}
+	</update>
 	
 	
 </mapper> 

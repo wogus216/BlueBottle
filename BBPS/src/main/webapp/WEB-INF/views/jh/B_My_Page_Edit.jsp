@@ -177,36 +177,47 @@ $(document).ready(function(){
 	//수정버튼
 	$(".submit_btn").on("click",function(){
 		
-		if($.trim($("#mPw").val()) == ""){
+		if($.trim($("#bPw").val()) == ""){
 			makePopup("", "새 비밀번호를 입력해주세요",function(){});
 			
-		} else if($.trim($("#rePw").val()) != $.trim($("#mPw").val())){
+		} else if($.trim($("#rePw").val()) != $.trim($("#bPw").val())){
 			makePopup("", "비밀번호가 일치하지 않습니다.",function(){}); 
 			
+		} else if($.trim($("#pNum").val()) == ""){
+			makePopup("", "우편번호를 입력해주세요",function(){}); 
+			
+		} else if($.trim($("#bAddr").val()) == ""){
+			makePopup("", "주소를 입력해주세요",function(){}); 
+			
+		} else if($.trim($("#dtlAddr").val()) == ""){
+			makePopup("", "상세주소를 입력해주세요",function(){}); 
+			
+		} else if($.trim($("#brchCNum").val()) == ""){
+			makePopup("", "지점 전화번호를 입력해주세요",function(){}); 
+			
 		} else if($.trim($("#mNm").val()) == ""){
-			makePopup("", "이름을 입력해주세요",function(){}); 
+			makePopup("", "지점자 명을 입력해주세요",function(){}); 
 			
 		} else if($.trim($("#mPNum").val()) == ""){
-			makePopup("", "번호를 입력해주세요",function(){}); 
+			makePopup("", "지점자 핸드폰번호를 입력해주세요",function(){}); 
 			
 		} else{
 			var params = $("#update_form").serialize();
 			
 			$.ajax({
-				url: "My_Page_Edits",
+				url: "B_My_Page_Edits",
 				type: "post",
 				dataType: "json",
 				data: params,
 				success: function(res){
 					
 					if(res.msg == "success"){
-						$("#update_form").attr("action","My_Page");
+						$("#update_form").attr("action","B_My_Page");
 						$("#update_form").submit();
-					}
-					else if(res.msg == "failed"){
+						
+					} else if(res.msg == "failed"){
 						makePopup("", "수정 중 에러 발생",function(){}); 
-					}
-					else {
+					} else {
 						makePopup("", "수정 중 에러 발생",function(){}); 
 					}
 				},
@@ -222,7 +233,8 @@ $(document).ready(function(){
 
 	//목록버튼
 	$(".cnl_btn").on("click",function(){
-		$("#update_form").attr("action","My_Page");
+		
+		$("#update_form").attr("action","B_My_Page");
 		$("#update_form").submit();
 	});
 	
@@ -268,7 +280,7 @@ function makePopup(title, contents, func) {
 <div class="content">
 <h1>마이페이지</h1>
 <form action="#" id="update_form" method="post">
-<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
+<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 <!-- 본문 -->
 	<div class="main_content_area">
 		<div class="wrap">
@@ -339,7 +351,7 @@ function makePopup(title, contents, func) {
 			</div>
 			<div class="right">
 				<div class="post_num">
-					<input type="text" id="pNum" name="pNum" value="${data.PUNM}"/>
+					<input type="text" id="pNum" name="pNum" value="${data.PNUM}"/>
 				</div>
 			</div>
 		</div>
@@ -351,7 +363,7 @@ function makePopup(title, contents, func) {
 			</div>
 			<div class="right">
 				<div class="brch_addr">
-					<input type="text" id="addr" name="addr" value="${data.DFADDR}"/>
+					<input type="text" id="bAddr" name="bAddr" value="${data.DFADDR}"/>
 				</div>
 			</div>
 		</div>

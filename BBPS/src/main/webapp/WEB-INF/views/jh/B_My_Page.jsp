@@ -90,6 +90,7 @@ button:focus{outline:none;}
 	display: inline-block;
     line-height: 60px;
     font-size: 20px;
+    float: right;
 }
 
 /* 팝업메시지 */
