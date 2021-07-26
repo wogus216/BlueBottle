@@ -261,5 +261,59 @@
 		WHERE BRCH_NO = #{brchNo}
 	</update>
 	
-	
+		<!-- 포스 환불 리스트 수  -->
+	<select id="getRCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*) AS CNT
+	FROM (SELECT S2.SDATE,B.BRCH_NAME AS BNM,BS.ENROLL_DATE,
+               ROW_NUMBER() OVER(ORDER BY S2.SDATE DESC) AS RNUM
+    	  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YY/MM/DD') AS SDATE,COUNT(TO_DATE(S.ENROLL_DATE,'YY/MM/DD')) AS SALES_CNT,S.BRCH_NO
+        	    FROM SALES  S   
+            	WHERE S.CNL_DATE IS NULL
+            	GROUP BY TO_CHAR(S.ENROLL_DATE,'YY/MM/DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
+                                                                              ON S2.BRCH_NO = B.BRCH_NO
+                                                                              AND B.BRCH_NO = #{brchNo}
+                                                                      INNER JOIN BRCH_STOR BS
+                                                                              ON S2.BRCH_NO = BS.STOR_NO
+ 		WHERE 1 = 1
+ 		<choose>
+				<when test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			  	 	 AND S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
+				</when>
+				<when test="startDate != null and startDate != ''">
+			  	 	 AND S2.SDATE &gt;= TO_DATE(#{startDate}, 'YY/MM/DD')
+				</when>
+				<when test="endDate != null and endDate != ''">
+			  	 	 AND S2.SDATE  &lt;= TO_DATE(#{endDate},'YY/MM/DD') 
+				</when>
+		</choose>
+	     	) R
+		ORDER BY R.RNUM ASC
+	</select>
+	<!-- 포스 환불 리스트   -->
+	<select id="getRList" parameterType="hashmap" resultType="hashmap">
+		SELECT R.SDATE, R.BNM
+		FROM (SELECT S2.SDATE,B.BRCH_NAME AS BNM,BS.ENROLL_DATE,
+               ROW_NUMBER() OVER(ORDER BY S2.SDATE DESC) AS RNUM
+     		  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YY/MM/DD') AS SDATE,COUNT(TO_DATE(S.ENROLL_DATE,'YY/MM/DD')) AS SALES_CNT,S.BRCH_NO
+            	    FROM SALES  S   
+            	    WHERE S.CNL_DATE IS NULL
+              GROUP BY TO_CHAR(S.ENROLL_DATE,'YY/MM/DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
+                                                                              ON S2.BRCH_NO = B.BRCH_NO
+                                                                              AND B.BRCH_NO = #{brchNo}
+                                                                      INNER JOIN BRCH_STOR BS
+                                                                              ON S2.BRCH_NO = BS.STOR_NO
+ 		<choose>
+				<when test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
+				</when>
+				<when test="startDate != null and startDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(SYSDATE, 'YY/MM/DD') 
+				</when>
+				<when test="endDate != null and endDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(BS.ENROLL_DATE, 'YY/MM/DD') AND TO_DATE(#{endDate}, 'YY/MM/DD') 
+				</when>
+		</choose>
+	   	) R
+		ORDER BY R.RNUM ASC
+	</select>
 </mapper> 

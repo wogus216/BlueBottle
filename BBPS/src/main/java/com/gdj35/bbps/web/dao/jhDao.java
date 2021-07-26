@@ -145,10 +145,22 @@ public class jhDao implements IjhDao {
 
 	@Override
 	public int editBU(HashMap<String, String> params) throws Throwable {
-		System.out.println("지점 마이페이지수정 갖고오자")
-		;
+		System.out.println("지점 마이페이지수정 갖고오자");
 		System.out.println("지점 마이수정params"+params);
 		return sqlsession.update("JH.editBU", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRList(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 환불목록 갖고오자");
+		System.out.println("지점 환불목록params"+params);
+		return sqlsession.selectList("JH.getRList", params);
+	}
+
+	@Override
+	public int getRCnt(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 환불목록 개수");
+		return sqlsession.selectOne("JH.getRCnt", params);
 	}
 
 

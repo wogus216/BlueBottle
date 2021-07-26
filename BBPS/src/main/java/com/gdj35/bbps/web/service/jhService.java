@@ -119,5 +119,16 @@ public class jhService implements IjhService {
 		return ijhDao.editBU(params);
 	}
 
+	@Override
+	public int getRCnt(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getRCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRList(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getRList(params);
+	}
+
+
 
 }
