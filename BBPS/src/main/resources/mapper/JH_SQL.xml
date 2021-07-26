@@ -274,16 +274,16 @@
                                                                               AND B.BRCH_NO = #{brchNo}
                                                                       INNER JOIN BRCH_STOR BS
                                                                               ON S2.BRCH_NO = BS.STOR_NO
- 		WHERE 1 = 1
+ 		
  		<choose>
 				<when test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-			  	 	 AND S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
 				</when>
 				<when test="startDate != null and startDate != ''">
-			  	 	 AND S2.SDATE &gt;= TO_DATE(#{startDate}, 'YY/MM/DD')
+			  	 	 WHERE S2.SDATE &gt;= TO_DATE(#{startDate}, 'YY/MM/DD')
 				</when>
 				<when test="endDate != null and endDate != ''">
-			  	 	 AND S2.SDATE  &lt;= TO_DATE(#{endDate},'YY/MM/DD') 
+			  	 	 WHERE S2.SDATE  &lt;= TO_DATE(#{endDate},'YY/MM/DD') 
 				</when>
 		</choose>
 	     	) R
@@ -314,6 +314,7 @@
 				</when>
 		</choose>
 	   	) R
+	   	WHERE R.RNUM BETWEEN #{startCnt} AND #{endCnt}
 		ORDER BY R.RNUM ASC
 	</select>
 </mapper> 

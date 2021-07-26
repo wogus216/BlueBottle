@@ -932,7 +932,7 @@ public class jhController {
 			int cnt = ijhService.getRCnt(params);
 			
 			// 페이징 정보 취득
-					PagingBean pb= iPagingService.getPagingBean(page, cnt, 10, 5);
+				PagingBean pb= iPagingService.getPagingBean(page, cnt, 10, 5);
 						
 			//글번호 P 없으면 글번호
 			//게시글 시작번호, 종료번호 할당

@@ -13,6 +13,7 @@
 	카테고리 버튼 파란색 : #1bc1fe
 	글씨 색깔: white,black
 	브라운 : #cc6600,#e67300
+	빨간 색 : #bf4040;
 */
 
 body {
@@ -375,13 +376,16 @@ input[type='button']:focus{outline:none;}
 label{
 	vertical-align: middle;
 }
-.search_btn{
+.search_btn, .cnl_btn{
 	height: 30px;
 	margin: 0 ;
 	padding: 0;
 	vertical-align: bottom;
 }
 
+.cnl_btn{
+	background-color: #bf4040; 
+}
 select{
 	font-size: 13px;	
 	height: 40px;
@@ -406,7 +410,8 @@ select{
 }
 
 .reset_btn{
-	background-color: #f2f2f2;
+	background-color: #b2b2b2;
+	height: 30px;
 }
 /* 일반버튼 */
 button{
@@ -424,7 +429,7 @@ button{
 }
 /* 검색 과 페이지 */
 
-.search_Info,.page_Area, .page_btn{
+.page_Area, .page_btn{
 	text-align: center;
 }
 
@@ -497,7 +502,7 @@ $(document).ready(function(){
 	
 	//현재주문 상황에 넣기
 	var nowCnt = 0; //품목주문개수
-	var ordMno =0;
+	
 	var arrMno = new Array();  //품목주문배열
  
 	
@@ -505,20 +510,18 @@ $(document).ready(function(){
 		
 		if(nowCnt < 7){
 			
-				if($(".ord_stat[mno='" + $(this).attr("mno") + "']").length == 0){
 				// 주문한게 없는 경우
+				if($(".ord_stat[mno='" + $(this).attr("mno") + "']").length == 0){
 					nowCnt++;
 					$("#mNo").val($(this).attr("mno"));
 					reloadOrd();
 				
-				} else{
 					//주문한게 있는 경우
+				} else{
 					ordPopup("", "이미주문했습니다.",function(){});
 					}
-		}
-		else{
-			ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
-			
+		} else{
+				ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
 		} 
 	
 	}); 	
@@ -609,7 +612,7 @@ $(document).ready(function(){
 		$("body").on("click",".cash_pay, .card_pay",function(){
 			$(".table_num").show();
 			$(".menu_cate").css("margin-bottom", "100px");
-			
+	
 			if($(this).val() == "현금결제"){
 				//현금 1번
 				$("#methodNo").attr("value", 1);
@@ -653,31 +656,33 @@ $(document).ready(function(){
 		$(".table_num").hide();
 		$(".menu_cate").css("margin-bottom", "20px");
 		
-		var noCnt = 0; //품목명 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
-		
 		//거스름 돈
 		changeMoney = ordResPay - (recMoney * 1); 
-		
-		
+		ordPay();
 		//주문 품목 전달
-	
 		if($(".recNum").val() == ""){
 			
 			ordPopup("", "받은금액을 먼저 입력해주세요.",function(){});
 			$(".rec_money").focus();
-		} 
-		else{
+			
+			//품목 없을 때
+		} else if($(".ord_stat").length <= 0){
+			ordPopup("", "주문 품목을 먼저 입력해주세요.",function(){});
+			
+		} else{
 			//주문 금액 넣기
 			if(recMoney >= ordResPay ){
-				
+				//주문금액 넣기
 				inputOrdMoney();
 					
 				//주문 메뉴 넣기
 				inputOrdMenu();
+				
 			// 총주문개수, 결제금액 초기화
 				ordResPay = 0;
 				ordResCnt = 0;
 				recMoney = 0;
+				
 				ordPopup("", "결제완료되었습니다.",function(){});
 				location.reload();
 			}else{
@@ -868,7 +873,7 @@ function ordRes(){
 //결제
 function ordPay(){
 	var pay ="";
-	//recMoney = recMoney * 1; //금액 처리를 위해서
+	
 	//"+ +"
 	pay+= "<tr class=\"pay_info\">";
 	pay+= "	 <td class=\"rec_money\">"+ recMoney * 1 +"원</td>";
@@ -1026,6 +1031,7 @@ function refPopup(title, func) {
 	html+= 			"<span>종료일</span>";
 	html+= 				"<input type=\"date\" class=\"end_date\" name=\"end_date\" /> ";
 	html+= 			"<button class=\"search_btn\" style=\"margin:5px 0px 0px 10px;\">검색</button>";
+	html+= 			"<button class=\"cnl_btn\" style=\"margin:5px 5px 0px 10px;\">취소</button>";
 	html+= 		"</div>	";
 	html+="		<div class=\"ref_area\">";
 	html+="			<table class=\"ref_table\" cellspacing=\"0\">";
@@ -1051,12 +1057,6 @@ function refPopup(title, func) {
 	$("body").prepend(html);
 	$(".popup_area").hide().show();
 	
-	$("bg").on("click",function(){
-		if(func !=null){
-			func.call();
-		}
-		closePopup();
-		});
 	
 	// 시작 날짜 넣기
 	$(".start_date").on("change",function(){
@@ -1073,13 +1073,36 @@ function refPopup(title, func) {
 	
 	$(".ref_table tbody").on("click","td",function(){
 		$("#enroll_date").val($(this).parent().attr("mdt"));
-		var c = $("#enroll_date").val();
-		console.log(c);
-		//$("#menu_form").attr("action","B_Sales_Detail");
-	//	$("#menu_form").submit();
+		
+		$("#menu_form").attr("action","B_Sales_Detail");
+		$("#menu_form").submit();
+	});
+	
+	$(".reset_btn").on("click",function(){
+		$("#startDate").val("");
+		$("#endDate").val("");
+		$("input[name='start_date']").val("");
+		$("input[name='end_date']").val("");
+	});
+	
+	$(".filter_area").on("click",".cnl_btn",function(){
+		rClosePopup();
+	});
+	
+	//페이지 변경	
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		loadRefList();
 	});
 	
 	}	
+	
+function rClosePopup() {
+	$(".bg, .r_popup_area").fadeOut(function(){
+		$(".bg, .r_popup_area").remove();
+	}); //popup_btn end
+ }
+
 	
 function loadRefList(){
 	var params = $("#menu_form").serialize();
