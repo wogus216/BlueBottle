@@ -298,7 +298,6 @@ $(document).ready(function(){
 	
 	
 	
-	
 	$("#writeBtn").on("click", function () {
 		$("#searchTxt").val($("#searchOldTxt").val());
 		//location.href = "Notice_Write";
@@ -386,7 +385,7 @@ function drawPaging(pb) {
 
 
 
-function today() { //오늘날짜 구하기
+function today() { //오늘날짜 
 	
 	  var d = new Date();
 	  return splitdate(d);

@@ -235,26 +235,10 @@ float: right;
  }
 
  .btm_tb{
- position: relative;
-width: 100%;
-  height: 30px;
+ margin-top : 30px;
+ border: 1px solid #ccc;
+ text-align: center;
  }
- .tb2{
-    text-align: center;
-    border: 2px solid #ccc;
-}
- .tb2 > .tbody{
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
- }
- .tb2 > .tr{
-    border-bottom: 1px solid #ccc;
- }
- .tb2 > .th{
- background-color: #000000;
- }
- 
  
  
  
@@ -344,8 +328,11 @@ $(document).ready(function() {
 		$("#goForm").attr("action", "Notice_Update");
 		$("#goForm").submit();
 	});
+	
+	
 	$("#deleteBtn").on("click", function () {
 		if(confirm("삭제하시겠습니까?")){
+			//makePopup("삭제","삭제하시겠습니까?",function(){})
 			var params = $("#goForm").serialize();
 			
 			$.ajax({
@@ -476,6 +463,8 @@ ${data.ATT_UFILE}</a><br/>
 </div>
 
 
+<div class="btm_tb">
+</div>
 
 <div class="btm_btn_area" style = "margin-top : 30px;">
 <input type="button" value="목록" id="listBtn" class="list_btn" />
@@ -485,20 +474,6 @@ ${data.ATT_UFILE}</a><br/>
 	</div>
 </div>
 
-<div class="btm_tb">
-<table class="tb2">
-<tbody>
-<tr>
-<th>&nbsp;윗글</th>
-<td>&nbsp;해당 글이 없습니다.</td>
-</tr>
-<tr>
-<th>&nbsp;아랫글</th>
-<td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-</div>
 
 
 </div>
