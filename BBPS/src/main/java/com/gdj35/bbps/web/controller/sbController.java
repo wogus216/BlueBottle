@@ -982,4 +982,48 @@ public class sbController {
 		
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	//지점 입고 기능(주문한 품목) >> 환불요청 건 제외해서 추가
+	@RequestMapping(value = "/ord_item_stor",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String BOIStor(@RequestParam ArrayList<String> oNo,@RequestParam ArrayList<String> iNo,@RequestParam ArrayList<String> expdate) throws Throwable{
+				
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+			
+			for(int i = 0; i < iNo.size(); i++) {
+				
+				//지점 번호도 추가되어야함 추후 시훈이가 지점 번호 받을 수 있게 처리하면 변경 예정
+				insertMap.put("oNo", oNo.get(0));
+				insertMap.put("iNo", iNo.get(i));
+				insertMap.put("expdate", expdate.get(i));
+				
+				System.out.println("인서트맵이다"+insertMap);
+				
+				int cnt = isbservice.StorBStock(insertMap);
+				
+				int safecnt = isbservice.StorBSafeStock(insertMap); //안전재고가 설정된 품목인지 확인
+				
+				if(safecnt == 0) { //안전재고가 없는 품목이라면 추가처리
+					isbservice.BSafeStock(insertMap);
+				}
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+					}
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
 }

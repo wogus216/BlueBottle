@@ -194,6 +194,21 @@ public class sbService implements IsbService{
 		return isbdao.getBSSellList(params);
 	}
 
+	@Override
+	public int StorBStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.StorBStock(insertMap);
+	}
+
+	@Override
+	public int StorBSafeStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.StorBSafeStock(insertMap);
+	}
+
+	@Override
+	public int BSafeStock(HashMap<String, Object> insertMap) throws Throwable {
+		return isbdao.BSafeStock(insertMap);
+	}
+
 	
 
 }
