@@ -94,6 +94,11 @@ public class sgService implements IsgService {
 	public int deleteB(HashMap<String, String> params) throws Throwable {
 		return isgDao.deleteB(params);
 	}
+
+	@Override
+	public List<HashMap<String, String>> searchDateList() throws Throwable {
+		return isgDao.searchDateList();
+	}
 	
 	
 

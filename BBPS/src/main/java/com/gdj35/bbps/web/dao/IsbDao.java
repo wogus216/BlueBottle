@@ -76,5 +76,13 @@ public interface IsbDao {
 
 	public List<HashMap<String, String>> getBSSellList(HashMap<String, String> params) throws Throwable;
 
+	public int StorBStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int StorBSafeStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int BSafeStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int storbtnupdate(HashMap<String, Object> insertMap) throws Throwable;
+
 
 }

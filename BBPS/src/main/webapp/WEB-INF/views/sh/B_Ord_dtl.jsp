@@ -416,9 +416,11 @@ $(document).ready(function(){
 	});
 	$(".stor_btn").on("click",function(){
 		if(confirm("입고하시겠습니까?")){ //팝업 변경 필요
-		var params = $("#goForm").serialize();
+		var params = $("#sendForm").serialize();
 		
-		$.ajax({
+		console.log($("#sendForm").serialize());
+		
+		 $.ajax({
 			url : "ord_item_stor",
 			type : "post",  
 			dataType :"json",
@@ -436,7 +438,7 @@ $(document).ready(function(){
 			error : function(request,status,error){
 				console.log(error);
 			}
-		});
+		}); 
 		}
 	});
 	$(".ref_btn").on("click",function(){
@@ -635,6 +637,7 @@ function closePopup() {
 </c:choose>
 </ul>
 <form action = "#" id = "sendForm" method = "post">
+<input type = "hidden" id = "oNo" name = "oNo" value = "${data.ORD_NO}"/>
 <table cellspacing="0">
 	<colgroup>
 		<col width="20%">
@@ -664,7 +667,7 @@ function closePopup() {
 		<c:choose>
 			<c:when test="${data1.EXPIRY_DATE eq null}"><td></td></c:when>
 			<c:otherwise>
-				<td>${data1.EXPIRY_DATE}</td>
+				<td>${data1.EXPIRY_DATE}<input type = "hidden" id = "expdate" name = "expdate" value="${data1.EXPIRY_DATE}"/></td>
 			</c:otherwise>
 		</c:choose>
 		</tr>

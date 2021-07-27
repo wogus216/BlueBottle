@@ -181,8 +181,9 @@ var yyyy = today.getFullYear();
 	
 $(document).ready(function(){
 	
-	document.getElementById("stockExpiryDate").valueAsDate = new Date();
+	//document.getElementById("stockExpiryDate").valueAsDate = new Date();
 	document.getElementById("stockExpiryDate").setAttribute("min",today);
+	
 	
 	$(".top_menu").on("click","a",function(){
 		$(".top_menu a").attr("style","color: black");
@@ -226,8 +227,10 @@ $(document).ready(function(){
 		}else{
 			
 		   var params = $("#tb_Form").serialize();
+		   console.log($("#tb_Form").serialize());
 		   
-		   $.ajax({
+		   
+		    $.ajax({
 		      url : "Stock_Adds",//접속주소
 		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
 		      dataType :"json", //받아올 데이터 형식
@@ -246,10 +249,24 @@ $(document).ready(function(){
 		      error : function(request,status,error){
 		         console.log(error);
 		      }
-		   });
+		   }); 
 		}
 	});
 	
+	$(".stockExpiryDate").val(today);
+	
+	 $(document).on("click",".nullcheckbox",function(){
+		if ($(this).is(":checked") == true){
+		
+		$(this).parent().parent().children().eq(3).children().attr("readonly",true);
+		$(this).parent().parent().children().eq(3).children().prop("value",'2999-01-01');
+		
+	}else if($(this).is(":checked") == false){
+		
+		$(this).parent().parent().children().eq(3).children().attr("readonly",false);
+		$(this).parent().parent().children().eq(3).children().prop("value",today);
+		}
+	});
 }); //ready end
 
 function add_tb(){
@@ -279,6 +296,7 @@ function add_tb(){
 	insertTr += "<td>${param.itemName}</td>";
 	insertTr += "<td><input type=\"number\" class = \"stockCnt\" name = \"stockCnt\" min = 1 maxlength=\"10\"></td>";
 	insertTr += "<td><input type=\"date\" class = \"stockExpiryDate\" id = \"stockExpiryDate\" name = \"stockExpiryDate\" min = \""+today1+"\" value = \""+today1+"\" max = \"2999-01-01\"/></td>";
+	insertTr += "<td><input type =\"checkbox\" class = \"nullcheckbox\"/></td>";
 	insertTr += "</tr>";
 	
 	
@@ -325,10 +343,11 @@ function del_tb(){
 <input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 <table cellspacing="0">
 	<colgroup>
-		<col width="25%" />
-		<col width="25%" />
-		<col width="25%" />
-		<col width="25%" />
+		<col width="20%" />
+		<col width="20%" />
+		<col width="20%" />
+		<col width="20%" />
+		<col width="20%" />
 	</colgroup>
 	<thead>
 	<tr >
@@ -336,6 +355,7 @@ function del_tb(){
 		<th scope=col>품목명</th>
 		<th scope=col>추가수량</th>
 		<th scope=col>유통기한</th>
+		<th scope=col>유통기한 없는 경우</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -343,7 +363,8 @@ function del_tb(){
 	<td>${param.itemNo}<input type = "hidden" name = "itemNo" value = "${param.itemNo}"/></td>
 	<td>${param.itemName}</td>
 	<td><input type="number" class = "stockCnt"  name = "stockCnt" min = 1 maxlength="10"></td>
-	<td><input type="date" class = "stockExpiryDate" id = "stockExpiryDate" name = "stockExpiryDate" max = "2999-01-01" /></td>
+	<td><input type="date" class = "stockExpiryDate" id = "stockExpiryDate" name = "stockExpiryDate"/></td>
+	<td><input type ="checkbox" class = "nullcheckbox"/></td>
 	</tr>
 	</tbody>
 </table>

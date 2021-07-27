@@ -259,11 +259,31 @@ $(document).ready(function(){
 	}
 	reloadList();
 	
-	$("#searchBtn").on("click",function(){
+	if("${param.cate}" != ""){
+		$(".cate").val("${param.cate}");
+	}
+	
+	reloadList();
+	
+
+	
+	$(".cate").on("change", function () {
+		$("#cate").val($(".cate").val());
+		console.log("카테고리번호"+$("#cate").val());
+		reloadList();
+		
+	});
+	
+	
+	$("#search_btn").on("click",function(){
+		$("#cate").val($(".cate").val());
+		$("#start_date").val($(".start_date").val());
+		$("#end_date").val($(".end_date").val());
 		$("#page").val(1);
 		$("#searchOldTxt").val($("#searchTxt").val());
 		reloadList();
 	});
+	
 	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
@@ -271,6 +291,13 @@ $(document).ready(function(){
 		$("#searchTxt").val($("#searchOldTxt").val());
 		reloadList();
 	});
+	
+	$(".start_date").val(lastWeek());
+	$(".end_date").val(today());
+	
+	
+	
+	
 	
 	$("#writeBtn").on("click", function () {
 		$("#searchTxt").val($("#searchOldTxt").val());
@@ -310,7 +337,7 @@ function drawList(list) {
 	var html = "";
 	
 	for(var d of list){
-		html += "<tr nno=\"" + d.TXT_NO + "\">";
+		html += "<tr nno=\"" + d.TXT_NO + "\" cate=\"" + d.CATE_NO + "\">";
 		html += "<td>" + d.TXT_NO+ "</td>";
 		html += "<td>" + d.TITLE + "</td>";
 		html += "<td>" + d.S_DT + "</td>";
@@ -356,6 +383,38 @@ function drawPaging(pb) {
 }
 
 
+
+
+
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
+
+function lastWeek() { //일주일전 날짜 구하기
+	  var d = new Date();
+	  var dayOfMonth = d.getDate();
+	  d.setDate(dayOfMonth - 7);
+	  return splitdate(d);
+}
+
+function splitdate(resdate){
+	
+	var dd = resdate.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm = resdate.getMonth()+1;
+	var yyyy = resdate.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+		
+	return yyyy+"-"+mm+"-"+dd;
+}
+
+
 </script>
 </head>
 <body>
@@ -368,24 +427,24 @@ function drawPaging(pb) {
 <div class="content_area">
 <div class="content">
 <h1>공지사항</h1>
+
+<form action="#" id="searchForm" method="post">	
 <div class="input_btn_area">
 <input type="button" value="작성" id="writeBtn" class="input_btn"/>
 </div>
-	
 	<div class="filter_area">
 			<select class="cate">
-				<option value="0" selected="selected">전체</option>
-				<option value="1">이벤트</option>
-				<option value="2">주문관련</option>
-				<option value="3">재고관련</option>
-				<option value="4">시스템</option>
-				<option value="4">기타</option>
+				<option value="" selected="selected">-</option>
+				<c:forEach items="${catelist}" var = "d">
+                   <option value="${d.CATE_NO}">
+                   <c:out value="${d.CATE_NAME}"/>
+                   </option>
+                  </c:forEach>
 			</select>
-			<input type = "date" value="2021-01-01" class="start_date" />
-			<input type = "date" value="2021-01-01" class="end_date"/>
-			<input type="button" value="검색" id="Date_searchBtn" class="search_btn"/>
+			<input type = "date" name="start_date" id="start_date" class="start_date" />
+			<input type = "date" name="end_date" id="end_date" class="end_date"/>
 		</div>
-		
+</form>		
 <div class="list_wrap">
 <table>
 	<colgroup>
@@ -416,9 +475,13 @@ function drawPaging(pb) {
 				<option value="2">내용</option>
 				<option value="3">작성자</option>
 			</select>
-			<input type="hidden" id="searchOldTxt" value="${param.searchTxt}"/>
+			<input type="hidden" id="searchOldTxt" name="searchOldTxt" value="${param.searchTxt}"/>
+			<input type = "hidden" id = "cate" name = "cate"/>
+			<input type = "hidden" id = "start_date" name = "start_date"/>
+			<input type = "hidden" id = "end_date" name = "end_date"/>
+			
 			<input type="text" class="search_input" name="searchTxt" id="searchTxt" value="${param.searchTxt}">
-			<input type="button" value="검색" id="searchBtn" class="search_btn"/>
+			<input type="button" value="검색" id="search_btn" class="search_btn"/>
 </div>
 </form>
 <div class="paging_wrap">

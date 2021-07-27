@@ -130,6 +130,7 @@
                                                                                                                                        FROM ORD O INNER JOIN ORD_ITEM OI
                                                                                                                                                    ON O.ORD_NO = OI.ORD_NO
                                                                                                                                                    AND OI.ITEM_NO = #{itemNo}
+                                                                                                                                                   AND O.STAT_CODE IN (4,5,6,7,8)
                                                                                                                                       GROUP BY OI.ITEM_NO, OI.EXPIRY_DATE) S
                                                                                   
                                                                             ON P.EXPIRY_DATE = S.EXPIRY_DATE) A INNER JOIN ITEM I
@@ -140,7 +141,7 @@
 	
 	<!-- 재고상세 / 출고재고 리스트 -->
 	<select id = "getSRelList" parameterType="hashmap" resultType="hashmap">
-	SELECT O.ORD_NO, I.ITEM_NO, I.ITEM_NAME, OI.CNT,TO_CHAR(NVL(OI.EXPIRY_DATE,'2999-01-01'),'YYYY-MM-DD') AS EXPIRY_DATE,TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ORD_ENROLL_DATE,B.BRCH_NAME
+	SELECT O.ORD_NO, I.ITEM_NO, I.ITEM_NAME, OI.CNT,TO_CHAR(OI.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ORD_ENROLL_DATE,B.BRCH_NAME
    	FROM ORD O INNER JOIN ORD_ITEM OI
                 ON O.ORD_NO = OI.ORD_NO
                 AND OI.ITEM_NO = #{itemNo}
@@ -741,4 +742,39 @@
 	                  AND TO_CHAR(BS.EXPIRY_DATE,'YYYY-MM-DD') = #{expDate}
 	</select>
 	
+	<!-- 지점 입고 처리 -->
+	<insert id="StorBStock" parameterType="hashmap">
+	INSERT INTO BRCH_STOR(STOR_NO,ORD_NO,ITEM_NO,CNT,EXPIRY_DATE,ENROLL_DATE)
+	SELECT BRCH_STOR_SEQ.NEXTVAL,#{oNo},#{iNo},(A.CNT - NVL(B.CNT,0)) AS CNT,#{expdate},SYSDATE
+	FROM
+	(SELECT O.ORD_NO, OI.ITEM_NO,OI.CNT
+	FROM ORD O INNER JOIN ORD_ITEM OI
+	ON O.ORD_NO = OI.ORD_NO
+	AND O.ORD_NO = #{oNo}
+	AND ITEM_NO = #{iNo}) A LEFT OUTER JOIN (SELECT R.ORD_NO, RI.ITEM_NO,RI.CNT
+	                                                FROM REF R INNER JOIN REF_ITEM RI
+	                                                ON R.REF_NO = RI.REF_NO
+	                                                AND R.ORD_NO = #{oNo}
+	                                                AND ITEM_NO = #{iNo}) B
+	                               ON A.ITEM_NO = B.ITEM_NO 
+	</insert>
+	
+	<!-- 지점 입고 시 안전재고 수량이 있는 상품인지 체크 --><!-- 지점번호 불러오는 것은 추후 처리 -->
+	<select id="StorBSafeStock" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*)
+	FROM ITEM_SAFE_STOCK
+	WHERE BRCH_NO = 2
+	AND ITEM_NO = #{iNo}
+	</select>
+	
+	<!-- 안전재고 수량이 없는 품목이라면 안전재고 1로 인서트 --><!-- 지점번호 불러오는 것은 추후 처리 -->
+	<insert id="BSafeStock" parameterType="hashmap">
+	INSERT INTO ITEM_SAFE_STOCK VALUES (2,#{iNo},1)   
+	</insert>
+	
+	<!-- 지점 입고 처리 완료 시 입고 버튼 사라지도록 입고 플래그 변경 -->
+	<update id = "storbtnupdate" parameterType="hashmap" >
+	UPDATE ORD SET STOR_FLAG = 0
+	WHERE ORD_NO = #{oNo}
+	</update>
 </mapper> 
