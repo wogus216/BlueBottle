@@ -13,6 +13,7 @@
 	카테고리 버튼 파란색 : #1bc1fe
 	글씨 색깔: white,black
 	브라운 : #cc6600,#e67300
+	빨간 색 : #bf4040;
 */
 
 body {
@@ -120,7 +121,7 @@ body {
 	font-size: 20px;
     width: 75px;
     height: 60px;
-    background-color: #f2f2f2;
+    background-color: #b3b3b3;
     color: black;
     line-height: 20px;
 }
@@ -130,7 +131,7 @@ body {
 	font-size: 20px;
 	height: 208.4px;
 }
-.cash_pay,.card_pay,.ref{
+.cash_pay,.card_pay,.ref_btn{
 	height: 78px;
     font-size: 25px;
     font-weight: bold;
@@ -262,6 +263,8 @@ body {
 	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
+
+
 .popup_head{
 	height: 30px;
 	font-size: 16pt;
@@ -318,6 +321,148 @@ input[type='button']:focus{outline:none;}
 	font-size: 30px;
 	cursor: pointer;
 }
+
+/* Pos메뉴 게시판 */
+
+.ref_table {
+    width: 700px;
+    table-layout: fixed;
+    background: #ffffff;
+	margin: 0 auto;
+	border-top: 2px solid #01a1dd;
+	border-bottom: 2px solid #d9d9d9;
+	text-align: center;
+}
+
+
+.ref_table tr{
+    display: table-row;
+}
+.ref_table  th{
+	background: #e8e8e8;
+    padding: 10px;
+    border-bottom: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    font-size: 15px;
+}
+.ref_table  td{
+	font-size:15px;
+	padding:10px;
+	border-top: 1px solid #eaeaea;
+	border-left: 1px solid #eaeaea;
+	cursor: pointer;
+}
+
+.ref_table > td:first-child{
+	border-left: none;
+}
+.ref_table > input{
+	width:200px;
+	height:40px;
+
+}
+
+.filter_area{
+	text-align: right;
+	margin-bottom: 20px;
+}
+.add_btn{
+	height: 40px;
+    padding: 0;
+    vertical-align: bottom;
+}
+
+
+label{
+	vertical-align: middle;
+}
+.search_btn, .cnl_btn{
+	height: 30px;
+	margin: 0 ;
+	padding: 0;
+	vertical-align: bottom;
+}
+
+.cnl_btn{
+	background-color: #bf4040; 
+}
+select{
+	font-size: 13px;	
+	height: 40px;
+	width : 100px;
+}
+/* 환불 팝업 */
+
+.r_popup_area {
+	display: inline-block;
+	width: 800px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(40% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(40% - 120px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+	background-color: #f2f2f2;
+	
+}
+.filter_area span{
+	font-size: 15px;
+	margin: 5PX 10px;
+}
+
+.reset_btn{
+	background-color: #b2b2b2;
+	height: 30px;
+}
+/* 일반버튼 */
+button{
+	color: white;
+	width: 100px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	outline:none;
+	background-color: #01a1dd;
+}
+/* 검색 과 페이지 */
+
+.page_Area, .page_btn{
+	text-align: center;
+}
+
+.page_btn button{
+	color: black;
+	width: 40px;
+	height: 40px;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:40px 3px;
+	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+}
+
+.page_btn button:hover{
+	color: #01a1dd;
+}
+
+.page_btn button:focus{
+	outline:none;
+}
+
+#search_Filter{
+	width : 120px;
+	vertical-align: middle;
+}
+
+.search_input{
+	height: 34px;
+	vertical-align: middle;
+	width : 280px;
+	outline:none;
+}
 </style>
 
 <script type="text/javascript"
@@ -357,7 +502,7 @@ $(document).ready(function(){
 	
 	//현재주문 상황에 넣기
 	var nowCnt = 0; //품목주문개수
-	var ordMno =0;
+	
 	var arrMno = new Array();  //품목주문배열
  
 	
@@ -365,20 +510,18 @@ $(document).ready(function(){
 		
 		if(nowCnt < 7){
 			
-				if($(".ord_stat[mno='" + $(this).attr("mno") + "']").length == 0){
 				// 주문한게 없는 경우
+				if($(".ord_stat[mno='" + $(this).attr("mno") + "']").length == 0){
 					nowCnt++;
 					$("#mNo").val($(this).attr("mno"));
 					reloadOrd();
 				
-				} else{
 					//주문한게 있는 경우
+				} else{
 					ordPopup("", "이미주문했습니다.",function(){});
 					}
-		}
-		else{
-			ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
-			
+		} else{
+				ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
 		} 
 	
 	}); 	
@@ -469,7 +612,7 @@ $(document).ready(function(){
 		$("body").on("click",".cash_pay, .card_pay",function(){
 			$(".table_num").show();
 			$(".menu_cate").css("margin-bottom", "100px");
-			
+	
 			if($(this).val() == "현금결제"){
 				//현금 1번
 				$("#methodNo").attr("value", 1);
@@ -513,31 +656,33 @@ $(document).ready(function(){
 		$(".table_num").hide();
 		$(".menu_cate").css("margin-bottom", "20px");
 		
-		var noCnt = 0; //품목명 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
-		
 		//거스름 돈
 		changeMoney = ordResPay - (recMoney * 1); 
-		
-		
+		ordPay();
 		//주문 품목 전달
-	
 		if($(".recNum").val() == ""){
 			
 			ordPopup("", "받은금액을 먼저 입력해주세요.",function(){});
 			$(".rec_money").focus();
-		} 
-		else{
+			
+			//품목 없을 때
+		} else if($(".ord_stat").length <= 0){
+			ordPopup("", "주문 품목을 먼저 입력해주세요.",function(){});
+			
+		} else{
 			//주문 금액 넣기
 			if(recMoney >= ordResPay ){
-				
+				//주문금액 넣기
 				inputOrdMoney();
 					
 				//주문 메뉴 넣기
 				inputOrdMenu();
+				
 			// 총주문개수, 결제금액 초기화
 				ordResPay = 0;
 				ordResCnt = 0;
 				recMoney = 0;
+				
 				ordPopup("", "결제완료되었습니다.",function(){});
 				location.reload();
 			}else{
@@ -572,6 +717,12 @@ $(document).ready(function(){
 	$(".finish_btn").on("click",function(){
 		location.href = "B_Stock_Edit";
 	});
+	
+	//환불
+	$(".ref_btn").on("click",function(){
+		refPopup();
+		loadRefList();
+	}); 
 	
 });//ready end
 
@@ -722,7 +873,7 @@ function ordRes(){
 //결제
 function ordPay(){
 	var pay ="";
-	//recMoney = recMoney * 1; //금액 처리를 위해서
+	
 	//"+ +"
 	pay+= "<tr class=\"pay_info\">";
 	pay+= "	 <td class=\"rec_money\">"+ recMoney * 1 +"원</td>";
@@ -743,7 +894,7 @@ function ordPay(){
 	pay+= "		<input type=\"button\" value=\"카드결제\" class=\"card_pay\" />";
 	pay+= "	</td>";
 	pay+= "	<td>";
-	pay+= "		<input type=\"button\" value=\"환불\" class=\"ref\" />";
+	pay+= "		<input type=\"button\" value=\"환불\" class=\"ref_btn\" />";
 	pay+= "	</td>";
 	pay+= "</tr>";
 	
@@ -867,12 +1018,161 @@ function ordPopup(title, contents, func) {
 
 	}
 	
-function closePopup() {
-	$(".bg, .popup_area").fadeOut(function(){
-		$(".bg, .popup_area").remove();
+	
+function refPopup(title, func) {
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"r_popup_area\">";
+	html+= "	<div class=\"filter_area\"> ";
+	html+= 			"<button class=\"reset_btn\" style=\"margin:5px 0px 0px 10px;\">초기화</button>";
+	html+= 			"<span>시작일</span>";
+	html+= 				"<input type=\"date\" class=\"start_date\" name=\"start_date\" /> ";
+	html+= 			"<span>종료일</span>";
+	html+= 				"<input type=\"date\" class=\"end_date\" name=\"end_date\" /> ";
+	html+= 			"<button class=\"search_btn\" style=\"margin:5px 0px 0px 10px;\">검색</button>";
+	html+= 			"<button class=\"cnl_btn\" style=\"margin:5px 5px 0px 10px;\">취소</button>";
+	html+= 		"</div>	";
+	html+="		<div class=\"ref_area\">";
+	html+="			<table class=\"ref_table\" cellspacing=\"0\">";
+	html+="			 	<colgroup>";
+	html+="					<col width=\"20%\">";
+	html+="					<col width=\"10%\">";
+	html+="				</colgroup>";
+	html+="			<thead>";
+	html+="				<tr>";
+	html+="					<th scope=\"col\" style=\"border-left: none;\">날짜</th>";
+	html+="					<th scope=\"col\">사용자</th>";
+	html+="				</tr>";
+	html+="			</thead>";
+	html+="			<tbody>";
+	html+="			</tbody>";
+	html+="			</table>";
+	html+="		<div class=\"page_Area\">";
+	html+="			<div class=\"page_btn\"></div>";
+	html+="		</div>";
+	html+="		</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	
+	// 시작 날짜 넣기
+	$(".start_date").on("change",function(){
+		$("#startDate").val($(".start_date").val());
+	});
+	// 종료 날짜 넣기
+	$(".end_date").on("change",function(){
+		$("#endDate").val($(".end_date").val());
+	});
+	
+	$(".search_btn").on("click",function(){
+		loadRefList();
+	});
+	
+	$(".ref_table tbody").on("click","td",function(){
+		$("#enroll_date").val($(this).parent().attr("mdt"));
+		
+		$("#menu_form").attr("action","B_Sales_Detail");
+		$("#menu_form").submit();
+	});
+	
+	$(".reset_btn").on("click",function(){
+		$("#startDate").val("");
+		$("#endDate").val("");
+		$("input[name='start_date']").val("");
+		$("input[name='end_date']").val("");
+	});
+	
+	$(".filter_area").on("click",".cnl_btn",function(){
+		rClosePopup();
+	});
+	
+	//페이지 변경	
+	$(".page_btn").on("click","button",function(){
+		$("#page").val($(this).attr("page"));
+		loadRefList();
+	});
+	
+	}	
+	
+function rClosePopup() {
+	$(".bg, .r_popup_area").fadeOut(function(){
+		$(".bg, .r_popup_area").remove();
 	}); //popup_btn end
+ }
+
+	
+function loadRefList(){
+	var params = $("#menu_form").serialize();
+	console.log(params);
+	$.ajax({
+		url: "ref_Lists",
+		type: "post", 
+		dataType: "json",
+		data : params, 
+		success : function(res) {
+			
+			console.log(res);
+			drawList(res.list);
+			drawPaging(res.pb);
+			
+		},
+		error: function(request, status, error){ 
+			console.log(error);
+		}
+	});
+}
+	
+function drawList(list){
+	var date = "";
+	
+	//" +  + " : 문자열 넣는 꿀팁
+	for(var m of list){
+		
+		date+="<tr mDT=" + m.SDATE + ">";
+		date+="		<td>" +m.SDATE + "</td>";
+		date+="		<td>" + m.BNM + "</td>";
+		date+="</tr>";
+	}
+	
+	$(".ref_table tbody").html(date);
 }
 
+function drawPaging(pb){
+	var html = "";
+//	" + + "
+	//처음
+	html+= "<button  page=\"1\" style=\"background-color: white\"><<</button>";
+	
+	//이전페이지
+	if($("#page").val() =="1"){
+		html+= "<button page=\"1\" style=\"background-color: white\"><</button>";
+	} else{
+		html+= "<button page=\"" + ($("#page").val() -1) + "\" style=\"background-color: white\"><</button>";
+	}
+	
+	//처음페이지
+	for(var i = pb.startPcount; i<= pb.endPcount; i++){
+		if($("#page").val() == i ){
+			html+= "<button page=\"" + i + "\" style=\"background-color: white\"><b>" + i + "</b></button>";
+		}else{
+			html+= "<button page=\"" + i + "\" style=\"background-color: white\">" + i + "</button>";
+		}		
+	}
+	//다음페이지
+	if($("#page").val() == pb.maxPcount){
+		html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">></button>";
+	}else{
+		html+= "<button  page=\"" + ($("#page").val() * 1 + 1) + "\" style=\"background-color: white\">></button>";
+		
+	}
+	html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">>></button>";
+
+	$(".page_btn").html(html)
+}
+	
 </script>
 </head>
 <body>
@@ -884,14 +1184,18 @@ function closePopup() {
 		<input type="button" value="종료" class="pos_off_btn"/>
 		<input type="button" value="마감" class="finish_btn"/>
 	</div>
-		<div class=content>
+<div class=content>
 <!-- 메뉴  폼 -->
 	<form action="#" id="menu_form" method="post">
 	<input type="hidden" id="oMNo" name="oMNo"/>
 	<input type="hidden" id="mNo" name="mNo"/>
 	<input type="hidden" id="methodNo" name="methodNo"/>
+	<input type="hidden" id="startDate" name="startDate"/>
+	<input type="hidden" id="endDate" name="endDate"/>
+	<input type="hidden" id="enroll_date" name="enroll_date"/>
 	<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 	<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/> 
+			<input type="hidden" id="page" name="page" value="1"/>
 			<div class="left">
 					<div class="ord_area"></div>
 					<table class="table_pay" border="2" cellspacing="0">
@@ -961,6 +1265,7 @@ function closePopup() {
 			
 				<div class="menu_area"></div>
 			</div>
+
 		</form>
 		</div>
 </body>

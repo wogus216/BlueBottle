@@ -246,6 +246,76 @@ width: 100%;
 }
  
  
+ 
+ 
+ /* 팝업메시지 */
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn input[type='button']{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black; 
+}
+
+input[type='button']:focus{outline:none;}
+
+.popup_head > .close_btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
  </style>
  
  
@@ -257,21 +327,6 @@ src= "resources/script/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" 
 		src="resources/script/jquery/jquery.form.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
-}); //ready end
-
 
 $(document).ready(function () {
 	CKEDITOR.replace("nCon", {
@@ -317,11 +372,11 @@ $(document).ready(function () {
 				$("#nCon").val(CKEDITOR.instances['nCon'].getData());
 				
 				if ($.trim($("#nTitle").val()) == ""){
-					alert("제목을 입력해 주세요.");
+					makePopup("제목","제목을 입력해주세요.",function(){});
 					$("#nTitle").focus();
 					return false;
 				} else if ($.trim($("#nCon").val()) == ""){
-					alert("내용을 입력해 주세요.");
+					makePopup("내용","내용을 입력해주세요.",function(){});
 					$("#nCon").focus();
 					return false;
 				}
@@ -346,9 +401,9 @@ $(document).ready(function () {
 								$("#updateForm").attr("action", "Notice_Detail");
 								$("#updateForm").submit(); 
 							} else if(res.msg == "failed") {
-								alert("수정에 실패하였습니다.")
+								makePopup("","수정에 실패하였습니다.",function(){});
 							} else {
-								alert("수정중 문제가 발생하였습니다.");
+								makePopup("","수정 중 문제가 발생하였습니다.",function(){});
 							}
 						},
 						error : function (request, status, error) { //실패 시 다음함수 실행
@@ -357,11 +412,11 @@ $(document).ready(function () {
 					});
 					
 				} else {
-					alert("파일업로드 중 문제 발생")
+					makePopup("","파일 업로드 중 문제 발생",function(){});
 				}
 			},
 			error : function () {
-				alert("파일업로드 중 문제 발생")
+				makePopup("","파일 업로드 중 문제 발생",function(){});
 			}
 		}); //ajaxForm end
 		
@@ -370,6 +425,52 @@ $(document).ready(function () {
 	}); //updateBtn end
 	
 });//document ready end
+
+
+/* 팝업 */
+function makePopup(title, contents, func) {
+	
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\" class=\"close_btn\" style=\"background-color: rgb(190, 190, 190)\">";	
+	html+= 	 	"</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".popup_btn .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+			closePopup();
+		});
+	
+	$(".popup_head .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+			closePopup();
+	
+	});
+
+	$(".confirm_btn").on("click",function(){
+		closePopup();
+		});
+	}
+
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_btn end
+}	
 </script>
 
 </head>

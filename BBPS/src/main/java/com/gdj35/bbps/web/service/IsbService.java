@@ -74,5 +74,5 @@ public interface IsbService {
 
 	public List<HashMap<String, String>> getCateList() throws Throwable;
 
-	public List<HashMap<String, String>> getBSSellList() throws Throwable;
+	public List<HashMap<String, String>> getBSSellList(HashMap<String, String> params) throws Throwable;
 }

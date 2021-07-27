@@ -89,4 +89,46 @@ public class jhService implements IjhService {
 		return ijhDao.getOrdNum();
 	}
 
+	@Override
+	public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getHUser(params);
+	}
+
+	@Override
+	public int editHU(HashMap<String, String> params) throws Throwable {
+		return ijhDao.editHU(params);
+	}
+
+	@Override
+	public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getHPw(params);
+	}
+
+	@Override
+	public HashMap<String, String> getBUser(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getBUser(params);
+	}
+
+	@Override
+	public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getBPw(params);
+	}
+
+	@Override
+	public int editBU(HashMap<String, String> params) throws Throwable {
+		return ijhDao.editBU(params);
+	}
+
+	@Override
+	public int getRCnt(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getRCnt(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRList(HashMap<String, String> params) throws Throwable {
+		return ijhDao.getRList(params);
+	}
+
+
+
 }

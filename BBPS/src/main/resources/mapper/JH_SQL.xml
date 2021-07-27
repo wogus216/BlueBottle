@@ -217,4 +217,104 @@
 		FROM DUAL
 	</select>
 	
+	<!-- 본사 마이페이지 -->
+	<select id="getHUser" parameterType="hashmap" resultType="hashmap">
+		SELECT HU.USER_NO AS UNO,HD.DEP_NAME AS DNM, ID, HU.PW, USER_NAME AS UNM, HU.PHONE_NUM AS PNUM, HU.ENROLL_DATE AS ENROLL
+		FROM HQ_USER HU INNER JOIN HQ_DEP HD
+                     			ON HU.DEP_NO = HD.DEP_NO
+		WHERE USER_NO = #{uNo}
+	</select>
+	
+	<!-- 비밀번호 체크 -->
+	<select id="getHPw" parameterType="hashmap" resultType="hashmap">
+		SELECT USER_NO,AUTH_NO,DEP_NO,ID,PW
+		FROM HQ_USER
+		WHERE USER_NO = ${sUSERNo}
+		AND PW = #{hPw}
+	</select>
+	
+	<!-- 본사마이페이지 수정 -->
+	<update id="editHU" parameterType="hashmap">
+		UPDATE HQ_USER SET PW = #{mPw}, USER_NAME = #{mNm}, PHONE_NUM = #{mPNum}
+		WHERE USER_NO = #{uNo}
+	</update>
+	
+	<!-- 지점 마이페이지 -->
+	<select id="getBUser" parameterType="hashmap" resultType="hashmap">
+		SELECT BRCH_NO AS BNO, ID, PW, BRCH_NAME AS BNM, POST_NUM AS PNUM, DFT_ADDRESS AS DFADDR, DTL_ADDRESS AS DTADDR, CALL_NUM AS CNUM, MGR_NAME AS MNM, MGR_PHONE_NUM AS MGPNUM
+		FROM BRCH
+		WHERE BRCH_NO = #{brchNo}
+	</select>
+	
+	<!-- 비밀번호 체크 -->
+	<select id="getBPw" parameterType="hashmap" resultType="hashmap">
+		SELECT BRCH_NO AS BNO, ID, BRCH_NAME AS BNM,PW
+		FROM BRCH
+		WHERE BRCH_NO = #{brchNo}
+		AND PW = #{bPw}
+	</select>
+	
+	<!-- 지점마이페이지 수정 -->
+	<update id="editBU" parameterType="hashmap">
+		UPDATE BRCH SET PW = #{bPw}, POST_NUM = #{pNum}, DFT_ADDRESS = #{bAddr}, DTL_ADDRESS = #{dtlAddr}, CALL_NUM = #{brchCNum},
+                        MGR_NAME = #{mNm}, MGR_PHONE_NUM = #{mPNum}
+		WHERE BRCH_NO = #{brchNo}
+	</update>
+	
+		<!-- 포스 환불 리스트 수  -->
+	<select id="getRCnt" parameterType="hashmap" resultType="Integer">
+	SELECT COUNT(*) AS CNT
+	FROM (SELECT S2.SDATE,B.BRCH_NAME AS BNM,BS.ENROLL_DATE,
+               ROW_NUMBER() OVER(ORDER BY S2.SDATE DESC) AS RNUM
+    	  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YY/MM/DD') AS SDATE,COUNT(TO_DATE(S.ENROLL_DATE,'YY/MM/DD')) AS SALES_CNT,S.BRCH_NO
+        	    FROM SALES  S   
+            	WHERE S.CNL_DATE IS NULL
+            	GROUP BY TO_CHAR(S.ENROLL_DATE,'YY/MM/DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
+                                                                              ON S2.BRCH_NO = B.BRCH_NO
+                                                                              AND B.BRCH_NO = #{brchNo}
+                                                                      INNER JOIN BRCH_STOR BS
+                                                                              ON S2.BRCH_NO = BS.STOR_NO
+ 		
+ 		<choose>
+				<when test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
+				</when>
+				<when test="startDate != null and startDate != ''">
+			  	 	 WHERE S2.SDATE &gt;= TO_DATE(#{startDate}, 'YY/MM/DD')
+				</when>
+				<when test="endDate != null and endDate != ''">
+			  	 	 WHERE S2.SDATE  &lt;= TO_DATE(#{endDate},'YY/MM/DD') 
+				</when>
+		</choose>
+	     	) R
+		ORDER BY R.RNUM ASC
+	</select>
+	<!-- 포스 환불 리스트   -->
+	<select id="getRList" parameterType="hashmap" resultType="hashmap">
+		SELECT R.SDATE, R.BNM
+		FROM (SELECT S2.SDATE,B.BRCH_NAME AS BNM,BS.ENROLL_DATE,
+               ROW_NUMBER() OVER(ORDER BY S2.SDATE DESC) AS RNUM
+     		  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YY/MM/DD') AS SDATE,COUNT(TO_DATE(S.ENROLL_DATE,'YY/MM/DD')) AS SALES_CNT,S.BRCH_NO
+            	    FROM SALES  S   
+            	    WHERE S.CNL_DATE IS NULL
+              GROUP BY TO_CHAR(S.ENROLL_DATE,'YY/MM/DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
+                                                                              ON S2.BRCH_NO = B.BRCH_NO
+                                                                              AND B.BRCH_NO = #{brchNo}
+                                                                      INNER JOIN BRCH_STOR BS
+                                                                              ON S2.BRCH_NO = BS.STOR_NO
+ 		<choose>
+				<when test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
+				</when>
+				<when test="startDate != null and startDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(SYSDATE, 'YY/MM/DD') 
+				</when>
+				<when test="endDate != null and endDate != ''">
+			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(BS.ENROLL_DATE, 'YY/MM/DD') AND TO_DATE(#{endDate}, 'YY/MM/DD') 
+				</when>
+		</choose>
+	   	) R
+	   	WHERE R.RNUM BETWEEN #{startCnt} AND #{endCnt}
+		ORDER BY R.RNUM ASC
+	</select>
 </mapper> 

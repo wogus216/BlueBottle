@@ -35,5 +35,23 @@ public int addSales(HashMap<String, String> params) throws Throwable;
 
 public HashMap<String, String> getOrdNum() throws Throwable;
 
+public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable;
+
+public int editHU(HashMap<String, String> params) throws Throwable;
+
+public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable;
+
+public HashMap<String, String> getBUser(HashMap<String, String> params) throws Throwable;
+
+public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable;
+
+public int editBU(HashMap<String, String> params) throws Throwable;
+
+public int getRCnt(HashMap<String, String> params) throws Throwable;
+
+public List<HashMap<String, String>> getRList(HashMap<String, String> params) throws Throwable;
+
+
+
 
 }

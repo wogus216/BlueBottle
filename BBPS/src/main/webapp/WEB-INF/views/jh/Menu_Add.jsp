@@ -206,8 +206,7 @@ $(document).ready(function(){
 	
 	//파일 추가 
 		$("#file_btn").on("click",function(){
-		$("#att").click();
-
+			$("#att").click();
 		});
 
 	

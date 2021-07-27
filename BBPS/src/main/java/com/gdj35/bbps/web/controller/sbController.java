@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdj35.bbps.common.bean.PagingBean;
 import com.gdj35.bbps.common.service.IPagingService;
 import com.gdj35.bbps.web.service.IsbService;
+import com.mysql.jdbc.interceptors.SessionAssociationInterceptor;
 
 @Controller
 public class sbController {
@@ -113,7 +116,7 @@ public class sbController {
 	//품목추가 (기능)
 	@RequestMapping(value = "/Item_Adds",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HPAdds(@RequestParam ArrayList<String> itemCate,@RequestParam ArrayList<String> itemName,@RequestParam ArrayList<String> itemPrice,@RequestParam ArrayList<String> itemMinOrdUnit,@RequestParam ArrayList<String> itemComProdFlag) throws Throwable{
+	public String HPAdds(@RequestParam ArrayList<String> userNo,@RequestParam ArrayList<String> itemCate,@RequestParam ArrayList<String> itemName,@RequestParam ArrayList<String> itemPrice,@RequestParam ArrayList<String> itemMinOrdUnit,@RequestParam ArrayList<String> itemComProdFlag) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -123,7 +126,9 @@ public class sbController {
 		try {
 			
 			for(int i = 0; i < itemName.size(); i++) {
+				
 				insertMap.put("itemCate", itemCate.get(i));
+				insertMap.put("userNo", userNo.get(0));
 				insertMap.put("itemName", itemName.get(i));
 				insertMap.put("itemPrice", itemPrice.get(i));
 				insertMap.put("itemMinOrdUnit", itemMinOrdUnit.get(i));
@@ -344,7 +349,7 @@ public class sbController {
 	//본사재고추가(기능)
 	@RequestMapping(value = "/Stock_Adds", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSAdds(@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> stockCnt,@RequestParam ArrayList<String> stockExpiryDate) throws Throwable{
+	public String HSAdds(@RequestParam ArrayList<String> userNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> stockCnt,@RequestParam ArrayList<String> stockExpiryDate) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -356,6 +361,7 @@ public class sbController {
 			
 			for(int i = 0; i < itemNo.size(); i++) {
 				
+				insertMap.put("userNo", userNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("stockCnt", stockCnt.get(i));
 				insertMap.put("stockExpiryDate", stockExpiryDate.get(i));
@@ -382,7 +388,7 @@ public class sbController {
 	//본사 재고 폐기
 	@RequestMapping(value = "/Stock_Discards", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSDiscards(@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
+	public String HSDiscards(@RequestParam ArrayList<String> userNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -397,6 +403,7 @@ public class sbController {
 					
 				}else {
 				
+				insertMap.put("userNo", userNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("discardCnt", discardCnt.get(i));
 				insertMap.put("discardNote", discardNote.get(i));
@@ -517,7 +524,7 @@ public class sbController {
 		Map<String,Object> modelMap = new HashMap<String,Object>();
 				
 		int page = Integer.parseInt(params.get("page"));
-				
+		
 		//게시글 수 가져오겠다
 		int cnt  = isbservice.getBSLCnt(params);
 				
@@ -550,11 +557,13 @@ public class sbController {
 	//지점 재고상세 내 유통기한 별 재고리스트
 	@RequestMapping(value = "/B_Stock_ExpList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BStockExpList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BStockExpList(HttpSession session,@RequestParam HashMap<String,String> params) throws Throwable{
 						
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
-				
+		
+		System.out.println("누가 로그인 했냐" + session.getAttribute("sBRCHNo"));
+		
 		List<HashMap<String,String>> stocklist = isbservice.getBStockExpList(params); // 유통기한 별 재고 상세
 				
 		int result = stocklist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
@@ -643,7 +652,7 @@ public class sbController {
 	//지점 재고 폐기
 	@RequestMapping(value = "/B_Stock_Discards", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSDiscards (@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
+	public String BSDiscards (@RequestParam ArrayList<String> brchNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -658,6 +667,7 @@ public class sbController {
 					
 				}else {
 				
+				insertMap.put("brchNo", brchNo.get(0)); //지점번호는 어떻든 같을테니 처음받은 값만 넣어줌 (어차피 값 1개만 받음)
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("discardCnt", discardCnt.get(i));
 				insertMap.put("discardNote", discardNote.get(i));
@@ -745,7 +755,7 @@ public class sbController {
 	//지점 재고 수정 기능
 	@RequestMapping(value = "/B_Stock_edit",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSEdit(@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> editcurCnt,@RequestParam ArrayList<String> chkcurCnt,@RequestParam ArrayList<String> expDate) throws Throwable{
+	public String BSEdit(@RequestParam ArrayList<String> brchNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> editcurCnt,@RequestParam ArrayList<String> chkcurCnt,@RequestParam ArrayList<String> expDate) throws Throwable{
 				//editcurCnt : 수정원하는 재고 수 	chkcurCnt : 수정 전 재고 수 (두 값의 차이를 보고 변동이 있는 항목만 쿼리가 진행되도록처리)
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -760,6 +770,7 @@ public class sbController {
 					//수정전 재고 수와 변경원하는 재고 수가 동일한 경우 아무 작업도 진행하지 않음
 				}else {
 				
+				insertMap.put("brchNo", brchNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("editcurCnt", editcurCnt.get(i));
 				insertMap.put("chkcurCnt", chkcurCnt.get(i)); //재고 수 받을 때 수정 전 재고에서 수정 후 재고를 뺀 값을 인서트 할 것임
@@ -788,12 +799,12 @@ public class sbController {
 	//지점 재고수정 페이지 내 금일 판매목록 그리기
 	@RequestMapping(value = "/B_Stock_sell_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSSellList() throws Throwable{
+	public String BSSellList(@RequestParam HashMap<String,String> params) throws Throwable{
 									
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
 			
-		List<HashMap<String,String>> Selllist = isbservice.getBSSellList();
+		List<HashMap<String,String>> Selllist = isbservice.getBSSellList(params);
 			
 		int result = Selllist.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
 		

@@ -292,8 +292,8 @@ function drawPaging(pb){
 			<option value="3">원두</option>
 		</select>
 
-<button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
-</div>	
+		<button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
+	</div>	
 		
 		<table cellspacing="0">
 			<colgroup>

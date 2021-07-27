@@ -162,7 +162,7 @@ $(document).ready(function(){
 	
 	//로그아웃
 	$("body").on("click", "#log_out",function(){
-		location.href = "H_LogOut";
+		location.href = "B_LogOut";
 	});
 }); //ready end
 
@@ -197,27 +197,28 @@ function drawMenu(menu){
 	html += "  </div>";
 	for(var i =0; i < menu.length; i++){
 		if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
-				/* if(menu[i].SITE_MENU_NO == "${param.menuno}"){
+				 if(menu[i].SITE_MENU_NO == "${param.menuno}"){
 					html += "<div class=\"menu1_wrap_on\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
-				}  ELSE 추가 해야함*/
-				
+				} else{
 					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
+					
+				}
 					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 				}
 		
 		else if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
-			/* if(menu[i].SITE_MENU_NO == "${param.menuno}"){
+			 if(menu[i].SITE_MENU_NO == "${param.menuno}"){
 					html += "<div class=\"menu1_wrap_on\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
-				} ELSE 추가 해야함 */
+				} else{
 					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
+				}
 					html +="	<div class=\"menu1_title\">";
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 			for(var j = 0; j < menu.length-1 ; j++){
 				if(menu[i].SITE_MENU_NO == menu[j].TOP){
-				console.log("야호")
 						if(menu[j].DEPTH == 2){
 							html +="<div class=\"menu2_wrap\" menuno=\"" + menu[j].SITE_MENU_NO + "\"  addr = \""+menu[i].MADDR + "\">";
 							}
@@ -255,8 +256,8 @@ function drawMenu(menu){
 </head>
 <body>
 <form action="#" id="b_menu_form" method="post">
-		<input type="hidden"  id="BrchNo" name="BrchNo" value="${sBRCHNo}">
-		<input type="hidden"  id="BrNm" name="BrNm" value="${sBRCHNm}">
+		<input type="hidden"  id="brchNo" name="brchNo" value="${sBRCHNo}">
+		<input type="hidden"  id="brNm" name="brNm" value="${sBRCHNm}">
 </form>
          	<!-- 탑메뉴 -->
  	<div class="top_menu">

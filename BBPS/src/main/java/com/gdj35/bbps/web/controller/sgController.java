@@ -268,7 +268,7 @@ public class sgController {
 		Map<String, Object> modelMap = new HashMap<String, Object>(); 
 		
 		try {
-			int cnt = isgService.addU(params);
+			int cnt = isgService.updateH(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
@@ -355,4 +355,135 @@ public class sgController {
 		return mav;
 	}
 	
+	
+	
+	@RequestMapping(value="/User_Update_Hq")
+	public ModelAndView User_Update_Hq(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		HashMap<String, String> data = isgService.getH(params);
+		
+		mav.addObject("data", data);
+
+		mav.setViewName("sg/User_Update_Hq");
+		
+		return mav;
+	}
+	@RequestMapping(value="/User_Update_Hqs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Update_Hqs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.updateH(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/User_Delete_Hqs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Delete_Hqs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.deleteH(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	
+	
+	
+	@RequestMapping(value="/User_Update_Brch")
+	public ModelAndView User_Update_Brch(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		HashMap<String, String> data = isgService.getB(params);
+		
+		mav.addObject("data", data);
+		System.out.println(data+"수정페이지data받아옴");
+		mav.setViewName("sg/User_Update_Brch");
+		
+		return mav;
+	}
+	@RequestMapping(value="/User_Update_Brchs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Update_Brchs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.updateB(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	
+	@RequestMapping(value="/User_Delete_Brchs",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String User_Delete_Brchs(
+			@RequestParam HashMap<String,String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>(); 
+		
+		try {
+			int cnt = isgService.deleteB(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+				
+			} else {
+				modelMap.put("msg", "failed");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		return mapper.writeValueAsString(modelMap);
+	}
 }

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="2"></c:param>
+</c:import> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,29 +11,6 @@
 <title>Insert title here</title>
 <style type="text/css">
 /* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1820px;
-    height: 62px;
-}
-
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1500px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
 ul {
    list-style-type: none;
    margin: 0;
@@ -48,64 +29,6 @@ li {
     height: 62px;
 }
 
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.menu_f li .sub {
-	width: 162px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 10px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
-}
 /* 미들 부분 */
 .content_area{
 	width: 1250px;
@@ -381,101 +304,7 @@ function del_tb(){
 </head>
 <body>
 <!-- 상단 -->
-   <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         	주문관리</a>
-	         <div class="sub">
-	        	 <a href="#">
-	            	주문조회</a>
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	      </div>
-         </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-           <div class="menu_c">
-         <li>
-		<a class="main_menu" href="#"> 
-	        		픔목관리</a>
-	          	<div class="sub">
-				<a href="#">
-	            	품목조회</a>
-	            <a href="#">
-	            	품목등록</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_e">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_f">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_g">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
-   </div>
+   <div class="top"></div>
 
 <!--컨텐츠 -->
 <div class="content_area">
@@ -493,6 +322,7 @@ function del_tb(){
 <input type = "button" class="row_add" style= "margin:0px 10px 0px 0px;" value = "행추가"/>
 </div>
 <form action = "#" id = "tb_Form" method = "post">
+<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 <table cellspacing="0">
 	<colgroup>
 		<col width="25%" />

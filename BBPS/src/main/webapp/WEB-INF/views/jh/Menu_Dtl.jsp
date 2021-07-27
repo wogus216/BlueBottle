@@ -225,7 +225,7 @@ $(document).ready(function(){
 					makePopup("", "삭제 중 문제 발생",function(){});
 				}
 			}
-		})
+		});
 	}); //del end
 	
 }); //ready end

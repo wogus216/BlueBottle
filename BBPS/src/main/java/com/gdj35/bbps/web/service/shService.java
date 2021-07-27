@@ -44,7 +44,7 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public HashMap<String, String> getOWholeList(HashMap<String, String> params) throws Throwable {
+	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable {
 		return ishDao.getOWholeList(params);
 	}
 
@@ -99,7 +99,7 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable {
+	public List<HashMap<String, String>> getBRDtl(HashMap<String, String> params) throws Throwable {
 		return ishDao.getBRDtl(params);
 	}
 
@@ -121,5 +121,45 @@ public class shService implements IshService{
 	@Override
 	public List<HashMap<String, String>> getRefItem(HashMap<String, String> params) throws Throwable {
 		return ishDao.getRefItem(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getOrdItem(HashMap<String, String> params) throws Throwable {
+		return ishDao.getOrdItem(params);
+	}
+
+	@Override
+	public int writeRefItem(HashMap<String, Object> insertMap) throws Throwable {
+		return ishDao.writeRefItem(insertMap);
+	}
+
+	@Override
+	public int writeRef(HashMap<String, String> params) throws Throwable {
+		return ishDao.writeRef(params);
+	}
+
+	@Override
+	public int writeOrd() throws Throwable {
+		return ishDao.writeOrd();
+	}
+
+	@Override
+	public int writeOrdItem(HashMap<String, Object> insertMap) throws Throwable {
+		return ishDao.writeOrdItem(insertMap);
+	}
+
+	@Override
+	public HashMap<String, String> getLastONo() throws Throwable {
+		return ishDao.getLastONo();
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBrchList() throws Throwable {
+		return ishDao.getBrchList();
+	}
+
+	@Override
+	public List<HashMap<String, String>> getCateList() throws Throwable {
+		return ishDao.getCateList();
 	}
 }

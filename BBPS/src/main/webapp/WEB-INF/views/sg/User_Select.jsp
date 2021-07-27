@@ -220,6 +220,9 @@ $(document).ready(function(){
 
 <!-- 본문 -->
 <form action="#" id="goForm" method="post">
+<input type="hidden" name="page" value="${param.page}" />
+<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
+<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 	<div class="main_content_area">
 			<div class="hq_user" id="hq_user">
 				<div class="hq_txt">

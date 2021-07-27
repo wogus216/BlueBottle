@@ -85,6 +85,32 @@ public class sgDao implements IsgDao {
 		return sqlSession.selectOne("SG.getB", params);
 	}
 
+	@Override
+	public int updateH(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사업데이트받아옴");
+		System.out.println(params);
+		return sqlSession.update("SG.updateH", params);
+	}
+
+	@Override
+	public int deleteH(HashMap<String, String> params) throws Throwable {
+		return sqlSession.delete("SG.deleteH", params);
+	}
+
+	@Override
+	public int updateB(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점업데이트받아옴");
+		System.out.println(params);
+		return sqlSession.update("SG.updateB", params);
+	}
+
+	@Override
+	public int deleteB(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점삭제함");
+		System.out.println(params);
+		return sqlSession.delete("SG.deleteB", params);
+	}
+
 	
 	
 }

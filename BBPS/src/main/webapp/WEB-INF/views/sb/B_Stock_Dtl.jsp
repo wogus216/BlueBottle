@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/B_Menu.jsp">
+	<c:param name="menuno" value="14"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,29 +11,6 @@
 <title>Insert title here</title>
 <style type="text/css">
 /* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1820px;
-    height: 62px;
-}
-
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1500px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
 ul {
    list-style-type: none;
    margin: 0;
@@ -47,65 +27,6 @@ ul:after {
 li {
    float: left;
     height: 62px;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.menu_f li .sub {
-	width: 162px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 10px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
 }
 /* 미들 부분 */
 .content_area{
@@ -463,6 +384,8 @@ input[type='button']:focus{outline:none;}
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	console.log()
+	
 	stockloadList(); //유통기한별 재고 리스트 그리기
 	storloadList(); // 재고 입고 리스트 그리기
 	useloadList(); // 재고 출고 리스트 그리기
@@ -541,8 +464,9 @@ $(document).ready(function(){
 			$(".discard_submit_btn").show();
 		}else{
 		 var params = $("#tb_Form").serialize();
-		   
-		 $.ajax({
+		 console.log(params) ;
+		 
+		  $.ajax({
 		      url : "B_Stock_Discards",//접속주소
 		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
 		      dataType :"json", //받아올 데이터 형식
@@ -565,7 +489,7 @@ $(document).ready(function(){
 		      error : function(request,status,error){
 		         console.log(error);
 		      }
-		   });
+		   }); 
 		 
 		}
 	});
@@ -892,7 +816,11 @@ function drawdiscardList(discardlist,result){
 			html += "<td>"+d.ITEM_NAME+"</td>";
 			html += "<td>"+d.CNT+"</td>";
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
-			html += "<td>"+d.NOTE+"</td>";
+			if(d.NOTE == null){
+				html += "<td></td>";
+			}else{
+				html += "<td>"+d.NOTE+"</td>";
+			}
 			html += "<td>"+d.ENROLL_DATE+"</td>";
 			html += "</tr>";	
 		}
@@ -1017,104 +945,12 @@ function splitdate(splitarr){
 </head>
 <body>
    <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         	주문관리</a>
-	         <div class="sub">
-	        	 <a href="#">
-	            	주문조회</a>
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	      </div>
-         </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-           <div class="menu_c">
-         <li>
-		<a class="main_menu" href="#"> 
-	        		픔목관리</a>
-	          	<div class="sub">
-				<a href="#">
-	            	품목조회</a>
-	            <a href="#">
-	            	품목등록</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_e">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_f">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_g">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
    </div>
   <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
 <form action = "#" id = "goForm" method = "post">
+<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 <input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
 <input type = "hidden" name ="itemName" value = "${param.itemName}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
@@ -1122,6 +958,7 @@ function splitdate(splitarr){
 <input type = "hidden" name = "search_input" value = "${param.search_input}"/>
 </form>
 <form action="#" id = "storHistoryForm" method = "post">
+<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 <input type = "hidden" id = "itemNo" name ="itemNo" />
 <input type = "hidden" id = "expDate"name ="expDate"/>
 </form>
@@ -1136,6 +973,7 @@ function splitdate(splitarr){
 		</div>
 
 <form action = "#" id = "tb_Form" method = "post">
+<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 <div class = "stock_tb">
 <table cellspacing="0">
 	
@@ -1145,6 +983,7 @@ function splitdate(splitarr){
 </div>
 </form>
 <form action = "#" id = "safeCntForm" method = "post">
+<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 <div class = "safeCnt_area">
 안전재고수량 : <input readonly type = "number" min = "0" class = "safeCnt" name = "safeCnt" value = "${param.safeCnt}"/><input type = "button" class = "safeCnt_edit_btn"value = "저장"/>
 <input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>

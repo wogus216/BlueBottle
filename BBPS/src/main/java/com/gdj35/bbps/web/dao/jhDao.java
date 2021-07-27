@@ -107,5 +107,62 @@ public class jhDao implements IjhDao {
 		return sqlsession.selectOne("JH.getOrdNum");
 	}
 
+	@Override
+	public HashMap<String, String> getHUser(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사 마이페이지 갖고오자");
+		System.out.println("본사마이페이지params"+params);
+		return sqlsession.selectOne("JH.getHUser", params);
+		
+	}
+
+	@Override
+	public int editHU(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사 마이페이지수정 갖고오자");
+		System.out.println("본사마이수정params"+params);
+		return sqlsession.update("JH.editHU", params);
+	}
+
+	@Override
+	public HashMap<String, String> getHPw(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사 비번 갖고오자");
+		System.out.println("본사 아이디 비번params"+params);
+		return sqlsession.selectOne("JH.getHPw", params);
+	}
+
+	@Override
+	public HashMap<String, String> getBUser(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 마이페이지 갖고오자");
+		System.out.println("지점 마이페이지params"+params);
+		return sqlsession.selectOne("JH.getBUser", params);
+	}
+
+	@Override
+	public HashMap<String, String> getBPw(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 비번 갖고오자");
+		System.out.println("지점 아이디 비번params"+params);
+		return sqlsession.selectOne("JH.getBPw", params);
+	}
+
+	@Override
+	public int editBU(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 마이페이지수정 갖고오자");
+		System.out.println("지점 마이수정params"+params);
+		return sqlsession.update("JH.editBU", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getRList(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 환불목록 갖고오자");
+		System.out.println("지점 환불목록params"+params);
+		return sqlsession.selectList("JH.getRList", params);
+	}
+
+	@Override
+	public int getRCnt(HashMap<String, String> params) throws Throwable {
+		System.out.println("지점 환불목록 개수");
+		return sqlsession.selectOne("JH.getRCnt", params);
+	}
+
+
 	
 }

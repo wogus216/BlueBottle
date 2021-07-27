@@ -5,7 +5,8 @@
 	SELECT COUNT(*) AS CNT
 	FROM NOTICE N INNER JOIN HQ_USER U
 	ON N.USER_NO = U.USER_NO
-	WHERE 1=1
+	WHERE N.DEL_FLAG = 1
+    AND 1=1
 	<if test="searchTxt != null and searchTxt != ''">
 	<choose>
 		<when test="searchGbn == 0">
@@ -27,12 +28,13 @@
 
 
 <select id ="getNList" parameterType="hashmap" resultType="hashmap">
-SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME
+SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG
 FROM(SELECT TXT_NO, TITLE, TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS S_DT,H.USER_NAME
-        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM
+        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG
     FROM NOTICE O INNER JOIN HQ_USER H
                           ON O.USER_NO = H.USER_NO
-WHERE 1=1
+WHERE O.DEL_FLAG=1 
+AND 1=1
 <if test="searchTxt != null and searchTxt != ''"> 
 	<choose>
 		<when test="searchGbn == 0">
@@ -55,8 +57,8 @@ WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 
 <insert id="addN" parameterType="hashmap">
-INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT)
-VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, 4, #{nTitle}, #{nCon})
+INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT, ATT_FILE)
+VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, 4, #{nTitle}, #{nCon}, #{nFile})
 </insert>
 
 <select id="getN" parameterType="hashmap" resultType="hashmap">
@@ -72,11 +74,10 @@ UPDATE NOTICE SET TITLE = #{nTitle}, CONTENT = #{nCon}
 WHERE TXT_NO = #{nNo}
 </update>
 
-<delete id="deleteN" parameterType="hashmap">
-DELETE FROM NOTICE
+<update id="deleteN" parameterType="hashmap">
+UPDATE NOTICE SET DEL_FLAG = 0
 WHERE TXT_NO = #{nNo}
-</delete>
-
+</update>
 
 
 
@@ -120,17 +121,18 @@ WHERE 1=1
 
 
 <select id ="getUList" parameterType="hashmap" resultType="hashmap">
-SELECT U.USER_NO, U.NAME, U.USER_NAME, U.ID, U.DIVI
+SELECT U.USER_NO, U.NAME, U.USER_NAME, U.ID, U.DIVI, U.DEL_FLAG
 FROM(SELECT U.USER_NO AS USER_NO, U.NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, 
-        ROW_NUMBER() OVER(ORDER BY U.USER_NO DESC) AS RNUM, U.DIVI AS DIVI
-     FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, U.DIVISION AS DIVI
+        ROW_NUMBER() OVER(ORDER BY U.USER_NO DESC) AS RNUM, U.DIVI AS DIVI, U.DEL_FLAG AS DEL_FLAG
+     FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, U.USER_NAME AS USER_NAME, U.ID AS ID, U.DIVISION AS DIVI, U.DEL_FLAG AS DEL_FLAG
           FROM  HQ_DEP D INNER JOIN HQ_USER U
                                  ON D.DEP_NO = U.DEP_NO
           UNION
-          SELECT BRCH_NO AS USER_NO, BRCH_NAME AS NAME, MGR_NAME AS USER_NAME, ID, DIVISION AS DIVI
+          SELECT BRCH_NO AS USER_NO, BRCH_NAME AS NAME, MGR_NAME AS USER_NAME, ID, DIVISION AS DIVI, DEL_FLAG
           FROM BRCH) U
-    WHERE 1=1
-    <if test="searchTxt != null and searchTxt != ''"> 
+          WHERE DEL_FLAG = 1
+          AND 1=1
+    <if test="searchTxt != null and searchTxt != ''">
 	<choose>
 		<when test="searchGbn == 0">
     	AND USER_NO LIKE '%' || #{searchTxt} || '%'
@@ -202,8 +204,27 @@ WHERE BRCH_NO IN #{uNo}
 </select>
 
 
+<update id="updateH"  parameterType="hashmap">
+UPDATE HQ_USER SET AUTH_NO = #{hAuth}, DEP_NO = #{hDep}, ID = #{hId}, PW = #{hPw}, USER_NAME = #{hNm}, PHONE_NUM = #{hPhone}
+WHERE USER_NO IN #{uNo}
+</update>
+<update id="deleteH" parameterType="hashmap">
+UPDATE HQ_USER SET DEL_FLAG = 0, DEL_DATE = SYSDATE 
+    WHERE USER_NO = #{uNo}
+</update>
 
-    
-    
-    
+<update id="updateB"  parameterType="hashmap">
+UPDATE BRCH SET ID = #{bId}, PW = #{bPw}, BRCH_NAME = #{bNm},
+ POST_NUM = #{bPost}, DFT_ADDRESS = #{bDft}, DTL_ADDRESS = #{bDtl},
+ CALL_NUM = #{bCall}, MGR_NAME = #{mgrNm}, MGR_PHONE_NUM = #{mgrPhone}
+WHERE BRCH_NO IN #{uNo}
+</update>
+<update id="deleteB" parameterType="hashmap">
+UPDATE BRCH SET DEL_FLAG = 0
+WHERE BRCH_NO = #{uNo}
+</update>
+
+
+
+
 </mapper>
