@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>지점 매출차트</title>
+<title>본사 매출차트</title>
 <style type="text/css">
 /* 상단 바 */
 .top {
@@ -283,14 +283,14 @@ input[type='button']:focus{outline:none;}
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	viewChange(".daily_btn");
+	viewChange(".monthly_btn");
 	
 	$(".reset_btn").on("click", function() {
 		setDateBox();
 	});
 	
 	$(".list_btn").on("click", function() {
-		location.href = "B_Sales";
+		location.href = "Sales_List";
 	});
 	
 	$(".select_type").on("click", "input", function() {
@@ -328,6 +328,7 @@ function viewChange(btn) {
 	
 	setDateBox();
 	getCateList();
+	brchList();
 	
 	if($(btn).attr("class") == "daily_btn"){
 		getData("#actionFormDaily .search_btn");
@@ -351,7 +352,7 @@ function getData(btn) {
 		urlName = "getDailyChartData";
 	}
 	else if($(btn).parent().attr("id") == "actionFormMonthly") {
-		urlName = "getMonthlyChartData";
+		urlName = "getHeadMonthlyChartData";
 	}
 	else if($(btn).parent().attr("id") == "actionFormCate") {
 		urlName = "getMenuChartData";
@@ -378,8 +379,8 @@ function getData(btn) {
 				if(urlName == "getDailyChartData") {
 					makeDailyChart(result.list, result.day);
 				} 
-				else if(urlName == "getMonthlyChartData"){
-					makeMonthlyChart(result.list, result.month);
+				else if(urlName == "getHeadMonthlyChartData"){
+					makeMonthlyChart(result.list);
 				}
 				else if(urlName == "getMenuChartData"){
 					makeMenuChart(result.list, result.month);
@@ -426,31 +427,33 @@ function makeDailyChart(list, day) {
     });
 }
 
-function makeMonthlyChart(list, month) {
-	
+function makeMonthlyChart(list) {
+
 	$('#container').highcharts({
        
         title: {
             text: ''
         },
         
-       	colors : ['#00cfd6','#ffad99', '#ffad33'
+       	colors : ['#ffef96','#50394c', '#80ced6', '#f4e1d2','#b2b2b2', '#618685', '#d5f4e6', '#f18973', '#dac292'
        		
        	],
+       
         xAxis: {
-        	 categories: month,
-        	
+        	categories: ['지점명'] 	
         },
         yAxis: {
             title: {
-                text: '금액'
+                text: '순매출'
             },
             labels: {
                 format: '{value} 원'
             }
             
         },
+        
         series: list
+        
     });
 }
 
@@ -480,34 +483,42 @@ function makeMenuChart(list, month) {
 }
 
 function makeMenuChartDetail(list, color, name) {
+	console.log(list);
 	
-		$('#container').highcharts({
-		       
-	        title: {
-	            text: ''
-	        },
-	        
-	       	colors : color,
-	       	
-	        xAxis: {
-	        	 categories: ['메뉴명'],
-	        	
-	       		 title: name
-	        },
-	        yAxis: {
-	            title: {
-	                text: '수량'
-	            }
-	            
-	        },
-	        series: list
-	    });
-	
+	$('#container').highcharts({
+       
+        title: {
+            text: ''
+        },
+        
+       	colors : color,
+       	
+        xAxis: {
+        	categories: " ",
+        	
+       		 title: name
+        },
+        yAxis: {
+            title: {
+                text: '수량'
+            }
+            
+        },
+        series: list
+    });
 }
 
 // select box 연도 , 월 표시
 function setDateBox() {
  
+	$(".daily #year").html("");
+	$(".daily #month").html("");
+	$(".monthly #year").html("");
+	$(".monthly #year").html("");
+	$(".cate #year").html("");
+	$(".menu #year").html("");
+	$(".menu #month").html("");
+	
   var dt = new Date();
   var year = "";
   var today_year = dt.getFullYear();
@@ -536,18 +547,22 @@ function setDateBox() {
 	  if( i == today_month){
 		  $(".daily #month").append("<option value='0" + i + "' selected>" + i + " 월" + "</option>");
 		  $(".menu #month").append("<option value='0" + i + "' selected>" + i + " 월" + "</option>");
+		  $(".monthly #month").append("<option value='0" + i + "' selected>" + i + " 월" + "</option>");
 	  } else{
 		  $(".daily #month").append("<option value='0" + i + "'>" + i + " 월" + "</option>");
 		  $(".menu #month").append("<option value='0" + i + "'>" + i + " 월" + "</option>");
+		  $(".monthly #month").append("<option value='0" + i + "'>" + i + " 월" + "</option>");
 	  } 
   }
   for (var i = 10; i <= 12; i++) {
 	  if( i == today_month){
 		  $(".daily #month").append("<option value='" + i + "' selected>" + i + " 월" + "</option>");
 		  $(".menu #month").append("<option value='" + i + "' selected>" + i + " 월" + "</option>");
+		  $(".monthly #month").append("<option value='" + i + "' selected>" + i + " 월" + "</option>");
 	  } else{
 		  $(".daily #month").append("<option value='" + i + "'>" + i + " 월" + "</option>");
 		  $(".menu #month").append("<option value='" + i + "'>" + i + " 월" + "</option>");
+		  $(".monthly #month").append("<option value='" + i + "'>" + i + " 월" + "</option>");
 	  } 
   }
   
@@ -584,6 +599,38 @@ function getCateList(){
 		
 	}); //ajax end
 	 
+}
+
+//지점 리스트
+function brchList() {
+
+	$.ajax({
+		url: "getBrchList",
+		type: "post",
+		dataType: "json",
+		success: function(res) {
+			
+			console.log(res.list);
+			
+			var html = "";
+			
+			html += "<option value=\"9999\" selected>전체</option>";
+			
+			for(d of res.list) {
+				html += "<option value=" + d.BRCH_NO + ">" + d.BRCH_NAME + "</option>";
+			}
+
+			$(".daily #brch_choice").html(html);
+			$(".menu #brch_choice").html(html);
+			$(".cate #brch_choice").html(html);
+			
+		},
+		error: function(request, status, error) {
+			console.log(error);
+		}
+		
+	}); //ajax end
+
 }
 
 //팝업
@@ -681,24 +728,27 @@ function closePopup() {
 	<div class="content">
 		<h1 >매출그래프</h1>
 		<div class="select_type">
-			<input type="button" class="daily_btn" value="일별"/>
 			<input type="button" class="monthly_btn" value="월별"/>
+			<input type="button" class="daily_btn" value="일별"/>
 			<input type="button" class="cate_btn" value="카테고리별 "/>
 			<input type="button" class="menu_btn" value="메뉴별 "/>
 		</div>
 		<div class="info">
+			<div class="monthly">
+				<form action="#" method="post" id="actionFormMonthly">
+					<input type="button" class="reset_btn" value="당월" />
+					<select name="year" id="year"></select>	
+					<select name="month" id="month"></select>
+					<input type="button" class="search_btn" value="조회" />
+				</form>
+			</div>
 			<div class="daily">
 				<form action="#" method="post" id="actionFormDaily">
 					<input type="button" class="reset_btn" value="당월" />
 					<select name="year" id="year"></select>
 					<select name="month" id="month"></select>	
-					<input type="button" class="search_btn" value="조회" />
-				</form>
-			</div>
-			<div class="monthly">
-				<form action="#" method="post" id="actionFormMonthly">
-					<input type="button" class="reset_btn" value="올해" />
-					<select name="year" id="year"></select>	
+					<span><strong>지점</strong></span>
+					<select name="brch_choice" id="brch_choice"></select>	
 					<input type="button" class="search_btn" value="조회" />
 				</form>
 			</div>
@@ -706,6 +756,8 @@ function closePopup() {
 				<form action="#" method="post" id="actionFormCate">
 					<input type="button" class="reset_btn" value="올해" />
 					<select name="year" id="year"></select>	
+					<span><strong>지점</strong></span>
+					<select name="brch_choice" id="brch_choice"></select>	
 					<input type="button" class="search_btn" value="조회" />
 				</form>
 			</div>
@@ -714,6 +766,8 @@ function closePopup() {
 					<input type="button" class="reset_btn" value="당월" />
 					<select name="year" id="year"></select>	
 					<select name="month" id="month"></select>
+					<span><strong>지점</strong></span>
+					<select name="brch_choice" id="brch_choice"></select>	
 					<select name="menuCate" id="menuCate"></select>	
 					<input type="button" class="search_btn" value="조회" />
 				</form>

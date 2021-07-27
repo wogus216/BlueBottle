@@ -380,6 +380,10 @@ $(document).ready(function() {
 		$(".graph_info").css("visibility", "hidden");
 	});
 	
+	$(".graph_btn").on("click",function() {
+		location.href = "Chart";
+	});
+	
 });// document ready end
 
 function brchList() {
