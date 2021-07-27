@@ -153,9 +153,16 @@ $(document).ready(function(){
 		$(this).parent().parent().parent().parent().children().eq(0).css("background-color", "white");
 	});
 	
-	//메뉴이동
-	$(".top_menu").on("click", ".menu_depth1",".menu_depth2",function(){
+	//1뎁스 메뉴이동
+	$(".top_menu").on("click", ".menu_depth1",function(){
 		$("#b_menu_form").attr("action",$(this).parent().parent().attr("addr"));
+		
+		$("#b_menu_form").submit();
+	});
+	
+	//2뎁스 메뉴이동
+	$(".top_menu").on("click", ".menu_depth2",function(){
+		$("#b_menu_form").attr("action",$(this).attr("addr"));
 		
 		$("#b_menu_form").submit();
 	});
@@ -220,19 +227,19 @@ function drawMenu(menu){
 			for(var j = 0; j < menu.length-1 ; j++){
 				if(menu[i].SITE_MENU_NO == menu[j].TOP){
 						if(menu[j].DEPTH == 2){
-							html +="<div class=\"menu2_wrap\" menuno=\"" + menu[j].SITE_MENU_NO + "\"  addr = \""+menu[i].MADDR + "\">";
+							html +="<div class=\"menu2_wrap\" menuno=\"" + menu[j].SITE_MENU_NO + "\">";
 							}
 							html +=		"<div class=\"menu2_title\">";
 							html +=			"<div class= \"menu_depth2_area \">";
 									if(menu[i].SITE_MENU_NO == 14){
-							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j+1].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j+2].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j+3].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j+1].MADDR + "\">" + menu[j+1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j+2].MADDR + "\">" + menu[j+2].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j+3].MADDR + "\">" + menu[j+3].SITE_MENU_NAME + "</div>";
 									} 
 									else if(menu[i].SITE_MENU_NO == 19){
-							html +=			"<div class=\"menu_depth2\">" + menu[j].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\">" + menu[j+1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j+1].MADDR + "\">" + menu[j+1].SITE_MENU_NAME + "</div>";
 									}
 							html +=			"</div>";
 							html +=		"</div>";
@@ -256,66 +263,13 @@ function drawMenu(menu){
 </head>
 <body>
 <form action="#" id="b_menu_form" method="post">
+		<!--  지점 번호 -->
 		<input type="hidden"  id="brchNo" name="brchNo" value="${sBRCHNo}">
+		<!--  지점 이름 -->
 		<input type="hidden"  id="brNm" name="brNm" value="${sBRCHNm}">
 </form>
          	<!-- 탑메뉴 -->
- 	<div class="top_menu">
-    
-    <!-- 
-	       		<div class="logo_area">
-		         	<img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px">
-		        </div>
-		  <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-		         	<div class="menu_depth1">재고관리</div>
-		      </div>
-		       <div class=menu2_wrap>
-						<div class=menu2_title>
-							 <div class=menu_depth2_area>
-							   <div class="menu_depth2">재고목록</div>
-							   <div class="menu_depth2">입고목록</div>
-							   <div class="menu_depth2">사용목록</div>
-							   <div class="menu_depth2">폐기목록</div>
-							 </div>
-						</div>
-			  </div>
-	      </div>
-	      
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">주문관리</div>
-		      </div>
-		       <div class=menu2_wrap>
-						<div class=menu2_title>
-							 <div class=menu_depth2_area>
-							   <div class="menu_depth2">주문요청</div>
-							   <div class="menu_depth2">주문목록</div>
-							 </div>
-						</div>
-			  </div>
-	      </div>
-	      
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">매출</div>
-		      </div>
-	      </div>
-	      
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">공지사항</div>
-		      </div>
-	      </div>
-	      
-	       <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	        		 <div class="menu_depth1">마이페이지</div>
-		      </div>
-	      </div>
-	      <input type="button" value="로그아웃" class="log_out"/>
-	      -->    	
-	 </div>
+ 	<div class="top_menu"></div>
 	 
 
 </html>

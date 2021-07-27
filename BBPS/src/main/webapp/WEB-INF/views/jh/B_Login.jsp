@@ -38,6 +38,7 @@ body{
 	width : 100%;
 	height: 100%;
 }
+
 /* 로그인 */
 .login_area{
 	display: inline-block;
@@ -192,6 +193,7 @@ input[type='button']:focus{outline:none;}
 	border: none;
 }
 </style>
+
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
@@ -208,6 +210,14 @@ $(document).ready(function(){
 	//포스 로그인 페이지
 	$("#POS").on("click",function(){
 		location.href = "Pos_Login";
+	});
+	
+	//엔터로 로그인
+	$("#bPw").on("keypress", function(e){
+		if(e.keyCode == '13'){
+			
+			$(".submit").click();
+		}
 	});
 	
 	
@@ -247,7 +257,8 @@ $(document).ready(function(){
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						location.href = "B_Menu";
+				 		$("#loginForm").attr("action","B_Stock_List");
+						$("#loginForm").submit();
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							
@@ -352,6 +363,7 @@ function closePopup() {
 					<input type="button" value="로그인" class="submit">
 				</li>
 			</ul>
+			<input type="hidden"  id="brchNo" name="brchNo" value="${sBRCHNo}">
 		</form>
 	</div>
 </div>

@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix ="fmt" uri = "http://java.sun.com/jsp/jstl/fmt"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="19"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>

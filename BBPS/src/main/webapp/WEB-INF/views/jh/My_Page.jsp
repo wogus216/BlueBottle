@@ -195,9 +195,9 @@ $(document).ready(function(){
 		
 		if($.trim($(".confirm_pw").val()) == ""){
 			alert("비밀번호를 입력해주세요");
-		}else{
+		} else{
 			var params = $("#send_form").serialize();
-			console.log(params);
+
 			$.ajax({
 				url: "pw_Checks",
 				type: "post",
@@ -213,16 +213,15 @@ $(document).ready(function(){
 					} else{
 						ordPopup("", "비밀번호가 일치하지 않습니다.",function(){});
 					}
-					console.log(res);
 				},
 				 error: function(request, status, error){
 						console.log(error);
 					}
-			});
+			}); //ajax end
 	
 		}
 		
-		}); //ajax end
+		});  //개인정보 확인 end
 	
 	
 }); //ready end
@@ -253,7 +252,7 @@ function makePopup(title, func) {
 		if(func !=null){
 			func.call();
 		}
-		closePopup();
+			closePopup();
 		});
 	
 	
@@ -280,7 +279,7 @@ function ordPopup(title, contents, func) {
 		if(func !=null){
 			func.call();
 		}
-		oClosePopup();
+			oClosePopup();
 		});
 
 	}
@@ -329,14 +328,6 @@ function oClosePopup() {
 			</div>
 			<div class="right">
 				<div class="id">${data.ID}</div>
-			</div>
-		</div>
-			<div class="wrap">
-			<div class="left">
-				<div class="pw"><h3>PW</h3></div>
-			</div>
-			<div class="right">
-				<div class="pw">${data.PW}</div>
 			</div>
 		</div>
 		<div class="wrap">

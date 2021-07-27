@@ -253,7 +253,7 @@ function makePopup(title, contents, func) {
 		if(func !=null){
 			func.call();
 		}
-		closePopup();
+			closePopup();
 		});
 	$(".confirm_btn").on("click",function(){
 		location.href = "Menu_List";

@@ -46,7 +46,7 @@ public class jhController {
 	@RequestMapping(value="/H_Login")
 	public ModelAndView hq_Login(HttpSession session, ModelAndView mav) {
 			if(session.getAttribute("sUSERNo") != null	) { //로그인상태
-				mav.setViewName("redirect:H_Menu");
+				mav.setViewName("redirect:Ord_Mang");
 			} else { // 비 로그인 상태
 				mav.setViewName("jh/H_Login");
 			}
@@ -64,6 +64,7 @@ public class jhController {
 		@RequestParam HashMap<String, String> params) throws Throwable{
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
 	//암호화
 	//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
 	
@@ -490,7 +491,7 @@ public class jhController {
 	@RequestMapping(value="/B_Login")
 	public ModelAndView b_Login(HttpSession session, ModelAndView mav) {
 			if(session.getAttribute("sBRCHNo") != null	) { //로그인상태
-				mav.setViewName("redirect:B_Menu");
+				mav.setViewName("redirect:B_Stock_List");
 			} else { // 비 로그인 상태
 				mav.setViewName("jh/B_Login");
 			}
