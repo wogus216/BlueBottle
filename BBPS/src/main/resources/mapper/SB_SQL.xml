@@ -130,6 +130,7 @@
                                                                                                                                        FROM ORD O INNER JOIN ORD_ITEM OI
                                                                                                                                                    ON O.ORD_NO = OI.ORD_NO
                                                                                                                                                    AND OI.ITEM_NO = #{itemNo}
+                                                                                                                                                   AND O.STAT_CODE IN (4,5,6,7,8)
                                                                                                                                       GROUP BY OI.ITEM_NO, OI.EXPIRY_DATE) S
                                                                                   
                                                                             ON P.EXPIRY_DATE = S.EXPIRY_DATE) A INNER JOIN ITEM I
@@ -140,7 +141,7 @@
 	
 	<!-- 재고상세 / 출고재고 리스트 -->
 	<select id = "getSRelList" parameterType="hashmap" resultType="hashmap">
-	SELECT O.ORD_NO, I.ITEM_NO, I.ITEM_NAME, OI.CNT,TO_CHAR(NVL(OI.EXPIRY_DATE,'2999-01-01'),'YYYY-MM-DD') AS EXPIRY_DATE,TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ORD_ENROLL_DATE,B.BRCH_NAME
+	SELECT O.ORD_NO, I.ITEM_NO, I.ITEM_NAME, OI.CNT,TO_CHAR(OI.EXPIRY_DATE,'YYYY-MM-DD') AS EXPIRY_DATE,TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ORD_ENROLL_DATE,B.BRCH_NAME
    	FROM ORD O INNER JOIN ORD_ITEM OI
                 ON O.ORD_NO = OI.ORD_NO
                 AND OI.ITEM_NO = #{itemNo}

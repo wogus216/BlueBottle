@@ -361,10 +361,11 @@ public class sbController {
 			
 			for(int i = 0; i < itemNo.size(); i++) {
 				
+				
 				insertMap.put("userNo", userNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("stockCnt", stockCnt.get(i));
-				insertMap.put("stockExpiryDate", stockExpiryDate.get(i));
+				insertMap.put("stockExpiryDate", stockExpiryDate.get(i));	
 				
 				int cnt = isbservice.AddStock(insertMap);
 				
