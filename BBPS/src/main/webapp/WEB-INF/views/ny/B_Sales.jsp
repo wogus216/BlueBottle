@@ -631,7 +631,7 @@ function closePopup() {
 <!--컨텐츠 -->
 	<div class="content_area">
 	<div class="content">
-	<h1 >매출조회 및 환불</h1>
+	<h1 >매출조회</h1>
 	<div class="sales_info">
 		<div class="graph_info">"매출정보를 그래프형으로 조회"</div>
 		<form action="#" method="post" id="actionForm">

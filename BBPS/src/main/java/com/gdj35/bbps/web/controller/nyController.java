@@ -1,5 +1,6 @@
 package com.gdj35.bbps.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -523,5 +524,341 @@ public class nyController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/getDailyChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getDailyChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		String[] type = {"column", "column", "spline"};
+		String[] name = {"매출", "지출", "순매출"};
+		String[] dataName = {"SALES_PRICE", "ORD_PRICE", "NET_PRICE"};
+		
+		List<HashMap<String,String>> dataList = iNyService.getDailyChartData(params);
+		System.out.println(dataList.size());
+		if(dataList.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
+		
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		for(int i = 0; i < 3; i++) {
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			
+			data.put("type", type[i]);
+			data.put("name", name[i]);
 	
+			List<Object> y = new ArrayList<Object>(); 
+			for(int j = 0; j < dataList.size(); j++) {
+				y.add(dataList.get(j).get(dataName[i]));
+			}
+			
+			data.put("data", y);
+			
+			list.add(data);
+			
+		}
+		
+		HashMap<String,String> marker = new HashMap<String,String>();
+		
+		marker.put("lineWidth", "2");
+		marker.put("lineColor", "Highcharts.getOptions().colors[3]");
+		marker.put("fillColor", "'white'");
+		
+		list.get(2).put("marker", marker);
+		
+		List<Object> day = new ArrayList<Object>();
+		for(int i = 0; i < dataList.size(); i++) {
+			day.add(dataList.get(i).get("DAY")+"일");
+		}
+		
+		modelMap.put("list", list);
+		modelMap.put("day", day);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/getMonthlyChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getMonthlyChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		String[] type = {"column", "column", "spline"};
+		String[] name = {"매출", "지출", "순매출"};
+		String[] dataName = {"SALES_PRICE", "ORD_PRICE", "NET_PRICE"};
+		
+		List<HashMap<String,String>> dataList = iNyService.getMonthlyChartData(params);
+		
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		for(int i = 0; i < 3; i++) {
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			
+			data.put("type", type[i]);
+			data.put("name", name[i]);
+	
+			List<Object> y = new ArrayList<Object>(); 
+			for(int j = 0; j < dataList.size(); j++) {
+				y.add(dataList.get(j).get(dataName[i]));
+			}
+			
+			data.put("data", y);
+			
+			list.add(data);
+			
+			if(y.size() == 0) {
+				modelMap.put("status","null");
+			} else {
+				modelMap.put("status","fine");
+			}
+		}
+		
+		HashMap<String,String> marker = new HashMap<String,String>();
+		
+		marker.put("lineWidth", "2");
+		marker.put("lineColor", "Highcharts.getOptions().colors[3]");
+		marker.put("fillColor", "'white'");
+		
+		list.get(2).put("marker", marker);
+		
+		List<Object> month = new ArrayList<Object>();
+		for(int i = 0; i < dataList.size(); i++) {
+			month.add(dataList.get(i).get("MONTH")+"월");
+		}
+		
+		if(list.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
+		
+		modelMap.put("list", list);
+		modelMap.put("month", month);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/getMenuChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getMenuChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		String[] type = {"column", "column", "column", "column"};
+		String[] name = {"음료", "제과", "굿즈", "원두"};
+		
+		List<HashMap<String,String>> dataList = iNyService.getMenuChartData(params);
+		
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		for(int i = 0; i < 4; i++) {
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			
+			data.put("type", type[i]);
+			data.put("name", name[i]);
+	
+			List<Object> y = new ArrayList<Object>(); 
+			for(int j = 0; j < dataList.size(); j++) {
+				if(dataList.get(j).get("CATE_NAME").equals(name[i])) {
+					y.add(dataList.get(j).get("CNT"));
+				}
+			}
+			
+			data.put("data", y);
+			
+			list.add(data);
+			
+			if(y.size() == 0) {
+				modelMap.put("status","null");
+			} else {
+				modelMap.put("status","fine");
+			}
+		}
+
+		List<String> month = new ArrayList<String>();
+
+		for(int i = 0; i < dataList.size(); i++) {
+			month.add(dataList.get(i).get("MONTH")+"월");
+		}
+		//중복제거
+		for(int i = 0; i < month.size()-1; i++) {
+			for(int j = i+1; j < month.size(); j++) {
+				if(month.get(i).equals(month.get(j))) {
+					month.remove(j);
+					j--;
+				}
+			}
+		}
+		
+		if(list.size() == 0) {
+			modelMap.put("status","null");
+		}
+		
+		modelMap.put("list", list);
+		modelMap.put("month", month);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/getMenuCate", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getMenuCate() throws Throwable {
+	
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+	
+		try {
+			
+			List<HashMap<String,String>> list = iNyService.getMenuCate();
+			
+			modelMap.put("list", list);
+			
+			System.out.println(list);
+		}
+		catch(Throwable e) {
+			e.printStackTrace();
+			modelMap.put("msg", "error");
+		}
+		
+		return mapper.writeValueAsString(modelMap);
+
+	}
+	
+	@RequestMapping(value="/getMenuChartDataDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getMenuChartDataDetail(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> dataList = iNyService.getMenuChartDataDetail(params);
+		
+		List<Object> name = new ArrayList<Object>(); 
+		
+		for(int i = 0; i < dataList.size(); i++) {
+			name.add(dataList.get(i).get("MENU_NAME"));
+		}
+			
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		for(int i = 0; i < dataList.size(); i++) {
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			
+			data.put("type", "column");
+			data.put("name", name.get(i));
+	
+			List<Object> y = new ArrayList<Object>(); 
+			for(int j = 0; j < dataList.size(); j++) {
+				if(dataList.get(j).get("MENU_NAME").equals(name.get(i))) {
+					y.add(dataList.get(j).get("CNT"));
+				}
+			}
+			
+			data.put("data", y);
+			
+			list.add(data);
+			
+			if(y.size() == 0) {
+				modelMap.put("status","null");
+			} else {
+				modelMap.put("status","fine");
+			}
+		}
+		
+		if(params.get("menuCate").equals("0")) {
+			String[] color = {"#233c11","#457722","#66b032","#82cd4","#9dd874","#b9e39c","#e3f4d7"};
+			modelMap.put("color", color);
+		} else if(params.get("menuCate").equals("1")) {
+			String[] color = {"#644f02","#b08a03","#e2b203","#fccc1a","#fcd74f","#fde281","#feeeb4", "#fff9e6"};
+			modelMap.put("color", color);
+		} else if(params.get("menuCate").equals("2")) {
+			String[] color = {"#142e39","#214d5f","#2e6c85","#3b8bab","#54a5c4","#7ab9d1","#a0cdde", "#c6e1eb" ,"#ecf5f8"};
+			modelMap.put("color", color);
+		} else {
+			String[] color = {"#7e2d01","#ca4802","#fc5a03","#fd6b1c","#54a5c4","#fd8c4e","#fead81", "#feceb3"};
+			modelMap.put("color", color);
+		}
+		
+		if(list.size() == 0) {
+			modelMap.put("status","null");
+		}
+		modelMap.put("list", list);
+		modelMap.put("name", name);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
+	@RequestMapping(value="/Chart")
+	public ModelAndView Chart(ModelAndView mav) {
+		
+		mav.setViewName("ny/Chart");
+		
+		return mav;
+		
+	}
+	
+	@RequestMapping(value="/getHeadMonthlyChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@ResponseBody
+	public String getHeadMonthlyChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> dataList = iNyService.getHeadMonthlyChartData(params);
+		
+		List<Object> name = new ArrayList<Object>(); 
+		
+		for(int i = 0; i < dataList.size(); i++) {
+			name.add(dataList.get(i).get("BRCH_NAME"));
+		}
+	
+		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+		
+		for(int i = 0; i < dataList.size(); i++) {
+			HashMap<String, Object> data = new HashMap<String, Object>();
+			
+			data.put("type", "column");
+			data.put("name", name.get(i));
+	
+			List<Object> y = new ArrayList<Object>(); 
+			for(int j = 0; j < dataList.size(); j++) {
+				if(dataList.get(j).get("BRCH_NAME").equals(name.get(i))) {
+					y.add(dataList.get(j).get("TOT_NET"));
+				}
+			}
+			
+			data.put("data", y);
+			
+			list.add(data);
+			
+			
+		}
+		
+		if(list.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
+		
+		modelMap.put("list", list);
+		modelMap.put("name", name);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+
+
+
 }
+
+
+
+
+
+
+

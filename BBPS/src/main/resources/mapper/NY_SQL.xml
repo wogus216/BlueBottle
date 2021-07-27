@@ -389,6 +389,149 @@
 	<select id="getBrchList" resultType="hashmap">
 	SELECT BRCH_NO, BRCH_NAME
 	FROM BRCH
+	WHERE DEL_FLAG = 1
 	</select>
 	
+	<select id="getDailyChartData" parameterType="hashmap" resultType="hashmap">
+	SELECT  ENROLL_DATE, SUBSTR(ENROLL_DATE,9,2) AS DAY, SALES_PRICE, ORD_PRICE, (SALES_PRICE-ORD_PRICE) AS NET_PRICE
+	FROM(SELECT NVL(O.ENROLL_DATE,S.ENROLL_DATE)AS ENROLL_DATE,
+	           NVL(ORD_PRICE,0) AS ORD_PRICE,
+	           NVL(SALES_PRICE,0) AS SALES_PRICE
+	    FROM (SELECT TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE, SUM(I.PRICE) AS ORD_PRICE
+	            FROM ORD O INNER JOIN ORD_ITEM I
+	                         ON O.ORD_NO = I.ORD_NO
+	                       INNER JOIN BRCH B
+	                         ON O.BRCH_NO = B.BRCH_NO
+	             WHERE (O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+	                    OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8)
+                  <if test="brch_choice != null and brch_choice != ''">
+	           		<if test="brch_choice != 9999" >
+	           		AND O.BRCH_NO = #{brch_choice}
+	           		</if>
+	           	  </if>
+	            GROUP BY TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD'))O
+	    FULL OUTER JOIN (SELECT TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE, SUM(M.CNT * P.MENU_PRICE) AS SALES_PRICE
+	                    FROM SALES S INNER JOIN SALES_MENU M 
+	                                    ON S.SALES_NO = M.SALES_NO
+	                                 INNER JOIN POS_MENU P
+	                                    ON M.MENU_NO = P.MENU_NO
+	                                 INNER JOIN BRCH B
+	                                    ON S.BRCH_NO = B.BRCH_NO
+	                    WHERE S.CNL_DATE IS NULL
+	                    <if test="brch_choice != null and brch_choice != ''">
+			           		<if test="brch_choice != 9999" >
+			           		AND S.BRCH_NO = #{brch_choice}
+			           		</if>
+			           	</if>
+	                    GROUP BY TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')) S
+	    ON  O.ENROLL_DATE = S.ENROLL_DATE)
+	WHERE SUBSTR(ENROLL_DATE,1,4) = #{year} AND SUBSTR(ENROLL_DATE,6,2) = #{month}
+	ORDER BY ENROLL_DATE
+	</select>
+	
+	<select id="getMonthlyChartData" parameterType="hashmap" resultType="hashmap">
+	SELECT  ENROLL_DATE, SUBSTR(ENROLL_DATE,6,2) AS MONTH, SALES_PRICE, ORD_PRICE, (SALES_PRICE-ORD_PRICE) AS NET_PRICE
+	FROM(SELECT NVL(O.ENROLL_DATE,S.ENROLL_DATE)AS ENROLL_DATE,
+	           NVL(ORD_PRICE,0) AS ORD_PRICE,
+	           NVL(SALES_PRICE,0) AS SALES_PRICE
+	    FROM (SELECT TO_CHAR(O.ENROLL_DATE,'YYYY-MM') AS ENROLL_DATE, SUM(I.PRICE) AS ORD_PRICE
+	            FROM ORD O INNER JOIN ORD_ITEM I
+	                         ON O.ORD_NO = I.ORD_NO
+	                       INNER JOIN BRCH B
+	                         ON O.BRCH_NO = B.BRCH_NO
+	             WHERE (O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+	                    OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8)
+	             AND O.BRCH_NO = 2
+	            GROUP BY TO_CHAR(O.ENROLL_DATE,'YYYY-MM'))O
+	    FULL OUTER JOIN (SELECT TO_CHAR(S.ENROLL_DATE,'YYYY-MM') AS ENROLL_DATE, SUM(M.CNT * P.MENU_PRICE) AS SALES_PRICE
+	                    FROM SALES S INNER JOIN SALES_MENU M 
+	                                    ON S.SALES_NO = M.SALES_NO
+	                                 INNER JOIN POS_MENU P
+	                                    ON M.MENU_NO = P.MENU_NO
+	                                 INNER JOIN BRCH B
+	                                    ON S.BRCH_NO = B.BRCH_NO
+	                    WHERE S.CNL_DATE IS NULL
+	                    AND S.BRCH_NO = 2
+	                    GROUP BY TO_CHAR(S.ENROLL_DATE,'YYYY-MM')) S
+	    ON  O.ENROLL_DATE = S.ENROLL_DATE)
+	WHERE SUBSTR(ENROLL_DATE,1,4) = #{year}
+	ORDER BY ENROLL_DATE
+	</select>
+	
+	<select id="getMenuChartData" parameterType="hashmap" resultType="hashmap">
+	SELECT TO_CHAR(S.ENROLL_DATE, 'YYYY-MM') AS ENROLL_DATE,  TO_CHAR(S.ENROLL_DATE, 'MM') AS MONTH, PC.CATE_NAME, SUM(CNT) AS CNT
+	FROM SALES S INNER JOIN SALES_MENU SM
+	              ON S.SALES_NO = SM.SALES_NO
+	             INNER JOIN POS_MENU PM
+	              ON SM.MENU_NO = PM.MENU_NO
+	             INNER JOIN POS_CATE PC
+	              ON PM.POS_CATE_NO = PC.CATE_NO
+	WHERE PC.DEL_FLAG = 1 
+	AND S.CNL_DATE IS NULL
+	AND TO_CHAR(S.ENROLL_DATE,'YYYY') = #{year}
+	<if test="brch_choice != null and brch_choice != ''">
+   		<if test="brch_choice != 9999" >
+   		AND S.BRCH_NO = #{brch_choice}
+   		</if>
+    </if>
+	GROUP BY TO_CHAR(S.ENROLL_DATE, 'YYYY-MM'),TO_CHAR(S.ENROLL_DATE, 'MM'), PC.CATE_NAME
+	ORDER BY TO_CHAR(S.ENROLL_DATE, 'YYYY-MM')
+	</select>
+	
+	<select id="getMenuChartDataDetail" parameterType="hashmap" resultType="hashmap">
+	SELECT *
+	FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YYYY-MM') AS ENROLL_DATE, PC.CATE_NAME, PM.MENU_NAME, SUM(SM.CNT) AS CNT
+	    FROM SALES S INNER JOIN SALES_MENU SM
+	                    ON S.SALES_NO = SM.SALES_NO
+	                 INNER JOIN POS_MENU PM
+	                    ON SM.MENU_NO = PM.MENU_NO
+	                 INNER JOIN POS_CATE PC
+	                    ON PM.POS_CATE_NO = PC.CATE_NO
+	    WHERE S.CNL_DATE IS NULL
+	    AND PC.DEL_FLAG = 1
+	    AND TO_CHAR(S.ENROLL_DATE,'YYYY') = #{year}
+	    AND TO_CHAR(S.ENROLL_DATE,'MM') = #{month}
+	    <if test="brch_choice != null and brch_choice != ''">
+       		<if test="brch_choice != 9999" >
+       		AND S.BRCH_NO = #{brch_choice}
+       		</if>
+       	</if>
+	    <if test="menuCate != null and menuCate != ''">
+			<if test="menuCate != 9999" >
+			AND PC.CATE_NO = #{menuCate}
+			</if>
+    	</if>
+	    GROUP BY TO_CHAR(S.ENROLL_DATE,'YYYY-MM'), PC.CATE_NAME, PM.MENU_NAME)
+	ORDER BY CNT DESC
+	</select> 
+	
+	<select id="getHeadMonthlyChartData" parameterType="hashmap" resultType="hashmap">
+	SELECT BRCH_NAME, SUBSTR(ENROLL_DATE,6,2) AS MONTH, SUM((SALES_PRICE-ORD_PRICE)) AS TOT_NET
+	FROM(SELECT NVL(O.BRCH_NAME,S.BRCH_NAME) AS BRCH_NAME, 
+	            NVL(O.ENROLL_DATE,S.ENROLL_DATE)AS ENROLL_DATE,
+	            NVL(ORD_PRICE,0) AS ORD_PRICE,
+	            NVL(SALES_PRICE,0) AS SALES_PRICE
+	    FROM (SELECT B.BRCH_NAME, TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE, SUM(I.PRICE) AS ORD_PRICE
+	            FROM ORD O INNER JOIN ORD_ITEM I
+	                         ON O.ORD_NO = I.ORD_NO
+	                       INNER JOIN BRCH B
+	                         ON O.BRCH_NO = B.BRCH_NO
+	             WHERE (O.STAT_CODE = 0 OR O.STAT_CODE = 2 OR O.STAT_CODE = 4
+	                    OR O.STAT_CODE = 5 OR O.STAT_CODE = 6 OR O.STAT_CODE = 8)
+	            GROUP BY B.BRCH_NAME, TO_CHAR(O.ENROLL_DATE,'YYYY-MM-DD')) O
+	    FULL OUTER JOIN (SELECT B.BRCH_NAME, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')AS ENROLL_DATE, SUM(M.CNT * P.MENU_PRICE) AS SALES_PRICE
+	                    FROM SALES S INNER JOIN SALES_MENU M 
+	                                    ON S.SALES_NO = M.SALES_NO
+	                                 INNER JOIN POS_MENU P
+	                                    ON M.MENU_NO = P.MENU_NO
+	                                 INNER JOIN BRCH B
+	                                    ON S.BRCH_NO = B.BRCH_NO
+	                    WHERE S.CNL_DATE IS NULL
+	                    GROUP BY B.BRCH_NAME, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')) S
+	     ON O.BRCH_NAME = S.BRCH_NAME AND O.ENROLL_DATE = S.ENROLL_DATE)
+	WHERE SUBSTR(ENROLL_DATE,1,4) = #{year}
+	AND SUBSTR(ENROLL_DATE,6,2) = #{month}
+	GROUP BY BRCH_NAME, SUBSTR(ENROLL_DATE,6,2)
+	ORDER BY SUBSTR(ENROLL_DATE,6,2)
+	</select>
 </mapper> 
