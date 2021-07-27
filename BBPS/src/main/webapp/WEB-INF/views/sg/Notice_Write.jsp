@@ -335,6 +335,7 @@ function closePopup() {
 	<input type="hidden" name="page" value="${param.page}" />
 	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
+	
 </form>
 <form action="#" id="addForm" method="post">
 <select class="cate" id="cateNo" name="cateNo" >
@@ -351,6 +352,7 @@ function closePopup() {
 <span id="fileName"></span>
 <input type="hidden" name="nFile" id="nFile"/>
 <input type="hidden" name="nCate" id="nCate"/>
+<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 </form>
 <div class="submit">
 <input type="button" value="등록" id="addBtn" class="submit_btn" />

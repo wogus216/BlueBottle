@@ -491,4 +491,82 @@ public class sgController {
 		}
 		return mapper.writeValueAsString(modelMap);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping(value="/B_Notice")
+	public ModelAndView B_Notice(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		
+		int page = 1;
+		
+		if(params.get("page") != null) {
+			page = Integer.parseInt(params.get("page"));
+		}
+		
+		List<HashMap<String,String>> catelist = isgService.searchDateList();
+		
+		mav.addObject("catelist",catelist);
+		
+		mav.addObject("page", page);
+		mav.setViewName("sg/B_Notice");
+		
+		return mav;
+	}
+	@RequestMapping(value="/B_Notices",
+			method=RequestMethod.POST,
+			produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String B_Notices(
+			@RequestParam HashMap<String, String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		
+		// 현재 페이지
+		
+		int page = Integer.parseInt(params.get("page"));
+		
+		// 총 게시글 수
+		int cnt = isgService.getNCnt(params);
+
+		// 페이징 정보 취득
+		PagingBean pb = ipagingService.getPagingBean(page, cnt, 10, 5);
+		
+		// 게시글 시작번호, 종료 번호 할당
+		params.put("startCnt", Integer.toString(pb.getStartCount()));
+		params.put("endCnt", Integer.toString(pb.getEndCount()));
+		// 목록 취득
+		List<HashMap<String, String>> list = isgService.getNList(params);
+		
+		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
+		modelMap.put("list", list);
+		modelMap.put("result", result);
+		modelMap.put("pb", pb);
+		
+		System.out.println("list를 보자"+list);
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value="/B_Notice_Detail")
+	public ModelAndView B_Notice_Detail(
+			@RequestParam HashMap<String, String> params,
+			ModelAndView mav) throws Throwable {
+		HashMap<String, String> data = isgService.getN(params);
+		
+		mav.addObject("data", data);
+		System.out.println("상세보기 data"+data);
+		mav.setViewName("sg/B_Notice_Detail");
+		
+		return mav;
+	}
 }

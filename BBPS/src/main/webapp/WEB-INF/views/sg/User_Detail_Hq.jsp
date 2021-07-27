@@ -270,7 +270,8 @@ function closePopup() {
 <div class="content">
 <h1>사용자 조회</h1>
 <form action="#" id="goForm" method="post">
-	<input type="hidden" id="uNo" name="uNo"  value="${data.USER_NO}"/>
+	<input type="hidden" id="uNo" name="uNo"/>
+	<input type="hidden" id="dNo" name="dNo"/>
 	<input type="hidden" name="page" value="${param.page}" />
 	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
