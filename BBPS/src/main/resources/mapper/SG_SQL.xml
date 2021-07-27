@@ -24,13 +24,36 @@
 		</when>
 	</choose>
 </if>
+<if test = "cate != null and cate != ''">
+<choose>
+         <when  test ="cate == 0">
+            AND  CATE_NO IN (1,2,3,4,5)
+         </when>
+         <when  test ="cate == 1" >
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 2">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 3">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 4">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 5">
+            AND  CATE_NO IN #{cate}
+         </when>
+         
+      </choose>
+</if>
 </select>
 
 
 <select id ="getNList" parameterType="hashmap" resultType="hashmap">
-SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG
+SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG, N.CATE_NO
 FROM(SELECT TXT_NO, TITLE, TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS S_DT,H.USER_NAME
-        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG
+        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG, O.CATE_NO
     FROM NOTICE O INNER JOIN HQ_USER H
                           ON O.USER_NO = H.USER_NO
 WHERE O.DEL_FLAG=1 
@@ -51,6 +74,29 @@ AND 1=1
 		AND USER_NAME LIKE '%' || #{searchTxt} || '%'
 		</when>
 	</choose>
+</if>
+<if test = "cate != null and cate != ''">
+<choose>
+         <when  test ="cate == 0">
+            AND  CATE_NO IN (0,1,2,3,4, 5)
+         </when>
+         <when  test ="cate == 1" >
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 2">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 3">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 4">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 5">
+            AND  CATE_NO IN #{cate}
+         </when>
+         
+      </choose>
 </if>
 )N
 WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
@@ -83,7 +129,7 @@ WHERE TXT_NO = #{nNo}
 	SELECT CATE_NO, CATE_NAME
 	FROM NOTICE_CATE
 	WHERE DEL_FLAG = 1
-	</select>
+</select>
 
 
 
