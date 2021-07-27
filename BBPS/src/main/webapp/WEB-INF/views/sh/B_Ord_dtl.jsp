@@ -364,6 +364,7 @@ $(document).ready(function(){
 	});
 	$(".ord_cnl_btn").on("click",function(){
 		if(confirm("주문을 취소하시겠습니까?")){ //팝업 변경 필요
+		$(".submit_btn").on("click",function(){
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
@@ -384,6 +385,7 @@ $(document).ready(function(){
 			error : function(request,status,error){
 				console.log(error);
 			}
+		});
 		});
 		}
 	});
@@ -444,6 +446,36 @@ $(document).ready(function(){
 	});
 }); //ready end
 
+function makePopup(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 			"<button class=\"cnl_btn\">취소</button>";		
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".cnl_btn, .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+	}
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_Btn end
+}
 </script>
 <style type="text/css"></style>
 </head>

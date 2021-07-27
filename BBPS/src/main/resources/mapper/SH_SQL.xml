@@ -82,20 +82,21 @@
 </select>
 
 <select id="getRDtlList" parameterType="hashmap" resultType="hashmap">
-	SELECT ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT AS REF_PRICE, RSN
-	FROM(SELECT O.ORD_NO, OI.ITEM_NO, I.ITEM_NAME, OI.CNT, RI.CNT AS RCNT, IP.PRICE, RSN
-	 	 FROM ORD O INNER JOIN REF R
-                      		ON O.ORD_NO=R.ORD_NO
-               		INNER JOIN REF_ITEM RI
-               		    	ON R.REF_NO=RI.REF_NO
-               		INNER JOIN ITEM I
-                   	   		ON RI.ITEM_NO = I.ITEM_NO
-               		INNER JOIN ORD_ITEM OI
-                    	  	ON RI.ITEM_NO = OI.ITEM_NO
-                   	INNER JOIN ITEM_PRICE IP
-                       	    ON I.ITEM_NO=IP.ITEM_NO)REF
-	WHERE REF.ORD_NO= #{oNo}
-	GROUP BY ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT, RSN
+	SELECT A.ORD_NO, B.ITEM_NO, I.ITEM_NAME, A.CNT AS OCNT, B.CNT AS RCNT, IP.PRICE*B.CNT AS REF_PRICE, B.RSN
+	FROM (SELECT O.ORD_NO, OI.ITEM_NO,OI.CNT
+          FROM ORD O INNER JOIN ORD_ITEM OI
+                    		 ON O.ORD_NO = OI.ORD_NO
+                    		AND O.ORD_NO = #{oNo}
+           ) A LEFT OUTER JOIN (SELECT R.ORD_NO, RI.ITEM_NO,RI.CNT,RI.RSN
+               					  FROM REF R INNER JOIN REF_ITEM RI
+                                                	 ON R.REF_NO = RI.REF_NO
+                                              		AND R.ORD_NO = #{oNo}) B
+                                                                                
+                                                    ON A.ITEM_NO = B.ITEM_NO 
+                                                    LEFT OUTER JOIN ITEM_PRICE IP
+                                                    ON A.ITEM_NO = IP.ITEM_NO
+                                                    INNER JOIN ITEM I
+                                                    ON I.ITEM_NO = B.ITEM_NO
 </select>
 
 <select id="getRDtl" parameterType="hashmap" resultType="hashmap">
@@ -324,20 +325,21 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 </select>
 
 <select id="getBRDtlList" parameterType="hashmap" resultType="hashmap">
-	SELECT ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT AS REF_PRICE, RSN
-	FROM(SELECT O.ORD_NO, OI.ITEM_NO, I.ITEM_NAME, OI.CNT, RI.CNT AS RCNT, IP.PRICE, RSN
-	 	 FROM ORD O INNER JOIN REF R
-                      		ON O.ORD_NO=R.ORD_NO
-               		INNER JOIN REF_ITEM RI
-               		    	ON R.REF_NO=RI.REF_NO
-               		INNER JOIN ITEM I
-                   	   		ON RI.ITEM_NO = I.ITEM_NO
-               		INNER JOIN ORD_ITEM OI
-                    	  	ON RI.ITEM_NO = OI.ITEM_NO
-                   	INNER JOIN ITEM_PRICE IP
-                       	    ON I.ITEM_NO=IP.ITEM_NO)REF
-	WHERE REF.ORD_NO= #{oNo}
-	 GROUP BY ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT, RSN
+	SELECT A.ORD_NO, B.ITEM_NO, I.ITEM_NAME, A.CNT AS OCNT, B.CNT AS RCNT, IP.PRICE*B.CNT AS REF_PRICE, B.RSN
+	FROM (SELECT O.ORD_NO, OI.ITEM_NO,OI.CNT
+          FROM ORD O INNER JOIN ORD_ITEM OI
+                    		 ON O.ORD_NO = OI.ORD_NO
+                    		AND O.ORD_NO = #{oNo}
+           ) A LEFT OUTER JOIN (SELECT R.ORD_NO, RI.ITEM_NO,RI.CNT,RI.RSN
+               					  FROM REF R INNER JOIN REF_ITEM RI
+                                                	 ON R.REF_NO = RI.REF_NO
+                                              		AND R.ORD_NO = #{oNo}) B
+                                                                                
+                                                    ON A.ITEM_NO = B.ITEM_NO 
+                                                    LEFT OUTER JOIN ITEM_PRICE IP
+                                                    ON A.ITEM_NO = IP.ITEM_NO
+                                                    INNER JOIN ITEM I
+                                                    ON I.ITEM_NO = B.ITEM_NO
 </select>
 
 <select id="getBRDtl" parameterType="hashmap" resultType="hashmap">
