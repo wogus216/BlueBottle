@@ -322,6 +322,7 @@ button:focus{outline:none;}
 	position:absolute;
 	bottom:5%;
 	left:36.2%;
+	background-color: rgb(41, 128, 185);
 }
 .popup_content{
 	margin:10px;
@@ -351,14 +352,23 @@ button:focus{outline:none;}
 .close_btn{
 	width: 25px;
 	height: 25px;
-	background-color: #01a1dd;
 	float: right;
 	margin: 0px;
 	font-size: 25px;
+	color: white;
+	text-align:center;
+	border:0;
 	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
 }
 .apv_com, .send_com{
 	cursor : default;
+}
+#hisroty_btn{
+	width: 100px;
+	height: 50px;
+	font-size: 18px;
 }
 </style>
 <script type="text/javascript"
@@ -745,7 +755,7 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-<input type="button" class="history_btn" value="전체이력"/>
+<input type="button" class="history_btn" id="hisroty_btn" value="전체이력"/>
 <div class="ord_area">
 <ul class="ord_info">
 <li><strong>주문번호 : </strong>${data.ORD_NO}</li>

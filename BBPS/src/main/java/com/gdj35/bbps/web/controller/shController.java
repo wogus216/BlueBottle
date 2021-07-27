@@ -374,17 +374,23 @@ public class shController {
 		HashMap<String,Object> insertMap = new HashMap<String, Object>();
 		
 		try {
+			int cnt = ishService.writeRef(params);
+			
+			if(cnt > 0) {
+				modelMap.put("msg", "success");
+			} else {
+				modelMap.put("msg", "failed");
+			}    
+			
 	         for(int i = 0; i < ref_cnt.size(); i++) {
 	            insertMap.put("ref_cnt", ref_cnt.get(i));
 	            insertMap.put("rsn_note", rsn_note.get(i));
 	            insertMap.put("iNo", iNo.get(i));
 	            insertMap.put("oNo", oNo.get(i));
-	            System.out.println(insertMap);
 				
-	            int cnt = ishService.writeRef(params);
 	            int cnt2 = ishService.writeRefItem(insertMap);
 	            
-	            if(cnt > 0 && cnt2 > 0) {
+	            if(cnt2 > 0) {
 	               modelMap.put("msg", "success");
 	            } else {
 	               modelMap.put("msg", "failed");
