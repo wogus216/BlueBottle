@@ -111,6 +111,13 @@ public class sgDao implements IsgDao {
 		return sqlSession.delete("SG.deleteB", params);
 	}
 
+
+	@Override
+	public List<HashMap<String, String>> searchDateList() throws Throwable {
+		System.out.println("카테고리");
+		return sqlSession.selectList("SG.searchDateList");
+	}
+
 	
 	
 }

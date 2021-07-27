@@ -79,6 +79,12 @@ UPDATE NOTICE SET DEL_FLAG = 0
 WHERE TXT_NO = #{nNo}
 </update>
 
+<select id = "searchDateList" resultType="hashmap">
+	SELECT CATE_NO, CATE_NAME
+	FROM NOTICE_CATE
+	WHERE DEL_FLAG = 1
+	</select>
+
 
 
 
