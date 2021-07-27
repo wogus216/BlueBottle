@@ -81,4 +81,6 @@ public interface IsbService {
 	public int StorBSafeStock(HashMap<String, Object> insertMap) throws Throwable;
 
 	public int BSafeStock(HashMap<String, Object> insertMap) throws Throwable;
+
+	public int storbtnupdate(HashMap<String, Object> insertMap) throws Throwable;
 }

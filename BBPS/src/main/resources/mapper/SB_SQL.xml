@@ -771,4 +771,10 @@
 	<insert id="BSafeStock" parameterType="hashmap">
 	INSERT INTO ITEM_SAFE_STOCK VALUES (2,#{iNo},1)   
 	</insert>
+	
+	<!-- 지점 입고 처리 완료 시 입고 버튼 사라지도록 입고 플래그 변경 -->
+	<update id = "storbtnupdate" parameterType="hashmap" >
+	UPDATE ORD SET STOR_FLAG = 0
+	WHERE ORD_NO = #{oNo}
+	</update>
 </mapper> 

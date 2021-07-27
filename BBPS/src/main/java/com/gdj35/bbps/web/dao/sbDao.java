@@ -208,5 +208,10 @@ public class sbDao implements IsbDao{
 		return sqlsession.insert("sb.BSafeStock",insertMap);
 	}
 
+	@Override
+	public int storbtnupdate(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlsession.update("sb.storbtnupdate",insertMap);
+	}
+
 
 }

@@ -209,6 +209,11 @@ public class sbService implements IsbService{
 		return isbdao.BSafeStock(insertMap);
 	}
 
+	@Override
+	public int storbtnupdate(HashMap<String, Object> insertMap) throws Throwable {
+		return  isbdao.storbtnupdate(insertMap);
+	}
+
 	
 
 }

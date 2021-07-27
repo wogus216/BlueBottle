@@ -1013,6 +1013,7 @@ public class sbController {
 				}
 				
 				if(cnt > 0) {
+					isbservice.storbtnupdate(insertMap);
 					modelMap.put("msg", "success");
 				} else {
 					modelMap.put("msg", "failed");
