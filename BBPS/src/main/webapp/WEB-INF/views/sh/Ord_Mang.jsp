@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -162,7 +163,7 @@ input{
 	text-align: right;
 	margin-bottom: 10px;
 }
-[name=ref], [name=ord]{
+.ref, .ord, #ck1, #ck7{
 	margin: 0;
 	height: 20px;
 	width: 30px;
@@ -204,7 +205,7 @@ select{
 	height: 36px;
 }
 /* 일반버튼 */
-button{
+input[type=button]{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -212,7 +213,6 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
@@ -231,6 +231,7 @@ button{
 	font-size:18px;
 	margin:40px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+	cursor: pointer;
 }
 
 .page_btn button:hover{
@@ -258,75 +259,120 @@ button{
 <script type="text/javascript"
 		src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-var ord_ck_arr = [];
-var ref_ck_arr = [];
 $(document).ready(function(){
+
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
-	ord_ckBox_check();
-	ref_ckBox_check();
+	if("${param.BRCH_NO}" != ""){
+		$(".brch").val("${param.BRCH_NO}");
+	}
 	reloadList();
 	
-	$("#search_btn").on("click",function(){
+	$(".brch").change(function(){
+		$("#bNo").val($(".brch").val());
 		$("#page").val(1);
+		$(".search_input").val($("#Old_search_input").val());
+		reloadList();
+ 	});
+	
+	$("#search_btn").on("click",function(){
 		$("#search_old_txt").val($("#search_input").val());
+		$("#start_date").val($(".start_date").val());
+		$("#end_date").val($(".end_date").val());
+		$("#page").val(1);
 		reloadList();
 	});
-	$(".paging_area").on("click", "div", function(){
+	$(".page_area").on("click", "button", function(){
 		$("#search_input").val($("#search_old_txt").val());
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
 	$("#ck1").on("click",function(){
-		if($("input:checkbox[id='ck1']").prop("checked")){
-			$("input[name=ord]").prop("checked", true);
+		if($("#ck1").prop("checked")){
+			$(".ord").prop("checked", true);
 		}else{
-			$("input[name=ord]").prop("checked", false);
+			$(".ord").prop("checked", false);
 		}
-		ord_ckBox_check();
-		ref_ckBox_check();
-		reloadList();
 	});
 	$("#ck7").on("click",function(){
-		if($("input:checkbox[id='ck7']").prop("checked")){
-			$("input[name=ref]").prop("checked", true);
+		if($("#ck7").prop("checked")){
+			$(".ref").prop("checked", true);
 		}else{
-			$("input[name=ref]").prop("checked", false);
+			$(".ref").prop("checked", false);
 		}
-		ord_ckBox_check();
-		ref_ckBox_check();
-		reloadList();
 	});
 	$(".ord").click(function(){ 
-		   if($("input[class=ord]:checked").length==5){ 
+		   if($(".ord:checked").length==5){ 
 		       $("#ck1").prop("checked",true); 
 		    }else{ 
 		       $("#ck1").prop("checked",false); 
 		    }
-		   ord_ckBox_check();
-		   reloadList();
 		});
 	$(".ref").click(function(){ 
-		   if($("input[class=ref]:checked").length==4){ 
+		   if($(".ref:checked").length==4){ 
 		       $("#ck7").prop("checked",true); 
 		    }else{ 
 		       $("#ck7").prop("checked",false); 
 		    }
-			ref_ckBox_check();
-			reloadList();
 		});
+	$("input[type=checkbox]").click(function(){
+			if($("#ck2").is(":checked")==true){
+				$("#ordReq").prop("value", "0")
+			}if($("#ck2").is(":checked")==false){
+				$("#ordReq").prop("value", null)
+			}if($("#ck3").is(":checked")==true){
+				$("#ordCnl").prop("value", "1");
+			}if($("#ck3").is(":checked")==false){
+				$("#ordCnl").prop("value", null)
+			}if($("#ck4").is(":checked")==true){
+				$("#ordApv").prop("value", "2");
+			}if($("#ck4").is(":checked")==false){
+				$("#ordApv").prop("value", null)
+			}if($("#ck5").is(":checked")==true){
+				$("#ordNonApv").prop("value", "3");
+			}if($("#ck5").is(":checked")==false){
+				$("#ordNonApv").prop("value", null)
+			}if($("#ck6").is(":checked")==true){
+				$("#sendCom").prop("value", "4");
+			}if($("#ck6").is(":checked")==false){
+				$("#sendCom").prop("value", null)
+			}if($("#ck8").is(":checked")==true){
+				$("#refReq").prop("value", "5");
+			}if($("#ck8").is(":checked")==false){
+				$("#refReq").prop("value", null)
+			}if($("#ck9").is(":checked")==true){
+				$("#refCnl").prop("value", "6");
+			}if($("#ck9").is(":checked")==false){
+				$("#refCnl").prop("value", null)
+			}if($("#ck10").is(":checked")==true){
+				$("#refApv").prop("value", "7");
+			}if($("#ck10").is(":checked")==false){
+				$("#refApv").prop("value", null)
+			}if($("#ck11").is(":checked")==true){
+				$("#refNonApv").prop("value", "8");
+			}if($("#ck11").is(":checked")==false){
+				$("#refNonApv").prop("value", null);
+			}
+		$("#page").val(1);
+		$(".search_input").val($("#Old_search_input").val());
+		reloadList();
+		});
+	
 	$("tbody").on("click","tr",function(){
 		$("#oNo").val($(this).attr("ord_no"));
 		$("#search_input").val($("#search_old_txt").val());
-		$("#actionForm").attr("action","Ord_Mang_dtl");
+		$("#actionForm").prop("action","Ord_Mang_dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
+	
+	$(".start_date").val(lastWeek());
+	$(".end_date").val(today());
 }); //ready end
 
 function reloadList(){
 	var params = $("#actionForm").serialize();
-	
+	console.log($("#actionForm").serialize());
 	$.ajax({
 		url : "Ord_Mangs",
 		type : "post",  
@@ -341,41 +387,9 @@ function reloadList(){
 		}
 	});
 }
-function ord_ckBox_check(){
-ord_ck_arr = [];
-$(".ord:checked").each(function(){
-	ord_ck_arr.push(this.value*1);
-});
-console.log(ord_ck_arr);
-}
-function ref_ckBox_check(){
-ref_ck_arr = [];
-$(".ref:checked").each(function(){
-	ref_ck_arr.push(this.value*1);
-	
-});
-console.log(ref_ck_arr);
-}
 function drawList(list){
 	var html ="";
 	for(var d of list){
-		for(var i=0; i<ord_ck_arr.length; i++){
-			if(d.CODE_S_CATE == ord_ck_arr[i]){
-				html += "<tr ord_no = \""+d.ORD_NO+"\">";
-				html += "<td>"+d.ORD_NO+"</td>";
-				html += "<td>"+d.ENROLL_DATE+"</td>";
-				html += "<td>"+d.BRCH_NAME+"</td>";
-				html += "<td>"+d.CODE_NAME+"</td>";
-				if(d.PROCESS_DATE == null){
-					html += "<td></td>"
-				}else{
-				html += "<td>"+d.PROCESS_DATE+"</td>"
-				}
-				html += "</tr>";
-			}
-		}
-		for(var i=0; i<ref_ck_arr.length; i++){
-			if(d.CODE_S_CATE == ref_ck_arr[i]){
 				html += "<tr ord_no = \""+d.ORD_NO+"\">";
 				html += "<td>"+d.ORD_NO+"</td>";
 				html += "<td>"+d.ENROLL_DATE+"</td>";
@@ -387,10 +401,35 @@ function drawList(list){
 				html += "<td>"+d.PROCESS_DATE+"</td>"
 				}
 				html += "</tr>";
-			}
-		}
 	}
 	$("tbody").html(html);
+}
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
+
+function lastWeek() { //일주일전 날짜 구하기
+	  var d = new Date();
+	  var dayOfMonth = d.getDate();
+	  d.setDate(dayOfMonth - 7);
+	  return splitdate(d);
+}
+
+function splitdate(resdate){
+	
+	var dd = resdate.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm = resdate.getMonth()+1;
+	var yyyy = resdate.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+		
+	return yyyy+"-"+mm+"-"+dd;
 }
 function drawPaging(pb){
 	var html = "";
@@ -567,39 +606,32 @@ function drawPaging(pb){
 
 <div class="filter_area">
 	<select class="brch">
-		<option value="0" selected="selected">지점명</option>
-		<option value="1">광화문점</option>
-		<option value="2">난곡점</option>
-		<option value="3">망원점</option>
-		<option value="4">삼청한옥점</option>
-		<option value="5">서인천점</option>
-		<option value="6">성수점</option>
-		<option value="7">압구정점</option>
-		<option value="8">여의도점</option>
-		<option value="9">부천점</option>
-		<option value="10">방화점</option>
+		<option selected="selected" value="">지점명</option>
+		<c:forEach items="${brchList}" var = "d">
+           <option value="${d.BRCH_NO}">
+           <c:out value="${d.BRCH_NAME}"/></option>
+         </c:forEach>
 	</select>
-	<input class="start_date" type = "date" value="2021-01-01"/>
-	<input class="end_date" type = "date" value="2021-01-01"/>
-	<button class="search_btn">검색</button>
+	<input class="start_date" type = "date"/>
+	<input class="end_date" type = "date"/>
 </div>
 <fieldset style = "margin-right:10px;">
-				<legend>주문선택</legend>
-		<input type = "checkbox" id="ck1" name="ord" checked="checked"/><label id="ck1" for="ck1">전체</label>
-		<input type = "checkbox" id="ck2" class="ord" name="ord" value="0" checked="checked"/><label for="ck2">주문요청</label>
-		<input type = "checkbox" id="ck3" class="ord" name="ord" value="1" checked="checked"/><label for="ck3">주문요청취소</label>
-		<input type = "checkbox" id="ck4" class="ord" name="ord" value="2" checked="checked"/><label for="ck4">주문승인</label>
-		<input type = "checkbox" id="ck5" class="ord" name="ord" value="3" checked="checked"/><label for="ck5">주문승인거부</label>
-		<input type = "checkbox" id="ck6" class="ord" name="ord" value="4" checked="checked"/><label style = "margin-right:0px;" for="ck6">발송완료</label>
+		<legend>주문선택</legend>
+		<input type = "checkbox" id="ck1" checked="checked"/><label id="ck1" for="ck1">전체</label>
+		<input type = "checkbox" id="ck2" class="ord" checked="checked" value="0"/><label for="ck2">주문요청</label>
+		<input type = "checkbox" id="ck3" class="ord" checked="checked" value="1"/><label for="ck3">주문요청취소</label>
+		<input type = "checkbox" id="ck4" class="ord" checked="checked" value="2"/><label for="ck4">주문승인</label>
+		<input type = "checkbox" id="ck5" class="ord" checked="checked" value="3"/><label for="ck5">주문승인거부</label>
+		<input type = "checkbox" id="ck6" class="ord" checked="checked" value="4"/><label style = "margin-right:0px;" for="ck6">발송완료</label>
 		
 	</fieldset>
 	<fieldset style =  "float:right; margin-bottom: 20px;">
 		<legend>환불선택</legend>
-		<input type = "checkbox" id="ck7" name="ref" checked="checked"/><label id="ck6" for="ck7">전체</label>
-		<input type = "checkbox" id="ck8" class="ref" name="ref" value="5" checked="checked"/><label for="ck8">환불요청</label>
-		<input type = "checkbox" id="ck9" class="ref" name="ref" value="6" checked="checked"/><label for="ck9">환불요청취소</label>
-		<input type = "checkbox" id="ck10" class="ref" name="ref" value="7" checked="checked"/><label for="ck10">환불승인</label>
-		<input type = "checkbox" id="ck11" class="ref" name="ref" value="8" checked="checked"/><label style = "margin-right:0px;" for="ck11">환불승인거부</label>
+		<input type = "checkbox" id="ck7" checked="checked"/><label id="ck6" for="ck7">전체</label>
+		<input type = "checkbox" id="ck8" class="ref" checked="checked" value="5"/><label for="ck8">환불요청</label>
+		<input type = "checkbox" id="ck9" class="ref" checked="checked" value="6"/><label for="ck9">환불요청취소</label>
+		<input type = "checkbox" id="ck10" class="ref" checked="checked" value="7"/><label for="ck10">환불승인</label>
+		<input type = "checkbox" id="ck11" class="ref" checked="checked" value="8"/><label style = "margin-right:0px;" for="ck11">환불승인거부</label>
 	</fieldset>
 <table cellspacing="0">
 	<colgroup>
@@ -630,7 +662,22 @@ function drawPaging(pb){
 			</select>
 			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-			<button class="search_btn" id="search_btn">검색</button>
+			<input type = "hidden" id = "bNo" name = "bNo"/>
+			
+			<input type = "hidden" id = "ordReq" name = "ordReq" value="0"/>
+			<input type = "hidden" id = "ordCnl" name = "ordCnl" value="1"/>
+			<input type = "hidden" id = "ordApv" name = "ordApv" value="2"/>
+			<input type = "hidden" id = "ordNonApv" name = "ordNonApv" value="3"/>
+			<input type = "hidden" id = "sendCom" name = "sendCom" value="4"/>
+			<input type = "hidden" id = "refReq" name = "refReq" value="5"/>
+			<input type = "hidden" id = "refCnl" name = "refCnl" value="6"/>
+			<input type = "hidden" id = "refApv" name = "refApv" value="7"/>
+			<input type = "hidden" id = "refNonApv" name = "refNonApv" value="8"/>
+			
+			<input type = "hidden" id = "start_date" name = "start_date"/>
+			<input type = "hidden" id = "end_date" name = "end_date"/>
+			
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
 		</form>
 	</div>
 </div>

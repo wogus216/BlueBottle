@@ -28,17 +28,19 @@ public class shController {
 	public IPagingService iPagingService;
 	
 	@RequestMapping(value = "/Ord_Mang")
-	public ModelAndView Ord_Mang(
-			@RequestParam HashMap<String, String> params,
+	public ModelAndView Ord_Mang(@RequestParam HashMap<String, String> params,
 			ModelAndView mav) throws Throwable{
 		int page=1;
 		
 		if(params.get("page") != null) {
 			  page=Integer.parseInt(params.get("page"));
 		}
-		   
+		List<HashMap<String,String>> brchList = ishService.getBrchList();
+		
+		mav.addObject("brchList",brchList);   
 		mav.addObject("page", page);
 		mav.setViewName("sh/Ord_Mang");
+		
 		return mav;   
 	}
 	@RequestMapping(value = "/Ord_Mangs",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
@@ -52,7 +54,7 @@ public class shController {
 		
 		int cnt  = ishService.getOCnt(params);
 		
-		PagingBean pb = iPagingService.getPagingBean(page, cnt);
+		PagingBean pb = iPagingService.getPagingBean(page, cnt,10,5);
 		
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
@@ -87,8 +89,8 @@ public class shController {
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
 		
-		HashMap<String,String> popupList = ishService.getOWholeList(params);
-		modelMap.put("popupList", popupList);
+		List<HashMap<String,String>> OrdHistoryList = ishService.getOWholeList(params);
+		modelMap.put("OrdHistoryList", OrdHistoryList);
 		return mapper.writeValueAsString(modelMap);
 	}
 	@RequestMapping(value = "/ord_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
@@ -189,7 +191,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ord_send",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord_send(@RequestParam ArrayList<String> expDate, @RequestParam ArrayList<String> oNo1, @RequestParam ArrayList<String> iNo, @RequestParam HashMap<String,String> params) throws Throwable{
+	public String ord_send(@RequestParam ArrayList<String> expDate, @RequestParam ArrayList<String> oNo, @RequestParam ArrayList<String> iNo, @RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -198,7 +200,7 @@ public class shController {
 		try {
 	         for(int i = 0; i < expDate.size(); i++) {
 	            insertMap.put("expDate", expDate.get(i));
-	            insertMap.put("oNo1", oNo1.get(i));
+	            insertMap.put("oNo", oNo.get(i));
 	            insertMap.put("iNo", iNo.get(i));
 	            
 	            int cnt = ishService.sendO(params);
@@ -228,7 +230,7 @@ public class shController {
 		if(params.get("page") != null) {
 			  page=Integer.parseInt(params.get("page"));
 		}
-		   
+		
 		mav.addObject("page", page);
 		mav.setViewName("sh/B_Ord_List");
 		return mav;   
@@ -244,7 +246,7 @@ public class shController {
 		
 		int cnt  = ishService.getBOCnt(params);
 		
-		PagingBean pb = iPagingService.getPagingBean(page, cnt);
+		PagingBean pb = iPagingService.getPagingBean(page, cnt,10,5);
 		
 		params.put("startCnt", Integer.toString(pb.getStartCount()));
 		params.put("endCnt", Integer.toString(pb.getEndCount()));
@@ -263,12 +265,12 @@ public class shController {
 		HashMap<String,String> data = ishService.getBODtl(params);
 		List<HashMap<String,String>> list = ishService.getBODtlList(params);
 		HashMap<String,String> data2 = ishService.getBRDtl(params);
-	    List<HashMap<String,String>> list2 = ishService.getBRDtlList(params);
-
+		List<HashMap<String,String>> list2 = ishService.getBRDtlList(params);
 		mav.addObject("list",list);
 		mav.addObject("data",data);
 		mav.addObject("list2",list2);
 		mav.addObject("data2",data2);
+		
 		mav.setViewName("sh/B_Ord_dtl");
 		return mav;
 	   }
@@ -324,16 +326,131 @@ public class shController {
 	public ModelAndView B_Ref(
 			@RequestParam HashMap<String, String> params,
 			ModelAndView mav) throws Throwable {
-		List<HashMap<String,String>> list = ishService.getRefItem(params);
-		mav.addObject("list",list);
 		mav.setViewName("sh/B_Ref");
 		return mav;
 	   }
+	@RequestMapping(value = "/RefItem",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String RefItem(@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> list = ishService.getRefItem(params);
+		
+		modelMap.put("list", list);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	
 	@RequestMapping(value = "/B_Ord_Req")
 	public ModelAndView B_Ord_Req(
-			@RequestParam HashMap<String, String> params,
-			ModelAndView mav) throws Throwable{
+			@RequestParam HashMap<String, String> params, ModelAndView mav) throws Throwable{
+		List<HashMap<String,String>> catelist = ishService.getCateList();
+		
+		mav.addObject("catelist",catelist);
 		mav.setViewName("sh/B_Ord_Req");
 		return mav;   
+	}
+	@RequestMapping(value = "/Ord_Item_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String Ord_Item_List(@RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		List<HashMap<String,String>> list = ishService.getOrdItem(params);
+		
+		modelMap.put("list", list);
+		
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ref",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ref(@RequestParam ArrayList<String> ref_cnt, @RequestParam ArrayList<String> rsn_note, @RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> oNo, @RequestParam HashMap<String,String> params) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+	         for(int i = 0; i < ref_cnt.size(); i++) {
+	            insertMap.put("ref_cnt", ref_cnt.get(i));
+	            insertMap.put("rsn_note", rsn_note.get(i));
+	            insertMap.put("iNo", iNo.get(i));
+	            insertMap.put("oNo", oNo.get(i));
+	            System.out.println(insertMap);
+				
+	            int cnt = ishService.writeRef(params);
+	            int cnt2 = ishService.writeRefItem(insertMap);
+	            
+	            if(cnt > 0 && cnt2 > 0) {
+	               modelMap.put("msg", "success");
+	            } else {
+	               modelMap.put("msg", "failed");
+	            }
+	         }
+	            
+	      } catch (Throwable e) {
+	         e.printStackTrace();
+	            
+	         modelMap.put("msg", "error");
+	      }
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/ord",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String ord(@RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> ord_cnt, @RequestParam ArrayList<String> price) throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		HashMap<String,Object> insertMap = new HashMap<String, Object>();
+		
+		try {
+	         int cnt = ishService.writeOrd();
+				
+				if(cnt > 0) {
+					modelMap.put("msg", "success");
+				} else {
+					modelMap.put("msg", "failed");
+				}    
+				for(int i = 0; i < iNo.size(); i++) {
+		            insertMap.put("iNo", iNo.get(i));
+		            insertMap.put("ord_cnt", ord_cnt.get(i));
+		            insertMap.put("price", price.get(i));
+		            System.out.println(insertMap);
+					 
+					 
+					 int cnt2 = ishService.writeOrdItem(insertMap);
+					 
+					 if(cnt2 > 0) { 
+						 modelMap.put("msg", "success"); 
+					 } else {
+					 modelMap.put("msg", "failed"); 
+					 }
+		         }//for-end
+	
+	      } catch (Throwable e) {
+	         e.printStackTrace();
+	            
+	         modelMap.put("msg", "error");
+	      }
+			
+		return mapper.writeValueAsString(modelMap);
+	}
+	@RequestMapping(value = "/last_ord", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
+	@ResponseBody
+	public String last_ord() throws Throwable{
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String,Object> modelMap = new HashMap<String,Object>();
+		
+		HashMap<String,String> data = ishService.getLastONo();
+		
+		modelMap.put("data", data);
+		System.out.println(data);
+			
+		return mapper.writeValueAsString(modelMap);
 	}
 }

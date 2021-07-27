@@ -47,6 +47,10 @@ public interface IjhDao {
 
 	public int editBU(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> getRList(HashMap<String, String> params) throws Throwable;
+
+	public int getRCnt(HashMap<String, String> params)  throws Throwable;
+
 
 
 }

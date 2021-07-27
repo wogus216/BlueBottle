@@ -43,8 +43,8 @@ public class shDao implements IshDao{
 	}
 
 	@Override
-	public HashMap<String, String> getOWholeList(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("SH.getOWholeList", params);
+	public List<HashMap<String, String>> getOWholeList(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getOWholeList", params);
 	}
 
 	@Override
@@ -120,6 +120,46 @@ public class shDao implements IshDao{
 	@Override
 	public List<HashMap<String, String>> getRefItem(HashMap<String, String> params) throws Throwable {
 		return sqlSession.selectList("SH.getRefItem", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getOrdItem(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectList("SH.getOrdItem", params);
+	}
+
+	@Override
+	public int writeRefItem(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlSession.insert("SH.writeRefItem",insertMap);
+	}
+
+	@Override
+	public int writeRef(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("SH.writeRef",params);
+	}
+
+	@Override
+	public int writeOrd() throws Throwable {
+		return sqlSession.insert("SH.writeOrd");
+	}
+
+	@Override
+	public int writeOrdItem(HashMap<String, Object> insertMap) throws Throwable {
+		return sqlSession.insert("SH.writeOrdItem", insertMap);
+	}
+
+	@Override
+	public HashMap<String, String> getLastONo() throws Throwable {
+		return sqlSession.selectOne("SH.getLastONo");
+	}
+
+	@Override
+	public List<HashMap<String, String>> getBrchList() throws Throwable {
+		return sqlSession.selectList("SH.getBrchList");
+	}
+
+	@Override
+	public List<HashMap<String, String>> getCateList() throws Throwable {
+		return sqlSession.selectList("SH.getCateList");
 	}
 }
 

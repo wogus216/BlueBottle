@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix ="fmt" uri = "http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -218,7 +219,7 @@ td{
 textarea:focus{
 	outline: none;
 }
-.list_btn, .apv_com, .send_com{
+.list_btn{
 	margin-top:30px;
 	text-align:center;
 }
@@ -234,7 +235,7 @@ textarea:focus{
 .list_btn{
 	margin-top:100px;
 }
-.ord_cnl_btn, .ref_btn, .ref_cnl_btn, .stor_btn, .cnl_list_bnt{
+.ord_cnl_btn, .ref_btn, .ref_cnl_btn, .stor_btn, .cnl_list_bnt, .ref_list_btn{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -255,18 +256,19 @@ textarea:focus{
 .btn_area{
 	text-align: center;
 }
-button{
+input[type=button]{
 	color: white;
-	width: 100px;
-	height: 40px;
+	width: 180px;
+	height: 50px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:22px;
 	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
+	font-weight: bold;
 }
 button:focus{outline:none;}
 /* 팝업 */
@@ -306,7 +308,7 @@ button:focus{outline:none;}
 .popup_btn{
 	text-align:center;
 }
-.popup_btn button{
+.popup_btn input{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -342,7 +344,7 @@ button:focus{outline:none;}
 	font-size: 25px;
 	cursor: pointer;
 }
-.ord_cnl_com_btn, .ref_cnl_com_btn{
+.ord_cnl_com_btn, .ref_cnl_com_btn, .stor_com_btn{
 	cursor : default;
 }
 </style>
@@ -350,30 +352,14 @@ button:focus{outline:none;}
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".history_btn").on("click",function(){
-		var params = $("#goForm").serialize();
-		
-		$.ajax({
-			url : "ord_history",
-			type : "post",  
-			dataType :"json",
-			data : params,
-			success : function(res){
-				if(res.msg == "success"){
-					$("#goForm").submit();
-				}
-			},
-			error : function(request,status,error){
-				console.log(error);
-			}
-		});
-		historyPopup(function(){
-		});
-	});
+	
 	$(".list_btn").on("click",function(){
 		location.href="B_Ord_List";
 	});
 	$(".cnl_list_bnt").on("click",function(){
+		location.href="B_Ord_List";
+	});
+	$(".ref_list_bnt").on("click",function(){
 		location.href="B_Ord_List";
 	});
 	$(".ord_cnl_btn").on("click",function(){
@@ -458,108 +444,6 @@ $(document).ready(function(){
 	});
 }); //ready end
 
-function historyPopup(func){
-	var html ="";
-	html+= "<div class=\"bg\"></div>";	
-	html+= "<div class=\"popup_area\">";	
-	html+= "<div class=\"popup_head\">전체 이력조회";	
-	html+= 		"<button class=\"close_btn\" >X</button>";	
-	html+= "</div>";	
-	html+= "<div class=\"popup_content\">"
-	html+= "<table cellspacing=\"0\">";
-	html+= "<colgroup>";
-	html+=		"<col width=\"25%\">";
-	html+=		"<col width=\"25%\">";
-	html+=		"<col width=\"25%\">";
-	html+=		"<col width=\"25%\">";
-	html+= "</colgroup>";
-	html+= "<thead><tr style=\"background-color: #eee;\">";
-	html+=		"<th scope=\"col\">번호</th>";
-	html+=		"<th scope=\"col\">처리상태</th>";
-	html+=		"<th scope=\"col\">처리날짜</th>";
-	html+=		"<th scope=\"col\">처리자명</th>";
-	html+=	"</tr>";
-	html+=	"</theade>";
-	html+=	"<tbody>"+drawHistory(res.popupList)+"</tbody>";
-	html+= "</table>";
-	html+=	"</div>";	
-	html+= 		"<div class=\"popup_btn\">";	
-	html+= 			"<button class=\"submit_btn\">확인</button>";	
-	html+= 	 	"</div>";	
-	html+= "</div>";	
-	
-	$("body").prepend(html);
-	$(".popup_area").hide().show();
-	
-	$(".popup_btn, .close_btn").on("click",function(){
-		if(func !=null){
-			func.call();
-		}
-		closePopup();
-		});
-	}
-function drawList(popupList){
-		var i=1;
-		html += "<tr>";
-		html += "<td>"+i+">";
-		html += "<td>주문요청</td>";
-		html += "<td>"+popupList.ORD_ENROLL_DATE+"</td>";
-		html += "<td></td>";
-		html += "</tr>";
-		html += "<tr>";
-		i+=1;
-		html += "<td>"+i+">";
-		if(popupList.ORD_CODE_NAME=="주문취소"){
-			html += "<td>주문취소</td>";
-			html += "<td>"+popupList.ORD_ENROLL_DATE+"</td>";
-			html += "<td></td>";
-			html += "<tr>";
-		}else if(popupList.ORD_CODE_NAME=="주문승인거부"){
-			html += "<td>주문승인거부</td>";
-		}else{
-			html += "<td>주문승인</td>";
-		}
-		html += "<td>"+popupList.ORD_PROCESS_DATE+"</td>";
-		html += "<td>"+popupList.ORD_USER_NAME+"</td>";
-		html += "</tr>";
-			
-		i+=1;
-		html += "<td>"+i+">";
-		html += "<td>발송</td>";
-		html += "<td>"+popupList.ORD_PROCESS_DATE+"</td>";
-		html += "<td>"+popupList.SEND_USER_NAME+"</td>";
-		html += "</tr>";
-			
-		if(popupList.REF_CODE_NAME!=null){
-			i+=1;
-			html += "<tr>";
-			html += "<td>"+i+">";
-			html += "<td>환불요청</td>";
-			html += "<td>"+popupList.REF_ENROLL_DATE+"</td>";
-			html += "<td></td>";
-			html += "</tr>";
-		}
-		if(popupList.REF_CODE_NAME=="환불요청취소"){
-			html += "<td>환불요청취소</td>";
-			html += "<td>"+popupList.REF_PROCESS_DATE+"</td>";
-			html += "<td></td>";
-			html += "<tr>";
-		}else if(popupList.REF_CODE_NAME=="환불승인거부"){
-			html += "<td>환불승인거부</td>";
-		}else{
-			html += "<td>환불승인</td>";
-		}
-		html += "<td>"+popupList.REF_PROCESS_DATE+"</td>";
-		html += "<td>"+popupList.REF_USER_NAME+"</td>";
-		html += "</tr>";
-
-	$("tbody").html(html);
-}
-function closePopup() {
-	$(".bg, .popup_area").fadeOut(function(){
-		$(".bg, .popup_area").remove();
-	}); //popup_Btn end
-}
 </script>
 <style type="text/css"></style>
 </head>
@@ -709,7 +593,6 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-<button class="history_btn">전체이력</button>
 <div class="ord_area">
 <ul class="ord_info">
 <li><strong>주문번호 : </strong>${data.ORD_NO}</li>
@@ -770,15 +653,28 @@ function closePopup() {
 </c:if>
 <div class="btn_area">
 <c:if test="${data.CODE_NAME eq '주문요청'}">
-	<button class="ord_cnl_btn">주문취소</button>
-	<button class="cnl_list_bnt">목록</button>
+	<input type="button" class="ord_cnl_btn" value="주문취소"/>
+	<input type="button" class="cnl_list_bnt" value="목록"/>
 </c:if>
-<c:if test="${data.CODE_NAME eq '주문취소'}">
-	<button class="ord_cnl_com_btn" style="background-color: #b3b3b3;">주문취소완료</button>
-</c:if>
+<jsp:useBean id="today" class="java.util.Date"/>
+<fmt:parseDate var="send_date" value="${data.SEND_DATE}" pattern="yyyy-MM-dd HH:mm:ss"/>
+
+<fmt:parseNumber value="${today.time/(1000*60*60*24)}" integerOnly="true" var="nowday" scope="request"/>	
+<fmt:parseNumber value="${send_date.time/(1000*60*60*24)}" integerOnly="true" var="sendday" scope="request"/>	
 <c:if test="${data.CODE_NAME eq '발송완료'}">
-	<button class="ref_btn">환불요청</button>
-	<button class="stor_btn">입고</button>
+	<c:if test="${data2.CODE_NAME eq null}">
+	<c:if test="${nowday-sendday <= 7}">
+		<input type="button" class="ref_btn" value="환불요청"/>
+	</c:if>
+	</c:if>
+	<c:choose>
+	<c:when test="${data.STOR_FLAG eq 1}">
+	<input type="button" class="stor_btn" value="입고"/>
+	</c:when>
+	<c:otherwise>
+	<input type="button" class="stor_com_btn" style="background-color: #b3b3b3;" value="입고"/>
+	</c:otherwise>
+	</c:choose>
 </c:if>
 </div>
 </div>
@@ -795,64 +691,62 @@ function closePopup() {
 </c:choose>
 </ul>
 <table cellspacing="0">
-	<colgroup>
-		<col width="15%">
-		<col width="15%">
-		<col width="15%">
-		<col width="15%">
-		<col width="15%">
-		<col width="25%">
-	</colgroup>
-	<thead>
-	<tr>
-		<th scope="col" style="border-left: none;">품목코드</th>
-		<th scope="col">품목명</th>
-		<th scope="col">주문수량(개)</th>
-		<th scope="col">환불요청수량</th>
-		<th scope="col">가격(원)</th>
-		<th scope="col">환불사유</th>
-	</tr>
-	</thead>
-	<tbody>
-	
-	<tbody>
- 		<c:forEach var="data" items="${list2}">
- 			<tr>
-				<td>${data.ITEM_NO}</td>
-				<td>${data.ITEM_NAME}</td>
-				<td>${data.CNT}</td>
-				<td>${data.RCNT}</td>
-				<td>${data.REF_PRICE}</td>
-				<td>${data.RSN}</td>
-			</tr>
-		</c:forEach>
-	</tbody>
+   <colgroup>
+      <col width="15%">
+      <col width="15%">
+      <col width="15%">
+      <col width="15%">
+      <col width="15%">
+      <col width="25%">
+   </colgroup>
+   <thead>
+   <tr>
+      <th scope="col" style="border-left: none;">품목코드</th>
+      <th scope="col">품목명</th>
+      <th scope="col">주문수량(개)</th>
+      <th scope="col">환불요청수량</th>
+      <th scope="col">가격(원)</th>
+      <th scope="col">환불사유</th>
+   </tr>
+   </thead>
+   <tbody>
+       <c:forEach var="data" items="${list2}">
+          <tr>
+            <td>${data.ITEM_NO}</td>
+            <td>${data.ITEM_NAME}</td>
+            <td>${data.CNT}</td>
+            <td>${data.RCNT}</td>
+            <td>${data.REF_PRICE}</td>
+            <td>${data.RSN}</td>
+         </tr>
+      </c:forEach>
+   </tbody>
 </table>
-	<ul class="tot_price">
-		<li><strong>총 환불예상 금액 : </strong>${data2.TOT_PRICE} 원</li>
+   <ul class="tot_price">
+      <li><strong>총 환불예상 금액 : </strong>${data2.TOT_PRICE} 원</li>
 </ul>
 <c:if test="${data2.CODE_NAME eq '환불승인거부'}">
 <div class="rsn_area">
-	<div class="rsn_title">승인거부 사유</div>
-	<div class="rsn_content_area">
-	<textarea class="rsn_content" id = "rRsn" disabled=disabled>${data2.NON_APV_RSN}</textarea>
+   <div class="rsn_title">승인거부 사유</div>
+   <div class="rsn_content_area">
+   <textarea class="rsn_content" id = "rRsn" disabled=disabled>${data2.NON_APV_RSN}</textarea>
 </div>
 </div>
 </c:if>
 <div class="btn_area">
-	<c:if test="${data.CODE_NAME eq '환불요청'}">
-	<button class="ref_cnl_btn" style="background-color: #b3b3b3;">환불요청취소</button>
-	</c:if>
-	<c:if test="${data.CODE_NAME eq '환불요청취소'}">
-	<button class="ref_cnl_com_btn" style="background-color: #b3b3b3;">환불요청취소완료</button>
-	</c:if>
+   <c:if test="${data.CODE_NAME eq '환불요청'}">
+   <input type="button" class="ref_cnl_btn" style="background-color: #b3b3b3;" value="환불요청취소"/>
+   </c:if>
+   <c:if test="${data.CODE_NAME eq '환불요청취소'}">
+   <input type="button" class="ref_cnl_com_btn" style="background-color: #b3b3b3;" value="환불요청취소완료">
+   </c:if>
 </div>
 </div>
 </c:when>
 </c:choose>
 <c:if test="${data.CODE_NAME ne '주문요청'}">
 <div class="list_btn">
-<button>목록</button>
+<input type="button" value="목록">
 </div>
 </c:if>
 </div>

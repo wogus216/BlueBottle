@@ -223,7 +223,7 @@ textarea:focus{
 	text-align:center;
 }
 
-.list_btn button, .apv_com, .send_com{
+.list_btn input, .apv_com, .send_com{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -255,14 +255,15 @@ textarea:focus{
 .btn_area{
 	text-align: center;
 }
-button{
+input[type=button]{
 	color: white;
-	width: 100px;
-	height: 40px;
+	width: 180px;
+	height: 50px;
 	text-align:center;
+	font-weight: bold;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:22px;
 	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
@@ -314,11 +315,13 @@ button:focus{outline:none;}
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
+	position:absolute;
+	bottom:5%;
+	left:36.2%;
 }
 .popup_content{
-	margin:20px;
+	margin:10px;
 	font-size:18px;
 }
 .popup_area table {
@@ -328,8 +331,17 @@ button:focus{outline:none;}
 	border-top: 2px solid;
 	border-bottom: 2px solid;
 	text-align:center;
+	margin: 0;
 }
 
+.popup_area th{
+    padding: 7px;
+    font-size:15px;
+}
+.popup_area td{
+	font-size:15px;
+	padding:7px;
+}
 .popup_area td:first-child{
 	border-left: none;
 }
@@ -359,15 +371,12 @@ $(document).ready(function(){
 			dataType :"json",
 			data : params,
 			success : function(res){
-				if(res.msg == "success"){
-					$("#goForm").submit();
-				}
+				makePopup("전체이력 조회", HistoryListDraw(res.OrdHistoryList), function(){
+				});
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
-		});
-		historyPopup(function(){
 		});
 	});
 	$(".list_btn").on("click",function(){
@@ -485,14 +494,20 @@ $(document).ready(function(){
 	}
 	});
 	$(".send_btn").on("click",function(){
-		if($.trim($("#expDate").val())=="") {
+		var expCnt = 0;
+		$(".expDate").each(function(){
+			if($(this).val() == ""){
+				expCnt++;
+			}
+		});
+		
+		if(expCnt > 0){
 			alert("유통기한을 입력해주세요.");
-			$("#expDate").focus();
+		   $(".expDate").focus;
 		}else{
-		if(confirm("발송 처리하시겠습니까?")){ //팝업 변경 필요
-		var params = $("#sendForm").serialize();
-		console.log($("#sendForm").serialize());
-
+			if(confirm("발송 처리하시겠습니까?")){ //팝업 변경 필요
+				var params = $("#sendForm").serialize();
+				console.log($("#sendForm").serialize());
 		$.ajax({
 			url : "ord_send",
 			type : "post",  
@@ -501,7 +516,8 @@ $(document).ready(function(){
 			success : function(res){
 				if(res.msg == "success"){
 					alert("발송 처리되었습니다.");
-					location.href="Ord_Mang_dtl";
+					$("#sendForm").submit();
+					$("#goForm").submit();
 				}else if (res.msg == "failed"){
 					alert("발송처리에 실패하였습니다.");
 				}else {
@@ -517,31 +533,15 @@ $(document).ready(function(){
 	});
 }); //ready end
 
-function historyPopup(func){
+function makePopup(title, contents, func){
 	var html ="";
+	
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"popup_area\">";	
-	html+= "<div class=\"popup_head\">전체 이력조회";	
+	html+= "<div class=\"popup_head\">"+title +"";	
 	html+= 		"<button class=\"close_btn\" >X</button>";	
 	html+= "</div>";	
-	html+= "<div class=\"popup_content\">"
-	html+= "<table cellspacing=\"0\">";
-	html+= "<colgroup>";
-	html+=		"<col width=\"25%\">";
-	html+=		"<col width=\"25%\">";
-	html+=		"<col width=\"25%\">";
-	html+=		"<col width=\"25%\">";
-	html+= "</colgroup>";
-	html+= "<thead><tr style=\"background-color: #eee;\">";
-	html+=		"<th scope=\"col\">번호</th>";
-	html+=		"<th scope=\"col\">처리상태</th>";
-	html+=		"<th scope=\"col\">처리날짜</th>";
-	html+=		"<th scope=\"col\">처리자명</th>";
-	html+=	"</tr>";
-	html+=	"</theade>";
-	html+=	"<tbody>"+drawHistory(res.popupList)+"</tbody>";
-	html+= "</table>";
-	html+=	"</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
 	html+= 			"<button class=\"submit_btn\">확인</button>";	
 	html+= 	 	"</div>";	
@@ -557,62 +557,37 @@ function historyPopup(func){
 		closePopup();
 		});
 	}
-function drawList(popupList){
-		var i=1;
+function HistoryListDraw(OrdHistoryList){
+	var html = "";
+	
+	html+= "<table cellspacing=\"0\">";
+	html+= "<colgroup>";
+	html+=		"<col width=\"33%\">";
+	html+=		"<col width=\"33%\">";
+	html+=		"<col width=\"33%\">";
+	html+= "</colgroup>";
+	html+= "<thead><tr style=\"background-color: #eee;\">";
+	html+=		"<th scope=\"col\">처리상태</th>";
+	html+=		"<th scope=\"col\">처리날짜</th>";
+	html+=		"<th scope=\"col\">처리자명</th>";
+	html+=	"</tr>";
+	html+=	"</theade>";
+	html+=	"<tbody>";
+	for(var d of OrdHistoryList){
 		html += "<tr>";
-		html += "<td>"+i+">";
-		html += "<td>주문요청</td>";
-		html += "<td>"+popupList.ORD_ENROLL_DATE+"</td>";
-		html += "<td></td>";
-		html += "</tr>";
-		html += "<tr>";
-		i+=1;
-		html += "<td>"+i+">";
-		if(popupList.ORD_CODE_NAME=="주문취소"){
-			html += "<td>주문취소</td>";
-			html += "<td>"+popupList.ORD_ENROLL_DATE+"</td>";
+		html += "<td>"+d.CODE_NAME+"</td>";
+		html += "<td>"+d.ENROLL_DATE+"</td>";
+		if(d.USER_NAME==null){
 			html += "<td></td>";
-			html += "<tr>";
-		}else if(popupList.ORD_CODE_NAME=="주문승인거부"){
-			html += "<td>주문승인거부</td>";
 		}else{
-			html += "<td>주문승인</td>";
+		html += "<td>"+d.USER_NAME+"</td>";
 		}
-		html += "<td>"+popupList.ORD_PROCESS_DATE+"</td>";
-		html += "<td>"+popupList.ORD_USER_NAME+"</td>";
 		html += "</tr>";
-			
-		i+=1;
-		html += "<td>"+i+">";
-		html += "<td>발송</td>";
-		html += "<td>"+popupList.ORD_PROCESS_DATE+"</td>";
-		html += "<td>"+popupList.SEND_USER_NAME+"</td>";
-		html += "</tr>";
-			
-		if(popupList.REF_CODE_NAME!=null){
-			i+=1;
-			html += "<tr>";
-			html += "<td>"+i+">";
-			html += "<td>환불요청</td>";
-			html += "<td>"+popupList.REF_ENROLL_DATE+"</td>";
-			html += "<td></td>";
-			html += "</tr>";
-		}
-		if(popupList.REF_CODE_NAME=="환불요청취소"){
-			html += "<td>환불요청취소</td>";
-			html += "<td>"+popupList.REF_PROCESS_DATE+"</td>";
-			html += "<td></td>";
-			html += "<tr>";
-		}else if(popupList.REF_CODE_NAME=="환불승인거부"){
-			html += "<td>환불승인거부</td>";
-		}else{
-			html += "<td>환불승인</td>";
-		}
-		html += "<td>"+popupList.REF_PROCESS_DATE+"</td>";
-		html += "<td>"+popupList.REF_USER_NAME+"</td>";
-		html += "</tr>";
+	}
+	html+=	"</tbody>";
+	html+= "</table>";
 
-	$("tbody").html(html);
+	return html;
 }
 function closePopup() {
 	$(".bg, .popup_area").fadeOut(function(){
@@ -758,7 +733,7 @@ function closePopup() {
       	</div>
       </ul>
    </div>
-<form action = # id = "goForm" method = "post">
+<form action = "./Ord_Mang_dtl" id = "goForm" method = "post">
 	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
@@ -767,7 +742,7 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-<button class="history_btn">전체이력</button>
+<input type="button" class="history_btn" value="전체이력"/>
 <div class="ord_area">
 <ul class="ord_info">
 <li><strong>주문번호 : </strong>${data.ORD_NO}</li>
@@ -812,8 +787,8 @@ function closePopup() {
 					<c:choose>
 						<c:when test="${data1.CATE_NO eq 0 or data1.CATE_NO eq 1 or data1.CATE_NO eq 2}">
 							<td style="text-align: center;">
-							<input type="date" id="expDate" name="expDate"/>
-							<input type = "hidden" id = "oNo1" name = "oNo1" value="${data.ORD_NO}"/>
+							<input type="date" class="expDate" id="expDate" name="expDate"/>
+							<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
 							</td>
 						</c:when>
 					<c:otherwise>
@@ -854,27 +829,18 @@ function closePopup() {
 	</c:choose>
 </div>
 </div>
-<c:choose>
-<c:when test="${data.CODE_NAME eq '주문요청'}">
 <div class="btn_area">
-	<button class="apv_btn">승인</button>
-	<button class="non_apv_btn">승인거부</button>
-</div>
-</c:when>
-<c:otherwise>
-<div class="btn_area">
-<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-<c:choose>
-<c:when test="${data.CODE_NAME eq '주문승인'}">
-<button class="send_btn">발송</button>
-</c:when>
-<c:otherwise>
-<button class="send_com" style="background-color: #b3b3b3;">발송완료</button>
-</c:otherwise>
-</c:choose>
-</div>
-</c:otherwise>
-</c:choose>
+<c:if test="${data.CODE_NAME eq '주문요청'}">
+	<input type="button" class="apv_btn" value="승인"/>
+	<input type="button" class="non_apv_btn" value="승인거부"/>
+</c:if>
+<c:if test="${data.CODE_NAME eq '주문승인'}">
+	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	<input type="button" class="send_btn" value="발송"/>
+</c:if>
+<c:if test="${data.CODE_NAME eq '발송완료'}">
+<input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
+</c:if>
 </div>
 <c:choose>
 <c:when test="${data2.REF_NO ne null}">
@@ -941,33 +907,23 @@ function closePopup() {
 	</c:choose>
 </div>
 </div>
-<c:choose>
-<c:when test="${data.CODE_NAME eq '환불요청'}">
 <div class="btn_area">
-	<button class="ref_apv_btn">승인</button>
-	<button class="non_ref_apv_btn">승인거부</button>
+<c:if test="${data2.CODE_NAME eq '환불요청'}">
+	<input type="button" class="ref_apv_btn" value="승인"/>
+	<input type="button" class="non_ref_apv_btn" value="승인거부"/>
+</c:if>
+<c:if test="${data2.CODE_NAME eq '환불승인'}">
+	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+</c:if>
 </div>
-</c:when>
-<c:otherwise>
-<div class="btn_area">
-	<c:choose>
-		<c:when test="${data.CODE_NAME eq '환불요청취소'}">
-			<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-		</c:when>
-		<c:otherwise>
-			<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-		</c:otherwise>
-	</c:choose>
-</div>
-</c:otherwise>
-</c:choose>
 </div>
 </c:when>
 </c:choose>
 <div class="list_btn">
-<button>목록</button>
-</div>
-</div>
+<input type="button" value="목록"/>
+			</div>
+		</div>
+	</div>
 </div>
 </body>
 </html>

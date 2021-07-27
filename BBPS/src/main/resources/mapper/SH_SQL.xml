@@ -4,30 +4,42 @@
 	
 <select id="getOCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*) AS CNT
-	FROM ORD
-	WHERE DEL_FLAG!=0
+	FROM(SELECT CASE WHEN R.STAT_CODE IS NULL THEN O.STAT_CODE ELSE R.STAT_CODE END AS STAT_CODE, O.ENROLL_DATE, O.ORD_NO
+		   FROM ORD O LEFT OUTER JOIN REF R
+                            	   ON O.ORD_NO=R.ORD_NO
+                     	   INNER JOIN BRCH B
+					   		 	   ON O.BRCH_NO=B.BRCH_NO
+		  WHERE O.DEL_FLAG!=0 AND B.DEL_FLAG!=0
 		<if test="search_input != null and search_input != ''">
 			<choose>
 				<when test="search_filter == 0">
-					AND ORD_NO LIKE '%' || #{search_input} || '%'
+					AND O.ORD_NO LIKE '%' || #{search_input} || '%'
 				</when>
 			</choose>
 		</if>
+		<if test = "bNo != null and bNo != ''">
+			AND O.BRCH_NO = #{bNo}
+		</if>
+		<if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND O.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+		</if>
+		)
+		WHERE STAT_CODE IN (#{ordReq},#{ordCnl},#{ordApv},#{ordNonApv},#{sendCom},#{refReq},#{refCnl},#{refApv},#{refNonApv})
 </select>
 
 <select id ="getOList" parameterType="hashmap" resultType="hashmap">
-	SELECT ORD_NO, ENROLL_DATE, BRCH_NAME, CODE_NAME, PROCESS_DATE, CODE_S_CATE
-	FROM(SELECT ORD_NO, ENROLL_DATE, BRCH_NAME, CODE_NAME, PROCESS_DATE, C.CODE_S_CATE, ROW_NUMBER() OVER(ORDER BY ORD_NO DESC)AS RNUM
-		 FROM(SELECT CASE WHEN R.STAT_CODE IS NULL THEN O.STAT_CODE ELSE R.STAT_CODE END AS STAT_CODE,
+	SELECT ORD_NO, ENROLL_DATE, BRCH_NAME, CODE_NAME, PROCESS_DATE, BRCH_NO, STAT_CODE
+	FROM(SELECT ORD_NO, ENROLL_DATE, CODE_NAME, STAT_CODE, PROCESS_DATE, BRCH_NAME, B_DEL_FLAG, C.DEL_FLAG AS C_DEL_FLAG, O_DEL_FLAG, BRCH_NO, ROW_NUMBER() OVER(ORDER BY ORD_NO DESC)AS RNUM
+		 FROM(SELECT O.ORD_NO, CASE WHEN R.STAT_CODE IS NULL THEN O.STAT_CODE ELSE R.STAT_CODE END AS STAT_CODE, B.DEL_FLAG AS B_DEL_FLAG, O.DEL_FLAG AS O_DEL_FLAG,
 		 			 CASE WHEN R.ORD_NO IS NULL THEN TO_CHAR(O.PROCESS_DATE, 'YYYY-MM-DD') ELSE TO_CHAR(R.PROCESS_DATE, 'YYYY-MM-DD') END AS PROCESS_DATE, 
-		 			 O.ORD_NO AS ORD_NO, TO_CHAR(O.ENROLL_DATE, 'YYYY-MM-DD') AS ENROLL_DATE, BRCH_NAME
-		 	  FROM ORD O LEFT OUTER JOIN REF R
-                                	  ON O.ORD_NO=R.ORD_NO
-                         	  INNER JOIN BRCH B
-                                	  ON B.BRCH_NO=O.BRCH_NO
-         	  )ORD INNER JOIN COMMON_CODE C
+		 			  TO_CHAR(O.ENROLL_DATE, 'YYYY-MM-DD') AS ENROLL_DATE, BRCH_NAME, O.BRCH_NO
+                     FROM ORD O LEFT OUTER JOIN REF R
+                                 ON O.ORD_NO=R.ORD_NO
+                         INNER JOIN BRCH B
+                                 ON B.BRCH_NO=O.BRCH_NO
+                    )ORD INNER JOIN COMMON_CODE C
                       	   ON C.CODE_S_CATE=ORD.STAT_CODE
-	WHERE CODE_L_CATE=2
+	WHERE CODE_L_CATE=2 AND O_DEL_FLAG!=0 AND C.DEL_FLAG!=0 AND B_DEL_FLAG!=0
 	<if test="search_input != null and search_input != ''">
 		<choose>
 			<when test="search_filter == 0">
@@ -35,6 +47,13 @@
 			</when>
 		</choose>
 	</if>
+	<if test = "bNo != null and bNo != ''">
+			AND BRCH_NO = #{bNo}
+	</if>
+	<if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+		</if>
+		AND STAT_CODE IN (#{ordReq},#{ordCnl},#{ordApv},#{ordNonApv},#{sendCom},#{refReq},#{refCnl},#{refApv},#{refNonApv})
 		)ORDD
 	WHERE ORDD.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
@@ -76,6 +95,7 @@
                    	INNER JOIN ITEM_PRICE IP
                        	    ON I.ITEM_NO=IP.ITEM_NO)REF
 	WHERE REF.ORD_NO= #{oNo}
+	GROUP BY ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT, RSN
 </select>
 
 <select id="getRDtl" parameterType="hashmap" resultType="hashmap">
@@ -98,25 +118,98 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 </select>
 
 <select id="getOWholeList" parameterType="hashmap" resultType="hashmap">
-	SELECT O.STAT_CODE AS O_STAT_CODE, R.STAT_CODE AS R_STAT_CODE, C.CODE_NAME AS ORD_CODE_NAME, C2.CODE_NAME AS REF_CODE_NAME,
-           O.ENROLL_DATE AS ORD_ENROLL_DATE, R.ENROLL_DATE AS REF_ENROLL_DATE,
-           U.USER_NAME AS ORD_USER_NAME, U2.USER_NAME AS SEND_USER_NAME, U3.USER_NAME AS REF_USER_NAME,
-           O.PROCESS_DATE AS ORD_PROCESS_DATE, R.PROCESS_DATE AS REF_PROCESS_DATE
-    FROM ORD O INNER JOIN REF R
-                       ON O.ORD_NO=R.ORD_NO
-               INNER JOIN COMMON_CODE C2
-                       ON R.STAT_CODE=C2.CODE_S_CATE
-               INNER JOIN COMMON_CODE C
-                       ON O.STAT_CODE=C.CODE_S_CATE
-               INNER JOIN HQ_USER U
-                       ON U.USER_NO=O.APV_PROCESS_USER_NO
-               INNER JOIN HQ_USER U2
-                       ON U2.USER_NO=O.SEND_PROCESS_USER_NO
-               INNER JOIN HQ_USER U3
-                       ON U3.USER_NO=R.APV_PROCESS_USER_NO
-               INNER JOIN HQ_DEP D
-                       ON U.DEP_NO=D.DEP_NO
-	WHERE O.ORD_NO=#{oNo} AND C.CODE_L_CATE=2 AND C2.CODE_L_CATE=2
+	SELECT CODE_NAME,TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, USER_NAME
+	FROM(
+	SELECT CODE_S_CATE,CODE_NAME, O.ENROLL_DATE, CASE  WHEN APV_PROCESS_USER_NO IS NOT NULL THEN NULL END AS USER_NAME
+	FROM ORD O  INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 0
+	            AND O.STAT_CODE IN (0,1,2,3,4)
+	            AND O.ORD_NO = #{oNo}
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,PROCESS_DATE AS QDATE, CASE  WHEN APV_PROCESS_USER_NO IS NOT NULL THEN NULL END AS USER_NAME
+	FROM ORD O  INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 1
+	            AND O.STAT_CODE = 1
+	            AND O.ORD_NO = #{oNo}                 
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,PROCESS_DATE AS QDATE, USER_NAME
+	FROM ORD O  INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 2
+	            AND O.STAT_CODE IN (2,4)
+	            AND O.ORD_NO = #{oNo}
+	            INNER JOIN HQ_USER HU
+	            ON O.APV_PROCESS_USER_NO = HU.USER_NO
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,PROCESS_DATE AS QDATE, USER_NAME
+	FROM ORD O  INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 3
+	            AND O.STAT_CODE = 3
+	            AND O.ORD_NO = #{oNo}
+	            INNER JOIN HQ_USER HU
+	            ON O.APV_PROCESS_USER_NO = HU.USER_NO
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,SEND_DATE AS QDATE, USER_NAME
+	FROM ORD O  INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 4
+	            AND O.STAT_CODE = 4
+	            AND O.ORD_NO = #{oNo}
+	            INNER JOIN HQ_USER HU
+	            ON O.SEND_PROCESS_USER_NO = HU.USER_NO  
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,R.ENROLL_DATE AS QDATE, CASE  WHEN R.APV_PROCESS_USER_NO IS NOT NULL THEN NULL END AS USER_NAME
+	FROM ORD O INNER JOIN REF R
+	            ON O.ORD_NO = R.ORD_NO
+	            INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 5
+	            AND R.STAT_CODE IN (5,6,7,8) 
+	            AND O.ORD_NO = #{oNo}
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,R.PROCESS_DATE AS QDATE, CASE  WHEN R.APV_PROCESS_USER_NO IS NOT NULL THEN NULL END AS USER_NAME
+	FROM ORD O INNER JOIN REF R
+	            ON O.ORD_NO = R.ORD_NO
+	            INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 6
+	            AND R.STAT_CODE = 6
+	            AND O.ORD_NO = #{oNo}            
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,R.PROCESS_DATE AS QDATE, USER_NAME
+	FROM ORD O INNER JOIN REF R
+	            ON O.ORD_NO = R.ORD_NO
+	            INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 7
+	            AND R.STAT_CODE = 7
+	            AND O.ORD_NO = #{oNo}
+	            INNER JOIN HQ_USER HU
+	            ON R.APV_PROCESS_USER_NO = HU.USER_NO
+	UNION
+	SELECT CODE_S_CATE,CODE_NAME,R.PROCESS_DATE AS QDATE, USER_NAME
+	FROM ORD O INNER JOIN REF R
+	            ON O.ORD_NO = R.ORD_NO
+	            INNER JOIN COMMON_CODE CC
+	            ON 1=1
+	            AND CODE_L_CATE = 2
+	            AND CODE_S_CATE = 8
+	            AND R.STAT_CODE = 8
+	            AND O.ORD_NO = #{oNo}
+	            INNER JOIN HQ_USER HU
+	            ON R.APV_PROCESS_USER_NO = HU.USER_NO)
+	ORDER BY CODE_S_CATE
 </select>
 <update id="apvOrd" parameterType="hashmap">
 	UPDATE ORD SET STAT_CODE = 2, PROCESS_DATE=SYSDATE, APV_PROCESS_USER_NO=1
@@ -136,24 +229,39 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 </update>
 <update id="sendO" parameterType="hashmap">
 	UPDATE ORD SET STAT_CODE = 4, SEND_DATE=SYSDATE, SEND_PROCESS_USER_NO=2
-	WHERE ORD_NO = #{oNo1}
+	WHERE ORD_NO = #{oNo}
 </update>
 <update id="sendExp" parameterType="hashmap">
 	UPDATE ORD_ITEM 
 	SET EXPIRY_DATE= #{expDate}
-	WHERE ORD_ITEM.ITEM_NO=#{iNo} AND ORD_NO=#{oNo1}
+	WHERE ORD_ITEM.ITEM_NO=#{iNo} AND ORD_NO=#{oNo}
 </update>
 <select id="getBOCnt" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*) AS CNT
-	FROM ORD
-	WHERE DEL_FLAG!=0 AND BRCH_NO=2
-		<if test="search_input != null and search_input != ''">
+	FROM(SELECT CASE WHEN R.STAT_CODE IS NULL THEN O.STAT_CODE ELSE R.STAT_CODE END AS STAT_CODE, O.ENROLL_DATE
+		   FROM ORD O LEFT OUTER JOIN REF R
+                            	   ON O.ORD_NO=R.ORD_NO
+		  WHERE O.DEL_FLAG!=0 AND BRCH_NO=2
+		  <if test="search_input != null and search_input != ''">
 			<choose>
 				<when test="search_filter == 0">
-					AND ORD_NO LIKE '%' || #{search_input} || '%'
+					AND O.ORD_NO LIKE '%' || #{search_input} || '%'
 				</when>
 			</choose>
 		</if>
+		<if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND O.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+		</if>
+		)WHERE
+			<if test="rCk == 0">
+				STAT_CODE IN(0,1,2,3,4,5,6,7,8)
+			</if>
+			<if test="rCk == 1">
+				STAT_CODE IN(0,1,2,3,4)
+			</if>
+			<if test="rCk == 2">
+				STAT_CODE IN(5,6,7,8)
+			</if>
 </select>
 <select id="getBOList" parameterType="hashmap" resultType="hashmap">
 	SELECT *
@@ -165,9 +273,10 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
                                 	  ON O.ORD_NO=OI.ORD_NO
                         	  INNER JOIN BRCH B
                                  	  ON B.BRCH_NO=O.BRCH_NO
+           	  WHERE O.BRCH_NO=2
         	 )ORD INNER JOIN COMMON_CODE C
                      	  ON ORD.STAT_CODE=C.CODE_S_CATE
-		WHERE C.CODE_L_CATE=2 AND BRCH_NO=2
+		WHERE C.CODE_L_CATE=2
 	<if test="search_input != null and search_input != ''">
 		<choose>
 			<when test="search_filter == 0">
@@ -175,6 +284,19 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 			</when>
 		</choose>
 	</if>
+	<if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
+			AND ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+		</if>
+	AND
+		<if test="rCk == 0">
+			STAT_CODE IN(0,1,2,3,4,5,6,7,8)
+		</if>
+		<if test="rCk == 1">
+			STAT_CODE IN(0,1,2,3,4)
+		</if>
+		<if test="rCk == 2">
+			STAT_CODE IN(5,6,7,8)
+		</if>
 		GROUP BY ORD_NO, TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD'), CODE_NAME, STAT_CODE)ORDD
 	WHERE ORDD.RNUM BETWEEN #{startCnt} AND #{endCnt}
 	
@@ -189,16 +311,16 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 	WHERE ORD.ORD_NO= #{oNo}
 </select>
 <select id="getBODtl" parameterType="hashmap" resultType="hashmap">
-	SELECT ORD_NO, ENROLL_DATE, CODE_NAME, PROCESS_DATE, NON_APV_RSN, SUM(PRICE) AS TOT_PRICE
-    FROM(SELECT O.ORD_NO, TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE,
-    	 TO_CHAR(PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE, CODE_NAME, NON_APV_RSN, PRICE
+	SELECT ORD_NO, ENROLL_DATE, CODE_NAME, PROCESS_DATE, NON_APV_RSN, SUM(PRICE) AS TOT_PRICE, SEND_DATE, STOR_FLAG
+    FROM(SELECT O.ORD_NO, TO_CHAR(ENROLL_DATE, 'YYYY-MM-DD')AS ENROLL_DATE, STOR_FLAG,
+    	 TO_CHAR(PROCESS_DATE, 'YYYY-MM-DD')AS PROCESS_DATE, CODE_NAME, NON_APV_RSN, PRICE, SEND_DATE
          FROM ORD O INNER JOIN ORD_ITEM OI
                          	ON O.ORD_NO = OI.ORD_NO
                     INNER JOIN COMMON_CODE C
                           	ON C.CODE_S_CATE=O.STAT_CODE
          WHERE C.CODE_L_CATE=2)ORD
 	WHERE ORD.ORD_NO= #{oNo}
-	GROUP BY ORD_NO, ENROLL_DATE, PROCESS_DATE, CODE_NAME, NON_APV_RSN
+	GROUP BY ORD_NO, ENROLL_DATE, CODE_NAME, PROCESS_DATE, NON_APV_RSN, SEND_DATE, STOR_FLAG
 </select>
 
 <select id="getBRDtlList" parameterType="hashmap" resultType="hashmap">
@@ -215,6 +337,7 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
                    	INNER JOIN ITEM_PRICE IP
                        	    ON I.ITEM_NO=IP.ITEM_NO)REF
 	WHERE REF.ORD_NO= #{oNo}
+	 GROUP BY ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT, RSN
 </select>
 
 <select id="getBRDtl" parameterType="hashmap" resultType="hashmap">
@@ -244,15 +367,75 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 	WHERE ORD_NO = #{oNo}
 </update>
 <select id="getRefItem" parameterType="hashmap" resultType="hashmap">
-SELECT OI.ITEM_NO, I.ITEM_NAME, CNT, IP.PRICE, TO_CHAR(OI.EXPIRY_DATE, 'YYYY-MM-DD')AS EXPIRY_DATE,
-ROW_NUMBER() OVER(ORDER BY OI.ITEM_NO ASC)AS RNUM
-FROM ORD O INNER JOIN ORD_ITEM OI
-                   ON O.ORD_NO=OI.ORD_NO
-           INNER JOIN ITEM I
-                   ON OI.ITEM_NO=I.ITEM_NO
-           INNER JOIN ITEM_PRICE IP
-                   ON OI.ITEM_NO=IP.ITEM_NO
-WHERE O.ORD_NO=#{oNo}
-ORDER BY OI.ITEM_NO ASC
+	SELECT ITEM_NO, ITEM_NAME, CNT, PRICE, EXPIRY_DATE
+	FROM(SELECT OI.ITEM_NO, I.ITEM_NAME, CNT, IP.PRICE, TO_CHAR(OI.EXPIRY_DATE, 'YYYY-MM-DD')AS EXPIRY_DATE,
+	ROW_NUMBER() OVER(PARTITION BY I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC)AS RNK,
+	ROW_NUMBER() OVER(ORDER BY OI.ITEM_NO ASC)AS RNUM
+	FROM ORD O INNER JOIN ORD_ITEM OI
+                 	   ON O.ORD_NO=OI.ORD_NO
+           	   INNER JOIN ITEM I
+                   	   ON OI.ITEM_NO=I.ITEM_NO
+          	   INNER JOIN ITEM_PRICE IP
+                       ON OI.ITEM_NO=IP.ITEM_NO
+	WHERE O.ORD_NO=#{oNo}
+	ORDER BY OI.ITEM_NO ASC)
+	WHERE RNK=1
+</select>
+<select id="getOrdItem" parameterType="hashmap" resultType="hashmap">
+	SELECT  CATE_NAME, CATE_NO, ITEM_NO, ITEM_NAME, PRICE, MIN_ORD_UNIT, RNUM
+	FROM(SELECT CATE_NAME, I.ITEM_NO, I.CATE_NO, ITEM_NAME, PRICE, MIN_ORD_UNIT, ROW_NUMBER() OVER(PARTITION BY I.ITEM_NO ORDER BY IP.ENROLL_DATE DESC)AS RNK, ROW_NUMBER() OVER(ORDER BY I.ITEM_NO ASC)AS RNUM
+		 FROM ITEM I INNER JOIN ITEM_CATE IC
+                         	 ON I.CATE_NO=IC.CATE_NO
+                 	 INNER JOIN ITEM_PRICE IP
+                        	 ON I.ITEM_NO=IP.ITEM_NO
+	)
+	WHERE RNK=1
+	<if test="search_input != null and search_input != ''">
+			<choose>
+				<when test="search_filter == 0">
+					AND ITEM_NO LIKE '%' || #{search_input} || '%'
+				</when>
+				<when test = "search_filter == 1">
+					AND ITEM_NAME LIKE '%'|| #{search_input} ||'%'
+				</when>
+			</choose>
+	</if>
+	<if test = "cate != null and cate != ''">
+			AND  CATE_NO = #{cate}
+	</if>
+</select>
+<update id="writeRef" parameterType="hashmap">
+   	INSERT INTO REF(REF_NO, ORD_NO, STAT_CODE)
+   	VALUES (TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMMDD'),'99999999')|| LPAD(REF_SEQ.NEXTVAL,4,0), #{oNo}, 5)
+</update>
+<update id="writeRefItem" parameterType="hashmap">
+   	INSERT INTO REF_ITEM(REF_NO, ITEM_NO, CNT, RSN)
+	VALUES (TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMMDD'),'99999999')|| LPAD(REF_SEQ.CURRVAL,4,0), #{iNo}, #{ref_cnt}, #{rsn_note})
+</update>
+<update id="writeOrd" parameterType="hashmap">
+   	INSERT INTO ORD(ORD_NO, BRCH_NO, STAT_CODE)
+   	VALUES (TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMMDD'),'99999999')|| LPAD(ORD_SEQ.NEXTVAL,4,0), 2, 0)
+</update>
+<update id="writeOrdItem" parameterType="hashmap">
+   	INSERT INTO ORD_ITEM(ORD_NO, ITEM_NO, CNT, PRICE)
+	VALUES (TO_NUMBER(TO_CHAR(SYSDATE,'YYYYMMDD'),'99999999')|| LPAD(ORD_SEQ.CURRVAL,4,0), #{iNo}, #{ord_cnt}, (#{price}*#{ord_cnt}))
+</update>
+<select id="getLastONo" parameterType="hashmap" resultType="hashmap">
+	SELECT ORD_NO
+	FROM (SELECT ORD_NO, ROW_NUMBER() OVER(ORDER BY ORD_NO DESC)AS RNK
+          FROM ORD
+          WHERE BRCH_NO=2)
+	WHERE RNK=1
+</select>
+<select id="getBrchList" parameterType="hashmap" resultType="hashmap">
+	SELECT BRCH_NO, BRCH_NAME
+	FROM BRCH
+	WHERE BRCH_NO <![CDATA[ < ]]> 100
+	ORDER BY BRCH_NAME ASC
+</select>
+<select id = "getCateList" resultType="hashmap">
+	SELECT CATE_NO,CATE_NAME
+	FROM ITEM_CATE
+	WHERE DEL_FLAG = 1
 </select>
 </mapper> 

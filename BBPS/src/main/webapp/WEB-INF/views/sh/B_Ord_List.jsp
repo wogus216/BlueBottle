@@ -147,7 +147,7 @@ td{
  td:first-child{
 	border-left: none;
 }
-input{
+button{
 	width:200px;
 	height:40px;
 }
@@ -178,7 +178,7 @@ select{
 	height: 40px;
 	width : 100px;
 }
-button{
+input[type=button]{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -186,7 +186,6 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
@@ -212,6 +211,7 @@ button:focus{outline:none;}
 	font-size:18px;
 	margin:40px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+	cursor:pointer;
 }
 
 .page_btn button:hover{
@@ -244,22 +244,27 @@ $(document).ready(function(){
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
-	ord_radio_check();
 	reloadList();
 	
 	$("#search_btn").on("click",function(){
-		$("#page").val(1);
 		$("#search_old_txt").val($("#search_input").val());
+		$("#start_date").val($(".start_date").val());
+		$("#end_date").val($(".end_date").val());
+		$("#page").val(1);
 		reloadList();
 	});
-	$(".paging_area").on("click", "div", function(){
+	$(".page_area").on("click", "button", function(){
 		$("#search_input").val($("#search_old_txt").val());
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
-	$("[name=r]").click(function(){  
-		   ord_radio_check();
-		   reloadList();
+	$("[name=r]").click(function(){ 
+		if($('input[name="r"]:checked')){
+			$("#rCk").val($(this).val());
+		}
+		$(".search_input").val($("#Old_search_input").val());
+		$("#page").val(1);
+		reloadList();
 		});
 	$("tbody").on("click","tr",function(){
 		$("#oNo").val($(this).attr("ord_no"));
@@ -267,11 +272,13 @@ $(document).ready(function(){
 		$("#actionForm").attr("action","B_Ord_dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
+	$(".start_date").val(lastWeek());
+	$(".end_date").val(today());
 }); //ready end
 
 function reloadList(){
 	var params = $("#actionForm").serialize();
-	
+	console.log($("#actionForm").serialize());
 	$.ajax({
 		url : "B_Ord_Lists",
 		type : "post",  
@@ -286,40 +293,42 @@ function reloadList(){
 		}
 	});
 }
-function ord_radio_check(){
-	radioVal = $('input[name="r"]:checked').val();
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
+
+function lastWeek() { //일주일전 날짜 구하기
+	  var d = new Date();
+	  var dayOfMonth = d.getDate();
+	  d.setDate(dayOfMonth - 7);
+	  return splitdate(d);
+}
+
+function splitdate(resdate){
+	
+	var dd = resdate.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm = resdate.getMonth()+1;
+	var yyyy = resdate.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+		
+	return yyyy+"-"+mm+"-"+dd;
 }
 function drawList(list){
 	var html ="";
 	for(var d of list){
-	if(radioVal==0){
 			html += "<tr ord_no = \""+d.ORD_NO+"\">";
 			html += "<td>"+d.ORD_NO+"</td>";
 			html += "<td>"+d.ENROLL_DATE+"</td>";
-			html += "<td>"+d.PRICE+"</td>";
+			html += "<td>"+d.PRICE+"원</td>";
 			html += "<td>"+d.CODE_NAME+"</td>";
 			html += "</tr>";
-	}else if(radioVal==1){
-			if(d.STAT_CODE<5){
-				html += "<tr ord_no = \""+d.ORD_NO+"\">";
-				html += "<td>"+d.ORD_NO+"</td>";
-				html += "<td>"+d.ENROLL_DATE+"</td>";
-				html += "<td>"+d.PRICE+"</td>";
-				html += "<td>"+d.CODE_NAME+"</td>";
-				html += "</tr>";
-			}
-		else{
-			if(d.STAT_CODE>4){
-				html += "<tr ord_no = \""+d.ORD_NO+"\">";
-				html += "<td>"+d.ORD_NO+"</td>";
-				html += "<td>"+d.ENROLL_DATE+"</td>";
-				html += "<td>"+d.PRICE+"</td>";
-				html += "<td>"+d.CODE_NAME+"</td>";
-				html += "</tr>";
-				}
-		}
-	}
-		
 	}
 	$("tbody").html(html);
 }
@@ -431,11 +440,10 @@ function drawPaging(pb){
 <h1>주문조회</h1>
 <div class="filter_area">
 			<input type = "radio" id="r1" name="r" value="0" checked="checked"/><label id="l1" for="r1">전체</label>
-			<input type = "radio" id="r2" name="r" value="1"/><label id="l2" for="r2">주문요청</label>
-			<input type = "radio" id="r3" name="r"	value="2"/><label id="l3" for="r3" style="margin-right: 30px">환불요청</label>
-<input class="start_date" type = "date" value="2021-01-01"/>
-<input class="end_date" type = "date" value="2021-01-01"/>
-<button class="search_btn">검색</button>
+			<input type = "radio" id="r2" name="r" value="1"/><label id="l2" for="r2">주문</label>
+			<input type = "radio" id="r3" name="r"	value="2"/><label id="l3" for="r3" style="margin-right: 30px">환불</label>
+<input class="start_date" type = "date"/>
+<input class="end_date" type = "date"/>
 </div>
 <table cellspacing="0">
 	<colgroup>
@@ -464,7 +472,11 @@ function drawPaging(pb){
 			</select>
 			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-			<button class="search_btn" id="search_btn">검색</button>
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
+			<input type="hidden" name="rCk" id="rCk" value="0"/>
+			
+			<input type = "hidden" id = "start_date" name = "start_date"/>
+			<input type = "hidden" id = "end_date" name = "end_date"/>
 		</form>
 	</div>
 </div>

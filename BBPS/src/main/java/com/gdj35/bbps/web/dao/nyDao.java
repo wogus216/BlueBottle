@@ -158,5 +158,35 @@ public class nyDao implements InyDao{
 		return sqlSession.selectList("NY.getBrchTotSales", params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getDailyChartData(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getDailyChartData", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMonthlyChartData(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getMonthlyChartData", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMenuChartData(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getMenuChartData", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMenuChartDataDetail(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getMenuChartDataDetail", params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHeadMonthlyChartData(HashMap<String, String> params) throws Throwable {
+
+		return sqlSession.selectList("NY.getHeadMonthlyChartData", params);
+	}
+
 		
 }
