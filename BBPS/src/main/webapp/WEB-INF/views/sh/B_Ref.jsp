@@ -156,7 +156,7 @@ td:first-child{
 	text-align: left;
 }
 
-input[type=number]:hover::-webkit-inner-spin-button {  
+button:hover::-webkit-inner-spin-button {  
     width: 30px;
     height: 30px;
 }
@@ -196,29 +196,25 @@ input{
 input:focus{
 	outline: none;
 }
-button{
-	color: white;
-	width: 100px;
-	height: 40px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:10px;
-	cursor: pointer;
-}
+
 button:focus{outline:none;}
 
 .btn_area{
 	text-align: center;
 }
 .ref_req_btn{
-	width:200px;
-	height: 50px;
+	width:180px;
+	height:50px;
 	background-color: #01a1dd;
 	font-weight: bold;
-	font-size: 22px;
 	float: center;
+	color: white;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:22px;
+	margin:10px;
+	cursor: pointer;
 }
 
 </style>
@@ -490,7 +486,7 @@ function drawList(list){
 	<li><strong>총 환불 예상 금액 : </strong><div style="display: inline;" id="sum">0</div> 원</li>
 </ul>
 <div class="btn_area">
-	<button class="ref_req_btn">환불요청</button>
+	<input type="button" class="ref_req_btn" value="환불요청"/>
 </div>
 </div>
 </div>

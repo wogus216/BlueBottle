@@ -98,8 +98,8 @@ public class shDao implements IshDao{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getBRDtl(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectList("SH.getBRDtl", params);
+	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SH.getBRDtl", params);
 	}
 
 	@Override

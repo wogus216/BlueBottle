@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -204,7 +205,7 @@ select{
 	height: 36px;
 }
 /* 일반버튼 */
-button{
+input[type=button]{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -212,7 +213,6 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
@@ -231,6 +231,7 @@ button{
 	font-size:18px;
 	margin:40px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+	cursor: pointer;
 }
 
 .page_btn button:hover{
@@ -676,7 +677,7 @@ function drawPaging(pb){
 			<input type = "hidden" id = "start_date" name = "start_date"/>
 			<input type = "hidden" id = "end_date" name = "end_date"/>
 			
-			<button type="button" class="search_btn" id="search_btn">검색</button>
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
 		</form>
 	</div>
 </div>

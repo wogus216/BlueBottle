@@ -295,19 +295,6 @@ textarea:focus{
    outline: none;
 }
 
-
-button{
-   color: white;
-   width: 100px;
-   height: 40px;
-   text-align:center;
-   border:0;
-   border-radius: 3px;
-   background-color: #01a1dd;
-   font-size:18px;
-   margin:10px;
-   cursor: pointer;
-}
 button:focus{outline:none;}
 
 input:focus{outline:none;}
@@ -316,13 +303,21 @@ input:focus{outline:none;}
    text-align: center;
 }
 .ord_req_btn{
-   width:200px;
-   height: 50px;
+   width:180px;
    background-color: #01a1dd;
    font-weight: bold;
-   font-size: 22px;
    float: right;
-   margin: 10px 0px;
+   margin-buttom: 10px 0px;
+   color: white;
+   height: 50px;
+   text-align:center;
+   border:0;
+   border-radius: 3px;
+   background-color: #01a1dd;
+   font-size:22px;
+   margin-button:0px;
+   margin-top:10px;
+   cursor: pointer;
 }
 .search_area, .page_area {
    width: 100%;
@@ -340,6 +335,16 @@ input:focus{outline:none;}
    margin: 0 ;
    padding: 0;
    vertical-align: bottom;
+   color: white;
+   width: 100px;
+   text-align:center;
+   border:0;
+   border-radius: 3px;
+   background-color: #01a1dd;
+   font-size:18px;
+   margin-button:0px;
+   margin-top:10px;
+   cursor: pointer;
 }
 
 .page_btn button{
@@ -691,7 +696,7 @@ function buyList(){
          	</select>
          	<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-         <button class="search_btn" id="search_btn">검색</button>
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
          </form>
       </div>
 </div>   
@@ -732,7 +737,7 @@ function buyList(){
    <li><strong>총 주문 금액 : </strong><div style="display: inline;" id="sum">0</div> 원</li>
 </ul>
 <div class="btn_area">
-   <button class="ord_req_btn">주문요청</button>
+   <input type="button" class="ord_req_btn" value="주문요청"/>
 </div>
 </div>
 </div>

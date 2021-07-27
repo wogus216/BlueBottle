@@ -38,7 +38,7 @@ public interface IshService {
 
 	public List<HashMap<String, String>> getBODtlList(HashMap<String, String> params) throws Throwable;
 
-	public List<HashMap<String, String>> getBRDtl(HashMap<String, String> params) throws Throwable;
+	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable;
 
 	public List<HashMap<String, String>> getBRDtlList(HashMap<String, String> params) throws Throwable;
 

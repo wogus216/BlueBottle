@@ -256,18 +256,19 @@ textarea:focus{
 .btn_area{
 	text-align: center;
 }
-button{
+input[type=button]{
 	color: white;
-	width: 100px;
-	height: 40px;
+	width: 180px;
+	height: 50px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:22px;
 	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
+	font-weight: bold;
 }
 button:focus{outline:none;}
 /* 팝업 */
@@ -307,7 +308,7 @@ button:focus{outline:none;}
 .popup_btn{
 	text-align:center;
 }
-.popup_btn button{
+.popup_btn input{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -351,27 +352,7 @@ button:focus{outline:none;}
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	reloadList()
-	$(".history_btn").on("click",function(){
-		var params = $("#goForm").serialize();
-		
-		$.ajax({
-			url : "ord_history",
-			type : "post",  
-			dataType :"json",
-			data : params,
-			success : function(res){
-				if(res.msg == "success"){
-					$("#goForm").submit();
-				}
-			},
-			error : function(request,status,error){
-				console.log(error);
-			}
-		});
-		historyPopup(function(){
-		});
-	});
+	
 	$(".list_btn").on("click",function(){
 		location.href="B_Ord_List";
 	});
@@ -462,88 +443,6 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 }); //ready end
-function reloadList(){
-	var params = $("#goForm").serialize();
-	$.ajax({
-		url : "ref_list",
-		type : "post",  
-		dataType :"json",
-		data : params,
-		success : function(res){
-			drawList(res.list);
-		},
-		error : function(request,status,error){
-			console.log(error);
-		}
-	});
-}
-
-function drawList(list){
-	var html ="";
-	for(var d of list){
-		html+="<h2>환불요청서</h2>                                                                                                                   ";
-		html+="<ul class=\"ref_info\">                                                                                                                 ";
-		html+="<li><strong>환불번호 : </strong>"+d.REF_NO+"</li>                                                                                  ";
-		html+="<li><strong>환불날짜 : </strong>"+d.ENROLL_DATE+"</li>                                                                             ";
-		html+="<li class=\"apv_info\"><strong>처리상태 : </strong><span class=\"apv_stat\" style=\"color:red\">"+d.CODE_NAME+"</span></li>              ";
-		if(d.PROCESS_DATE == null){
-			html+="<li class=\"apv_date_info\"><strong>처리날짜 : </strong>"+d.PROCESS_DATE+"</li>";
-		}
-		html+="</ul>";
-		html+="<table id=\"rTable\" cellspacing=\"0\">";
-		html+="<colgroup>";
-		html+="		<col width=\"15%\">                                                                                                                ";
-		html+="		<col width=\"15%\">                                                                                                        ";
-		html+="		<col width=\"15%\">                                                                                                                ";
-		html+="		<col width=\"15%\">                                                                                                                ";
-		html+="		<col width=\"15%\">                                                                                                                ";
-		html+="		<col width=\"25%\">                                                                                                                ";
-		html+="</colgroup>                                                                                                                          ";
-		html+="	<thead>                                                                                                                              ";
-		html+="	<tr>                                                                                                                                 ";
-		html+="		<th scope=\"col\" style=\"border-left: none;\">품목코드</th>                                                                         ";
-		html+="		<th scope=\"col\">품목명</th>                                                                                                      ";
-		html+="		<th scope=\"col\">주문수량(개)</th>                                                                                                ";
-		html+="		<th scope=\"col\">환불요청수량</th>                                                                                                ";
-		html+="		<th scope=\"col\">가격(원)</th>                                                                                                    ";
-		html+="		<th scope=\"col\">환불사유</th>                                                                                                    ";
-		html+="	</tr>                                                                                                                                ";
-		html+="	</thead>                                                                                                                             ";
-		html+="	<tbody>                                                                                                                              ";
-		html+="	<tr>                                                                                                                                 ";
-		html+="		<td>"+d.ITEM_NO+"</td>                                                                                                        ";
-		html+="		<td>"+d.ITEM_NAME+"</td>                                                                                                      ";
-		html+="		<td>"+d.CNT+"</td>                                                                                                            ";
-		html+="		<td>"+d.RCNT+"</td>                                                                                                           ";
-		html+="		<td>"+d.REF_PRICE+"</td>                                                                                                      ";
-		html+="		<td>"+d.RSN+"</td>                                                                                                           ";
-		html+="	</tr>                                                                                                                                ";
-		html+="	</tbody>                                                                                                                             ";
-		html+="</table>                                                                                                                              ";
-		html+="	<ul class=\"tot_price\">                                                                                                               ";
-		html+="		<li><strong>총 환불예상 금액 : </strong>"+d.TOT_PRICE+" 원</li>                                                               ";
-		html+="</ul>                                                                                                                                 ";
-		if(d.CODE_NAME == '환불승인거부'){
-			html+="<div class=\"rsn_area\">                                                                                                                ";
-			html+="	<div class=\"rsn_title\">승인거부 사유</div>                                                                                           ";
-			html+="	<div class=\"rsn_content_area\">                                                                                                       ";
-			html+="	<textarea class=\"rsn_content\" id = \"rRsn\" disabled=disabled>"+d.NON_APV_RSN+"</textarea>                                          ";
-			html+="</div>";
-		}                                                                                                                     
-		html+="<div class=\"btn_area\">                                                                                                                ";
-		if(d.CODE_NAME == '환불요청'){
-			html+="	<button class=\"ref_cnl_btn\">환불취소</button>                                                                                        ";
-
-		}                                                                               
-		if(d.CODE_NAME == '환불취소'){
-			html+="	<button class=\"ref_cnl_com_btn\" style=\"background-color: #b3b3b3;\">취소완료</button>                                                 ";
-		}                                                                                                                              
-			html+="</div>                                                                                                                                ";
-			html+="</div>                                                                                                                                                                                                        ";
-			$(".ref_area").append(html);
-			html ="";
-	}     
-}
 
 </script>
 <style type="text/css"></style>
@@ -754,8 +653,8 @@ function drawList(list){
 </c:if>
 <div class="btn_area">
 <c:if test="${data.CODE_NAME eq '주문요청'}">
-	<button class="ord_cnl_btn">주문취소</button>
-	<button class="cnl_list_bnt">목록</button>
+	<input type="button" class="ord_cnl_btn" value="주문취소"/>
+	<input type="button" class="cnl_list_bnt" value="목록"/>
 </c:if>
 <jsp:useBean id="today" class="java.util.Date"/>
 <fmt:parseDate var="send_date" value="${data.SEND_DATE}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -763,25 +662,91 @@ function drawList(list){
 <fmt:parseNumber value="${today.time/(1000*60*60*24)}" integerOnly="true" var="nowday" scope="request"/>	
 <fmt:parseNumber value="${send_date.time/(1000*60*60*24)}" integerOnly="true" var="sendday" scope="request"/>	
 <c:if test="${data.CODE_NAME eq '발송완료'}">
+	<c:if test="${data2.CODE_NAME eq null}">
 	<c:if test="${nowday-sendday <= 7}">
-		<button class="ref_btn">환불요청</button>
+		<input type="button" class="ref_btn" value="환불요청"/>
+	</c:if>
 	</c:if>
 	<c:choose>
 	<c:when test="${data.STOR_FLAG eq 1}">
-	<button class="stor_btn">입고</button>
+	<input type="button" class="stor_btn" value="입고"/>
 	</c:when>
 	<c:otherwise>
-	<button class="stor_com_btn" style="background-color: #b3b3b3;">입고완료</button>
+	<input type="button" class="stor_com_btn" style="background-color: #b3b3b3;" value="입고"/>
 	</c:otherwise>
 	</c:choose>
 </c:if>
 </div>
 </div>
+<c:choose>
+<c:when test="${data2.REF_NO ne null}">
 <div class="ref_area">
+<h2>환불요청서</h2>
+<ul class="ref_info">
+<li><strong>접수번호 : </strong>${data2.REF_NO}</li>
+<li><strong>접수날짜 : </strong>${data2.ENROLL_DATE}</li>
+<li class="apv_info"><strong>처리상태 : </strong><span class="apv_stat" style="color:red">${data2.CODE_NAME}</span></li>
+<c:choose>
+<c:when test ="${data2.PROCESS_DATE ne null}"><li class="apv_date_info"><strong>처리날짜 : </strong>${data2.PROCESS_DATE}</li></c:when>
+</c:choose>
+</ul>
+<table cellspacing="0">
+   <colgroup>
+      <col width="15%">
+      <col width="15%">
+      <col width="15%">
+      <col width="15%">
+      <col width="15%">
+      <col width="25%">
+   </colgroup>
+   <thead>
+   <tr>
+      <th scope="col" style="border-left: none;">품목코드</th>
+      <th scope="col">품목명</th>
+      <th scope="col">주문수량(개)</th>
+      <th scope="col">환불요청수량</th>
+      <th scope="col">가격(원)</th>
+      <th scope="col">환불사유</th>
+   </tr>
+   </thead>
+   <tbody>
+       <c:forEach var="data" items="${list2}">
+          <tr>
+            <td>${data.ITEM_NO}</td>
+            <td>${data.ITEM_NAME}</td>
+            <td>${data.CNT}</td>
+            <td>${data.RCNT}</td>
+            <td>${data.REF_PRICE}</td>
+            <td>${data.RSN}</td>
+         </tr>
+      </c:forEach>
+   </tbody>
+</table>
+   <ul class="tot_price">
+      <li><strong>총 환불예상 금액 : </strong>${data2.TOT_PRICE} 원</li>
+</ul>
+<c:if test="${data2.CODE_NAME eq '환불승인거부'}">
+<div class="rsn_area">
+   <div class="rsn_title">승인거부 사유</div>
+   <div class="rsn_content_area">
+   <textarea class="rsn_content" id = "rRsn" disabled=disabled>${data2.NON_APV_RSN}</textarea>
 </div>
+</div>
+</c:if>
+<div class="btn_area">
+   <c:if test="${data.CODE_NAME eq '환불요청'}">
+   <input type="button" class="ref_cnl_btn" style="background-color: #b3b3b3;" value="환불요청취소"/>
+   </c:if>
+   <c:if test="${data.CODE_NAME eq '환불요청취소'}">
+   <input type="button" class="ref_cnl_com_btn" style="background-color: #b3b3b3;" value="환불요청취소완료">
+   </c:if>
+</div>
+</div>
+</c:when>
+</c:choose>
 <c:if test="${data.CODE_NAME ne '주문요청'}">
 <div class="list_btn">
-<button>목록</button>
+<input type="button" value="목록">
 </div>
 </c:if>
 </div>

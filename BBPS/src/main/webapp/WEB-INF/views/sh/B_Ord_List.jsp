@@ -147,7 +147,7 @@ td{
  td:first-child{
 	border-left: none;
 }
-input{
+button{
 	width:200px;
 	height:40px;
 }
@@ -178,7 +178,7 @@ select{
 	height: 40px;
 	width : 100px;
 }
-button{
+input[type=button]{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -186,7 +186,6 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
@@ -212,6 +211,7 @@ button:focus{outline:none;}
 	font-size:18px;
 	margin:40px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+	cursor:pointer;
 }
 
 .page_btn button:hover{
@@ -272,6 +272,8 @@ $(document).ready(function(){
 		$("#actionForm").attr("action","B_Ord_dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
+	$(".start_date").val(lastWeek());
+	$(".end_date").val(today());
 }); //ready end
 
 function reloadList(){
@@ -290,6 +292,33 @@ function reloadList(){
 			console.log(error);
 		}
 	});
+}
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
+
+function lastWeek() { //일주일전 날짜 구하기
+	  var d = new Date();
+	  var dayOfMonth = d.getDate();
+	  d.setDate(dayOfMonth - 7);
+	  return splitdate(d);
+}
+
+function splitdate(resdate){
+	
+	var dd = resdate.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm = resdate.getMonth()+1;
+	var yyyy = resdate.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+		
+	return yyyy+"-"+mm+"-"+dd;
 }
 function drawList(list){
 	var html ="";
@@ -443,7 +472,7 @@ function drawPaging(pb){
 			</select>
 			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-			<button type="button" class="search_btn" id="search_btn">검색</button>
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
 			<input type="hidden" name="rCk" id="rCk" value="0"/>
 			
 			<input type = "hidden" id = "start_date" name = "start_date"/>
