@@ -27,13 +27,17 @@ public class sgController {
 	@RequestMapping(value="/Notice")
 	public ModelAndView Notice(
 			@RequestParam HashMap<String, String> params,
-			ModelAndView mav) {
+			ModelAndView mav) throws Throwable {
 		
 		int page = 1;
 		
 		if(params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
+		
+		List<HashMap<String,String>> catelist = isgService.searchDateList();
+		
+		mav.addObject("catelist",catelist);
 		
 		mav.addObject("page", page);
 		mav.setViewName("sg/Notice");
@@ -66,7 +70,10 @@ public class sgController {
 		// 목록 취득
 		List<HashMap<String, String>> list = isgService.getNList(params);
 		
+		int result = list.size(); // 쿼리 수행 시 결과 행이 존재하는지 여부를 따질 변수
+		
 		modelMap.put("list", list);
+		modelMap.put("result", result);
 		modelMap.put("pb", pb);
 		
 		System.out.println("list를 보자"+list);
@@ -457,10 +464,8 @@ public class sgController {
 			e.printStackTrace();
 			modelMap.put("msg", "error");
 		}
-		
 		return mapper.writeValueAsString(modelMap);
 	}
-	
 	
 	@RequestMapping(value="/User_Delete_Brchs",
 			method=RequestMethod.POST,
