@@ -95,6 +95,7 @@
                    	INNER JOIN ITEM_PRICE IP
                        	    ON I.ITEM_NO=IP.ITEM_NO)REF
 	WHERE REF.ORD_NO= #{oNo}
+	GROUP BY ORD_NO, ITEM_NO, ITEM_NAME, CNT, RCNT, PRICE*RCNT, RSN
 </select>
 
 <select id="getRDtl" parameterType="hashmap" resultType="hashmap">
@@ -272,9 +273,10 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
                                 	  ON O.ORD_NO=OI.ORD_NO
                         	  INNER JOIN BRCH B
                                  	  ON B.BRCH_NO=O.BRCH_NO
+           	  WHERE O.BRCH_NO=2
         	 )ORD INNER JOIN COMMON_CODE C
                      	  ON ORD.STAT_CODE=C.CODE_S_CATE
-		WHERE C.CODE_L_CATE=2 AND BRCH_NO=2
+		WHERE C.CODE_L_CATE=2
 	<if test="search_input != null and search_input != ''">
 		<choose>
 			<when test="search_filter == 0">

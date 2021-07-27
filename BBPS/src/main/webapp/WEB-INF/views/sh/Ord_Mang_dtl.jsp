@@ -223,7 +223,7 @@ textarea:focus{
 	text-align:center;
 }
 
-.list_btn button, .apv_com, .send_com{
+.list_btn input, .apv_com, .send_com{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -255,14 +255,15 @@ textarea:focus{
 .btn_area{
 	text-align: center;
 }
-button{
+input[type=button]{
 	color: white;
-	width: 100px;
-	height: 40px;
+	width: 180px;
+	height: 50px;
 	text-align:center;
+	font-weight: bold;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:22px;
 	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
@@ -741,7 +742,7 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-<button class="history_btn">전체이력</button>
+<input type="button" class="history_btn" value="전체이력"/>
 <div class="ord_area">
 <ul class="ord_info">
 <li><strong>주문번호 : </strong>${data.ORD_NO}</li>
@@ -830,15 +831,15 @@ function closePopup() {
 </div>
 <div class="btn_area">
 <c:if test="${data.CODE_NAME eq '주문요청'}">
-	<button class="apv_btn">승인</button>
-	<button class="non_apv_btn">승인거부</button>
+	<input type="button" class="apv_btn" value="승인"/>
+	<input type="button" class="non_apv_btn" value="승인거부"/>
 </c:if>
 <c:if test="${data.CODE_NAME eq '주문승인'}">
-	<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-	<button class="send_btn">발송</button>
+	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	<input type="button" class="send_btn" value="발송"/>
 </c:if>
 <c:if test="${data.CODE_NAME eq '발송완료'}">
-<button class="send_com" style="background-color: #b3b3b3;">발송완료</button>
+<input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
 </c:if>
 </div>
 <c:choose>
@@ -908,18 +909,18 @@ function closePopup() {
 </div>
 <div class="btn_area">
 <c:if test="${data2.CODE_NAME eq '환불요청'}">
-	<button class="ref_apv_btn">승인</button>
-	<button class="non_ref_apv_btn">승인거부</button>
+	<input type="button" class="ref_apv_btn" value="승인"/>
+	<input type="button" class="non_ref_apv_btn" value="승인거부"/>
 </c:if>
 <c:if test="${data2.CODE_NAME eq '환불승인'}">
-	<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
+	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
 </c:if>
 </div>
 </div>
 </c:when>
 </c:choose>
 <div class="list_btn">
-<button>목록</button>
+<input type="button" value="목록"/>
 			</div>
 		</div>
 	</div>

@@ -99,7 +99,7 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public List<HashMap<String, String>> getBRDtl(HashMap<String, String> params) throws Throwable {
+	public HashMap<String, String> getBRDtl(HashMap<String, String> params) throws Throwable {
 		return ishDao.getBRDtl(params);
 	}
 

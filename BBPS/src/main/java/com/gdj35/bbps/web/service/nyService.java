@@ -159,6 +159,36 @@ public class nyService implements InyService{
 		return iNyDao.getBrchTotSales(params);
 	}
 
+	@Override
+	public List<HashMap<String, String>> getDailyChartData(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getDailyChartData(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMonthlyChartData(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getMonthlyChartData(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMenuChartData(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getMenuChartData(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getMenuChartDataDetail(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getMenuChartDataDetail(params);
+	}
+
+	@Override
+	public List<HashMap<String, String>> getHeadMonthlyChartData(HashMap<String, String> params) throws Throwable {
+
+		return iNyDao.getHeadMonthlyChartData(params);
+	}
+
 
 
 }

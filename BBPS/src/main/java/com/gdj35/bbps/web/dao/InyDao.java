@@ -53,5 +53,15 @@ public interface InyDao {
 
 	List<HashMap<String, String>> getBrchTotSales(HashMap<String, String> params) throws Throwable;
 
+	List<HashMap<String, String>> getDailyChartData(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getMonthlyChartData(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getMenuChartData(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getMenuChartDataDetail(HashMap<String, String> params) throws Throwable;
+
+	List<HashMap<String, String>> getHeadMonthlyChartData(HashMap<String, String> params) throws Throwable;
+
 	
 }
