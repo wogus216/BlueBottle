@@ -289,7 +289,7 @@
 			           	AND S.BRCH_NO = #{brchNo}
 		           	  	</when>
                     </choose>
-                    AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                     AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
                     GROUP BY S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.SALES_NO, S.CNL_DATE
                     ORDER BY S.SALES_NO) A 
 	             FULL OUTER JOIN (SELECT S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')AS ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE,
@@ -309,7 +309,7 @@
 						           	AND S.BRCH_NO = #{brchNo}
 					           	  	</when>
 			                  	</choose>
-                                AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                                AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
                                 GROUP BY S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.SALES_NO, S.CNL_DATE
                                 ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
 	                                                   AND A.BRCH_NO = B.BRCH_NO
@@ -319,8 +319,7 @@
 	
 	<select id="getSalesDetailAll" parameterType="hashmap" resultType="hashmap">
 	SELECT SUM(CARD_PAY) AS CARD_PAY, SUM(CASH_PAY) AS CASH_PAY, (SUM(CARD_PAY)+SUM(CASH_PAY)) AS TOT_PAY
-	FROM (SELECT NVL(B.BRCH_NO, A.BRCH_NO) AS BRCH_NO,
-                 NVL(B.ENROLL_DATE, A.ENROLL_DATE) AS ENROLL_DATE,
+	FROM (SELECT NVL(B.ENROLL_DATE, A.ENROLL_DATE) AS ENROLL_DATE,
                  NVL(A.SALES_NO, B.SALES_NO) AS SALES_NO,
                  NVL(A.PRICE,0) AS CARD_PAY,
                  NVL(B.PRICE,0) AS CASH_PAY
@@ -341,7 +340,7 @@
 			           	AND S.BRCH_NO = #{brchNo}
 		           	  	</when>
                     </choose>
-                    AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                    AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
                     GROUP BY S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.SALES_NO, S.PAY_METHOD
                     ORDER BY S.SALES_NO) A 
 	             FULL OUTER JOIN (SELECT S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') AS ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE
@@ -361,7 +360,7 @@
 						           	AND S.BRCH_NO = #{brchNo}
 					           	  	</when>
 			                   </choose>
-                                AND S.ENROLL_DATE = TO_DATE(#{enroll_date}, 'YY/MM/DD')
+                                AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
                                 GROUP BY S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.SALES_NO, S.PAY_METHOD
                                 ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
 	                                                   AND A.BRCH_NO = B.BRCH_NO

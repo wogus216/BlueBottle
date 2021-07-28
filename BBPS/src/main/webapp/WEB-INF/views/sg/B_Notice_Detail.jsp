@@ -287,6 +287,7 @@ function closePopup() {
 <form action="#" id="goForm" method="post">
 	<input type="hidden" name="nNo" value="${data.TXT_NO}" />
 	<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
+	<input type="hidden" id="wNo" name="wNo" value="${param.USER_NO}"/>
 	<input type="hidden" name="page" value="${param.page}" />
 	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />

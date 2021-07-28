@@ -117,7 +117,7 @@ html,body{
 }
 /* 로그아웃 */
 
-.log_out{
+.top_menu > .log_out{
 	width: 90px;
     height: 35px;
     color: white;
@@ -130,6 +130,7 @@ html,body{
     border-radius: 5px;
     margin-top: 12px;
 }
+
 
 </style>
 

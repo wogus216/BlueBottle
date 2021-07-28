@@ -258,6 +258,8 @@ $(document).ready(function() {
 			});
 		}
 	});
+	
+	
 });
 
 /* 팝업 */
@@ -316,6 +318,7 @@ function closePopup() {
 <form action="#" id="goForm" method="post">
 	<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 	<input type="hidden" id="nNo" name="nNo" value="${data.TXT_NO}" />
+	<input type="hidden" id="wNo" name="wNo" value="${data.USER_NO}"/>
 	<input type="hidden" name="page" value="${param.page}" />
 	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />
@@ -324,7 +327,7 @@ function closePopup() {
 <div class="top_tb">
 <table class="tb1">
 <tbody>
-<tr>
+<tr uno="${data.USER_NO}">
 <td>${data.TXT_NO}</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
@@ -370,7 +373,16 @@ ${data.ATT_UFILE}</a><br/>
 <input type="button" value="목록" id="listBtn" class="list_btn" />
 	<div class="edit_btn_area">
 <input type="button" value="수정" class="edit_btn" id="updateBtn" />
-<input type="button" value="삭제" class="del_btn" id="deleteBtn" />
+<c:set var="no" value="${sUSERNo}" />
+
+<c:choose>
+    <c:when test="${no eq data.USER_NO}">
+	<input type="button" value="삭제" class="del_btn" id="deleteBtn" />
+    </c:when>
+</c:choose>
+
+
+
 	</div>
 </div>
 

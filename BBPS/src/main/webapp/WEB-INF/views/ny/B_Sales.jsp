@@ -11,11 +11,8 @@
 <title>지점매출조회</title>
 <style type="text/css">
 
-<<<<<<< HEAD
-/* 컨텐츠 부분 */
-=======
+
 /* 미들 부분 */
->>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
 .content_area{
 	width: 1250px;
 	height: 900px;
@@ -298,7 +295,9 @@ $(document).ready(function() {
 			}
 			if($(this).parent().attr("id") == "expense") {
 				$("#enroll_date").val($(this).parent().parent().attr("date"));
-				$("#actionForm").attr("action","");
+				$("#actionForm").attr("action",
+				"http://localhost:8090/bbps/B_Ord_List?start_date="+$(this).parent().parent().attr("date")+
+				 "&end_date="+$(this).parent().parent().attr("date"));            
 				$("#actionForm").submit();		
 			}
 		}
@@ -408,7 +407,7 @@ function totPrice(list){
 function drawPaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\">|<</button>";
+	html += "<button page = \"1\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\"><</button>";
 	}else{
@@ -433,7 +432,7 @@ function drawPaging(pb){
 	
 	
 	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>></button>";
 	
 	$(".page_btn").html(html);
 }
@@ -485,11 +484,7 @@ function closePopup() {
 
 </head>
 <body>
-<<<<<<< HEAD
 
-=======
- 
->>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
 <!--컨텐츠 -->
 	<div class="content_area">
 	<div class="content">

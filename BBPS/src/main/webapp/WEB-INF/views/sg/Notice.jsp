@@ -239,7 +239,7 @@ function drawList(list) {
 	var html = "";
 	
 	for(var d of list){
-		html += "<tr nno=\"" + d.TXT_NO + "\" cate=\"" + d.CATE_NO + "\">";
+		html += "<tr nno=\"" + d.TXT_NO + "\" wno=\"" + d.USER_NO + "\"  cate=\"" + d.CATE_NO + "\">";
 		html += "<td>" + d.TXT_NO+ "</td>";
 		html += "<td>" + d.TITLE + "</td>";
 		html += "<td>" + d.S_DT + "</td>";
@@ -365,8 +365,12 @@ function splitdate(resdate){
 </div>
 <form action="#" id="actionForm" method="post">
 <div class="search_area" style = "margin-top : 30px;">
+	<!-- 로그인한 유저 번호 -->
 	<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
+	<!-- 글 번호 -->
 	<input type="hidden" id="nNo" name="nNo" value="${data.TXT_NO}"/>
+	<!-- 작성한 유저 번호 -->
+	<input type="hidden" id="wNo" name="wNo" value="${data.USER_NO}"/>
 	<input type="hidden" id="page" name="page" value="${page}">
 			<select id="searchGbn" name="searchGbn" class="search_filter">
 				<option value="0" selected="selected">제목+내용</option>
