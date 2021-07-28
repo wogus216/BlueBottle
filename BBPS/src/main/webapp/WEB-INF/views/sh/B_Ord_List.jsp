@@ -156,6 +156,10 @@ $(document).ready(function(){
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
+	$("#search_old_txt").val($("#search_input").val());
+	$("#start_date").val($(".start_date").val());
+	$("#end_date").val($(".end_date").val());
+	$("#page").val(1);
 	reloadList();
 	
 	$("#search_btn").on("click",function(){
@@ -286,8 +290,8 @@ function drawPaging(pb){
 			<input type = "radio" id="r1" name="r" value="0" checked="checked"/><label id="l1" for="r1">전체</label>
 			<input type = "radio" id="r2" name="r" value="1"/><label id="l2" for="r2">주문</label>
 			<input type = "radio" id="r3" name="r"	value="2"/><label id="l3" for="r3" style="margin-right: 30px">환불</label>
-<input class="start_date" type = "date"/>
-<input class="end_date" type = "date"/>
+<input class="start_date" type = "date" value="${param.start_date}"/>
+<input class="end_date" type = "date" value="${param.end_date}"/>
 </div>
 <table cellspacing="0">
 	<colgroup>
