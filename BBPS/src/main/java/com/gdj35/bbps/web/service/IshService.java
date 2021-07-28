@@ -54,8 +54,6 @@ public interface IshService {
 
 	public int writeRef(HashMap<String, String> params) throws Throwable;
 
-	public int writeOrd() throws Throwable;
-
 	public int writeOrdItem(HashMap<String, Object> insertMap) throws Throwable;
 
 	public HashMap<String, String> getLastONo() throws Throwable;
@@ -63,5 +61,7 @@ public interface IshService {
 	public List<HashMap<String, String>> getBrchList() throws Throwable;
 
 	public List<HashMap<String, String>> getCateList() throws Throwable;
+
+	public int writeOrd(HashMap<String, String> params) throws Throwable;
 
 }

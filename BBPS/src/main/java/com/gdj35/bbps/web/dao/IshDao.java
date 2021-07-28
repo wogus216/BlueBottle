@@ -55,7 +55,7 @@ public interface IshDao {
 
 	public int writeRef(HashMap<String, String> params) throws Throwable;
 
-	public int writeOrd() throws Throwable;
+	public int writeOrd(HashMap<String, String> params) throws Throwable;
 
 	public int writeOrdItem(HashMap<String, Object> insertMap) throws Throwable;
 

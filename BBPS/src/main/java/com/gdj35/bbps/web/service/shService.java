@@ -139,8 +139,8 @@ public class shService implements IshService{
 	}
 
 	@Override
-	public int writeOrd() throws Throwable {
-		return ishDao.writeOrd();
+	public int writeOrd(HashMap<String, String> params) throws Throwable {
+		return ishDao.writeOrd(params);
 	}
 
 	@Override

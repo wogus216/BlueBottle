@@ -407,14 +407,14 @@ public class shController {
 	}
 	@RequestMapping(value = "/ord",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord(@RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> ord_cnt, @RequestParam ArrayList<String> price) throws Throwable{
+	public String ord(@RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> ord_cnt, @RequestParam ArrayList<String> price, @RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
 		HashMap<String,Object> insertMap = new HashMap<String, Object>();
 		
 		try {
-	         int cnt = ishService.writeOrd();
+	         int cnt = ishService.writeOrd(params);
 				
 				if(cnt > 0) {
 					modelMap.put("msg", "success");
@@ -442,20 +442,6 @@ public class shController {
 	            
 	         modelMap.put("msg", "error");
 	      }
-			
-		return mapper.writeValueAsString(modelMap);
-	}
-	@RequestMapping(value = "/last_ord", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
-	@ResponseBody
-	public String last_ord() throws Throwable{
-		
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String,Object> modelMap = new HashMap<String,Object>();
-		
-		HashMap<String,String> data = ishService.getLastONo();
-		
-		modelMap.put("data", data);
-		System.out.println(data);
 			
 		return mapper.writeValueAsString(modelMap);
 	}
