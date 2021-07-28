@@ -661,6 +661,7 @@ function closePopup() {
 		<div class="graph_info">"매출정보를 그래프형으로 조회"</div>
 		<form action="#" method="post" id="actionForm">
 			<input type="hidden" id="enroll_date" name="enroll_date" />
+			<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 			<input type="hidden" id="page" name="page" value="${page}" />
 			<input type="button" class="reset_btn" value="초기화" />
 			<span>지점선택</span>

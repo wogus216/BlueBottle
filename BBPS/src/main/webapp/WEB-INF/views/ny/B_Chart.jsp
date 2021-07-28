@@ -693,6 +693,7 @@ function closePopup() {
 					<select name="year" id="year"></select>
 					<select name="month" id="month"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 				</form>
 			</div>
 			<div class="monthly">
@@ -700,6 +701,7 @@ function closePopup() {
 					<input type="button" class="reset_btn" value="올해" />
 					<select name="year" id="year"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 				</form>
 			</div>
 			<div class="cate">
@@ -707,6 +709,7 @@ function closePopup() {
 					<input type="button" class="reset_btn" value="올해" />
 					<select name="year" id="year"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 				</form>
 			</div>
 			<div class="menu">
@@ -716,6 +719,7 @@ function closePopup() {
 					<select name="month" id="month"></select>
 					<select name="menuCate" id="menuCate"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 				</form>
 			</div>
 		</div>

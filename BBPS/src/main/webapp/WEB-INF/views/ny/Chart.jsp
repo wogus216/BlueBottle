@@ -740,6 +740,7 @@ function closePopup() {
 					<select name="year" id="year"></select>	
 					<select name="month" id="month"></select>
 					<input type="button" class="search_btn" value="조회" />
+					<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 				</form>
 			</div>
 			<div class="daily">
@@ -750,6 +751,7 @@ function closePopup() {
 					<span><strong>지점</strong></span>
 					<select name="brch_choice" id="brch_choice"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 				</form>
 			</div>
 			<div class="cate">
@@ -759,6 +761,7 @@ function closePopup() {
 					<span><strong>지점</strong></span>
 					<select name="brch_choice" id="brch_choice"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 				</form>
 			</div>
 			<div class="menu">
@@ -770,6 +773,7 @@ function closePopup() {
 					<select name="brch_choice" id="brch_choice"></select>	
 					<select name="menuCate" id="menuCate"></select>	
 					<input type="button" class="search_btn" value="조회" />
+					<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 				</form>
 			</div>
 		</div>

@@ -543,66 +543,13 @@ function addComma(value){
 
 </head>
 <body>
- <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-        	 <li>
-         		<a class="main_menu" href="#">재고관리</a>
-	        	 <div class="sub">
-		        	 <a href="#">현재재고조회</a>
-		             <a href="#">입고재고조회</a>
-		             <a href="#">사용재고조회</a>
-		             <a href="#">폐기조회</a>
-	            </div>
-             </li>
-         </div>
-         
-         <div class="menu_b">
-       		  <li>
-         		<a class="main_menu" style="padding: 20px 40px;" href="#">주문관리 </a>
-	          	<div class="sub">
-	     			<a href="#">주문조회 및 환불</a>
-	     			<a href="#">주문요청</a>
-		            <a href="#">환불조회</a>
-	            </div>
-          	</li>
-         </div>
-         
-          <div class="menu_c">
-        	 <li>
-				<a class="main_menu" href="#">매출조회</a>
-             </li>
-         </div>
-        
-          <div class="menu_d">
-         	<li>
-         		<a class="main_menu" href="#">공지사항</a>
-	        </li>
-          </div>
-      
-          <div class="menu_e">
-           	<li>
-               <a class="main_menu" href="#">마이페이지</a>
-          	</li>
-          </div>
-          
-           <a class="log_out" href="#">로그아웃</a>
-      	</div><!-- top_munu end -->
-      </ul>
- </div>  <!-- top end -->
-
+ 
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="contentA">
 <form action="#" method="post" id="actionForm">
 	<input type="hidden" id="page" name="page" value="${param.page}" />
+    <input type="hidden" id="brchNo" name="brchNo" value="${param.brchNo}"/>
 	<input type="hidden" id="enroll_date" name="enroll_date" value="${param.enroll_date}" />
 	<input type ="hidden" id="start_date" name="start_date" value="${param.start_date}" />
 	<input type="hidden" id="end_date" name="end_date" value="${param.end_date}" />
