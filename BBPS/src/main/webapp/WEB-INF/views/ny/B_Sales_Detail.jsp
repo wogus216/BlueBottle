@@ -46,21 +46,27 @@ h1 {
  float: left;
 }
 
-table {
-    width: 100%;
+#tableA {
+    width: 1215px;
     table-layout: fixed;
-    background: #ffffff;
 	margin-bottom: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
 }
 
+#tableB {
+    width: 540px;
+    table-layout: fixed;
+	margin-bottom: 10px 0;
+	border-top: 2px solid #01a1dd;
+	border-bottom: 2px solid #d9d9d9;
+}
 
 tr {
     display: table-row;
 }
 th{
-	background: #e8e8e8;
+	background-color: #e8e8e8;
     padding: 10px;
     border-bottom: 1px solid #ffffff;
     border-left: 1px solid #ffffff;
@@ -68,12 +74,83 @@ th{
 td{
 	font-size:15px;
 	padding:10px;
+	background-color: #ffffff;
 	border-top: 1px solid #eaeaea;
+	border-bottom: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
 	text-align: center;
 }
 
-td:first-child{
+#tableA td:nth-child(1), #tableA th:nth-child(1) {
+  width: 10%;
+}
+#tableA td:nth-child(2), #tableA th:nth-child(2) {
+  width: 13%;
+}
+#tableA td:nth-child(3), #tableA th:nth-child(3) {
+  width: 25%;
+}
+#tableA td:nth-child(4), #tableA th:nth-child(4) {
+  width: 18%;
+}
+#tableA td:nth-child(5), #tableA th:nth-child(5) {
+  width: 18%;
+}
+#tableA td:nth-child(6), #tableA th:nth-child(6) {
+  width: 18%;
+}
+
+#tableB td:nth-child(1), #tableB th:nth-child(1) {
+  width: 13%;
+}
+#tableB td:nth-child(2), #tableB th:nth-child(2) {
+  width: 37%;
+}
+#tableB td:nth-child(3), #tableB th:nth-child(3) {
+  width: 15%;
+}
+#tableB td:nth-child(4), #tableB th:nth-child(4) {
+  width: 25%;
+}
+#tableA tbody{
+   overflow-y:auto;
+   overflow-x:hidden;
+   float:left;
+   width: 1215px; 
+   max-height:400px;
+   display:block;
+}
+#tableB tbody{
+   overflow-y:auto;
+   overflow-x:hidden;
+   float:left;
+   width: 540px; 
+   max-height:400px;
+   display:block;
+}
+#tableA thead{
+    display : table;
+    table-layout : fixed;
+    width : 1215px;
+}
+#tableB thead{
+    display : table;
+    table-layout : fixed;
+    width : 540px;
+}
+
+#tableA tr{
+    display : table;
+    table-layout : fixed;
+    width :1215px;
+}
+#tableB tr{
+    display : table;
+    table-layout : fixed;
+    width : 540px;
+}
+
+td:first-child, th:first-child{
 	border-left: none;
 }
 
@@ -246,6 +323,10 @@ $(document).ready(function() {
 		$("#sales_no").val($(this).parent().parent().attr("salesNo"));
 		$("#sales_price").val($(this).parent().parent().attr("salesPrice"));
 		$(".contentA").css("width","55%");
+		$("#tableA").css("width","743px");
+		$("#tableA thead").css("width","743px");
+		$("#tableA tbody").css("width","743px");
+		$("#tableA tr").css("width","743px");
 		$(".contentB").css("display", "inline-block");
 		$(".contentB .sales_info").html("");
 		reloadListB();	
@@ -476,28 +557,20 @@ function addComma(value){
 		<span id="tot_pay"></span>
 	</div>
 </div>
-<table cellspacing="0">
-		<colgroup>
-			<col width="10%">
-			<col width="13%">
-			<col width="25%">
-			<col width="18%">
-			<col width="18%">
-			<col width="18%">
-		</colgroup>
-		<thead>
-			<tr>
-				<th scope="col" style="border-left: none;">No.</th>
-				<th scope="col">판매시간</th>
-				<th scope="col">판매번호</th>
-				<th scope="col">카드결제(원)</th>
-				<th scope="col">현금결제(원)</th>
-				<th scope="col">총결제금액(원)</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+<table id="tableA" cellspacing="0">
+	<thead>
+		<tr>
+			<th style="border-left: none;">No.</th>
+			<th>판매시간</th>
+			<th>판매번호</th>
+			<th>카드결제(원)</th>
+			<th>현금결제(원)</th>
+			<th>총결제금액(원)</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
 <input type="button" class="list_btn" value="목록"/>
 
 </div> <!--contentA end  -->
@@ -506,19 +579,13 @@ function addComma(value){
 
 	<div class="head"><h1 >상세조회 및 환불</h1></div>
 	<div class="sales_info"></div>
-	<table cellspacing="0">
-		<colgroup>
-			<col width="15%">
-			<col width="35%">
-			<col width="20%">
-			<col width="30%">
-		</colgroup>
+	<table id="tableB" cellspacing="0">
 		<thead>
 			<tr>
-				<th scope="col" style="border-left: none;">No.</th>
-				<th scope="col">품목</th>
-				<th scope="col">수량</th>
-				<th scope="col">가격</th>
+				<th style="border-left: none;">No.</th>
+				<th>품목</th>
+				<th>수량</th>
+				<th>가격</th>
 			</tr>
 		<thead>
 		<tbody>
