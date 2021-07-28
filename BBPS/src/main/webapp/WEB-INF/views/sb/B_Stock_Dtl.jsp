@@ -354,7 +354,9 @@ select{
 	cursor: pointer;
 }
 .popup_Content{
-	margin-bottom:80px;
+	width : 460px;
+	height : 145px;
+	margin-bottom:30px;
 	margin-top:20px;
 	margin-left:20px;
 	margin-right:20px;
@@ -449,7 +451,7 @@ $(document).ready(function(){
 		});
 		
 		if(cnt > 0){
-			alert("폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력");
+			 makePopup("재고폐기","폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력",function(){});
 		   $(".discardCnt").focus;
 		   stockdiscardloadList();
 		  	$(".discard_btn").hide();
@@ -457,7 +459,13 @@ $(document).ready(function(){
 			$(".discard_submit_btn").show();
 			
 		}else if(cnt2 == $(".stock_tb tbody tr").size()){
-			alert("현재 폐기수량이 모두 0입니다.");
+			makePopup("재고폐기","현재 폐기수량이 모두 0입니다.",function(){});
+			stockdiscardloadList();
+		  	$(".discard_btn").hide();
+			$(".discard_cnl_btn").show();
+			$(".discard_submit_btn").show();
+		}else if($(".chkcnt").val() < $(".discardCnt").val()){ //폐기하려는 수량이 해당 재고 수량보다 큰 경우
+			makePopup("재고폐기","폐기하려는 재고 수량이 잔여한 재고수량보다 많습니다.",function(){});
 			stockdiscardloadList();
 		  	$(".discard_btn").hide();
 			$(".discard_cnl_btn").show();
@@ -466,7 +474,7 @@ $(document).ready(function(){
 		 var params = $("#tb_Form").serialize();
 		 console.log(params) ;
 		 
-		  $.ajax({
+		   $.ajax({
 		      url : "B_Stock_Discards",//접속주소
 		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
 		      dataType :"json", //받아올 데이터 형식
@@ -481,15 +489,15 @@ $(document).ready(function(){
 					$(".discard_cnl_btn").hide();
 					$(".discard_submit_btn").hide();
 		      	  }else if (res.msg == "failed"){
-		            alert("재고폐기에 실패하였습니다."); // 팝업 변경 필요
+		      		 makePopup("재고폐기","재고폐기에 실패하였습니다.",function(){});
 		         }else {
-		            alert("재고폐기 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		        	 makePopup("재고폐기","재고폐기 중 문제가 발생하였습니다.",function(){});
 		         }
 		      },
 		      error : function(request,status,error){
 		         console.log(error);
 		      }
-		   }); 
+		   });  
 		 
 		}
 	});
@@ -508,7 +516,7 @@ $(document).ready(function(){
 	
 	$(".safeCnt_edit_btn").on("click",function(){
 		if($.trim($(".safeCnt").val()) == ""){
-			alert("안전재고 수량을 입력해주세요.");
+			 makePopup("안전재고수정","안전재고 수량을 입력해주세요.",function(){});
 		   $(".itemName").focus;
 		}else{
 			var params = $("#safeCntForm").serialize();
@@ -524,9 +532,9 @@ $(document).ready(function(){
 			        		 
 			        	 });
 			      	  }else if (res.msg == "failed"){
-			            alert("안전재고 수정에 실패하였습니다."); // 팝업 변경 필요
+			      		 makePopup("안전재고수정","안전재고 수정에 실패하였습니다.",function(){});
 			         }else {
-			            alert("안전재고 수정 중 문제가 발생하였습니다."); // 팝업 변경 필요
+			        	 makePopup("안전재고수정","안전재고 수정 중 문제가 발생하였습니다.",function(){});
 			         }
 			      },
 			      error : function(request,status,error){
@@ -762,7 +770,7 @@ function drawstockdiscardList(stockdiscardlist,result){
 			html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
 		}
 		html += "<td>"+d.ITEM_NAME+"<input type = \"hidden\" name = \"itemNo\" value = \""+${param.itemNo}+"\"/></td>";
-		html += "<td>"+d.HSTOCK+"</td>";
+		html += "<td>"+d.HSTOCK+"<input type = \"hidden\" class = \"chkcnt\" id = \"chkcnt\" name = \"chkcnt\" value = \""+d.HSTOCK+"\"/></td>";
 		html += "<td><input type = \"number\" min = 0 class = \"discardCnt\" id = \"discardCnt\" name = \"discardCnt\" value = \"0\"/></td>";
 		html += "<td><input type = \"text\" id = \"discardNote\" name = \"discardNote\"/></td>";
 		html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" id = \"expDate\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\" /></td>";

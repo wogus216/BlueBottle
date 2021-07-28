@@ -146,6 +146,133 @@ input[type=radio]{
 	table-layout : fixed;
 	width : 1250px;
 }
+#itemCate{
+	width : 100px;
+	height : 40px;
+	text-align: middle;
+}
+
+.edit_area td:nth-child(1){
+	text-align: center;
+}
+
+
+/* 팝업 */
+
+.popup_Content table{
+	width: 100%;
+    background: #ffffff;
+	margin: 10px 0;
+	border-top: 2px solid #01a1dd;
+	border-bottom: 2px solid #d9d9d9;
+}
+
+.popup_Content th{
+	background: #e8e8e8;
+    padding: 0px;
+    border-bottom: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    font-size:15px;
+}
+
+
+.popup_Content td{
+	font-size:15px;
+	padding:0px;
+	border-top: 1px solid #eaeaea;
+	border-left: 1px solid #eaeaea;
+}
+
+
+
+.popup_Content thead{
+	display : table;
+	table-layout : fixed;
+	width : 100%;
+}
+
+.popup_Content tbody{
+	display : block;
+	max-height : 120px;
+	width : 100%px;
+	overflow : auto;
+	overflow-x : hidden;
+}
+
+.popup_Content tr{
+	display : table;
+	table-layout : fixed;
+	width : 100%;
+}
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_Area {
+	display: inline-block;
+	width: 500px;
+	height: 300px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 150px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 250px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_Head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_Btn{
+	text-align:center;
+}
+.popup_Btn input[type='button']{
+	color: white;
+	width: 120px;
+	height: 30px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:15px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_Content{
+	width : 460px;
+	height : 145px;
+	margin-bottom:30px;
+	margin-top:20px;
+	margin-left:20px;
+	margin-right:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+input[type='button']:focus{outline:none;}
+
+.popup_Head > .close_Btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
 
 </style>
 <script type="text/javascript"
@@ -178,13 +305,13 @@ $(document).ready(function(){
 	
 	$(".edit_btn").on("click",function(){
 		if($.trim($(".itemName").val()) == ""){
-			alert("품목명을 입력해주세요.")
+			makePopup("품목수정","품목명을 입력해주세요.",function(){});
 		   $(".itemName").focus;
 		}else if($.trim($(".itemPrice").val()) == ""){
-			alert("가격을 입력해주세요.")
+			makePopup("품목수정","가격을 입력해주세요.",function(){});
 		   $(".itemPrice").focus;
 		}else if($.trim($(".itemMinOrdUnit").val()) == ""){
-			alert("최소주문단위를 입력해주세요.")
+			makePopup("품목수정","최소주문단위를 입력해주세요.",function(){});
 		   $(".itemMinOrdUnit").focus;
 		}else{
 			
@@ -201,9 +328,9 @@ $(document).ready(function(){
 					$("#editForm").submit();
 					$("#goForm").submit();
 		         }else if (res.msg == "failed"){
-		            alert("수정에 실패하였습니다."); // 팝업 변경 필요
+		        	makePopup("품목수정","수정에 실패하였습니다.",function(){});
 		         }else {
-		            alert("수정 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		        	makePopup("품목수정","수정 중 문제가 발생하였습니다.",function(){});
 		         }
 		      },
 		      error : function(request,status,error){
@@ -247,6 +374,39 @@ function drawpricehistory(pricehistorylist){
 	
 	$(".price_history tbody").html(html);
 }
+
+
+//팝업
+function makePopup(title, contents, func) {
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_Area\">";	
+	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";
+	html+= "</div>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_Btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_Area").hide().show();
+	
+	$(".popup_Btn, .close_Btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+	
+}
+
+function closePopup() {
+	$(".bg, .popup_Area").fadeOut(function(){
+		$(".bg, .popup_Area").remove();
+	}); //popup_Btn end
+}
 </script>
 </head>
 <body>
@@ -266,6 +426,7 @@ function drawpricehistory(pricehistorylist){
 <input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 <input type = "hidden" name = "search_input" value = "${param.search_input}"/>
 </form>
+<div class = "edit_area">
 <form action = "#" id = "editForm" method = "post">
 <input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
 <input type = "hidden" name ="itemNo" value = "${data.ITEM_NO}"/>
@@ -318,6 +479,7 @@ function drawpricehistory(pricehistorylist){
 	</tr>
 </table>
 </form>
+</div>
 <div class=price_history>
 <h3>가격변동내역</h3>
 <table cellspacing="0">

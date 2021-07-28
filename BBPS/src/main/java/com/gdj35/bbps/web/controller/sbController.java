@@ -31,7 +31,7 @@ public class sbController {
 	
 	//첫 페이지 지정
 	@RequestMapping(value = "/Item_List")
-	public ModelAndView HPList (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
+	public ModelAndView HPList (HttpSession session,@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
 		
 		int page = 1;
 		
@@ -44,6 +44,8 @@ public class sbController {
 		mav.addObject("catelist",catelist);
 		mav.addObject("page",page);
 		mav.setViewName("sb/Item_List");
+		
+		System.out.println("세션나와봐"+session);
 		
 		return mav;
 	}
@@ -407,7 +409,11 @@ public class sbController {
 				insertMap.put("userNo", userNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("discardCnt", discardCnt.get(i));
-				insertMap.put("discardNote", discardNote.get(i));
+				if(discardNote.size() != 0) {
+					insertMap.put("discardNote", discardNote.get(i));
+				}else {
+					insertMap.put("discardNote", "");
+				}
 				insertMap.put("expDate", expDate.get(i));
 				
 				int cnt = isbservice.DiscardStock(insertMap);
@@ -671,7 +677,12 @@ public class sbController {
 				insertMap.put("brchNo", brchNo.get(0)); //지점번호는 어떻든 같을테니 처음받은 값만 넣어줌 (어차피 값 1개만 받음)
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("discardCnt", discardCnt.get(i));
-				insertMap.put("discardNote", discardNote.get(i));
+				if(discardNote.size() != 0) {
+					insertMap.put("discardNote", discardNote.get(i));
+				}else {
+					insertMap.put("discardNote", "");
+				}
+				
 				insertMap.put("expDate", expDate.get(i));
 				
 				int cnt = isbservice.BDiscardStock(insertMap);

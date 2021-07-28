@@ -407,7 +407,7 @@ function totPrice(list){
 function drawPaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\">|<</button>";
+	html += "<button page = \"1\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\"><</button>";
 	}else{
@@ -432,7 +432,7 @@ function drawPaging(pb){
 	
 	
 	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>></button>";
 	
 	$(".page_btn").html(html);
 }

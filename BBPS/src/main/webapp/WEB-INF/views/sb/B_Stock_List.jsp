@@ -153,6 +153,7 @@ td{
 
 .on{
 	background-color: blue;
+	font-weight: bold;
 }
 .start_date, .end_date{
 	width: 150px;
@@ -168,8 +169,6 @@ td{
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	console.log(${sBRCHNo});
 	
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
@@ -292,7 +291,7 @@ function drawbrchstockList(list,result){
 function drawdiscardPaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\">|<</button>";
+	html += "<button page = \"1\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\"><</button>";
 	}else{
@@ -315,7 +314,7 @@ function drawdiscardPaging(pb){
 		html += "<button page = \""+ ($("#page").val()*1+1) +"\" >></button>";/* -는 알아서 숫자 빠지는데 더하기는 문자열 처리가 됨  그래서 *1 해줘야됨*/
 	}
 	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>></button>";
 	
 	$(".page_btn").html(html);
 }

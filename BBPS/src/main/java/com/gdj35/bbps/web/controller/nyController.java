@@ -336,7 +336,7 @@ public class nyController {
 			
 			int cnt = iNyService.getSalesCnt(params);
 			
-			PagingBean pb = iPagingService.getPagingBean(page, cnt);
+			PagingBean pb = iPagingService.getPagingBean(page, cnt, 10, 5);
 			
 			params.put("startCnt", Integer.toString(pb.getStartCount()));
 			params.put("endCnt", Integer.toString(pb.getEndCount()));

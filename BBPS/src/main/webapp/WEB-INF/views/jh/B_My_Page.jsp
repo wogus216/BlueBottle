@@ -386,7 +386,6 @@ function oClosePopup() {
 <!-- 버튼 -->
 		<div class="btm_btn_area">
 			<input type="button" class="edit_btn" value="수정" >
-			<input type="button" class="list_btn" value="목록" >
 		</div>
 	</div>
 </div>
