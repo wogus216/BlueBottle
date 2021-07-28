@@ -88,16 +88,13 @@ td{
   width: 13%;
 }
 #tableA td:nth-child(3), #tableA th:nth-child(3) {
-  width: 25%;
+  width: 31%;
 }
 #tableA td:nth-child(4), #tableA th:nth-child(4) {
-  width: 18%;
+  width: 24%;
 }
 #tableA td:nth-child(5), #tableA th:nth-child(5) {
-  width: 18%;
-}
-#tableA td:nth-child(6), #tableA th:nth-child(6) {
-  width: 18%;
+  width: 24%;
 }
 
 #tableB td:nth-child(1), #tableB th:nth-child(1) {
@@ -142,7 +139,7 @@ td{
 #tableA tr{
     display : table;
     table-layout : fixed;
-    width :1215px;
+    width : 1215px;
 }
 #tableB tr{
     display : table;
@@ -206,6 +203,20 @@ tbody span:hover{
 }
 .tot_price span {
 	margin-right:5px;
+}
+
+.log_out{
+    width: 90px;
+    height: 35px;
+    color: white;
+    font-size: 15px;
+    background-color: #01a1dd;
+    border: none;
+    float: right;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-top: 12px;
+    margin-right: 10px;
 }
 
 input[type='button']{
@@ -309,11 +320,6 @@ $(document).ready(function() {
 	
 	reloadListA();
 	
-	$(".contentA .page_btn").on("click","button",function(){
-		$(".contentA #page").val($(this).attr("page"));
-		reloadListA();
-	}); 
-	
 	$(".contentA .list_btn").on("click", function() {
 		$("#actionForm").attr("action", "B_Sales");
 		$("#actionForm").submit();
@@ -344,7 +350,13 @@ $(document).ready(function() {
 				data: params,
 				success: function(res) {
 					reloadListA();
-					reloadListB();
+					$(".contentB .sales_info").html("");
+					$(".contentB").css("display", "none");
+					$(".contentA").css("width","90%");
+					$("#tableA").css("width","1215px");
+					$("#tableA thead").css("width","1215px");
+					$("#tableA tbody").css("width","1215px");
+					$("#tableA tr").css("width","1215px");	
 				},
 				error: function(request, status, error) {
 					console.log(error);
@@ -360,7 +372,7 @@ $(document).ready(function() {
 
 function reloadListA(){
 	var params = $(".contentA #actionForm").serialize();
-	
+
 	$.ajax({
 		url: "getSalesDetail",
 		type: "post",
@@ -378,6 +390,7 @@ function reloadListA(){
 }
 
 function reloadListB(){
+		
 	var params = $(".contentA #actionForm").serialize();
 	$.ajax({
 		url: "getSalesDetailDetail",
@@ -424,37 +437,39 @@ function getTotSales(list) {
 }
 
 function drawListA(list) {
-	console.log(list);
+
 	var html = "";
 	
 	for(d of list) {	
-		var card = addComma(d.CARD_PAY);
-		var cash = addComma(d.CASH_PAY);
 		var tot = addComma(d.TOT_PAY);
+		var payMethod = "";
+		if(d.PAY_METHOD == "0") {
+			payMethod = "카드";
+		} else {
+			payMethod = "현금";
+		}
 		
-		if(d.CNL_DATE == "11/11/11") {
+		if(d.CNL_DATE == "1900-01-01") {
 			html += "<tr salesNo = \""+ d.SALES_NO +"\" salesPrice = \""+ tot +"\" cnlDate = \""+ d.CNL_DATE +"\">";
-			html += "<td>"+ d.NUM +"</td>     ";
+			html += "<td>"+ d.RNUM +"</td>     ";
 			html += "<td>"+ d.ENROLL_TIME +"</td>";
 			html += "<td><span>"+ d.SALES_NO +"</span></td>   ";
-			html += "<td>"+ card +"</td>   ";
-			html += "<td>"+ cash +"</td>   ";
 			html += "<td>"+ tot +"</td>    ";
+			html += "<td>"+ payMethod +"</td>   ";
 			html += "</tr>";
 		} 
 		else{
 			html += "<tr style=\"color:red;\"salesNo = \""+ d.SALES_NO +"\" salesPrice = \""+ tot +"\" cnlDate = \""+ d.CNL_DATE +"\">";
-			html += "<td>"+ d.NUM +"</td>     ";
+			html += "<td>"+ d.RNUM +"</td>     ";
 			html += "<td>"+ d.ENROLL_TIME +"</td>";
 			html += "<td><span>"+ d.SALES_NO +"</span></td>   ";
-			html += "<td>"+ card +"</td>   ";
-			html += "<td>"+ cash +"</td>   ";
 			html += "<td>"+ tot +"(환불)</td>    ";
+			html += "<td>"+ payMethod +"</td>   ";
 			html += "</tr>";
 		}		
 	}
 	
-	$(".contentA tbody").html(html);
+	$("#tableA tbody").html(html);
 	
 }
 
@@ -476,11 +491,11 @@ function drawListB(list) {
 	$(".contentB .sales_info").html("<span><strong>판매번호: </strong>" + $("#sales_no").val() + "</span>");
 	$(".contentB .sales_info").append("<span><strong>판매금액: </strong>"+ $("#sales_price").val() + "</span>");
 	
-	if($(".contentB tbody tr").attr("cnlDate") == "11/11/11") {
+	if($(".contentB tbody tr").attr("cnlDate") == "1900-01-01") {
 		$(".contentB .sales_info").append("<input type=\"button\" id=\"ref_btn\" value=\"환불\"/>");
 	}
 	else{
-		$(".contentB .sales_info").append("<span><strong>환불완료</strong></span>");
+		$(".contentB .sales_info").append("<span>"+ $(".contentB tbody tr").attr("cnlDate") +"<strong> 환불완료</strong></span>");
 	}
 		
 }
@@ -542,7 +557,7 @@ function addComma(value){
 	<input type="hidden" id="enroll_date" name="enroll_date" value="${param.enroll_date}" />
 	<input type ="hidden" id="start_date" name="start_date" value="${param.start_date}" />
 	<input type="hidden" id="end_date" name="end_date" value="${param.end_date}" />
-	<input type="hidden" id="brch_no" name="brch_no" value="${param.brch_choice}"/>
+	<input type="hidden" id="brch_choice" name="brch_choice"/>
 	<input type="hidden" id="sales_no" name="sales_no"/>
 	<input type="hidden" id="sales_price" name="sales_price"/>
 </form>
@@ -563,9 +578,8 @@ function addComma(value){
 			<th style="border-left: none;">No.</th>
 			<th>판매시간</th>
 			<th>판매번호</th>
-			<th>카드결제(원)</th>
-			<th>현금결제(원)</th>
 			<th>총결제금액(원)</th>
+			<th>결제방법</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -587,7 +601,7 @@ function addComma(value){
 				<th>수량</th>
 				<th>가격</th>
 			</tr>
-		<thead>
+		</thead>
 		<tbody>
 		</tbody>
 	</table>
