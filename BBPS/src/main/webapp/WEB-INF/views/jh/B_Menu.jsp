@@ -267,6 +267,8 @@ function drawMenu(menu){
 		<input type="hidden"  id="brchNo" name="brchNo" value="${sBRCHNo}">
 		<!--  지점 이름 -->
 		<input type="hidden"  id="brNm" name="brNm" value="${sBRCHNm}">
+		<!--  지점 권한 -->
+		<input type="hidden"  id="auNo" name="auNo" value="${sAUTHNo}">
 </form>
          	<!-- 탑메뉴 -->
  	<div class="top_menu"></div>

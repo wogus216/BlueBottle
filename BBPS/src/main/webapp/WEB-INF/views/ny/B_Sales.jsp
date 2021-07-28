@@ -1,12 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<<<<<<< HEAD
-\
-=======
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:import url="../jh/H_Menu.jsp">
+<c:import url="../jh/B_Menu.jsp">
 	<c:param name="menuno" value="22"></c:param>
 </c:import>
->>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
+
 <!DOCTYPE html>
 <html>
 <head>

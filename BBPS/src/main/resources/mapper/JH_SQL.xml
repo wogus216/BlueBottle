@@ -157,7 +157,7 @@
 		                         AND SMA.AUTH_CODE IN (1,2)
 		                  INNER JOIN AUTH A
 		                          ON A.AUTH_NO = SMA.AUTH_NO
-        WHERE A.AUTH_NO = #{sAUTHNo}
+        WHERE A.AUTH_NO = 6
 		START WITH SM.DEPTH = #{bDt}
 		CONNECT BY PRIOR SM.SITE_MENU_NO =SM.TOP_SITE_MENU_NO 
 		ORDER BY SM.SITE_MENU_NO ASC

@@ -520,7 +520,7 @@ public class jhController {
 	System.out.println("data :"+ data);
 	if(data != null) { //사용자 정보가 있음
 		session.setAttribute("sBRCHNo", data.get("BRCH_NO")); //지점번호
-		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //지점번호
+		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //지점권한번호
 		session.setAttribute("sId", data.get("ID")); //지점 아이디
 		session.setAttribute("sBRCHNm", data.get("BRCH_NAME")); //지점명
 		System.out.println(session.getAttribute("sBRCHNm")); //지점장 이름
