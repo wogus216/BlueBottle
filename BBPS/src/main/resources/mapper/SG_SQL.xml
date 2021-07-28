@@ -115,7 +115,7 @@ WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
 
 <insert id="addN" parameterType="hashmap">
 INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT, ATT_FILE)
-VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, 4, #{nTitle}, #{nCon}, #{nFile})
+VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, #{uNo}, #{nTitle}, #{nCon}, #{nFile})
 </insert>
 
 <select id="getN" parameterType="hashmap" resultType="hashmap">

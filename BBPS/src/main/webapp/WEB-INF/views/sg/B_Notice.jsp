@@ -9,7 +9,7 @@
 <head>
 <meta charset= "UTF-8">
 
-<title>본사공지사항리스트</title>
+<title>지점공지사항리스트</title>
 <style type="text/css">
 
 /* 미들 부분 */
@@ -169,12 +169,10 @@ $(document).ready(function(){
 	reloadList();
 	
 
-	
 	$(".cate").on("change", function () {
 		$("#cate").val($(".cate").val());
 		console.log("카테고리번호"+$("#cate").val());
-		reloadList();
-		
+		reloadList();		
 	});
 	
 	
@@ -199,19 +197,10 @@ $(document).ready(function(){
 	$(".end_date").val(today());
 	
 	
-	
-	
-	$("#writeBtn").on("click", function () {
-		$("#searchTxt").val($("#searchOldTxt").val());
-		//location.href = "Notice_Write";
-		$("#actionForm").attr("action", "Notice_Write");
-		$("#actionForm").submit();
-	});
-	
 	$(".list_wrap tbody").on("click","tr", function () {
 		$("#nNo").val($(this).attr("nno"));
 		
-		$("#actionForm").attr("action", "Notice_Detail");
+		$("#actionForm").attr("action", "B_Notice_Detail");
 		$("#actionForm").submit();
 	});
 	
@@ -222,7 +211,7 @@ function reloadList() {
 	var params = $("#actionForm").serialize(); //name이 있는 것들만 전송
 	
 	$.ajax({
-		url:"Notices", //접속주소
+		url:"B_Notices", //접속주소
 		type:"post", //전송방식 : get, post
 		dataType:"json",//받아올데이터형식
 		data:params, //보낼 데이터(문자열 형태)
@@ -327,9 +316,6 @@ function splitdate(resdate){
 <h1>공지사항</h1>
 
 <form action="#" id="searchForm" method="post">	
-<div class="input_btn_area">
-<input type="button" value="작성" id="writeBtn" class="input_btn"/>
-</div>
 	<div class="filter_area">
 			<select class="cate">
 				<option value="" selected="selected">-</option>
@@ -365,8 +351,8 @@ function splitdate(resdate){
 </div>
 <form action="#" id="actionForm" method="post">
 <div class="search_area" style = "margin-top : 30px;">
-	<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 	<input type="hidden" id="nNo" name="nNo" value="${data.TXT_NO}"/>
+	<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 	<input type="hidden" id="page" name="page" value="${page}">
 			<select id="searchGbn" name="searchGbn" class="search_filter">
 				<option value="0" selected="selected">제목+내용</option>

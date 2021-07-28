@@ -117,29 +117,7 @@ margin : 10px 0px;
 	outline:none;
 }
 .submit_area button:focus{outline:none;}
-	 
- .btm_tb{
- margin : 10px 0px;
- position: relative;
-width: 100%;
-  height: 30px;
- }
- .tb2{
-    text-align: center;
-    border: 2px solid #ccc;
-}
- .tb2 > .tbody{
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
- }
- .tb2 > .tr{
-    border-bottom: 1px solid #ccc;
- }
- .tb2 > .th{
- background-color: #000000;
- }
- 
+
  .off_btn {
 	display: none;
 }
@@ -147,7 +125,6 @@ width: 100%;
 #att {
 	display: none;
 }
- 
  
  
  
@@ -392,6 +369,7 @@ function closePopup() {
 <input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 <input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 <input type="hidden" name="nNo" value="${data.TXT_NO}" />
+<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 <input type="text" id="nTitle" name="nTitle" class="title_input" placeholder="제목을 입력하시오."
  value="${data.TITLE}" /><br/>
 <div class="top_tb">
@@ -429,20 +407,7 @@ ${data.CONTENT}</textarea>
 	<input type="button" value="수정" id="updateBtn" class="submit_btn"/>
 	<input type="button" value="취소" id="backBtn" class="cnl_btn" />
 </div>
-<div class="btm_tb">
-<table class="tb2">
-<tbody>
-<tr>
-<th>&nbsp;윗글</th>
-<td>&nbsp;해당 글이 없습니다.</td>
-</tr>
-<tr>
-<th>&nbsp;아랫글</th>
-<td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-</div>
+
 </div>
 </div>
 
