@@ -451,10 +451,7 @@ function addComma(value){
 
 </head>
 <body>
-<<<<<<< HEAD
- 
-=======
->>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
+
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="contentA">
