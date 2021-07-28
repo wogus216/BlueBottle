@@ -1,104 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="19"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>지점주문조회</title>
 <style type="text/css">
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1300px;
-    height: 62px;
-}
 
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 800px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
-ul {
-   list-style-type: none;
-   margin: 0;
-   padding: 0;
-  
-}
-
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
-}
-
-li {
-   float: left;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub  {
-    display: block;
-}
 .content_area{
 	width: 1250px;
 	height: 900px;
@@ -147,7 +59,7 @@ td{
  td:first-child{
 	border-left: none;
 }
-input{
+button{
 	width:200px;
 	height:40px;
 }
@@ -178,7 +90,7 @@ select{
 	height: 40px;
 	width : 100px;
 }
-button{
+input[type=button]{
 	color: white;
 	width: 100px;
 	height: 40px;
@@ -186,7 +98,6 @@ button{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
@@ -212,6 +123,7 @@ button:focus{outline:none;}
 	font-size:18px;
 	margin:40px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
+	cursor:pointer;
 }
 
 .page_btn button:hover{
@@ -272,6 +184,8 @@ $(document).ready(function(){
 		$("#actionForm").attr("action","B_Ord_dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
+	$(".start_date").val(lastWeek());
+	$(".end_date").val(today());
 }); //ready end
 
 function reloadList(){
@@ -290,6 +204,33 @@ function reloadList(){
 			console.log(error);
 		}
 	});
+}
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
+
+function lastWeek() { //일주일전 날짜 구하기
+	  var d = new Date();
+	  var dayOfMonth = d.getDate();
+	  d.setDate(dayOfMonth - 7);
+	  return splitdate(d);
+}
+
+function splitdate(resdate){
+	
+	var dd = resdate.getDate(); // 현재 기준 하루 전까지 min으로 잡을 예정이므로
+	var mm = resdate.getMonth()+1;
+	var yyyy = resdate.getFullYear();
+		if(dd < 10){
+			dd = "0" + dd;
+		}
+		if(mm < 10){
+			mm = "0" + mm;
+		} //1월인 경우 01로 표기
+		
+	return yyyy+"-"+mm+"-"+dd;
 }
 function drawList(list){
 	var html ="";
@@ -337,75 +278,7 @@ function drawPaging(pb){
 </script>
 </head>
 <body>
-   <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="./logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         			재고관리</a>
-	         <div class="sub">
-	        	 <a href="#">
-	            	현재재고조회</a>
-	            <a href="#">
-	            	입고재고조회</a>
-	             <a href="#">
-	            	사용재고조회</a>
-	             <a href="#">
-	            	폐기조회</a>
-	      </div>
-         </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" style="padding: 20px 40px;" href="#">
-         			주문관리 </a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	주문조회 및 환불</a>
-     			<a href="#">
-	            	주문요청</a>
-	            <a href="#">	
-	            	환불조회</a>
-	         
-	            </div>
-          </li>
-         </div>
-         
-           <div class="menu_c">
-         <li>
-		<a class="main_menu" href="#"> 
-	        		매출조회</a>
-	          	<div class="sub">
-	            </div>
-          </li>
-         </div>
-        
-          <div class="menu_d">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-      
-          <div class="menu_e">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
-   </div>
+
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
@@ -443,7 +316,7 @@ function drawPaging(pb){
 			</select>
 			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-			<button type="button" class="search_btn" id="search_btn">검색</button>
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
 			<input type="hidden" name="rCk" id="rCk" value="0"/>
 			
 			<input type = "hidden" id = "start_date" name = "start_date"/>

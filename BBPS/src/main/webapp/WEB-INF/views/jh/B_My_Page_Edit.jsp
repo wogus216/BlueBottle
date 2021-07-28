@@ -32,7 +32,7 @@ h1 {
 }
 
 
-/* 이게일반 */
+/* 기본 css */
 input[type='button']{
 	color: white;
 	width: 100px;
@@ -174,6 +174,7 @@ $(document).ready(function(){
 		$("#send_form").submit();
 	}
 	*/
+	
 	//수정버튼
 	$(".submit_btn").on("click",function(){
 		
@@ -327,7 +328,7 @@ function makePopup(title, contents, func) {
 			</div>
 			<div class="right">
 				<div class="pw">
-						<input type="password" id="bPw" name="bPw" value="${data.PW}"/>
+					<input type="password" id="bPw" name="bPw" value="${data.PW}"/>
 				</div>
 			</div>
 		</div>
@@ -343,7 +344,7 @@ function makePopup(title, contents, func) {
 				</div>
 			</div>
 		</div>
-			<div class="wrap">
+		<div class="wrap">
 			<div class="left">
 				<div class="post_num">
 					<h3>우편번호</h3>

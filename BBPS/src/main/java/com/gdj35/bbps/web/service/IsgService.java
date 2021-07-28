@@ -38,5 +38,7 @@ public interface IsgService {
 
 	public int deleteB(HashMap<String, String> params) throws Throwable;
 
+	public List<HashMap<String, String>> searchDateList() throws Throwable;
+
 
 }

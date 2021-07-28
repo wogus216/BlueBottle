@@ -199,6 +199,13 @@ $(document).ready(function(){
 		location.href = "Login";
 	});
 	
+	//엔터로 로그인
+	$("#bPw").on("keypress", function(e){
+		if(e.keyCode == '13'){
+			
+			$(".submit").click();
+		}
+	});
 	
 	//팝업
 	$(".inquiry_btn").on("click",function(){
@@ -218,15 +225,15 @@ $(document).ready(function(){
 	//로그인버튼
 	$(".submit").on("click",function(){
 		if($.trim($("#bId").val()) == ""){
-			makePopup("", "아이디를 입력해주세요",function(){
-		});
+			
+			makePopup("", "아이디를 입력해주세요",function(){});
 			$("#bId").focus();
 		} else if($.trim($("#bPw").val()) =="") {
-				makePopup("", "비밀번호를 입력해주세요",function(){
-					
-				});
+			
+			makePopup("", "비밀번호를 입력해주세요",function(){});
 				$("#bPw").focus();	
 		} else{
+			
 			$("#bId").val($("#bId").val().toUpperCase()); //대문자처리
 			var params = $("#loginForm").serialize();
 			$.ajax({

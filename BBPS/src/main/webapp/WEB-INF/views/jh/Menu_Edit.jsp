@@ -228,11 +228,9 @@ $(document).ready(function(){
 					if(res.msg == "success"){
 						$("#edit_form").attr("action","Menu_Edit");
 						$("#edit_form").submit();
-					} 
-					else if(res.msg == "failed"){
+					} else if(res.msg == "failed"){
 							makePopup("", "작성 실패.",function(){});
-					} 
-					else{
+					} else{
 							makePopup("", "수정 중 에러 발생",function(){});
 					 }
 				  },
@@ -240,7 +238,7 @@ $(document).ready(function(){
 						console.log(error);
 					}
 				});
-			}else{
+			} else{
 		 			makePopup("", "파일 업로드 중 문제 발생",function(){});
 				} 
 			},		
@@ -271,8 +269,6 @@ $(document).ready(function(){
 		//$("#img_Cnt").attr("value","1");
 		$("#fileName").html($(this).val().substring($(this).val().lastIndexOf("\\") +1 ));
 		var fileForm = $("#fileForm");
-		
-		
 		
 		fileForm.ajaxForm({
 			beforeSubmit: function(){

@@ -12,10 +12,11 @@
 	
 	<!-- 지점,포스로그인 -->
 	<select id="getB" parameterType="hashmap" resultType="hashmap">
-		SELECT BRCH_NO,ID,BRCH_NAME,MGR_NAME
-		FROM BRCH
-		WHERE ID = #{bId}
-		AND PW = #{bPw}
+	SELECT B.BRCH_NO,B.ID,B.BRCH_NAME,A.AUTH_NO
+	FROM BRCH B INNER JOIN AUTH A
+       	                ON B.BRCH_NO = A.AUTH_NO	
+	WHERE ID = #{bId}
+	AND PW = #{bPw}
 	</select>
 	
 	
@@ -156,7 +157,7 @@
 		                         AND SMA.AUTH_CODE IN (1,2)
 		                  INNER JOIN AUTH A
 		                          ON A.AUTH_NO = SMA.AUTH_NO
-        WHERE A.AUTH_NO = 6
+        WHERE A.AUTH_NO = #{sAUTHNo}
 		START WITH SM.DEPTH = #{bDt}
 		CONNECT BY PRIOR SM.SITE_MENU_NO =SM.TOP_SITE_MENU_NO 
 		ORDER BY SM.SITE_MENU_NO ASC

@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<<<<<<< HEAD
 \
+=======
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="22"></c:param>
+</c:import>
+>>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +14,11 @@
 <title>지점매출조회</title>
 <style type="text/css">
 
+<<<<<<< HEAD
 /* 컨텐츠 부분 */
+=======
+/* 미들 부분 */
+>>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
 .content_area{
 	width: 1250px;
 	height: 900px;
@@ -477,7 +488,11 @@ function closePopup() {
 
 </head>
 <body>
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> branch 'main' of https://github.com/wogus216/BlueBottle.git
 <!--컨텐츠 -->
 	<div class="content_area">
 	<div class="content">

@@ -24,17 +24,51 @@
 		</when>
 	</choose>
 </if>
+<if test = "cate != null and cate != ''">
+<choose>
+         <when  test ="cate == 0">
+            AND  CATE_NO IN (1,2,3,4,5)
+         </when>
+         <when  test ="cate == 1" >
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 2">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 3">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 4">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 5">
+            AND  CATE_NO IN #{cate}
+         </when>
+         
+      </choose>
+</if>
 </select>
 
 
 <select id ="getNList" parameterType="hashmap" resultType="hashmap">
-SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG
+SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG, N.CATE_NO
 FROM(SELECT TXT_NO, TITLE, TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS S_DT,H.USER_NAME
-        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG
+        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG, O.CATE_NO
     FROM NOTICE O INNER JOIN HQ_USER H
                           ON O.USER_NO = H.USER_NO
 WHERE O.DEL_FLAG=1 
 AND 1=1
+   <choose>
+            <when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
+                   WHERE S_DT BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date},'YY/MM/DD') 
+            </when>
+            <when test="start_date != null and start_date != ''">
+                   WHERE S_DT BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(SYSDATE, 'YY/MM/DD') 
+            </when>
+            <when test="end_date != null and end_date != ''">
+                   WHERE S_DT BETWEEN TO_DATE(S_DT, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
+            </when>
+     </choose>
 <if test="searchTxt != null and searchTxt != ''"> 
 	<choose>
 		<when test="searchGbn == 0">
@@ -52,13 +86,36 @@ AND 1=1
 		</when>
 	</choose>
 </if>
+<if test = "cate != null and cate != ''">
+<choose>
+         <when  test ="cate == 0">
+            AND  CATE_NO IN (0,1,2,3,4, 5)
+         </when>
+         <when  test ="cate == 1" >
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 2">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 3">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 4">
+            AND  CATE_NO IN #{cate}
+         </when>
+         <when  test ="cate == 5">
+            AND  CATE_NO IN #{cate}
+         </when>
+         
+      </choose>
+</if>
 )N
 WHERE N.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>
 
 <insert id="addN" parameterType="hashmap">
 INSERT INTO NOTICE(TXT_NO, CATE_NO, USER_NO, TITLE, CONTENT, ATT_FILE)
-VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, 4, #{nTitle}, #{nCon}, #{nFile})
+VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, #{uNo}, #{nTitle}, #{nCon}, #{nFile})
 </insert>
 
 <select id="getN" parameterType="hashmap" resultType="hashmap">
@@ -78,6 +135,12 @@ WHERE TXT_NO = #{nNo}
 UPDATE NOTICE SET DEL_FLAG = 0
 WHERE TXT_NO = #{nNo}
 </update>
+
+<select id = "searchDateList" resultType="hashmap">
+	SELECT CATE_NO, CATE_NAME
+	FROM NOTICE_CATE
+	WHERE DEL_FLAG = 1
+</select>
 
 
 

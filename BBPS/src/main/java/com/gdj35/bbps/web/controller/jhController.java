@@ -46,7 +46,7 @@ public class jhController {
 	@RequestMapping(value="/H_Login")
 	public ModelAndView hq_Login(HttpSession session, ModelAndView mav) {
 			if(session.getAttribute("sUSERNo") != null	) { //로그인상태
-				mav.setViewName("redirect:H_Menu");
+				mav.setViewName("redirect:Ord_Mang");
 			} else { // 비 로그인 상태
 				mav.setViewName("jh/H_Login");
 			}
@@ -64,6 +64,7 @@ public class jhController {
 		@RequestParam HashMap<String, String> params) throws Throwable{
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
+	
 	//암호화
 	//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
 	
@@ -77,6 +78,7 @@ public class jhController {
 		session.setAttribute("sUSERNo", data.get("USER_NO")); //유저번호
 		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //권한번호
 		session.setAttribute("sDEPNo", data.get("DEP_NO"));	// 부서 번호
+		session.setAttribute("sDEPNo", data.get("DEP_NO"));	// 권한타입 번호
 		session.setAttribute("sId", data.get("ID")); // 아이디
 		System.out.println("유저번호:"+session.getAttribute("sUSERNo"));
 		
@@ -490,7 +492,7 @@ public class jhController {
 	@RequestMapping(value="/B_Login")
 	public ModelAndView b_Login(HttpSession session, ModelAndView mav) {
 			if(session.getAttribute("sBRCHNo") != null	) { //로그인상태
-				mav.setViewName("redirect:B_Menu");
+				mav.setViewName("redirect:B_Stock_List");
 			} else { // 비 로그인 상태
 				mav.setViewName("jh/B_Login");
 			}
@@ -518,6 +520,7 @@ public class jhController {
 	System.out.println("data :"+ data);
 	if(data != null) { //사용자 정보가 있음
 		session.setAttribute("sBRCHNo", data.get("BRCH_NO")); //지점번호
+		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //지점번호
 		session.setAttribute("sId", data.get("ID")); //지점 아이디
 		session.setAttribute("sBRCHNm", data.get("BRCH_NAME")); //지점명
 		System.out.println(session.getAttribute("sBRCHNm")); //지점장 이름

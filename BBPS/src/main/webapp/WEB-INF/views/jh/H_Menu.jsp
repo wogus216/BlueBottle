@@ -118,7 +118,7 @@ html,body{
 	background-color: #f2f2f2;
 }
 /* 로그아웃 */
-.log_out{
+.top_menu > .log_out{
 	width: 90px;
     height: 35px;
     color: white;
@@ -198,7 +198,7 @@ function reLoadMenu(){
 	});
 	
 }
-
+//메뉴 그리기
 function drawMenu(menu){
 	var html = "";
 	//	" +  + "
@@ -207,6 +207,7 @@ function drawMenu(menu){
 	html += "	<img class=\"logo\" alt=\"logo\" src=\"resources/images/bb/logo.png\" width=\"250px\">";
 	html += "  </div>";
 	for(var i =0; i < menu.length; i++){
+		//메뉴 1뎁스 이면서 하위메뉴가 없는 경우
 		if(menu[i].DEPTH == 1 && menu[i].SUB == 1){
 				if(menu[i].SITE_MENU_NO == "${param.menuno}"){
 					html += "<div class=\"menu1_wrap_on\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
@@ -218,7 +219,7 @@ function drawMenu(menu){
 					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 				}
-		
+		//메뉴 1뎁스 이면서 하위메뉴가 있는 경우
 		else if(menu[i].DEPTH == 1 && menu[i].SUB == 0){
 			if(menu[i].SITE_MENU_NO == "${param.menuno}"){
 					html += "<div class=\"menu1_wrap_on\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
@@ -262,7 +263,6 @@ function drawMenu(menu){
 		html +="<input type=\"button\" value=\"로그아웃\" class=\"log_out\"/ id=\"log_out\">";
 	
 		$(".top_menu").html(html);
-		console.log(menu[2].SITE_MENU_NO);
 		console.log("${param.menuno}");
 }
 
@@ -272,84 +272,16 @@ function drawMenu(menu){
 </head>
 <body>
 <form action="#" id="h_menu_form" method="post">
+		<!-- 부서번호 -->
 		<input type="hidden"  id="Dt" name="Dt" value="${sDEPNo}">
+		<!-- 유저번호 -->
 		<input type="hidden"  id="uNo" name="uNo" value="${sUSERNo}">
+		<!-- 권한번호 -->
+		<input type="hidden"  id="auNo" name="auNo" value="${sAUTHNo}">
 </form>
 
          	<!-- 탑메뉴 -->
- 	<div class="top_menu">
-    
-		<!-- 
-	       		<div class="logo_area">
-		         	<img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px">
-		        </div>
-		  <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-		         	<div class="menu_depth1">주문관리</div>
-		      </div>
-	      </div>
-	      
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">품목관리</div>
-		      </div>
-		       <div class=menu2_wrap>
-						<div class=menu2_title>
-							 <div class=menu_depth2_area>
-							   <div class="menu_depth2_1">품목목록</div>
-							   <div class="menu_depth2">폐기목록</div>
-							 </div>
-						</div>
-			  </div>
-	      </div>
-	      
-	       <div class="menu1_wrap">	  
-	          	<div class="menu1_title">
-	         		<div class="menu_depth1">카테고리관리</div>
-		      	</div>
-		       <div class=menu2_wrap>
-						<div class=menu2_title>
-							<div class="menu_depth2_area">
-								<div class="menu_depth2_1">공지카테고리</div>
-								<div class="menu_depth2">품목카테고리</div>
-								<div class="menu_depth2">메뉴카테고리</div>
-							</div>
-						</div>
-			  </div>
-	      </div>
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">POS관리</div>
-		      </div>
-	      </div>
-	      
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">매출목록</div>
-		      </div>
-	      </div>
-	      
-	      <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	         		<div class="menu_depth1">공지사항</div>
-		      </div>
-	      </div>
-	      
-	       <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	        		 <div class="menu_depth1">사용자관리</div>
-		      </div>
-	      </div>
-	      
-	       <div class="menu1_wrap">	  
-	          <div class="menu1_title">
-	        		 <div class="menu_depth1">마이페이지</div>
-		      </div>
-	      </div>
-			
-	     	<input type="button" value="로그아웃" class="log_out"/>
-	       -->
-	 </div>
+ 	<div class="top_menu"></div>
 	 
 
 </html>

@@ -1,112 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="11"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>본사공지사항수정</title>
 <style type="text/css">
-/* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1820px;
-   height: 62px;
-}
-
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1500px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
-ul {
-   list-style-type: none;
-   margin: 0;
-   padding: 0;
-  
-}
-
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
-}
-
-li {
-   float: left;
-   height: 62px;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.menu_f li .sub {
-	width: 162px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
-}
 
 /* 미들 부분 */
 .content_area{
@@ -214,29 +117,7 @@ margin : 10px 0px;
 	outline:none;
 }
 .submit_area button:focus{outline:none;}
-	 
- .btm_tb{
- margin : 10px 0px;
- position: relative;
-width: 100%;
-  height: 30px;
- }
- .tb2{
-    text-align: center;
-    border: 2px solid #ccc;
-}
- .tb2 > .tbody{
-    display: table-row-group;
-    vertical-align: middle;
-    border-color: inherit;
- }
- .tb2 > .tr{
-    border-bottom: 1px solid #ccc;
- }
- .tb2 > .th{
- background-color: #000000;
- }
- 
+
  .off_btn {
 	display: none;
 }
@@ -244,7 +125,6 @@ width: 100%;
 #att {
 	display: none;
 }
- 
  
  
  
@@ -475,10 +355,6 @@ function closePopup() {
 
 </head>
 <body>
-<!-- 상단 -->
-  <div class="top">
-     
-   </div>
 
 <!--컨텐츠 -->
 <div class="content_area">
@@ -493,6 +369,7 @@ function closePopup() {
 <input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 <input type="hidden" name="searchTxt" value="${param.searchTxt}" />
 <input type="hidden" name="nNo" value="${data.TXT_NO}" />
+<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 <input type="text" id="nTitle" name="nTitle" class="title_input" placeholder="제목을 입력하시오."
  value="${data.TITLE}" /><br/>
 <div class="top_tb">
@@ -530,20 +407,7 @@ ${data.CONTENT}</textarea>
 	<input type="button" value="수정" id="updateBtn" class="submit_btn"/>
 	<input type="button" value="취소" id="backBtn" class="cnl_btn" />
 </div>
-<div class="btm_tb">
-<table class="tb2">
-<tbody>
-<tr>
-<th>&nbsp;윗글</th>
-<td>&nbsp;해당 글이 없습니다.</td>
-</tr>
-<tr>
-<th>&nbsp;아랫글</th>
-<td>&nbsp;</td>
-</tr>
-</tbody>
-</table>
-</div>
+
 </div>
 </div>
 

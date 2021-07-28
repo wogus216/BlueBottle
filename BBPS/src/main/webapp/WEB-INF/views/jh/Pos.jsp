@@ -503,20 +503,17 @@ $(document).ready(function(){
 	//현재주문 상황에 넣기
 	var nowCnt = 0; //품목주문개수
 	
-	var arrMno = new Array();  //품목주문배열
- 
-	
 	$("body").on("click",".menu_name",function(){
 		
 		if(nowCnt < 7){
 			
 				// 주문한게 없는 경우
 				if($(".ord_stat[mno='" + $(this).attr("mno") + "']").length == 0){
-					nowCnt++;
+						nowCnt++;
 					$("#mNo").val($(this).attr("mno"));
-					reloadOrd();
+						reloadOrd();
 				
-					//주문한게 있는 경우
+				//주문한게 있는 경우
 				} else{
 					ordPopup("", "이미주문했습니다.",function(){});
 					}
@@ -531,6 +528,7 @@ $(document).ready(function(){
 		$("body .ord_area").on("focus",".ord_cnt",function(){
 		//전 갯수 적용
 			if(ordResCnt > 0){
+				
 				var preCnt = ($(this).val() * 1); // 변경 전 갯수
 				ordMoney = ($(this).parent().parent().children().eq(2).children().val() * 1);
 			
@@ -549,18 +547,18 @@ $(document).ready(function(){
 				var nowCnt = ($(this).val() * 1); // 변경 후 갯수
 					ordMoney = ($(this).parent().parent().children().eq(2).children().val() * 1);
 					ordResCnt += nowCnt; // 총 갯수에서 제외
-					 ordPrice = ordMoney * nowCnt; // 갯수 * 금액
+					ordPrice = ordMoney * nowCnt; // 갯수 * 금액
 				
 				 //결제금액 넣어주기
-				ordResPay += ordPrice;
-				ordPay();
+					ordResPay += ordPrice;
+					ordPay();
 				
 				$(".ord_cnt").blur(); //focus 제거
 		});
 		
 		//메뉴 스크롤바
 		$(".menu_area").slimScroll({
-			height: '500px'
+				height: '500px'
 		});
 
 	
@@ -596,6 +594,7 @@ $(document).ready(function(){
 		//현재 주문개수 빼기
 			
 				nowCnt--;
+		
 			} else{
 				// 총주문개수, 결제금액 초기화
 				ordResPay = 0;
@@ -626,6 +625,7 @@ $(document).ready(function(){
 			
 		});
 		
+		//숫자 클릭
 		$(".table_num").on("click", "input[type='button']",function(){
 				//받은 금액 넣기
 					if($(this).val() == "clear"){
@@ -670,7 +670,7 @@ $(document).ready(function(){
 			ordPopup("", "주문 품목을 먼저 입력해주세요.",function(){});
 			
 		} else{
-			//주문 금액 넣기
+			
 			if(recMoney >= ordResPay ){
 				//주문금액 넣기
 				inputOrdMoney();
@@ -843,6 +843,7 @@ function inputOrd(ord){
 	ordPay();
 }
 
+//금액 넣어주기
 function ordRes(){
 
 	//금액
@@ -860,8 +861,8 @@ function ordRes(){
 		//결제금액 넣어주기
 		ordResPay += ordPrice;
 		ordResCnt += ordCnt;
-	console.log("개수, 금액, 총금액");
-	console.log(ordCnt,ordMoney,ordPrice);
+		console.log("개수, 금액, 총금액");
+		console.log(ordCnt,ordMoney,ordPrice);
 		} 
 		else{
 			ordResPay = 0;
@@ -902,6 +903,7 @@ function ordPay(){
 	
 }
 
+//금액 넣기
 function inputOrdMoney(){
 	
 	var params = $("#menu_form").serialize();
@@ -945,9 +947,9 @@ function inputOrdMenu(){
 	        	 $("#menu_form").attr("action","Pos");
 				$("#menu_form").submit();
 	         }else if (res.msg == "failed"){
-	            alert("등록에 실패하였습니다."); // 팝업 변경 필요
+	            ordPopup("", "등록에 실패하였습니다.",function(){});
 	         }else {
-	            alert("등록 중 문제가 발생하였습니다."); // 팝업 변경 필요
+	            ordPopup("", "등록 중 문제가 발생하였습니다.",function(){});
 	         }
 	      },
 	      error : function(request,status,error){
@@ -1067,10 +1069,12 @@ function refPopup(title, func) {
 		$("#endDate").val($(".end_date").val());
 	});
 	
+	//날짜 선택 후 검색
 	$(".search_btn").on("click",function(){
 		loadRefList();
 	});
 	
+	//환불로 상세 페이지로 넘어감
 	$(".ref_table tbody").on("click","td",function(){
 		$("#enroll_date").val($(this).parent().attr("mdt"));
 		
@@ -1078,6 +1082,7 @@ function refPopup(title, func) {
 		$("#menu_form").submit();
 	});
 	
+	//날짜 선택 초기화
 	$(".reset_btn").on("click",function(){
 		$("#startDate").val("");
 		$("#endDate").val("");
@@ -1085,6 +1090,7 @@ function refPopup(title, func) {
 		$("input[name='end_date']").val("");
 	});
 	
+	//취소 버튼
 	$(".filter_area").on("click",".cnl_btn",function(){
 		rClosePopup();
 	});
@@ -1149,6 +1155,7 @@ function drawPaging(pb){
 	//이전페이지
 	if($("#page").val() =="1"){
 		html+= "<button page=\"1\" style=\"background-color: white\"><</button>";
+		
 	} else{
 		html+= "<button page=\"" + ($("#page").val() -1) + "\" style=\"background-color: white\"><</button>";
 	}
@@ -1157,6 +1164,7 @@ function drawPaging(pb){
 	for(var i = pb.startPcount; i<= pb.endPcount; i++){
 		if($("#page").val() == i ){
 			html+= "<button page=\"" + i + "\" style=\"background-color: white\"><b>" + i + "</b></button>";
+			
 		}else{
 			html+= "<button page=\"" + i + "\" style=\"background-color: white\">" + i + "</button>";
 		}		
@@ -1164,11 +1172,12 @@ function drawPaging(pb){
 	//다음페이지
 	if($("#page").val() == pb.maxPcount){
 		html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">></button>";
+		
 	}else{
 		html+= "<button  page=\"" + ($("#page").val() * 1 + 1) + "\" style=\"background-color: white\">></button>";
 		
 	}
-	html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">>></button>";
+		html+= "<button  page=\"" + pb.maxPcount + "\" style=\"background-color: white\">>></button>";
 
 	$(".page_btn").html(html)
 }
@@ -1195,7 +1204,7 @@ function drawPaging(pb){
 	<input type="hidden" id="enroll_date" name="enroll_date"/>
 	<input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 	<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/> 
-			<input type="hidden" id="page" name="page" value="1"/>
+	<input type="hidden" id="page" name="page" value="1"/>
 			<div class="left">
 					<div class="ord_area"></div>
 					<table class="table_pay" border="2" cellspacing="0">
@@ -1229,7 +1238,7 @@ function drawPaging(pb){
 							<input type="button" value="BEAN"/>
 						</div>
 				</div>
-				< 
+
 				<table class="table_num" border="2" cellspacing="0">
 					<colgroup>
 						<col width="10%">

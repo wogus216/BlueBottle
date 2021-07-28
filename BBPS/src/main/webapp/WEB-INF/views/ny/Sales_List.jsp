@@ -1,107 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="10"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>본사-지점매출조회</title>
 <style type="text/css">
-
-/* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1300px;
-    height: 62px;
-}
-
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 800px;;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
-ul {
-   list-style-type: none;
-   margin: 0;
-   padding: 0;
-  
-}
-
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
-}
-
-li {
-   float: left;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub  {
-    display: block;
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
 
 /* 미들 부분 */
 .content_area{
@@ -598,60 +505,6 @@ function closePopup() {
 
 </head>
 <body>
- <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-    <div class="menu_a">
-        	 <li>
-         		<a class="main_menu" href="#">재고관리</a>
-	        	 <div class="sub">
-		        	 <a href="#">현재재고조회</a>
-		             <a href="#">입고재고조회</a>
-		             <a href="#">사용재고조회</a>
-		             <a href="#">폐기조회</a>
-	            </div>
-             </li>
-         </div>
-         
-         <div class="menu_b">
-       		  <li>
-         		<a class="main_menu" style="padding: 20px 40px;" href="#">주문관리 </a>
-	          	<div class="sub">
-	     			<a href="#">주문조회 및 환불</a>
-	     			<a href="#">주문요청</a>
-		            <a href="#">환불조회</a>
-	            </div>
-          	</li>
-         </div>
-         
-          <div class="menu_c">
-        	 <li>
-				<a class="main_menu" href="#">매출조회</a>
-             </li>
-         </div>
-        
-          <div class="menu_d">
-         	<li>
-         		<a class="main_menu" href="#">공지사항</a>
-	        </li>
-          </div>
-      
-          <div class="menu_e">
-           	<li>
-               <a class="main_menu" href="#">마이페이지</a>
-          	</li>
-          </div>
-          
-           <a class="log_out" href="#">로그아웃</a>
-      	</div><!-- top_munu end -->
-      </ul>
- </div>  <!-- top end -->
 
 <!--컨텐츠 -->
 	<div class="content_area">

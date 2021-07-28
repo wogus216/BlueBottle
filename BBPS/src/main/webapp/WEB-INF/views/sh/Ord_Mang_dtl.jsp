@@ -1,36 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="1"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>본사주문상세조회</title>
 <style type="text/css">
-/* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1820px;
-   height: 62px;
-}
-
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1500px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
 ul {
    list-style-type: none;
    margin: 0;
@@ -38,77 +17,8 @@ ul {
   
 }
 
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
-}
-
 li {
    float: left;
-}
-
-.top_menu li{
-	height: 62px;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.menu_f li .sub {
-	width: 162px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
 }
 /* 미들 부분 */
 .content_area{
@@ -223,7 +133,7 @@ textarea:focus{
 	text-align:center;
 }
 
-.list_btn button, .apv_com, .send_com{
+.list_btn input, .apv_com, .send_com{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -255,14 +165,15 @@ textarea:focus{
 .btn_area{
 	text-align: center;
 }
-button{
+input[type=button]{
 	color: white;
-	width: 100px;
-	height: 40px;
+	width: 180px;
+	height: 50px;
 	text-align:center;
+	font-weight: bold;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:22px;
 	margin:10px;
 	cursor: pointer;
 	background-color: #01a1dd;
@@ -318,6 +229,7 @@ button:focus{outline:none;}
 	position:absolute;
 	bottom:5%;
 	left:36.2%;
+	background-color: rgb(41, 128, 185);
 }
 .popup_content{
 	margin:10px;
@@ -347,14 +259,23 @@ button:focus{outline:none;}
 .close_btn{
 	width: 25px;
 	height: 25px;
-	background-color: #01a1dd;
 	float: right;
 	margin: 0px;
 	font-size: 25px;
+	color: white;
+	text-align:center;
+	border:0;
 	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
 }
 .apv_com, .send_com{
 	cursor : default;
+}
+#hisroty_btn{
+	width: 100px;
+	height: 50px;
+	font-size: 18px;
 }
 </style>
 <script type="text/javascript"
@@ -597,141 +518,7 @@ function closePopup() {
 <style type="text/css"></style>
 </head>
 <body>
-   <!-- 상단 -->
-  <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="resources/images/bb/logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-         	<a class="main_menu" href="#">
-         		발주관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발주요청조회</a>
-	             <a href="#">
-	            	발주완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-         	<a class="main_menu" href="#">
-         		발송관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	발송요청조회</a>
-	             <a href="#">
-	            	발송완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_c">
-         <li>
-         	<a class="main_menu" href="#">
-         		환불관리</a>
-	         <div class="sub">
-	            <a href="#">
-	            	환불요청조회</a>
-	             <a href="#">
-	            	환불완료조회</a>
-	         </div>
-          </li>
-         </div>
-         
-         <div class="menu_d">
-         <li>
-         	<a class="main_menu" href="#">
-         		재고관리</a>
-	          	<div class="sub">
-     			<a href="#">		
-	            	재고조회</a>
-     			<a href="#">
-	            	재고등록</a>
-	            <a href="#">	
-	            	입출고조회</a>
-	            <a href="#">
-	            	폐기조회</a>
-	            </div>
-          </li>
-         </div>
-         
-         <div class="menu_e">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		품목관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	품목조회</a>
-		            <a href="#">
-		            	품목등록</a>
-		            </div>
-	          </li>
-         </div>
-         
-            <div class="menu_f">
-	         <li>
-			<a class="main_menu" href="#"> 
-		        		카테고리관리</a>
-		          	<div class="sub">
-					<a href="#">
-		            	공지카테고리</a>
-		            <a href="#">
-		            	품목카테고리</a>
-		            <a href="#">
-		            	메뉴카테고리</a>
-		            </div>
-	          </li>
-         </div>
-         
-         <div class="menu_g">
-         <li>
-         	<a class="main_menu" href="#"> 
-         		POS관리</a>
-	          <div class="sub" >
-				<a href="#">
-	            	메뉴조회</a>
-				<a href="#">
-	            	메뉴등록</a>
-            </div>	
-          </li>
-         </div>
-          <div class="menu_h">
-         	<li>
-         		<a class="main_menu" href="#"> 
-         			공지사항</a>
-	        </li>
-         </div>
-         <div class="menu_i">
-         	<li>
-         	<a class="main_menu" href="#"> 
-         			사용자관리</a>
-         		 <div class="sub" style="min-width: 145px;">
-			<a href="#">
-	            	사용자조회</a>
-	          <a href="#">
-	            	사용자등록</a>
-            </div>	
-	        </li>
-         </div>
-          <div class="menu_j">
-          <li>
-          <a class="main_menu" href="#"> 
-         		마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-         		로그아웃</a>
-      	</div>
-      </ul>
-   </div>
+
 <form action = "./Ord_Mang_dtl" id = "goForm" method = "post">
 	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
@@ -741,7 +528,7 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <h1>주문조회</h1>
-<button class="history_btn">전체이력</button>
+<input type="button" class="history_btn" id="hisroty_btn" value="전체이력"/>
 <div class="ord_area">
 <ul class="ord_info">
 <li><strong>주문번호 : </strong>${data.ORD_NO}</li>
@@ -830,15 +617,15 @@ function closePopup() {
 </div>
 <div class="btn_area">
 <c:if test="${data.CODE_NAME eq '주문요청'}">
-	<button class="apv_btn">승인</button>
-	<button class="non_apv_btn">승인거부</button>
+	<input type="button" class="apv_btn" value="승인"/>
+	<input type="button" class="non_apv_btn" value="승인거부"/>
 </c:if>
 <c:if test="${data.CODE_NAME eq '주문승인'}">
-	<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
-	<button class="send_btn">발송</button>
+	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	<input type="button" class="send_btn" value="발송"/>
 </c:if>
 <c:if test="${data.CODE_NAME eq '발송완료'}">
-<button class="send_com" style="background-color: #b3b3b3;">발송완료</button>
+<input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
 </c:if>
 </div>
 <c:choose>
@@ -908,18 +695,18 @@ function closePopup() {
 </div>
 <div class="btn_area">
 <c:if test="${data2.CODE_NAME eq '환불요청'}">
-	<button class="ref_apv_btn">승인</button>
-	<button class="non_ref_apv_btn">승인거부</button>
+	<input type="button" class="ref_apv_btn" value="승인"/>
+	<input type="button" class="non_ref_apv_btn" value="승인거부"/>
 </c:if>
 <c:if test="${data2.CODE_NAME eq '환불승인'}">
-	<button class="apv_com" style="background-color: #b3b3b3;">승인완료</button>
+	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
 </c:if>
 </div>
 </div>
 </c:when>
 </c:choose>
 <div class="list_btn">
-<button>목록</button>
+<input type="button" value="목록"/>
 			</div>
 		</div>
 	</div>

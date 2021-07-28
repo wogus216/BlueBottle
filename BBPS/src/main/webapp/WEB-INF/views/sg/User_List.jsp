@@ -1,111 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="12"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>본사사용자리스트</title>
 <style type="text/css">
-/* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1820px;
-   height: 62px;
-}
 
-.top_menu{
-	display: inline-block;
-	vertical-align: top;
-	float: right ;
-	width: 1500px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
-ul {
-   list-style-type: none;
-   margin: 0;
-   padding: 0;
-  
-}
-
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
-}
-
-li {
-   float: left;
-   height: 62px;
-}
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.menu_f li .sub {
-	width: 162px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-	color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub,.menu_f:hover .sub, .menu_g:hover .sub  {
-    display: block;
-}
 /* 미들 부분 */
 .content_area{
 	width: 1250px;
@@ -267,7 +172,7 @@ $(document).ready(function(){
 	
 	$(".list_wrap tbody").on("click", "tr", function(){
 		$("#uNo").val($(this).attr("uno")); //회원번호
-		$("#dNo").val($(this).attr("dno")); //소속번
+		$("#dNo").val($(this).attr("dno")); //소속번호
 		if($("#dNo").val() == 0){
 			$("#actionForm").attr("action", "User_Detail_Hq");
 		} else{
@@ -375,11 +280,6 @@ function drawPaging(pb) {
 </script>
 </head>
 <body>
-<!-- 상단 -->
-  <div class="top">
-     
-   </div>
-
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content">
@@ -421,7 +321,7 @@ function drawPaging(pb) {
 </div>
 <form action="#" id="actionForm" method="post">
 <div class="search_area" style = "margin-top : 30px;">
-	<input type="hidden" id="uNo" name="uNo"/>
+	<input type="hidden" id="uNo" name="uNo" />
 	<input type="hidden" id="dNo" name="dNo"/>
 	<input type="hidden" id="cateNo" name="cateNo"/>
 	<input type="hidden" id="page" name="page" value="${page}">

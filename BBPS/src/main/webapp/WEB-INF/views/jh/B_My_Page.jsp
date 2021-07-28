@@ -32,7 +32,7 @@ h1 {
 }
 
 
-/* 이게일반 */
+/* 기본 css */
 input[type='button']{
 	color: white;
 	width: 100px;
@@ -253,7 +253,7 @@ function makePopup(title, func) {
 	
 	
 	}
-	
+//오더 관련 팝업
 function ordPopup(title, contents, func) {
 	var html ="";
 	

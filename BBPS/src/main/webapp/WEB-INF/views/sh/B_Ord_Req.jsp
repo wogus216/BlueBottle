@@ -1,102 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="../jh/H_Menu.jsp">
+	<c:param name="menuno" value="19"></c:param>
+</c:import>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>지점주문요청</title>
 <style type="text/css">
-
-/* 상단 바 */
-.top {
-   width: 100%;
-   padding: 0;
-   margin: 0;
-   background-color: white;
-   display: inline-block;
-   min-width: 1300px;
-    height: 62px;
-}
-
-.top_menu{
-   display: inline-block;
-   vertical-align: top;
-   float: right ;
-   width: 800px;
-}
-
-body {
-   margin: 0;
-   padding: 0;
-   background-color: #f2f2f2;
-}
-
 ul {
    list-style-type: none;
-   margin: 0;
    padding: 0;
   
-}
-
-ul:after {
-   content: '';
-   display: block;
-   clear: both;
 }
 
 li {
    float: left;
 }
-
-.main_menu{
-   display: inline-block;
-   color: black;
-   padding: 20px 30px;
-   text-decoration: none;
-   font-weight: bold;
-   font-size: 17px;
-}
-
-.main_menu:hover {
-   background-color: #f1f1f1;
-}
-
-
-.logo {
-   padding: 13px 30px;
-  
-  
-}
-
-.sub {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 128px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    font-size: 15px;
-    text-align: center;
-}
-.sub a{
-   color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    
-}
-
-.sub a:hover {
-     background-color: #f1f1f1;
-}
-
-.menu_a:hover .sub, .menu_b:hover .sub ,.menu_c:hover .sub,.menu_d:hover .sub,
-.menu_e:hover .sub  {
-    display: block;
-}
-
-
 /* 미들 부분 */
 .content_area{
    width: 1380px;
@@ -295,34 +217,26 @@ textarea:focus{
    outline: none;
 }
 
-
-button{
-   color: white;
-   width: 100px;
-   height: 40px;
-   text-align:center;
-   border:0;
-   border-radius: 3px;
-   background-color: #01a1dd;
-   font-size:18px;
-   margin:10px;
-   cursor: pointer;
-}
 button:focus{outline:none;}
 
 input:focus{outline:none;}
 
-.btn_area{
-   text-align: center;
-}
 .ord_req_btn{
-   width:200px;
-   height: 50px;
+   width:180px;
    background-color: #01a1dd;
    font-weight: bold;
-   font-size: 22px;
    float: right;
-   margin: 10px 0px;
+   margin-buttom: 10px 0px;
+   color: white;
+   height: 50px;
+   text-align:center;
+   border:0;
+   border-radius: 3px;
+   background-color: #01a1dd;
+   font-size:22px;
+   margin-button:0px;
+   margin-top:30px;
+   cursor: pointer;
 }
 .search_area, .page_area {
    width: 100%;
@@ -340,6 +254,16 @@ input:focus{outline:none;}
    margin: 0 ;
    padding: 0;
    vertical-align: bottom;
+   color: white;
+   width: 100px;
+   text-align:center;
+   border:0;
+   border-radius: 3px;
+   background-color: #01a1dd;
+   font-size:18px;
+   margin-button:0px;
+   margin-top:10px;
+   cursor: pointer;
 }
 
 .page_btn button{
@@ -574,78 +498,6 @@ function buyList(){
 <style type="text/css"></style>
 </head>
 <body>
-   <div class="top">
-     <ul>
-         <li>
-         <a href="#">
-         <img class="logo" alt="logo" src="logo.png" width="250px"></a>
-         </li>
-         
-         <div class="top_menu">
-         
-         <div class="menu_a">
-         <li>
-            <a class="main_menu" href="#">
-                  재고관리</a>
-            <div class="sub">
-               <a href="#">
-                  현재재고조회</a>
-               <a href="#">
-                  입고재고조회</a>
-                <a href="#">
-                  사용재고조회</a>
-                <a href="#">
-                  폐기조회</a>
-         </div>
-         </li>
-         </div>
-         
-         <div class="menu_b">
-         <li>
-            <a class="main_menu" style="padding: 20px 40px;" href="#">
-                  주문관리 </a>
-                <div class="sub">
-              <a href="#">      
-                  주문조회 및 환불</a>
-              <a href="#">
-                  주문요청</a>
-               <a href="#">   
-                  환불조회</a>
-            
-               </div>
-          </li>
-         </div>
-         
-           <div class="menu_c">
-         <li>
-      <a class="main_menu" href="#"> 
-                 매출조회</a>
-                <div class="sub">
-               </div>
-          </li>
-         </div>
-        
-          <div class="menu_d">
-            <li>
-               <a class="main_menu" href="#"> 
-                  공지사항</a>
-           </li>
-         </div>
-      
-          <div class="menu_e">
-          <li>
-          <a class="main_menu" href="#"> 
-               마이페이지</a>
-           </li>
-         </div>
-         <a class="log_out" href="#">
-               로그아웃</a>
-         </div>
-      </ul>
-   </div>
-
-
-
 <!--컨텐츠 -->
 <div class="content_area">
 <div class="content_1">
@@ -682,16 +534,17 @@ function buyList(){
 <div class="search_area">
       <div class="search_info">
          <form action = # id = "goForm" method = "post">
-			<input type="hidden" id = "oNo" name="oNo"/>
+         <input type="hidden"  id="oNo" name="oNo" >
 			<input type="hidden" id = "newOno" name="newOno" value="${data.ORD_NO}"/>
 			<input type = "hidden" id = "cate" name = "cate"/>
+			<input type="hidden"  id="bNo" name="bNo" value="${sAUTHNo}">
 			<select id ="search_filter" name="search_filter">
            		<option value="0" selected="selected">품목코드</option>
             	<option value="1">품목명</option>
          	</select>
          	<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-         <button class="search_btn" id="search_btn">검색</button>
+			<input type="button" class="search_btn" id="search_btn" value="검색"/>
          </form>
       </div>
 </div>   
@@ -732,7 +585,7 @@ function buyList(){
    <li><strong>총 주문 금액 : </strong><div style="display: inline;" id="sum">0</div> 원</li>
 </ul>
 <div class="btn_area">
-   <button class="ord_req_btn">주문요청</button>
+   <input type="button" class="ord_req_btn" value="주문요청"/>
 </div>
 </div>
 </div>

@@ -209,6 +209,14 @@ $(document).ready(function(){
 		location.href = "Pos_Login";
 	});
 	
+	//엔터로 로그인
+	$("#hPw").on("keypress", function(e){
+		if(e.keyCode == '13'){
+			
+			$(".submit").click();
+		}
+	});
+	
 	//팝업
 	$(".inquiry_btn").on("click",function(){
 		makePopup("", "02-486-6479로 문의주시면 됩니다.",function(){
@@ -247,7 +255,7 @@ $(document).ready(function(){
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						$("#loginForm").attr("action","H_Menu");
+						$("#loginForm").attr("action","Ord_Mang");
 						$("#loginForm").submit();
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
