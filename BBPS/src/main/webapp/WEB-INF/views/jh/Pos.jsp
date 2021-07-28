@@ -515,7 +515,7 @@ $(document).ready(function(){
 				
 				//주문한게 있는 경우
 				} else{
-					ordPopup("", "이미주문했습니다.",function(){});
+					ordPopup("", "이미선택한물품입니다.",function(){});
 					}
 		} else{
 				ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
