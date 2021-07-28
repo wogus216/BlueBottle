@@ -10,7 +10,16 @@
 <meta charset="UTF-8">
 <title>본사주문상세조회</title>
 <style type="text/css">
+ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+  
+}
 
+li {
+   float: left;
+}
 /* 미들 부분 */
 .content_area{
 	width: 1250px;

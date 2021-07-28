@@ -10,7 +10,15 @@
 <meta charset="UTF-8">
 <title>지점주문요청</title>
 <style type="text/css">
+ul {
+   list-style-type: none;
+   padding: 0;
+  
+}
 
+li {
+   float: left;
+}
 /* 미들 부분 */
 .content_area{
    width: 1380px;
@@ -213,9 +221,6 @@ button:focus{outline:none;}
 
 input:focus{outline:none;}
 
-.btn_area{
-   text-align: center;
-}
 .ord_req_btn{
    width:180px;
    background-color: #01a1dd;
@@ -230,7 +235,7 @@ input:focus{outline:none;}
    background-color: #01a1dd;
    font-size:22px;
    margin-button:0px;
-   margin-top:10px;
+   margin-top:30px;
    cursor: pointer;
 }
 .search_area, .page_area {
