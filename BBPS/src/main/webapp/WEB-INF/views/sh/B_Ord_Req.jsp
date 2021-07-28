@@ -537,7 +537,7 @@ function buyList(){
          <input type="hidden"  id="oNo" name="oNo" >
 			<input type="hidden" id = "newOno" name="newOno" value="${data.ORD_NO}"/>
 			<input type = "hidden" id = "cate" name = "cate"/>
-			<input type="hidden"  id="bNo" name="bNo" value="${sAUTHNo}">
+			<input type="hidden"  id="bNo" name="bNo" value="${sBRCHNo}">
 			<select id ="search_filter" name="search_filter">
            		<option value="0" selected="selected">품목코드</option>
             	<option value="1">품목명</option>
