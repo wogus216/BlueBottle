@@ -25,7 +25,6 @@
 	max-width: 1250px;
     min-width: 700px;
     margin-left: 30px;
-    width: 1250px;
 }
 /* Pos메뉴 게시판 */
 
@@ -292,7 +291,7 @@ function drawPaging(pb){
 			<option value="3">원두</option>
 		</select>
 
-		<button class="add_btn" style="margin:0px 0px 0px 10px;">추가</button>
+		<button class="add_btn" style="margin:0px 0px 0px 10px;">등록</button>
 	</div>	
 		
 		<table cellspacing="0">
