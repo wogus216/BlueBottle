@@ -78,6 +78,7 @@ public class jhController {
 		session.setAttribute("sUSERNo", data.get("USER_NO")); //유저번호
 		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //권한번호
 		session.setAttribute("sDEPNo", data.get("DEP_NO"));	// 부서 번호
+		session.setAttribute("sDEPNo", data.get("DEP_NO"));	// 권한타입 번호
 		session.setAttribute("sId", data.get("ID")); // 아이디
 		System.out.println("유저번호:"+session.getAttribute("sUSERNo"));
 		
@@ -519,6 +520,7 @@ public class jhController {
 	System.out.println("data :"+ data);
 	if(data != null) { //사용자 정보가 있음
 		session.setAttribute("sBRCHNo", data.get("BRCH_NO")); //지점번호
+		session.setAttribute("sAUTHNo", data.get("AUTH_NO")); //지점번호
 		session.setAttribute("sId", data.get("ID")); //지점 아이디
 		session.setAttribute("sBRCHNm", data.get("BRCH_NAME")); //지점명
 		System.out.println(session.getAttribute("sBRCHNm")); //지점장 이름

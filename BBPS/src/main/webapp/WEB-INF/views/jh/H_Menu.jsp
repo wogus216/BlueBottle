@@ -118,7 +118,7 @@ html,body{
 	background-color: #f2f2f2;
 }
 /* 로그아웃 */
-.log_out{
+.top_menu > .log_out{
 	width: 90px;
     height: 35px;
     color: white;
@@ -276,6 +276,8 @@ function drawMenu(menu){
 		<input type="hidden"  id="Dt" name="Dt" value="${sDEPNo}">
 		<!-- 유저번호 -->
 		<input type="hidden"  id="uNo" name="uNo" value="${sUSERNo}">
+		<!-- 권한번호 -->
+		<input type="hidden"  id="auNo" name="auNo" value="${sAUTHNo}">
 </form>
 
          	<!-- 탑메뉴 -->
