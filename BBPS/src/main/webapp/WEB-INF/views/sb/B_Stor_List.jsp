@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="../jh/B_Menu.jsp">
-	<c:param name="menuno" value="16"></c:param>
+	<c:param name="menuno" value="14"></c:param>
 </c:import>
 <!DOCTYPE html>
 <html>
@@ -138,6 +138,7 @@ td{
 
 .on{
 	background-color: blue;
+	font-weight: bold;
 }
 .start_date, .end_date{
 	width: 150px;
@@ -245,7 +246,7 @@ function drawstockstorList(list,result){
 function drawstorPaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\">|<</button>";
+	html += "<button page = \"1\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\"><</button>";
 	}else{
@@ -270,7 +271,7 @@ function drawstorPaging(pb){
 	
 	
 	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>></button>";
 	
 	$(".page_btn").html(html);
 }

@@ -68,7 +68,7 @@ table {
 	border-bottom: 2px solid #d9d9d9;
 }
 
-td:nth-child(4){
+td:nth-child(5),td:nth-child(4){
 	padding : 0px;
 	text-align: center;
 }
@@ -223,6 +223,147 @@ tr{
     width : 400px;
 }
 
+.Stock_List td:nth-child(1), .Stock_List th:nth-child(1) {
+  width: 15%;
+}
+
+.Stock_List td:nth-child(2), .Stock_List th:nth-child(2) {
+  width: 15%;;
+}
+
+.Stock_List td:nth-child(3), .Stock_List th:nth-child(3) {
+  width: 25%;
+}
+
+.Stock_List td:nth-child(4), .Stock_List th:nth-child(4) {
+  width: 15%;
+}
+
+.Stock_List td:nth-child(5), .Stock_List th:nth-child(5) {
+  width: 15%;
+}
+
+.Stock_List td:nth-child(6), .Stock_List th:nth-child(6) {
+  width: 15%;
+}
+
+/* 팝업 */
+
+.popup_Content table{
+	width: 100%;
+    background: #ffffff;
+	margin: 10px 0;
+	border-top: 2px solid #01a1dd;
+	border-bottom: 2px solid #d9d9d9;
+}
+
+.popup_Content th{
+	background: #e8e8e8;
+    padding: 0px;
+    border-bottom: 1px solid #ffffff;
+    border-left: 1px solid #ffffff;
+    font-size:15px;
+}
+
+
+.popup_Content td{
+	font-size:15px;
+	padding:0px;
+	border-top: 1px solid #eaeaea;
+	border-left: 1px solid #eaeaea;
+}
+
+
+
+.popup_Content thead{
+	display : table;
+	table-layout : fixed;
+	width : 100%;
+}
+
+.popup_Content tbody{
+	display : block;
+	max-height : 120px;
+	width : 100%px;
+	overflow : auto;
+	overflow-x : hidden;
+}
+
+.popup_Content tr{
+	display : table;
+	table-layout : fixed;
+	width : 100%;
+}
+
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_Area {
+	display: inline-block;
+	width: 500px;
+	height: 300px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 150px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 250px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_Head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_Btn{
+	text-align:center;
+}
+.popup_Btn input[type='button']{
+	color: white;
+	width: 120px;
+	height: 30px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:15px;
+	margin:10px;
+	cursor: pointer;
+}
+.popup_Content{
+	width : 460px;
+	height : 145px;
+	margin-bottom:30px;
+	margin-top:20px;
+	margin-left:20px;
+	margin-right:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+input[type='button']:focus{outline:none;}
+
+.popup_Head > .close_Btn{
+	width: 25px;
+	height: 25px;
+	background-color: #01a1dd;
+	float: right;
+	margin: 0px;
+	font-size: 18px;
+	text-align: center;
+	color: #ffffff;
+	border: none;
+}
+
 
 </style>
 <script type="text/javascript"
@@ -287,21 +428,37 @@ $(document).ready(function(){
 	$(".edit_btn").on("click",function(){
 		var chkcurCnt = 0; //현재 재고 수량 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
 		var chksafeCnt = 0; //안전 재고 수량 빈 값이 있는지 체크할 변수 (빈 값이 존재하는 경우 작업불가 alert)
-
+		var chkeditCnt = 0; // 수정수량이 현재 재고수령보다 큰지 체크할 변수
+		
+		var itemname = []; //문제되는 아이템명
+		var itemexp =[]; //문제되는 아이템 유통기한
+		var v = 0; // 반복
+		
 		$(".editcurCnt").each(function(){
 			if($(this).val() == ""){
 				chkcurCnt++;
+				
+			}
+			
+			if($(this).val() > $(this).parent().parent().children().eq(3).text()){
+				chkeditCnt++;
+				itemname[v] = $(this).parent().parent().children().eq(2).text();
+				itemexp[v] = $(this).parent().parent().children().eq(5).text();
+				v++;
 			}
 		});
 		
 		if(chkcurCnt > 0){
-			alert("재고 수량이 빈 항목이 존재합니다.");
+			makePopup("재고수정","재고 수량이 빈 항목이 존재합니다.",function(){});
 		   $(".editcurCnt").focus;
+		}else if(chkeditCnt > 0){
+			makePopup("재고수정",editpopup(v,itemname,itemexp),function(){});
 		}else{
 			
 		   var params = $("#tb_Form").serialize();
+		   console.log(params);
 		   
-		     $.ajax({
+		       $.ajax({
 		      url : "B_Stock_edit",//접속주소
 		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
 		      dataType :"json", //받아올 데이터 형식
@@ -310,19 +467,29 @@ $(document).ready(function(){
 		         if(res.msg == "success"){
 		            location.href = "B_Stock_List";
 		         }else if (res.msg == "failed"){
-		            alert("수정에 실패하였습니다."); // 팝업 변경 필요
+		            makePopup("재고수정","수정에 실패하였습니다.",function(){});
 		         }else {
-		            alert("수정 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		            makePopup("재고수정","수정 중 문제가 발생하였습니다.",function(){});
 		         }
 		      },
 		      error : function(request,status,error){
 		         console.log(error);
 		      }
-		   });  
+		   });    
 		}
 	});
 	
 }); //ready end
+
+function editpopup(v,itemname,itemexp){ //재고가 증가 되는 경우  해당 행에 대한 팝업처리
+
+	var editString = "";
+	
+	for(var i = 0 ; i < v; i++){
+		editString += itemname[i]+"["+itemexp[i]+"]"+"재고 수량 증가 작업은 불가합니다.<br/>";
+	}
+	return editString;
+}
 
 function reeditloadList(){
 	var params = $("#actionForm").serialize();
@@ -347,7 +514,7 @@ function drawbrchstockeditList(list,result){
 	
 	if(result == 0){ //결과 행이 존재하지 않는 경우
 		html += "<tr>";
-		html += "<td colspan = \"5\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
+		html += "<td colspan = \"6\" style = \"text-align: center;\">검색조건에 맞는 데이터가 없거나 품목이 존재하지 않습니다.</td>";
 		html += "</tr>";	
 	} else if (result > 0){ //결과 행이 존재하는 경우 
 		for(var d of list){
@@ -365,7 +532,8 @@ function drawbrchstockeditList(list,result){
 			html += "<td>"+d.CATE_NAME+"</td>";
 			html += "<td>"+d.ITEM_NO+"<input type = \"hidden\" name = \"itemNo\" value = \""+d.ITEM_NO+"\"/></td>";
 			html += "<td>"+d.ITEM_NAME+"</td>";
-			html += "<td><input readonly type = \"number\" class = \"editcurCnt\" name = \"editcurCnt\" min = \"0\" value = \""+d.CURCNT+"\"/><input type = \"hidden\" name = \"chkcurCnt\" value = \""+d.CURCNT+"\"/></td>";
+			html += "<td>"+d.CURCNT+"</td>";
+			html += "<td><input readonly type = \"number\" class = \"editcurCnt\" name = \"editcurCnt\" min = \"0\" value = \""+d.CURCNT+"\"/><input type = \"hidden\" class = \"chkcurCnt\" name = \"chkcurCnt\" value = \""+d.CURCNT+"\"/></td>";
 			html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\"/></td>";
 			html += "</tr>";
 		}
@@ -464,6 +632,39 @@ function today_sell(){
 	$(".sell_string").html(todaystring);
 }
 
+
+//팝업
+function makePopup(title, contents, func) {
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_Area\">";	
+	html+= "<div class=\"popup_Head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_Btn\">";
+	html+= "</div>";	
+	html+= "<div class=\"popup_Content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_Btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_Btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_Area").hide().show();
+	
+	$(".popup_Btn, .close_Btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+		closePopup();
+		});
+	
+}
+
+function closePopup() {
+	$(".bg, .popup_Area").fadeOut(function(){
+		$(".bg, .popup_Area").remove();
+	}); //popup_Btn end
+}
+
 </script>
 </head>
 <body>
@@ -515,20 +716,14 @@ function today_sell(){
 <form action = "#" id = "tb_Form" method = "post">
 <input type="hidden" id="brchNo" name="brchNo" value="${sBRCHNo}"/>
 <table cellspacing="0">
-	<colgroup>
-	<col width = "15%">
-	<col width = "10%">
-	<col width = "40%">
-	<col width = "15%">
-	<col width = "20%">
-	</colgroup>
 	<thead>
 	<tr>
-		<th scope = "col" style="border-left: none;">카테고리</th>
-		<th scope = "col">품목코드</th>
-		<th scope = "col">품목명</th>
-		<th scope = "col">현재 재고 수량</th>
-		<th scope = "col">유통기한</th>
+		<th style="border-left: none;">카테고리</th>
+		<th>품목코드</th>
+		<th>품목명</th>
+		<th>재고 수량</th>
+		<th>수정 수량</th>
+		<th>유통기한</th>
 	</tr>
 	</thead>
 	<tbody></tbody>

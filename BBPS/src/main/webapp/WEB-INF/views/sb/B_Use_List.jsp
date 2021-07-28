@@ -138,6 +138,7 @@ td{
 
 .on{
 	background-color: blue;
+	font-weight: bold;
 }
 .start_date, .end_date{
 	width: 150px;
@@ -244,7 +245,7 @@ function drawstockuseList(list,result){
 function drawusePaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\">|<</button>";
+	html += "<button page = \"1\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\"><</button>";
 	}else{
@@ -269,7 +270,7 @@ function drawusePaging(pb){
 	
 	
 	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>></button>";
 	
 	$(".page_btn").html(html);
 }
