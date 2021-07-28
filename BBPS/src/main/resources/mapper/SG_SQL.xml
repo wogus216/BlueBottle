@@ -51,9 +51,9 @@
 
 
 <select id ="getNList" parameterType="hashmap" resultType="hashmap">
-SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG, N.CATE_NO
+SELECT N.TXT_NO, N.TITLE, N.S_DT, N.USER_NAME, N.DEL_FLAG, N.CATE_NO,N.USER_NO
 FROM(SELECT TXT_NO, TITLE, TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS S_DT,H.USER_NAME
-        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG, O.CATE_NO
+        , ROW_NUMBER() OVER(ORDER BY TXT_NO DESC) AS RNUM, O.DEL_FLAG, O.CATE_NO,H.USER_NO
     FROM NOTICE O INNER JOIN HQ_USER H
                           ON O.USER_NO = H.USER_NO
 WHERE O.DEL_FLAG=1 
@@ -120,7 +120,7 @@ VALUES(NOTICE_SEQ.NEXTVAL, #{nCate}, #{uNo}, #{nTitle}, #{nCon}, #{nFile})
 
 <select id="getN" parameterType="hashmap" resultType="hashmap">
 SELECT TXT_NO, TITLE, CONTENT, TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') AS S_DT, 
-	ATT_FILE, SUBSTR(ATT_FILE, 21) AS ATT_UFILE, H.USER_NAME AS USER_NAME
+	ATT_FILE, SUBSTR(ATT_FILE, 21) AS ATT_UFILE, H.USER_NAME AS USER_NAME,N.USER_NO
 FROM NOTICE N INNER JOIN HQ_USER H
 ON N.USER_NO = H.USER_NO
 WHERE TXT_NO = #{nNo}
@@ -256,20 +256,20 @@ VALUES
 	FROM (SELECT H.USER_NO, H.AUTH_NO, H.DEP_NO, D.DEP_NAME, H.ID, H.PW, H.USER_NAME, H.PHONE_NUM, TO_CHAR(H.ENROLL_DATE, 'YYYY-MM-DD') AS E_DT, TO_CHAR(H.DEL_DATE, 'YYYY-MM-DD') AS D_DT
 	      FROM HQ_USER H INNER JOIN HQ_DEP D
 	                             ON H.DEP_NO = D.DEP_NO) U
-	WHERE U.USER_NO IN #{uNo}
+	WHERE U.USER_NO IN #{No}
 </select>
 
 <select id="getB" parameterType="hashmap" resultType="hashmap">
 SELECT BRCH_NO, ID, PW, BRCH_NAME, POST_NUM, DFT_ADDRESS, DTL_ADDRESS, CALL_NUM,
 		MGR_NAME, MGR_PHONE_NUM
 FROM BRCH
-WHERE BRCH_NO IN #{uNo}
+WHERE BRCH_NO IN #{No}
 </select>
 
 
 <update id="updateH"  parameterType="hashmap">
 UPDATE HQ_USER SET AUTH_NO = #{hAuth}, DEP_NO = #{hDep}, ID = #{hId}, PW = #{hPw}, USER_NAME = #{hNm}, PHONE_NUM = #{hPhone}
-WHERE USER_NO IN #{uNo}
+WHERE USER_NO IN #{No}
 </update>
 <update id="deleteH" parameterType="hashmap">
 UPDATE HQ_USER SET DEL_FLAG = 0, DEL_DATE = SYSDATE 
@@ -280,7 +280,7 @@ UPDATE HQ_USER SET DEL_FLAG = 0, DEL_DATE = SYSDATE
 UPDATE BRCH SET ID = #{bId}, PW = #{bPw}, BRCH_NAME = #{bNm},
  POST_NUM = #{bPost}, DFT_ADDRESS = #{bDft}, DTL_ADDRESS = #{bDtl},
  CALL_NUM = #{bCall}, MGR_NAME = #{mgrNm}, MGR_PHONE_NUM = #{mgrPhone}
-WHERE BRCH_NO IN #{uNo}
+WHERE BRCH_NO IN #{No}
 </update>
 <update id="deleteB" parameterType="hashmap">
 UPDATE BRCH SET DEL_FLAG = 0

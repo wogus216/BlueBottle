@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="../jh/B_Menu.jsp">
-	<c:param name="menuno" value="11"></c:param>
+	<c:param name="menuno" value="23"></c:param>
 </c:import>
 <!DOCTYPE html>
 <html>
@@ -107,7 +107,6 @@ input[type='button']{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin : 0px 0px 0px 10px;
 	cursor: pointer;
 	background-color: #01a1dd;
 	outline:none;
