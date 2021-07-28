@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:import url="../jh/H_Menu.jsp">
+<c:import url="../jh/B_Menu.jsp">
 	<c:param name="menuno" value="19"></c:param>
 </c:import>
 <!DOCTYPE html>
@@ -537,7 +537,7 @@ function buyList(){
          <input type="hidden"  id="oNo" name="oNo" >
 			<input type="hidden" id = "newOno" name="newOno" value="${data.ORD_NO}"/>
 			<input type = "hidden" id = "cate" name = "cate"/>
-			<input type="hidden"  id="bNo" name="bNo" value="${sAUTHNo}">
+			<input type="hidden"  id="bNo" name="bNo" value="${sBRCHNo}">
 			<select id ="search_filter" name="search_filter">
            		<option value="0" selected="selected">품목코드</option>
             	<option value="1">품목명</option>
