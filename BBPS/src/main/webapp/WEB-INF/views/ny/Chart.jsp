@@ -24,6 +24,7 @@
     min-width: 700px;
     margin-left: 30px;
     width: 1250px;
+    margin: 0 auto;
 }
 
 h1 {
@@ -34,32 +35,48 @@ h1 {
  font-size: 30px;
  float: left;
 }
-.search_btn, .list_btn{
+.search_btn {
 	width: 100px;
 	background-color: #01a1dd;
+	color: white;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin: 10px 5px;
+	cursor: pointer;
+	outline:none;
 }
 .list_btn{
-	margin: 0 auto;
+	width: 110px;
+	background-color: #01a1dd;
+	margin: 10px;
+	color: white;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	cursor: pointer;
+	outline:none;
 }
 .graph_btn{
     width: 100px;
 	background-color: #bf4040;
 	margin-right: 0px;
+	color: white;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	cursor: pointer;
+	outline:none;
 }
 .reset_btn {
     width: 100px;
 	background-color: #b3b3b3;
-}
-
-select{
-	width: 115px;
-	height:40px;
-	margin:10px 3px;
-	font-size: 17px;
-	padding: 5px;
-}
-
-input[type='button']{
 	color: white;
 	height: 40px;
 	text-align:center;
@@ -71,6 +88,13 @@ input[type='button']{
 	outline:none;
 }
 
+select{
+	width: 115px;
+	height:40px;
+	margin:10px 3px 16px;
+	font-size: 17px;
+	padding: 5px;
+}
 
 .info{
 	display:inline-block;
@@ -94,19 +118,48 @@ input[type='button']{
 	display:inline-block;
 	vertical-align: top;
 	float: left;
+	
 }
 .cate_btn{
 	width: 115px;
 	background-color: #df9f9f;
+	color: white;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin: 10px 5px;
+	cursor: pointer;
+	outline:none;
+	
 }
 
 .menu_btn{
 	width: 100px;
 	background-color: #df9f9f;
+	color: white;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin: 10px 5px;
+	cursor: pointer;
+	outline:none;
 }
 .daily_btn, .monthly_btn {
 	width: 90px;
 	background-color: #df9f9f;
+	color: white;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin: 10px 5px;
+	cursor: pointer;
+	outline:none;
 }
 
 input:focus{

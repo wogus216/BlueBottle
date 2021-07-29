@@ -116,6 +116,15 @@ select:focus {
 .search_btn, .graph_btn, .reset_btn{
 	height: 40px;
 	vertical-align: bottom;
+	color: white;
+	width: 100px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	outline:none;
 }
 .search_btn{
 	background-color: #01a1dd;
@@ -141,19 +150,6 @@ input[type='date']{
 	padding-left: 5px;
 }
 
-input[type='button']{
-	color: white;
-	width: 100px;
-	height: 40px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:10px;
-	cursor: pointer;
-	outline:none;
-}
-
 .page_area, .page_btn{
 	text-align: center;
 }
@@ -167,7 +163,7 @@ input[type='button']{
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
-	margin:40px 3px;
+	margin: 20px 3px;
 	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
 }
 .page_btn button:hover{

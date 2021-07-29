@@ -401,6 +401,7 @@ function closePopup() {
 		<input type="button" class="add_btn" value="등록" />
 		<input type="hidden" id="cateNo" name="cateNo" />
 		<input type="hidden" id="cateName" name="cateName" />
+  		<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
 	</form> 
 </div>
 <table>

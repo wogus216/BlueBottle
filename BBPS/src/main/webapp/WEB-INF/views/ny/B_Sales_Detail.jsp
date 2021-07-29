@@ -192,6 +192,17 @@ tbody span:hover{
 	background-color: #bf4040;
 	float: right;
 	vertical-align: bottom;
+	color: white;
+	width: 100px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	cursor: pointer;
+	outline:none;
+	margin: 10px;
+	vertical-align: bottom;
 }
 .tot_price #tot_pay{
 	color: red;
@@ -205,19 +216,6 @@ tbody span:hover{
 	margin-right:5px;
 }
 
-.log_out{
-    width: 90px;
-    height: 35px;
-    color: white;
-    font-size: 15px;
-    background-color: #01a1dd;
-    border: none;
-    float: right;
-    font-weight: bold;
-    border-radius: 5px;
-    margin-top: 12px;
-    margin-right: 10px;
-}
 
 input[type='button']{
 	color: white;
@@ -242,6 +240,13 @@ input[type='button']{
 	float: left;
 	vertical-align: bottom;
 	margin: 0px;
+	color: white;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	cursor: pointer;
+	outline:none;
+	vertical-align: bottom;
 }
 
 /*팝업*/

@@ -57,7 +57,7 @@ td{
 	border-left: 1px solid #eaeaea;
 }
 
- td:first-child{
+td:first-child, th:first-child{
 	border-left: none;
 }
 
