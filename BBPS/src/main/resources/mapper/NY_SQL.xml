@@ -264,57 +264,20 @@
 	</select>
 	
 	<select id="getSalesDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT ROW_NUMBER() OVER (ORDER BY SALES_NO) AS NUM, BRCH_NO, 
-	       TO_CHAR(TO_DATE(ENROLL_DATE), 'HH24:MI') AS ENROLL_TIME, SALES_NO, CARD_PAY, CASH_PAY,
-	       (CARD_PAY + CASH_PAY) AS TOT_PAY, TO_CHAR(NVL(CNL_DATE, TO_DATE('1111-11-11','YYYY-MM-DD'))) AS CNL_DATE
-	FROM (SELECT NVL(B.BRCH_NO, A.BRCH_NO) AS BRCH_NO,
-               NVL(B.ENROLL_DATE, A.ENROLL_DATE) AS ENROLL_DATE,
-               NVL(A.SALES_NO, B.SALES_NO) AS SALES_NO,
-               NVL(A.PRICE, 0) AS CARD_PAY,
-               NVL(B.PRICE, 0) AS CASH_PAY,
-               NVL(A.CNL_DATE, B.CNL_DATE) AS CNL_DATE
-	        FROM (SELECT S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')AS ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE, S.CNL_DATE
-                    FROM SALES S INNER JOIN SALES_MENU SM
-                                  ON S.SALES_NO = SM.SALES_NO
-                                 INNER JOIN POS_MENU PM
-                                  ON SM.MENU_NO = PM.MENU_NO
-                    WHERE PAY_METHOD = 0
-                    <choose>
-	                    <when test="brch_choice != null and brch_choice != ''">
-			           		<if test="brch_choice != 9999" >
-			           		AND S.BRCH_NO = #{brch_choice}
-			           		</if>
-			           	</when>
-		           	  	<when test="brchNo != null and brchNo != ''">
-			           	AND S.BRCH_NO = #{brchNo}
-		           	  	</when>
-                    </choose>
-                     AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
-                    GROUP BY S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.SALES_NO, S.CNL_DATE
-                    ORDER BY S.SALES_NO) A 
-	             FULL OUTER JOIN (SELECT S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')AS ENROLL_DATE, S.SALES_NO, SUM(SM.CNT * PM.MENU_PRICE) AS PRICE,
-                                         S.CNL_DATE
-                                FROM SALES S INNER JOIN SALES_MENU SM
-                                              ON S.SALES_NO = SM.SALES_NO
-                                             INNER JOIN POS_MENU PM
-                                              ON SM.MENU_NO = PM.MENU_NO
-                                WHERE PAY_METHOD = 1
-                                <choose>
-				                    <when test="brch_choice != null and brch_choice != ''">
-						           		<if test="brch_choice != 9999" >
-						           		AND S.BRCH_NO = #{brch_choice}
-						           		</if>
-						           	</when>
-					           	  	<when test="brchNo != null and brchNo != ''">
-						           	AND S.BRCH_NO = #{brchNo}
-					           	  	</when>
-			                  	</choose>
-                                AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
-                                GROUP BY S.BRCH_NO, TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.SALES_NO, S.CNL_DATE
-                                ORDER BY S.SALES_NO) B ON A.SALES_NO = B.SALES_NO 
-	                                                   AND A.BRCH_NO = B.BRCH_NO
-	                                                   AND A.ENROLL_DATE = B.ENROLL_DATE)
-	ORDER BY SALES_NO
+	SELECT ROW_NUMBER() OVER(ORDER BY S.SALES_NO) AS RNUM,
+	       TO_CHAR(S.ENROLL_DATE,'HH24:MI') AS ENROLL_TIME,
+	       S.SALES_NO, SUM(M.CNT * P.MENU_PRICE) AS TOT_PAY , S.PAY_METHOD, 
+	       NVL(TO_CHAR(S.CNL_DATE,'YYYY-MM-DD'),'1900-01-01') AS CNL_DATE
+	FROM SALES S INNER JOIN SALES_MENU M
+	                ON S.SALES_NO = M.SALES_NO
+	             INNER JOIN POS_MENU P
+	                ON M.MENU_NO = P.MENU_NO
+	WHERE 1 = 1
+   <if test="brchNo != null and brchNo != ''">
+	  AND S.BRCH_NO = #{brchNo}
+	</if>
+	AND TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') = #{enroll_date}
+	GROUP BY S.SALES_NO, S.BRCH_NO, S.PAY_METHOD, S.ENROLL_DATE, S.CNL_DATE
 	</select>
 	
 	<select id="getSalesDetailAll" parameterType="hashmap" resultType="hashmap">
@@ -371,7 +334,7 @@
 	
 	<select id="getSalesDetailDetail" parameterType="hashmap" resultType="hashmap">
 	SELECT  ROWNUM, P.MENU_NAME, SM.CNT, (SM.CNT * P.MENU_PRICE) AS PRICE, 
-			TO_CHAR(NVL(S.CNL_DATE, TO_DATE('1111-11-11','YYYY-MM-DD'))) AS CNL_DATE
+			NVL(TO_CHAR(S.CNL_DATE,'YYYY-MM-DD'),'1900-01-01') AS CNL_DATE
 	FROM SALES S INNER JOIN SALES_MENU SM
 	                ON S.SALES_NO = SM.SALES_NO
 	             INNER JOIN POS_MENU P
