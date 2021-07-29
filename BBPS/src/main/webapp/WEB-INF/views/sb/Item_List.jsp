@@ -268,7 +268,7 @@ function drawproductPaging(pb){
  </div>
 <div class="content_area">
 <div class="content">
-<input type="text"  id="menuNo" name="menuNo" value="${param.menuno}">
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
 <h1>품목조회</h1>
 <div class="filter_area">
 			<select class= "cate">
@@ -278,8 +278,9 @@ function drawproductPaging(pb){
                    <c:out value="${d.CATE_NAME}"/> </option>
                   </c:forEach>
             </select>
-
+<c:if test="${auth eq 2}" >
 <input type = "button" class="add_btn" style="margin:0px 0px 0px 10px;" value = "추가"/>
+</c:if>
 </div>
 <table cellspacing="0">
 	<colgroup>
@@ -303,6 +304,8 @@ function drawproductPaging(pb){
 <div class="search_area" style = "margin-top : 30px;">
 		<div class="search_info">
 		<form action = "#" id = "actionForm" method = "post">
+			<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
+			<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 			<input type = "hidden" id = "Old_search_input" name = "Old_search_input" value ="${param.search_input}" />
 			<input type = "hidden" id = "itemNo" name = "itemNo"/>
 			<input type = "hidden" id = "itemName" name = "itemName"/>

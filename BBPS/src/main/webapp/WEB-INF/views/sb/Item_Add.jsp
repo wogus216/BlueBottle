@@ -308,7 +308,8 @@ $(document).ready(function(){
 	});
 	
 	$(".cnl_btn").on("click",function(){
-		location.href = "Item_List";
+		$("#actionForm").attr("action","Item_List");
+		$("#actionForm").submit();
 	});
 	
 	$(".submit").on("click",function(){
@@ -347,6 +348,8 @@ $(document).ready(function(){
 			
 		   var params = $("#tb_Form").serialize();
 		   
+		   console.log(params);
+		   
 		   $.ajax({
 		      url : "Item_Adds",//접속주소
 		      type : "post", //전송방식 : get,post // >>문자열을 줬지만 알아서 포스트 형식으로 
@@ -354,7 +357,8 @@ $(document).ready(function(){
 		      data : params,///보낼데이터(문자열 형태)
 		      success : function(res){
 		         if(res.msg == "success"){
-		            location.href = "Item_List";
+		        	 $("#actionForm").attr("action","Item_List");
+		        	 $("#actionForm").submit();
 		         }else if (res.msg == "failed"){
 		        	 makePopup("품목추가","등록에 실패하였습니다.",function(){});
 		         }else {
@@ -466,7 +470,7 @@ function closePopup() {
 <input type="button" class="row_add" value = "행추가"/>
 </div>
 <form action = "#" id = "tb_Form" method = "post"><!-- tbody에 있는 내용 넘기기위해 -->
-<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <div class = "tb_area">
 <table cellspacing="0">
 	
@@ -500,10 +504,15 @@ function closePopup() {
 </table>
 </div>
 </form>
+<form action = "#" id = "actionForm"method = "post">
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
+
 	<div class="submit_area">
 	<input type = "button" class="submit" value = "등록"/>
 	<input type = "button" class="cnl_btn" value = "취소"/>
 	</div>
+</form>	
 </div>
 </div>
 </body>

@@ -213,5 +213,10 @@ public class sbDao implements IsbDao{
 		return sqlsession.update("sb.storbtnupdate",insertMap);
 	}
 
+	@Override
+	public int getauthCnt(HashMap<String, String> params) throws Throwable {
+		return sqlsession.selectOne("sb.getauthCnt",params);
+	}
+
 
 }

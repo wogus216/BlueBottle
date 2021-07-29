@@ -214,6 +214,11 @@ public class sbService implements IsbService{
 		return  isbdao.storbtnupdate(insertMap);
 	}
 
+	@Override
+	public int getauthCnt(HashMap<String, String> params) throws Throwable {
+		return isbdao.getauthCnt(params);
+	}
+
 	
 
 }

@@ -31,21 +31,20 @@ public class sbController {
 	
 	//첫 페이지 지정
 	@RequestMapping(value = "/Item_List")
-	public ModelAndView HPList (HttpSession session,@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
+	public ModelAndView HPList (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
 		
 		int page = 1;
 		
 		if(params.get("page") != null) {
 			page = Integer.parseInt(params.get("page"));
 		}
-		
 		List<HashMap<String,String>> catelist = isbservice.getCateList();
+		int auth  = isbservice.getauthCnt(params);
 		
 		mav.addObject("catelist",catelist);
 		mav.addObject("page",page);
+		mav.addObject("auth",auth);
 		mav.setViewName("sb/Item_List");
-		
-		System.out.println("세션나와봐"+session);
 		
 		return mav;
 	}
@@ -81,8 +80,10 @@ public class sbController {
 	public ModelAndView HPDetail (@RequestParam HashMap<String,String> params,ModelAndView mav) throws Throwable{
 		
 		HashMap<String,String> data = isbservice.getPDetail(params);
+		int auth  = isbservice.getauthCnt(params);
 		
 		mav.addObject("data",data);
+		mav.addObject("auth",auth);
 		mav.setViewName("sb/Item_Dtl");
 		
 		return mav;
@@ -118,7 +119,7 @@ public class sbController {
 	//품목추가 (기능)
 	@RequestMapping(value = "/Item_Adds",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HPAdds(@RequestParam ArrayList<String> userNo,@RequestParam ArrayList<String> itemCate,@RequestParam ArrayList<String> itemName,@RequestParam ArrayList<String> itemPrice,@RequestParam ArrayList<String> itemMinOrdUnit,@RequestParam ArrayList<String> itemComProdFlag) throws Throwable{
+	public String HPAdds(@RequestParam ArrayList<String> uNo,@RequestParam ArrayList<String> itemCate,@RequestParam ArrayList<String> itemName,@RequestParam ArrayList<String> itemPrice,@RequestParam ArrayList<String> itemMinOrdUnit,@RequestParam ArrayList<String> itemComProdFlag) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -130,7 +131,7 @@ public class sbController {
 			for(int i = 0; i < itemName.size(); i++) {
 				
 				insertMap.put("itemCate", itemCate.get(i));
-				insertMap.put("userNo", userNo.get(0));
+				insertMap.put("uNo", uNo.get(0));
 				insertMap.put("itemName", itemName.get(i));
 				insertMap.put("itemPrice", itemPrice.get(i));
 				insertMap.put("itemMinOrdUnit", itemMinOrdUnit.get(i));
@@ -245,7 +246,10 @@ public class sbController {
 	@RequestMapping(value = "/Stock_Dtl")
 	public ModelAndView HSDetail(@RequestParam HashMap<String,String> params, ModelAndView mav) throws Throwable {
 		
+		int auth  = isbservice.getauthCnt(params);
+		
 		mav.setViewName("sb/Stock_Dtl");
+		mav.addObject("auth",auth);
 		
 		return mav;
 	}
@@ -351,7 +355,7 @@ public class sbController {
 	//본사재고추가(기능)
 	@RequestMapping(value = "/Stock_Adds", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSAdds(@RequestParam ArrayList<String> userNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> stockCnt,@RequestParam ArrayList<String> stockExpiryDate) throws Throwable{
+	public String HSAdds(@RequestParam ArrayList<String> uNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> stockCnt,@RequestParam ArrayList<String> stockExpiryDate) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -364,7 +368,7 @@ public class sbController {
 			for(int i = 0; i < itemNo.size(); i++) {
 				
 				
-				insertMap.put("userNo", userNo.get(0));
+				insertMap.put("uNo", uNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("stockCnt", stockCnt.get(i));
 				insertMap.put("stockExpiryDate", stockExpiryDate.get(i));	
@@ -391,7 +395,7 @@ public class sbController {
 	//본사 재고 폐기
 	@RequestMapping(value = "/Stock_Discards", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSDiscards(@RequestParam ArrayList<String> userNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
+	public String HSDiscards(@RequestParam ArrayList<String> uNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> discardCnt,@RequestParam ArrayList<String> discardNote,@RequestParam ArrayList<String> expDate) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -406,7 +410,7 @@ public class sbController {
 					
 				}else {
 				
-				insertMap.put("userNo", userNo.get(0));
+				insertMap.put("uNo", uNo.get(0));
 				insertMap.put("itemNo", itemNo.get(i));
 				insertMap.put("discardCnt", discardCnt.get(i));
 				if(discardNote.size() != 0) {

@@ -317,6 +317,7 @@ function splitdate(resdate){
 			<input type = "date" name = "end_date"  class="end_date" />
 		</div>
 </form>
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
 <div class = "Discard_List">
 <table cellspacing="0">
 	<colgroup>

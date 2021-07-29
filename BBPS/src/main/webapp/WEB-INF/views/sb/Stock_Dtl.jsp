@@ -774,6 +774,8 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <form action = "#" id = "goForm" method = "post">
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
 <input type = "hidden" name ="itemName" value = "${param.itemName}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
@@ -788,15 +790,16 @@ function closePopup() {
 <ul class="item_info">
 <li><strong>품목번호 : </strong>${param.itemNo}</li>
 </ul>
+<c:if test="${auth eq 2}" >
 <div class="button_area">
 			<input type = "button" class="stock_add_btn" value = "추가"/>
 			<input type = "button" class="discard_btn" style= "margin:0px 0px 0px 10px;" value = "폐기"/>
 			<input type = "button" class="discard_submit_btn" value = "완료"/>
 			<input type = "button" class="discard_cnl_btn"style= "margin:0px 0px 0px 10px;"  value = "취소"/>
 		</div>
-
+</c:if>
 <form action = "#" id = "tb_Form" method = "post">
-<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <div class = "stock_tb">
 <table cellspacing="0">
 	

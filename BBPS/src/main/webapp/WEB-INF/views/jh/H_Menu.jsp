@@ -159,6 +159,8 @@ $(document).ready(function(){
 	$(".top_menu").on("click", ".menu_depth1",function(){
 		$("#h_menu_form").attr("action",$(this).parent().parent().attr("addr"));
 		$(this).parent().parent().css("color","#01a1dd");
+		$("#menuNo").val($(this).attr("menuno"));
+		console.log($("#menuNo").val());
 		$("#h_menu_form").submit();
 	});
 	
@@ -166,6 +168,8 @@ $(document).ready(function(){
 	$(".top_menu").on("click", ".menu_depth2",function(){
 		$("#h_menu_form").attr("action",$(this).attr("addr"));
 		$(this).parent().parent().css("color","#01a1dd");
+		$("#menuNo").val($(this).attr("menuno"));
+		console.log($("#menuNo").val());
 		$("#h_menu_form").submit();
 	});
 	
@@ -216,7 +220,7 @@ function drawMenu(menu){
 					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
 				}
 					html +="	<div class=\"menu1_title\">";
-					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
+					html +=			"<div class=\"menu_depth1\" menuno=\"" + menu[i].SITE_MENU_NO + "\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 				}
 		//메뉴 1뎁스 이면서 하위메뉴가 있는 경우
@@ -228,7 +232,7 @@ function drawMenu(menu){
 					html += "<div class=\"menu1_wrap\" menuno=\"" + menu[i].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">";
 				}
 					html +="	<div class=\"menu1_title\">";
-					html +=			"<div class=\"menu_depth1\">" + menu[i].SITE_MENU_NAME + "</div>";
+					html +=			"<div class=\"menu_depth1\" menuno=\"" + menu[i].SITE_MENU_NO + "\">" + menu[i].SITE_MENU_NAME + "</div>";
 					html +=		"</div>";
 			for(var j = menu.length -1; j > i;	j--){
 				if(menu[i].SITE_MENU_NO == menu[j].TOP){
@@ -242,7 +246,7 @@ function drawMenu(menu){
 							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j].SITE_MENU_NO + "\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									}
 									else if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() != "0" ){
-							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\"  menuno=\"" + menu[j].SITE_MENU_NO + "\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									} 
 									else if(menu[i].SITE_MENU_NO == 5){
 							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j-2].SITE_MENU_NO + "\" addr = \""+menu[j-2].MADDR + "\">" + menu[j-2].SITE_MENU_NAME + "</div>";
@@ -264,6 +268,7 @@ function drawMenu(menu){
 	
 		$(".top_menu").html(html);
 		console.log("${param.menuno}");
+		
 }
 
 
@@ -278,6 +283,7 @@ function drawMenu(menu){
 		<input type="hidden"  id="uNo" name="uNo" value="${sUSERNo}">
 		<!-- 권한번호 -->
 		<input type="hidden"  id="auNo" name="auNo" value="${sAUTHNo}">
+		<input type="hidden"  id="menuNo" name="menuNo"/>
 </form>
 
          	<!-- 탑메뉴 -->

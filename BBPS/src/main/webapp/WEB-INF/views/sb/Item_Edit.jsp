@@ -311,7 +311,7 @@ $(document).ready(function(){
 		      data : params,//보낼데이터(문자열 형태)
 		      success : function(res){
 		         if(res.msg == "success"){
-		        	 $("#editForm").attr("action","Item_Dtl");
+		        	$("#editForm").attr("action","Item_Dtl");
 					$("#editForm").submit();
 					$("#goForm").submit();
 		         }else if (res.msg == "failed"){
@@ -408,6 +408,8 @@ function closePopup() {
 <button class="edit_btn">수정</button>
 </div>
 <form action = "Item_Dtl" id = "goForm" method = "post">
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <input type = "hidden" name ="itemNo" value = "${data.ITEM_NO}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
 <input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
@@ -415,7 +417,7 @@ function closePopup() {
 </form>
 <div class = "edit_area">
 <form action = "#" id = "editForm" method = "post">
-<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <input type = "hidden" name ="itemNo" value = "${data.ITEM_NO}"/>
 <table cellspacing="0">
 	<colgroup>

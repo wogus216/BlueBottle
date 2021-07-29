@@ -84,5 +84,7 @@ public interface IsbDao {
 
 	public int storbtnupdate(HashMap<String, Object> insertMap) throws Throwable;
 
+	public int getauthCnt(HashMap<String, String> params) throws Throwable;
+
 
 }

@@ -407,6 +407,8 @@ function closePopup() {
 <body>
    <div class="top"> </div>
 <form action = "Item_List" id = "goForm" method = "post">
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <input type = "hidden" name ="itemNo" value = "${data.ITEM_NO}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
 <input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
@@ -417,8 +419,10 @@ function closePopup() {
 <h1>품목조회</h1>
 <div class="btn_area">
 <span class = "Item_Name">품목번호 : ${data.ITEM_NO}</span>
+<c:if test="${auth eq 2}" >
 <input type = "button" class="del_btn" style="margin-right: 0px;" value = "삭제"/>
 <input type = "button" class="edit_btn" value = "수정"/>
+</c:if>
 </div>
 <table cellspacing="0">
 	<colgroup>

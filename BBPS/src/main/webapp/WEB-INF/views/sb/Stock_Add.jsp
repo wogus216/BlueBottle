@@ -344,6 +344,7 @@ $(document).ready(function(){
 		         if(res.msg == "success"){
 		            $("#tb_Form").attr("action","Stock_Dtl");
 		            $("#tb_Form").submit();
+		            $("#goForm").attr("action","Stock_Dtl");
 					$("#goForm").submit();
 		         }else if (res.msg == "failed"){
 		        	 makePopup("재고추가","재고 추가에 실패하였습니다.",function(){});
@@ -466,6 +467,8 @@ function closePopup() {
 <div class="content_area">
 <div class="content">
 <form action = "Stock_Dtl" id = "goForm" method = "post">
+<input type="hidden"  id="menuNo" name="menuNo" value="${param.menuNo}">
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <input type = "hidden" name ="itemNo" value = "${param.itemNo}"/>
 <input type = "hidden" name = "page" value = "${param.page}"/> <!-- 파람 붙여줘야 전 페이지에서 온 걸 받는 것 // 페이지는 목록에서 준 것 컨트롤러에서 주는 것이 아님 그래서 파람 있어야함 -->
 <input type = "hidden" name ="itemName" value = "${param.itemName}"/>
@@ -478,7 +481,7 @@ function closePopup() {
 <input type = "button" class="row_add" style= "margin:0px 10px 0px 0px;" value = "행추가"/>
 </div>
 <form action = "#" id = "tb_Form" method = "post">
-<input type = "hidden" id = "userNo" name = "userNo" value = "${sUSERNo}"/>
+<input type = "hidden" id = "uNo" name = "uNo" value = "${sUSERNo}"/>
 <table cellspacing="0">
 	<colgroup>
 		<col width="20%" />
