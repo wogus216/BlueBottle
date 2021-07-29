@@ -396,19 +396,6 @@ $(document).ready(function(){
  	});
 	
 	
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
-	
 	$(document).on("dblclick",".editcurCnt",function(){
         $(this).attr("readonly",false);//더블클릭 시 수정이 가능하도록 disabled 해제
         $(this).css("background-color","white");

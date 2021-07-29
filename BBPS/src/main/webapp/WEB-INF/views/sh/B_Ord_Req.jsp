@@ -21,10 +21,10 @@ li {
 }
 /* 미들 부분 */
 .content_area{
-   width: 1380px;
-   height: 900px;
-   margin: 0 auto;
-   margin-top: 50px;
+ 	width: 1380px;
+    height: 900px;
+    margin: 0 auto;
+    margin-top: 60px;
 }
 
 .content_1{
@@ -39,9 +39,10 @@ li {
 .content_2{
    display: inline-block;
    vertical-align: top;
-   max-width: 670px;
-    min-width: 300px; 
-    width: 670px;
+  	max-width: 670px;
+   min-width: 300px; 
+   width: 670px;
+  margin-top: 5px;
 }
 
 /* 게시판 */
@@ -53,9 +54,6 @@ h1 {
    font-size: 26px;
    font-weight: bold;
    margin-bottom: 20px;
-}
-.title_2{
-   margin-top: 125px;
 }
 
 select{
@@ -203,14 +201,6 @@ td:first-child, th:first-child{
 }
 .tot_ref_price ul{
    max-width: 1000px; 
-}
-
-.log_out{
-   display:inline-block;
-   text-decoration: none;
-   color: gray;
-   padding:10px 20px;
-   line-height: 42px;
 }
 
 textarea:focus{
@@ -392,7 +382,6 @@ $(document).ready(function(){
 				success : function(res){
 					if(res.msg == "success"){
 						alert("주문요청이 완료되었습니다.");
-						getLastOrd();
 						location.href="B_Ord_List";
 					}else if (res.msg == "failed"){
 	                    alert("주문에 실패하였습니다."); // 팝업 변경 필요
@@ -422,21 +411,6 @@ $(document).ready(function(){
 		}
 	});
 }); //ready end
-function getLastOrd(){
-	$.ajax({
-		url : "last_ord",
-		type : "post",  
-		dataType :"json",
-		success : function(res){
-			var newOno =${res.data.ORD_NO}
-			console.log(newOno);
-			$("#oNo").val(newOno);
-		},
-		error : function(request,status,error){
-			console.log(error);
-		}
-	});
-}
 function reloadItemList(){
    var params = $("#goForm").serialize();
    console.log($("#goForm").serialize());
@@ -500,8 +474,8 @@ function buyList(){
 <body>
 <!--컨텐츠 -->
 <div class="content_area">
+	<h1>주문요청</h1>
 <div class="content_1">
-<h1>주문요청</h1></br>
 <div class="title_1">주문 가능 품목 리스트</div>
    <select class= "cate">
                <option selected="selected" value = "">전체</option>
@@ -535,7 +509,6 @@ function buyList(){
       <div class="search_info">
          <form action = # id = "goForm" method = "post">
          <input type="hidden"  id="oNo" name="oNo" >
-			<input type="hidden" id = "newOno" name="newOno" value="${data.ORD_NO}"/>
 			<input type = "hidden" id = "cate" name = "cate"/>
 			<input type="hidden"  id="bNo" name="bNo" value="${sBRCHNo}">
 			<select id ="search_filter" name="search_filter">
@@ -553,16 +526,9 @@ function buyList(){
 <div class="title_2">담은 목록</div>
 <div class="blank"></div>
 <form action = "#" id = "actionForm" method = "post">
+<input type="hidden"  id="bNo" name="bNo" value="${sBRCHNo}">
 <table id="choose" cellspacing="0" >
-   <colgroup>
-      <col width="13%">
-      <col width="13%">
-      <col width="33%">
-      <col width="12%">
-      <col width="9%">
-      <col width="12%">
-      <col width="6%">
-   </colgroup>
+
    <thead>
    <tr>
       <th scope="col">카테고리</th>

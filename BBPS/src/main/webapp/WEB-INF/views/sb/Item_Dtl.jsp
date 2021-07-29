@@ -269,18 +269,6 @@ input[type='button']:focus{outline:none;}
 <script type="text/javascript">
 $(document).ready(function(){
 	drawhistoryList();
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
 
 	$(".edit_btn").on("click",function(){
 		$("#goForm").attr("action","Item_Edit");

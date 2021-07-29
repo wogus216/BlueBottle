@@ -90,11 +90,9 @@ select{
 	height: 40px;
 	width : 100px;
 }
-input[type=button]{
+.search_btn{
 	color: white;
 	width: 100px;
-	height: 40px;
-	text-align:center;
 	border:0;
 	border-radius: 3px;
 	font-size:18px;
@@ -156,10 +154,17 @@ $(document).ready(function(){
 	if("${param.search_filter}" != ""){
 		$("#search_filter").val("${param.search_filter}");
 	}
-	$("#search_old_txt").val($("#search_input").val());
-	$("#start_date").val($(".start_date").val());
-	$("#end_date").val($(".end_date").val());
-	$("#page").val(1);
+	
+	if("${param.start_date}" != ""){
+		console.log("값받음");
+		$("#start_date").val($(".start_date").val());
+		$("#end_date").val($(".end_date").val());
+		history.replaceState({}, null, location.pathname);
+	}else{
+		console.log("값없음");
+		$(".start_date").val(lastWeek());
+		$(".end_date").val(today());
+	}
 	reloadList();
 	
 	$("#search_btn").on("click",function(){
@@ -188,8 +193,6 @@ $(document).ready(function(){
 		$("#actionForm").attr("action","B_Ord_dtl");
 		$("#actionForm").submit();
 	}); //tr 클릭 시에는 재고 상세조회 페이지로 이동
-	$(".start_date").val(lastWeek());
-	$(".end_date").val(today());
 }); //ready end
 
 function reloadList(){
@@ -314,6 +317,7 @@ function drawPaging(pb){
 	<div class="search_info">
 		<form action = "#" id = "actionForm" method = "post">
 			<input type = "hidden" id = "oNo" name = "oNo"/>
+			<input type = "hidden" id = "bNo" name = "bNo" value="${sBRCHNo}"/>
 			<input type = "hidden" id = "page" name = "page" value = "${page}"/>
 			<select id ="search_filter" name="search_filter">
 				<option value="0" selected="selected">주문번호</option>

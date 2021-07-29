@@ -129,22 +129,9 @@ textarea:focus{
 	outline: none;
 }
 .list_btn, .apv_com, .send_com{
-	margin-top:30px;
 	text-align:center;
 }
-
-.list_btn input, .apv_com, .send_com{
-	width: 180px;
-	height: 50px;
-	background-color: #01a1dd;
-	font-weight: bold;
-	font-size: 22px;
-}
-
-.list_btn{
-	margin-top:100px;
-}
-.apv_btn, .non_apv_btn, .ref_apv_btn, .non_ref_apv_btn, .send_btn{
+.apv_com, .ref_btn, .non_ref_apv_btn, .non_apv_btn, .send_btn, .send_com, .apv_com, .apv_btn, .history_btn, .list_btn, .apv_btn, .ref_apv_btn{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -162,22 +149,9 @@ textarea:focus{
 .non_apv_btn, .non_ref_apv_btn{
 	background-color: #bf4040;
 }
-.btn_area{
+.btn_area, .list_btn_area{
 	text-align: center;
-}
-input[type=button]{
-	color: white;
-	width: 180px;
-	height: 50px;
-	text-align:center;
-	font-weight: bold;
-	border:0;
-	border-radius: 3px;
-	font-size:22px;
-	margin:10px;
-	cursor: pointer;
-	background-color: #01a1dd;
-	outline:none;
+	margin-top:30px;
 }
 button:focus{outline:none;}
 /* 팝업 */
@@ -562,6 +536,8 @@ function closePopup() {
  		<tr>
 		<td>${data1.ITEM_NO}
 		<input type = "hidden" id = "iNo" name = "iNo" value="${data1.ITEM_NO}"/>
+		<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
+		<input type = "hidden" id = "uId" name = "uId" value="${sId}"/>
 		</td>
 		<td>${data1.ITEM_NAME}</td>
 		<td>${data1.CNT}</td>
@@ -574,7 +550,6 @@ function closePopup() {
 						<c:when test="${data1.CATE_NO eq 0 or data1.CATE_NO eq 1 or data1.CATE_NO eq 2}">
 							<td style="text-align: center;">
 							<input type="date" class="expDate" id="expDate" name="expDate"/>
-							<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
 							</td>
 						</c:when>
 					<c:otherwise>
@@ -676,7 +651,7 @@ function closePopup() {
 </table>
 	<ul class="tot_price">
 		<li><strong>총 환불예상 금액 : </strong>${data2.TOT_PRICE} 원</li>
-</ul>
+	</ul>
 <div class="rsn_area">
 	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
 	<div class="rsn_content_area">
@@ -705,8 +680,8 @@ function closePopup() {
 </div>
 </c:when>
 </c:choose>
-<div class="list_btn">
-<input type="button" value="목록"/>
+<div class="list_btn_area">
+<input type="button" class="list_btn" value="목록"/>
 			</div>
 		</div>
 	</div>
