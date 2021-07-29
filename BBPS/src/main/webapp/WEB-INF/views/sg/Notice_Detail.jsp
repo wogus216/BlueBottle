@@ -372,15 +372,14 @@ ${data.ATT_UFILE}</a><br/>
 <div class="btm_btn_area" style = "margin-top : 30px;">
 <input type="button" value="목록" id="listBtn" class="list_btn" />
 	<div class="edit_btn_area">
-<input type="button" value="수정" class="edit_btn" id="updateBtn" />
 <c:set var="no" value="${sUSERNo}" />
 
 <c:choose>
     <c:when test="${no eq data.USER_NO}">
+    <input type="button" value="수정" class="edit_btn" id="updateBtn" />
 	<input type="button" value="삭제" class="del_btn" id="deleteBtn" />
     </c:when>
 </c:choose>
-
 
 
 	</div>

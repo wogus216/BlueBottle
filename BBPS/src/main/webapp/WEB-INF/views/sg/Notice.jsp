@@ -180,10 +180,10 @@ $(document).ready(function(){
 	
 	$("#search_btn").on("click",function(){
 		$("#cate").val($(".cate").val());
-		$("#start_date").val($(".start_date").val());
-		$("#end_date").val($(".end_date").val());
-		$("#page").val(1);
+		$("#start_date").val($("#startDate").val());
+		$("#end_date").val($("#endDate").val());
 		$("#searchOldTxt").val($("#searchTxt").val());
+		$("#page").val(1);
 		reloadList();
 	});
 	
@@ -195,10 +195,8 @@ $(document).ready(function(){
 		reloadList();
 	});
 	
-	$(".start_date").val(lastWeek());
-	$(".end_date").val(today());
-	
-	
+	$("#startDate").val(lastWeek());
+	$("#endDate").val(today());
 	
 	
 	$("#writeBtn").on("click", function () {
@@ -332,15 +330,14 @@ function splitdate(resdate){
 </div>
 	<div class="filter_area">
 			<select class="cate">
-				<option value="" selected="selected">-</option>
 				<c:forEach items="${catelist}" var = "d">
                    <option value="${d.CATE_NO}">
                    <c:out value="${d.CATE_NAME}"/>
                    </option>
                   </c:forEach>
 			</select>
-			<input type = "date" name="start_date" id="start_date" class="start_date" />
-			<input type = "date" name="end_date" id="end_date" class="end_date"/>
+			<input type = "date" name="startDate" id="startDate"/>
+			<input type = "date" name="endDate" id="endDate"/>
 		</div>
 </form>		
 <div class="list_wrap">

@@ -60,13 +60,13 @@ WHERE O.DEL_FLAG=1
 AND 1=1
    <choose>
             <when test="start_date != null and start_date != '' and end_date != null and end_date != ''">
-                   WHERE S_DT BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date},'YY/MM/DD') 
+                   AND WRITE_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(#{end_date},'YY/MM/DD') 
             </when>
             <when test="start_date != null and start_date != ''">
-                   WHERE S_DT BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(SYSDATE, 'YY/MM/DD') 
+                   AND WRITE_DATE BETWEEN TO_DATE(#{start_date}, 'YY/MM/DD') AND TO_DATE(SYSDATE, 'YY/MM/DD') 
             </when>
             <when test="end_date != null and end_date != ''">
-                   WHERE S_DT BETWEEN TO_DATE(S_DT, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
+                   AND WRITE_DATE BETWEEN TO_DATE(S_DT, 'YY/MM/DD') AND TO_DATE(#{end_date}, 'YY/MM/DD') 
             </when>
      </choose>
 <if test="searchTxt != null and searchTxt != ''"> 
@@ -89,7 +89,7 @@ AND 1=1
 <if test = "cate != null and cate != ''">
 <choose>
          <when  test ="cate == 0">
-            AND  CATE_NO IN (0,1,2,3,4, 5)
+            AND  CATE_NO IN (0,1,2,3,4,5)
          </when>
          <when  test ="cate == 1" >
             AND  CATE_NO IN #{cate}
