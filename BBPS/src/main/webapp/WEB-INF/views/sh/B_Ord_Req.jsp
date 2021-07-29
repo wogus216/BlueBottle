@@ -21,10 +21,10 @@ li {
 }
 /* 미들 부분 */
 .content_area{
-   width: 1380px;
-   height: 900px;
-   margin: 0 auto;
-   margin-top: 50px;
+ 	width: 1380px;
+    height: 900px;
+    margin: 0 auto;
+    margin-top: 60px;
 }
 
 .content_1{
@@ -39,9 +39,10 @@ li {
 .content_2{
    display: inline-block;
    vertical-align: top;
-   max-width: 670px;
-    min-width: 300px; 
-    width: 670px;
+  	max-width: 670px;
+   min-width: 300px; 
+   width: 670px;
+  margin-top: 5px;
 }
 
 /* 게시판 */
@@ -53,9 +54,6 @@ h1 {
    font-size: 26px;
    font-weight: bold;
    margin-bottom: 20px;
-}
-.title_2{
-   margin-top: 125px;
 }
 
 select{
@@ -476,8 +474,8 @@ function buyList(){
 <body>
 <!--컨텐츠 -->
 <div class="content_area">
+	<h1>주문요청</h1>
 <div class="content_1">
-<h1>주문요청</h1></br>
 <div class="title_1">주문 가능 품목 리스트</div>
    <select class= "cate">
                <option selected="selected" value = "">전체</option>
