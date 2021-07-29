@@ -393,19 +393,6 @@ $(document).ready(function(){
 	useloadList(); // 재고 출고 리스트 그리기
 	discardloadList(); //폐기 리스트 그리기
 	
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$(".top li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$(".top li").css("background-color","white");
-	});
-	
 	$(".stock_add_btn").on("click",function(){
 		$("#goForm").attr("action","Stock_Add");
 		$("#goForm").submit();

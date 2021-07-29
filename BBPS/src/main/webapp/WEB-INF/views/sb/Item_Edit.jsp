@@ -282,19 +282,6 @@ $(document).ready(function(){
 	
 	drawhistoryList(); // 가격변동 테이블 그리기
 	
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
-
 	$("tbody").on("click", "[type='radio']", function() {
 		$(this).parent().children("#itemComProdFlag").val($(this).val());
 	});

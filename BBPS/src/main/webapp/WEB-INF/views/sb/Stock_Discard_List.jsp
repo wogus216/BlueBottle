@@ -179,19 +179,6 @@ $(document).ready(function(){
 		reloadList();	
 	});
 	
-	$(".top_menu").on("click","a",function(){
-		$(".top_menu a").attr("style","color: black");
-		$(this).css("color", "#01a1dd");
-		$(this).parent().parent().children(1).css("color", "#01a1dd");
-	});
-	$(".sub").hover(function(){
-		$("li").css("background-color","white");
-		$(this).parent("li").css("background-color","#f1f1f1");
-	
-	},function(){
-			$("li").css("background-color","white");
-	});
-	
 	$(".page_btn").on("click","button",function(){
 		$("#page").val($(this).attr("page"));
 		$(".search_input").val($("#Old_search_input").val());
