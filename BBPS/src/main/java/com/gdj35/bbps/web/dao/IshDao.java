@@ -65,4 +65,6 @@ public interface IshDao {
 
 	public List<HashMap<String, String>> getCateList() throws Throwable;
 
+	public int getAuth(HashMap<String, String> params) throws Throwable;
+
 }

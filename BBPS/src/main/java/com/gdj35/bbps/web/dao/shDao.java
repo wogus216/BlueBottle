@@ -161,5 +161,10 @@ public class shDao implements IshDao{
 	public List<HashMap<String, String>> getCateList() throws Throwable {
 		return sqlSession.selectList("SH.getCateList");
 	}
+
+	@Override
+	public int getAuth(HashMap<String, String> params) throws Throwable {
+		return sqlSession.selectOne("SH.getAuth");
+	}
 }
 

@@ -162,4 +162,9 @@ public class shService implements IshService{
 	public List<HashMap<String, String>> getCateList() throws Throwable {
 		return ishDao.getCateList();
 	}
+
+	@Override
+	public int getAuth(HashMap<String, String> params) throws Throwable {
+		return ishDao.getAuth(params);
+	}
 }

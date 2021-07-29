@@ -274,7 +274,8 @@ $(document).ready(function(){
 		});
 	});
 	$(".list_btn").on("click",function(){
-		location.href="Ord_Mang";
+		$("#goForm").attr("action", "Ord_Mang");
+		$("#goForm").submit();
 	});
 	$(".apv_btn").on("click",function(){
 		if(confirm("주문을 승인하시겠습니까?")){ //팝업 변경 필요
@@ -423,6 +424,9 @@ $(document).ready(function(){
 		}
 		}
 	});
+	if("${params.depNo}" != 0 || "${params.depNo}" != 2){
+		$("#expDate").prop("readonly", true);
+	}
 }); //ready end
 
 function makePopup(title, contents, func){
@@ -496,6 +500,8 @@ function closePopup() {
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
+	<input type = "hidden" id = "menuNo" name = "menuNo" value="${params.menuNo}"/>
+	<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
 </form>
 <div class="content_area">
 <div class="content">
@@ -595,13 +601,23 @@ function closePopup() {
 </div>
 </div>
 <div class="btn_area">
-<c:if test="${data.CODE_NAME eq '주문요청'}">
-	<input type="button" class="apv_btn" value="승인"/>
-	<input type="button" class="non_apv_btn" value="승인거부"/>
+<c:if test="${auth eq 2}">
+	<c:if test="${data.CODE_NAME eq '주문요청'}">
+		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+			<input type="button" class="apv_btn" value="승인"/>
+			<input type="button" class="non_apv_btn" value="승인거부"/>
+		</c:if>
+	</c:if>
 </c:if>
+<c:if test="${auth eq 2}">
 <c:if test="${data.CODE_NAME eq '주문승인'}">
-	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
-	<input type="button" class="send_btn" value="발송"/>
+	<c:if test="${params.depNo ne 0 || params.depNo ne 2}">
+		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	</c:if>
+	<c:if test="${params.depNo eq 0 || params.depNo eq 2}">
+		<input type="button" class="send_btn" value="발송"/>
+	</c:if>
+</c:if>
 </c:if>
 <c:if test="${data.CODE_NAME eq '발송완료'}">
 <input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
@@ -673,9 +689,13 @@ function closePopup() {
 </div>
 </div>
 <div class="btn_area">
-<c:if test="${data2.CODE_NAME eq '환불요청'}">
-	<input type="button" class="ref_apv_btn" value="승인"/>
-	<input type="button" class="non_ref_apv_btn" value="승인거부"/>
+<c:if test="${auth eq 2}">
+	<c:if test="${data2.CODE_NAME eq '환불요청'}">
+		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+			<input type="button" class="ref_apv_btn" value="승인"/>
+			<input type="button" class="non_ref_apv_btn" value="승인거부"/>
+		</c:if>
+	</c:if>
 </c:if>
 <c:if test="${data2.CODE_NAME eq '환불승인'}">
 	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>

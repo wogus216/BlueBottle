@@ -64,4 +64,6 @@ public interface IshService {
 
 	public int writeOrd(HashMap<String, String> params) throws Throwable;
 
+	public int getAuth(HashMap<String, String> params) throws Throwable;
+
 }

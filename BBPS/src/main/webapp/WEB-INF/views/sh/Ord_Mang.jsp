@@ -222,43 +222,13 @@ $(document).ready(function(){
 		    }
 		});
 	$("input[type=checkbox]").click(function(){
-			if($("#ck2").is(":checked")==true){
-				$("#ordReq").prop("value", "0")
-			}if($("#ck2").is(":checked")==false){
+		for(var i=2; i<12; i++){
+			if($("#ck"+i+"").is(":checked")==true){
+				$("#ordReq").prop("value", ""+i-2+"")
+			}if($("#ck"+i+"").is(":checked")==false){
 				$("#ordReq").prop("value", null)
-			}if($("#ck3").is(":checked")==true){
-				$("#ordCnl").prop("value", "1");
-			}if($("#ck3").is(":checked")==false){
-				$("#ordCnl").prop("value", null)
-			}if($("#ck4").is(":checked")==true){
-				$("#ordApv").prop("value", "2");
-			}if($("#ck4").is(":checked")==false){
-				$("#ordApv").prop("value", null)
-			}if($("#ck5").is(":checked")==true){
-				$("#ordNonApv").prop("value", "3");
-			}if($("#ck5").is(":checked")==false){
-				$("#ordNonApv").prop("value", null)
-			}if($("#ck6").is(":checked")==true){
-				$("#sendCom").prop("value", "4");
-			}if($("#ck6").is(":checked")==false){
-				$("#sendCom").prop("value", null)
-			}if($("#ck8").is(":checked")==true){
-				$("#refReq").prop("value", "5");
-			}if($("#ck8").is(":checked")==false){
-				$("#refReq").prop("value", null)
-			}if($("#ck9").is(":checked")==true){
-				$("#refCnl").prop("value", "6");
-			}if($("#ck9").is(":checked")==false){
-				$("#refCnl").prop("value", null)
-			}if($("#ck10").is(":checked")==true){
-				$("#refApv").prop("value", "7");
-			}if($("#ck10").is(":checked")==false){
-				$("#refApv").prop("value", null)
-			}if($("#ck11").is(":checked")==true){
-				$("#refNonApv").prop("value", "8");
-			}if($("#ck11").is(":checked")==false){
-				$("#refNonApv").prop("value", null);
 			}
+		}
 		$("#page").val(1);
 		$(".search_input").val($("#Old_search_input").val());
 		reloadList();
@@ -432,7 +402,9 @@ function drawPaging(pb){
 			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
 			<input type = "hidden" id = "bNo" name = "bNo"/>
-			
+			<input type = "hidden" id = "menuNo" name = "menuNo" value="${params.menuNo}"/>
+			<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
+			<input type="hidden"  id="depNo" name="depNo" value="${params.sDEPNo}">
 			<input type = "hidden" id = "ordReq" name = "ordReq" value="0"/>
 			<input type = "hidden" id = "ordCnl" name = "ordCnl" value="1"/>
 			<input type = "hidden" id = "ordApv" name = "ordApv" value="2"/>

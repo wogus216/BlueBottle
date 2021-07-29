@@ -74,7 +74,8 @@ public class shController {
 		List<HashMap<String,String>> list = ishService.getODtlList(params);
 		HashMap<String,String> data2 = ishService.getRDtl(params);
 	    List<HashMap<String,String>> list2 = ishService.getRDtlList(params);
-
+	   int auth = ishService.getAuth(params);
+	    mav.addObject("auth",auth);
 		mav.addObject("list",list);
 		mav.addObject("data",data);
 		mav.addObject("list2",list2);
