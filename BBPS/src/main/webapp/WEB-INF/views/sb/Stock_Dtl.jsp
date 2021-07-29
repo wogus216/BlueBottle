@@ -42,8 +42,6 @@ li {
     min-width: 700px;
     margin-left: 30px;
     width: 1250px;
-    
-    
 }
 
 /* 품목등록 */
@@ -53,7 +51,6 @@ h1 {
  	font-size: 30px;
 }
 
-
 table {
     width: 100%;
     table-layout: fixed;
@@ -61,7 +58,6 @@ table {
 	margin: 10px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
-	
 }
 
 /*팝업디자인*/
@@ -444,7 +440,7 @@ $(document).ready(function(){
 		});
 		
 		if(cnt > 0){
-			alert("폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력");
+			makePopup("재고폐기","폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력",function(){});
 		   $(".discardCnt").focus;
 		   stockdiscardloadList();
 		  	$(".discard_btn").hide();
@@ -453,7 +449,7 @@ $(document).ready(function(){
 			$(".discard_submit_btn").show();
 		   
 		}else if(cnt2 == $(".stock_tb tbody tr").size()){
-			alert("현재 폐기수량이 모두 0입니다.");
+			makePopup("재고폐기","현재 폐기수량이 모두 0입니다.",function(){});
 			stockdiscardloadList();
 		  	$(".discard_btn").hide();
 			$(".stock_add_btn").hide();
@@ -477,9 +473,9 @@ $(document).ready(function(){
 					$(".discard_cnl_btn").hide();
 					$(".discard_submit_btn").hide();
 		      	  }else if (res.msg == "failed"){
-		            alert("재고폐기에 실패하였습니다."); // 팝업 변경 필요
+		      		makePopup("재고폐기","재고폐기에 실패하였습니다.",function(){});
 		         }else {
-		            alert("재고페기 중 문제가 발생하였습니다."); // 팝업 변경 필요
+		        	makePopup("재고폐기","재고페기 중 문제가 발생하였습니다.",function(){});
 		         }
 		      },
 		      error : function(request,status,error){

@@ -211,7 +211,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND HD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(HD.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>
 	</select>
 	
@@ -240,7 +240,7 @@
 			AND  IC.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND HD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(HD.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>)
 	WHERE RNUM BETWEEN #{startCnt} AND #{endCnt}
 	
@@ -369,6 +369,7 @@
 			AND  IC.CATE_NO = #{cate}
 	</if>)  
     WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
+    ORDER BY EXPIRY_DATE
 	</select>
 	
 	
@@ -571,7 +572,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND BS.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(BS.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>
 	</select>
 	
@@ -601,7 +602,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND BS.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(BS.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>)
 	WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
 	</select>
@@ -632,7 +633,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND BUI.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(BUI.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>
 	</select>
 	
@@ -664,7 +665,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND BUI.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(BUI.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>)
 	WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
 	</select>
@@ -695,7 +696,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND BD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(BD.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>
 	</select>
 	
@@ -727,7 +728,7 @@
 			AND  I.CATE_NO = #{cate}
 	</if>
 	 <if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
-			AND BD.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
+			AND TO_CHAR(BD.ENROLL_DATE,'YYYY-MM-DD') BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 	</if>)
 	WHERE RNK BETWEEN #{startCnt} AND #{endCnt}
 	</select>

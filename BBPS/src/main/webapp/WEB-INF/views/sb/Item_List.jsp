@@ -133,6 +133,7 @@ td{
 
 .on{
 	background-color: blue;
+	font-weight: bold;
 }
 </style>
 <script type="text/javascript"
@@ -242,7 +243,7 @@ function drawproductList(list){
 function drawproductPaging(pb){
 	var html = "";
 	                                    
-	html += "<button page = \"1\">|<</button>";
+	html += "<button page = \"1\"><<</button>";
 	if($("#page").val()=="1"){
 		html += "<button page = \"1\"><</button>";
 	}else{
@@ -267,7 +268,7 @@ function drawproductPaging(pb){
 	
 	
 	
-	html += "<button page = \""+ pb.maxPcount +"\" >>|</button>";
+	html += "<button page = \""+ pb.maxPcount +"\" >>></button>";
 	
 	$(".page_btn").html(html);
 }
@@ -280,6 +281,7 @@ function drawproductPaging(pb){
  </div>
 <div class="content_area">
 <div class="content">
+<input type="text"  id="menuNo" name="menuNo" value="${param.menuno}">
 <h1>품목조회</h1>
 <div class="filter_area">
 			<select class= "cate">

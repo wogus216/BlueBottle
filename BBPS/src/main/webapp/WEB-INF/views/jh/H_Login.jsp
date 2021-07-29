@@ -254,9 +254,16 @@ $(document).ready(function(){
 				dataType: "json", 
 				data : params, 
 				success : function(res) { 
+					console.log(params);
 				 	if(res.resMsg == "success"){
-						$("#loginForm").attr("action","Ord_Mang");
-						$("#loginForm").submit();
+				 		if($("#hId").val() == "BLUEBOTTLE5" ){
+				 			alert("알려줘");
+				 			$("#loginForm").attr("action","Notice_Cate_Mang");
+							$("#loginForm").submit();
+				 		} else{
+							$("#loginForm").attr("action","Ord_Mang");
+							$("#loginForm").submit();
+				 		}
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							

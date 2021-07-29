@@ -217,29 +217,9 @@ input[type='button']:focus{outline:none;}
 	background-color: #01a1dd;
 	outline:none;
 }
-/* 검색 과 페이지 */
 
-.page_area, .page_btn{
-	text-align: center;
-}
-
-.page_btn button{
-	color: black;
-	width: 40px;
-	height: 40px;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	margin:40px 3px;
-	box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.2);
-}
-
-.page_btn button:hover{
-	color: #01a1dd;
-}
-
-.page_btn button:focus{
-	outline:none;
+.del_btn{
+	background-color: #bf4040;
 }
 
 /* 가격 히스토리 테이블 스크롤 생성*/
@@ -274,6 +254,13 @@ input[type='button']:focus{outline:none;}
 	background-color: #01a1dd;
 	font-weight: bold;
 	font-size: 22px;
+	color: white;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	margin:10px;
+	cursor: pointer;
+	outline:none;
 }
 
 </style>
