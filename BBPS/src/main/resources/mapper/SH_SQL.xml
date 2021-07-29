@@ -215,19 +215,19 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 	ORDER BY CODE_S_CATE
 </select>
 <update id="apvOrd" parameterType="hashmap">
-	UPDATE ORD SET STAT_CODE = 2, PROCESS_DATE=SYSDATE, APV_PROCESS_USER_NO=#{uId}
+	UPDATE ORD SET STAT_CODE = 2, PROCESS_DATE=SYSDATE, APV_PROCESS_USER_NO=#{uNo}
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="nonApvOrd" parameterType="hashmap">
-	UPDATE ORD SET STAT_CODE = 3, PROCESS_DATE=SYSDATE, NON_APV_RSN = #{oRsn}, APV_PROCESS_USER_NO=#{uId}
+	UPDATE ORD SET STAT_CODE = 3, PROCESS_DATE=SYSDATE, NON_APV_RSN = #{oRsn}, APV_PROCESS_USER_NO=#{uNo}
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="apvRef" parameterType="hashmap">
-	UPDATE REF SET STAT_CODE = 7, PROCESS_DATE=SYSDATE, APV_PROCESS_USER_NO=#{uId}
+	UPDATE REF SET STAT_CODE = 7, PROCESS_DATE=SYSDATE, APV_PROCESS_USER_NO=#{uNo}
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="nonApvRef" parameterType="hashmap">
-	UPDATE REF SET STAT_CODE = 8, PROCESS_DATE=SYSDATE, NON_APV_RSN = #{rRsn}, APV_PROCESS_USER_NO=#{uId}
+	UPDATE REF SET STAT_CODE = 8, PROCESS_DATE=SYSDATE, NON_APV_RSN = #{rRsn}, APV_PROCESS_USER_NO=#{uNo}
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="sendO" parameterType="hashmap">
