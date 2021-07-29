@@ -238,16 +238,16 @@ function drawMenu(menu){
 							html +=		"<div class=\"menu2_title\">";
 							html +=			"<div class= \"menu_depth2_area \">";
 									if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() == "0"){
-							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j+1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j + 1].SITE_MENU_NO + "\" addr = \""+menu[j+1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j].SITE_MENU_NO + "\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									}
 									else if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() != "0" ){
 							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									} 
 									else if(menu[i].SITE_MENU_NO == 5){
-							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j-2].MADDR + "\">" + menu[j-2].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j-1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
-							html +=			"<div class=\"menu_depth2\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j-2].SITE_MENU_NO + "\" addr = \""+menu[j-2].MADDR + "\">" + menu[j-2].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j-1].SITE_MENU_NO + "\" addr = \""+menu[j-1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j].SITE_MENU_NO + "\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									}
 							html +=			"</div>";
 							html +=		"</div>";
