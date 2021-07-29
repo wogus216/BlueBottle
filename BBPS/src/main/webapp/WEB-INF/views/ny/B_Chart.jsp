@@ -33,6 +33,7 @@ h1 {
  display: inline-block;
  vertical-align: top;
  margin-bottom: 30px;
+ margin-top: 70px;
  font-size: 30px;
  float: left;
 }
@@ -626,7 +627,7 @@ function closePopup() {
 				</form>
 			</div>
 		</div>
-		<div id="container" style="min-width: 400px; height: 400px; margin-bottom: 160px"></div>
+		<div id="container" style="min-width: 400px; height: 400px; margin-bottom: 207px"></div>
 		<input type="button" class="list_btn" value="목록" />
 	</div>
 </div>
