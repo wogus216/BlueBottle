@@ -515,7 +515,7 @@ $(document).ready(function(){
 				
 				//주문한게 있는 경우
 				} else{
-					ordPopup("", "이미선택한물품입니다.",function(){});
+					ordPopup("", "이미 선택한 메뉴입니다.",function(){});
 					}
 		} else{
 				ordPopup("", "더이상 품목추가는 불가합니다.",function(){});
@@ -667,7 +667,7 @@ $(document).ready(function(){
 			
 			//품목 없을 때
 		} else if($(".ord_stat").length <= 0){
-			ordPopup("", "주문 품목을 먼저 입력해주세요.",function(){});
+			ordPopup("", "메뉴 주문을 먼저 해주세요.",function(){});
 			
 		} else{
 			
@@ -686,10 +686,10 @@ $(document).ready(function(){
 				ordPopup("", "결제완료되었습니다.",function(){});
 				location.reload();
 			}else{
-				ordPopup("", "금액이 부족합니다.",function(){});
 				recMoney = (0 * 1); //받은 금액 초기화
 				changeMoney = (0 * 1); //거스름돈 초기화
 				ordPay();
+				ordPopup("", "금액이 부족합니다.",function(){});
 			}
 			
 		}
@@ -719,8 +719,8 @@ $(document).ready(function(){
 	});
 	
 	//환불
-	$(".ref_btn").on("click",function(){
-		refPopup();
+	$("body").on("click",".ref_btn",function(){
+		refPopup("환불");
 		loadRefList();
 	}); 
 	
@@ -1026,6 +1026,8 @@ function refPopup(title, func) {
 	
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"r_popup_area\">";
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= "</div>";	
 	html+= "	<div class=\"filter_area\"> ";
 	html+= 			"<button class=\"reset_btn\" style=\"margin:5px 0px 0px 10px;\">초기화</button>";
 	html+= 			"<span>시작일</span>";
@@ -1044,7 +1046,7 @@ function refPopup(title, func) {
 	html+="			<thead>";
 	html+="				<tr>";
 	html+="					<th scope=\"col\" style=\"border-left: none;\">날짜</th>";
-	html+="					<th scope=\"col\">사용자</th>";
+	html+="					<th scope=\"col\">지점명</th>";
 	html+="				</tr>";
 	html+="			</thead>";
 	html+="			<tbody>";
@@ -1088,6 +1090,7 @@ function refPopup(title, func) {
 		$("#endDate").val("");
 		$("input[name='start_date']").val("");
 		$("input[name='end_date']").val("");
+		loadRefList();
 	});
 	
 	//취소 버튼

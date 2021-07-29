@@ -12,9 +12,8 @@
 	
 	<!-- 지점,포스로그인 -->
 	<select id="getB" parameterType="hashmap" resultType="hashmap">
-	SELECT B.BRCH_NO,B.ID,B.BRCH_NAME,A.AUTH_NO
-	FROM BRCH B INNER JOIN AUTH A
-       	                ON B.BRCH_NO = A.AUTH_NO	
+	SELECT B.BRCH_NO,B.ID,B.BRCH_NAME,B.MGR_NAME
+	FROM BRCH B 
 	WHERE ID = #{bId}
 	AND PW = #{bPw}
 	</select>
@@ -267,10 +266,10 @@
 	SELECT COUNT(*) AS CNT
 	FROM (SELECT S2.SDATE,B.BRCH_NAME AS BNM,BS.ENROLL_DATE,
                ROW_NUMBER() OVER(ORDER BY S2.SDATE DESC) AS RNUM
-    	  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YY/MM/DD') AS SDATE,COUNT(TO_DATE(S.ENROLL_DATE,'YY/MM/DD')) AS SALES_CNT,S.BRCH_NO
+    	  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') AS SDATE,COUNT(TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')) AS SALES_CNT,S.BRCH_NO
         	    FROM SALES  S   
             	WHERE S.CNL_DATE IS NULL
-            	GROUP BY TO_CHAR(S.ENROLL_DATE,'YY/MM/DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
+            	GROUP BY TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
                                                                               ON S2.BRCH_NO = B.BRCH_NO
                                                                               AND B.BRCH_NO = #{brchNo}
                                                                       INNER JOIN BRCH_STOR BS
@@ -295,10 +294,10 @@
 		SELECT R.SDATE, R.BNM
 		FROM (SELECT S2.SDATE,B.BRCH_NAME AS BNM,BS.ENROLL_DATE,
                ROW_NUMBER() OVER(ORDER BY S2.SDATE DESC) AS RNUM
-     		  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YY/MM/DD') AS SDATE,COUNT(TO_DATE(S.ENROLL_DATE,'YY/MM/DD')) AS SALES_CNT,S.BRCH_NO
+     		  FROM (SELECT TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD') AS SDATE,COUNT(TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD')) AS SALES_CNT,S.BRCH_NO
             	    FROM SALES  S   
             	    WHERE S.CNL_DATE IS NULL
-              GROUP BY TO_CHAR(S.ENROLL_DATE,'YY/MM/DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
+              GROUP BY TO_CHAR(S.ENROLL_DATE,'YYYY-MM-DD'), S.BRCH_NO) S2 INNER JOIN BRCH B 
                                                                               ON S2.BRCH_NO = B.BRCH_NO
                                                                               AND B.BRCH_NO = #{brchNo}
                                                                       INNER JOIN BRCH_STOR BS
@@ -308,10 +307,10 @@
 			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(#{endDate},'YY/MM/DD') 
 				</when>
 				<when test="startDate != null and startDate != ''">
-			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(#{startDate}, 'YY/MM/DD') AND TO_DATE(SYSDATE, 'YY/MM/DD') 
+			  	 	 WHERE S2.SDATE &gt;= TO_DATE(#{startDate}, 'YY/MM/DD')
 				</when>
 				<when test="endDate != null and endDate != ''">
-			  	 	 WHERE S2.SDATE BETWEEN TO_DATE(BS.ENROLL_DATE, 'YY/MM/DD') AND TO_DATE(#{endDate}, 'YY/MM/DD') 
+			  	 	WHERE S2.SDATE  &lt;= TO_DATE(#{endDate},'YY/MM/DD')
 				</when>
 		</choose>
 	   	) R

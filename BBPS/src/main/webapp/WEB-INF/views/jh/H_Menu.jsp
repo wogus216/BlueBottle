@@ -283,6 +283,7 @@ function drawMenu(menu){
 		<input type="hidden"  id="uNo" name="uNo" value="${sUSERNo}">
 		<!-- 권한번호 -->
 		<input type="hidden"  id="auNo" name="auNo" value="${sAUTHNo}">
+		<!-- 메뉴번호 -->
 		<input type="hidden"  id="menuNo" name="menuNo"/>
 </form>
 
