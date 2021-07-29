@@ -313,8 +313,6 @@ $(document).ready(function(){
 		if(confirm("입고하시겠습니까?")){ //팝업 변경 필요
 		var params = $("#sendForm").serialize();
 		
-		console.log($("#sendForm").serialize());
-		
 		 $.ajax({
 			url : "ord_item_stor",
 			type : "post",  

@@ -277,7 +277,6 @@ $(document).ready(function(){
 
 function reloadList(){
 	var params = $("#actionForm").serialize();
-	console.log($("#actionForm").serialize());
 	$.ajax({
 		url : "Ord_Mangs",
 		type : "post",  

@@ -309,7 +309,6 @@ $(document).ready(function(){
 		if(confirm("승인거부 처리하시겠습니까?")){ //팝업 변경 필요
 			
 		var params = $("#OrsnForm").serialize();
-		console.log($("#OrsnForm").serialize());
 		$.ajax({
 			url : "ord_non_apv",
 			type : "post",  
@@ -401,7 +400,6 @@ $(document).ready(function(){
 		}else{
 			if(confirm("발송 처리하시겠습니까?")){ //팝업 변경 필요
 				var params = $("#sendForm").serialize();
-				console.log($("#sendForm").serialize());
 		$.ajax({
 			url : "ord_send",
 			type : "post",  
@@ -537,7 +535,7 @@ function closePopup() {
 		<td>${data1.ITEM_NO}
 		<input type = "hidden" id = "iNo" name = "iNo" value="${data1.ITEM_NO}"/>
 		<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
-		<input type = "hidden" id = "uId" name = "uId" value="${sId}"/>
+		<input type = "hidden" id = "uNo" name = "uNo" value="${sUSERNo}"/>
 		</td>
 		<td>${data1.ITEM_NAME}</td>
 		<td>${data1.CNT}</td>
@@ -553,7 +551,7 @@ function closePopup() {
 							</td>
 						</c:when>
 					<c:otherwise>
-						<td></td>
+						<td><input type="hidden" class="expDate" id="expDate" name="expDate" value="2999-01-01"/></td>
 					</c:otherwise>
 					</c:choose>
 					</c:when>
@@ -563,7 +561,13 @@ function closePopup() {
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				<td>${data1.EXPIRY_DATE}</td>
+				<c:choose>
+					<c:when test="${data1.EXPIRY_DATE ne '2999-01-01'}"><td>${data1.EXPIRY_DATE}</td>
+				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
+					</c:choose>
 			</c:otherwise>
 		</c:choose>
 		</tr>

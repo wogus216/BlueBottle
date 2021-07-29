@@ -231,7 +231,7 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="sendO" parameterType="hashmap">
-	UPDATE ORD SET STAT_CODE = 4, SEND_DATE=SYSDATE, SEND_PROCESS_USER_NO=#{uId}
+	UPDATE ORD SET STAT_CODE = 4, SEND_DATE=SYSDATE, SEND_PROCESS_USER_NO=#{uNo}
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="sendExp" parameterType="hashmap">

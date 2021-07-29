@@ -10,15 +10,6 @@
 <meta charset="UTF-8">
 <title>지점주문요청</title>
 <style type="text/css">
-ul {
-   list-style-type: none;
-   padding: 0;
-  
-}
-
-li {
-   float: left;
-}
 /* 미들 부분 */
 .content_area{
  	width: 1380px;
@@ -42,7 +33,6 @@ li {
   	max-width: 670px;
    min-width: 300px; 
    width: 670px;
-  margin-top: 5px;
 }
 
 /* 게시판 */
@@ -63,7 +53,8 @@ select{
    cursor: pointer;
 }
 .blank{
-   height: 35.5px;
+   height: 40px;
+   font-size: 0;
 }
 
 
@@ -194,13 +185,15 @@ td:first-child, th:first-child{
    
 }
 
-.tot_ref_price li{
+#tot_ref_price li{
    font-size:19px;
-   margin:10px;
+   margin:0 10px;
    float: right;
 }
-.tot_ref_price ul{
-   max-width: 1000px; 
+#tot_ref_price{
+   max-width: 1000px;
+   list-style-type: none;
+   padding: 0;
 }
 
 textarea:focus{
@@ -215,7 +208,6 @@ input:focus{outline:none;}
    width:180px;
    background-color: #01a1dd;
    font-weight: bold;
-   float: right;
    margin-buttom: 10px 0px;
    color: white;
    height: 50px;
@@ -225,7 +217,6 @@ input:focus{outline:none;}
    background-color: #01a1dd;
    font-size:22px;
    margin-button:0px;
-   margin-top:30px;
    cursor: pointer;
 }
 .search_area, .page_area {
@@ -251,11 +242,12 @@ input:focus{outline:none;}
    border-radius: 3px;
    background-color: #01a1dd;
    font-size:18px;
-   margin-button:0px;
-   margin-top:10px;
    cursor: pointer;
 }
-
+.btn_area{
+	padding-top: 40px;
+	text-align: right;
+}
 .page_btn button{
    color: black;
    width: 40px;
@@ -285,6 +277,9 @@ input:focus{outline:none;}
    vertical-align: middle;
    width : 280px;
    outline:none;
+}
+.search_info{
+	padding-top: 10px;
 }
 </style>
 <script type="text/javascript"
@@ -372,7 +367,6 @@ $(document).ready(function(){
 			if(confirm("주문하시겠습니까?")){
 			var what;
 			var params = $("#actionForm").serialize();
-			console.log($("#actionForm").serialize());
 			
 			$.ajax({
 				url : "ord",
@@ -404,7 +398,6 @@ $(document).ready(function(){
 		document.getElementById('sum').innerText=sum;
 	});
 	$(document).on("click", ".del_btn", function(){
-		console.log($("#choose tr").size());
 		if($("#choose tr").size()==1){
 			tdArr = [];
 			buyList();
@@ -413,7 +406,6 @@ $(document).ready(function(){
 }); //ready end
 function reloadItemList(){
    var params = $("#goForm").serialize();
-   console.log($("#goForm").serialize());
       
    $.ajax({
       url : "Ord_Item_List",
@@ -448,7 +440,6 @@ function buyList(){
 		var a=0;
 		var b=5;
 			if(tdArr.length==0){
-				console.log("상품없음");
 				html+="<tr>";
 	       	 	html += "<td colspan = \"7\" style = \"text-align: center;\">담은 상품이 없습니다.</td>";
 	       	 	html+="</tr>";
@@ -547,7 +538,7 @@ function buyList(){
 	</tbody>
 </table>
 </form>
-<ul class="tot_ref_price">
+<ul id="tot_ref_price">
    <li><strong>총 주문 금액 : </strong><div style="display: inline;" id="sum">0</div> 원</li>
 </ul>
 <div class="btn_area">

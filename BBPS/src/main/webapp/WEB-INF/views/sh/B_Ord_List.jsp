@@ -156,12 +156,10 @@ $(document).ready(function(){
 	}
 	
 	if("${param.start_date}" != ""){
-		console.log("값받음");
 		$("#start_date").val($(".start_date").val());
 		$("#end_date").val($(".end_date").val());
 		history.replaceState({}, null, location.pathname);
 	}else{
-		console.log("값없음");
 		$(".start_date").val(lastWeek());
 		$(".end_date").val(today());
 	}
@@ -197,7 +195,6 @@ $(document).ready(function(){
 
 function reloadList(){
 	var params = $("#actionForm").serialize();
-	console.log($("#actionForm").serialize());
 	$.ajax({
 		url : "B_Ord_Lists",
 		type : "post",  

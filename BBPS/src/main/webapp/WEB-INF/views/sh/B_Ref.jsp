@@ -70,7 +70,6 @@ td:first-child{
 	width: 220px;
 	text-align: left;
 }
-
 button:hover::-webkit-inner-spin-button {  
     width: 30px;
     height: 30px;
@@ -196,7 +195,6 @@ $(document).ready(function(){
 			}else{
 				if(confirm("환불 처리하시겠습니까?")){ //팝업 변경 필요
 				var params = $("#tbForm").serialize();
-				console.log($("#tbForm").serialize());
 				$.ajax({
 					url : "ref",
 					type : "post",  

@@ -425,7 +425,6 @@ public class shController {
 		            insertMap.put("iNo", iNo.get(i));
 		            insertMap.put("ord_cnt", ord_cnt.get(i));
 		            insertMap.put("price", price.get(i));
-		            System.out.println(insertMap);
 					 
 					 
 					 int cnt2 = ishService.writeOrdItem(insertMap);
