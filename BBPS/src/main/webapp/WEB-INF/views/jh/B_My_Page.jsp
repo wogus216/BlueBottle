@@ -328,14 +328,6 @@ function oClosePopup() {
 		</div>
 		<div class="wrap">
 			<div class="left">
-				<div class="PW"><h3>PW</h3></div>
-			</div>
-			<div class="right">
-				<div class="PW">${data.PW}</div>
-			</div>
-		</div>
-		<div class="wrap">
-			<div class="left">
 				<div class="post_nm"><h3>우편번호</h3></div>
 			</div>
 			<div class="right">

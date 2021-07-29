@@ -243,7 +243,8 @@ $(document).ready(function(){
 				data : params, 
 				success : function(res) { 
 				 	if(res.resMsg == "success"){
-						location.href = "Pos";
+				 		$("#loginForm").attr("action","Pos");
+						$("#loginForm").submit();
 					} else{
 						makePopup("", "아이디 또는 비밀번호가 일치하지 않습니다.",function(){
 							

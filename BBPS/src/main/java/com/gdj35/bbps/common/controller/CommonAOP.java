@@ -1,6 +1,7 @@
 package com.gdj35.bbps.common.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,8 +24,11 @@ public class CommonAOP {
 	 * .. -> 모든 경로
 	 * && -> 필터 추가
 	 */
-	@Pointcut("execution(* com.gdj35.bbps..CalendarController.*(..))")
-	public void testAOP() {}
+	@Pointcut("execution(* com.gdj35.bbps..*Controller.*(..))"
+			+ "&&!execution(* com.gdj35.bbps..*Controller.*Login(..))"
+			+ "&&!execution(* com.gdj35.bbps..*Controller.*LogOut(..))")
+	
+	public void bbpsAOP() {}
 	
 	//ProceedingJoinPoint -> 대상 적용 이벤트 필터
 	/*
@@ -34,8 +38,8 @@ public class CommonAOP {
 	 * @After-throwing -> 메소드 예외 발생 후
 	 * @Around -> 모든 동작시점
 	 */
-	@Around("testAOP()")
-	public ModelAndView testAOP(ProceedingJoinPoint joinPoint)
+	@Around("bbpsAOP()")
+	public ModelAndView bbpsAOP(ProceedingJoinPoint joinPoint)
 														throws Throwable {
 		ModelAndView mav = new ModelAndView();
 		
@@ -43,7 +47,16 @@ public class CommonAOP {
 		HttpServletRequest request
 		= ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		
-		mav = (ModelAndView) joinPoint.proceed(); //기존 이벤트 처리 행위를 이어서 진행
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("sUSERNo") != null || session.getAttribute("sBRCHNo") != null ) { //로그인 상태
+			
+				mav = (ModelAndView) joinPoint.proceed(); //기존 이벤트 처리 행위를 이어서 진행
+		} else { //비로그인 상태
+			mav.setViewName("redirect:Login");
+		}
+			
+		
 		
 		System.out.println("------- testAOP 실행됨 ------");
 		
