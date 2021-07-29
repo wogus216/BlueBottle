@@ -138,8 +138,8 @@ public class shDao implements IshDao{
 	}
 
 	@Override
-	public int writeOrd() throws Throwable {
-		return sqlSession.insert("SH.writeOrd");
+	public int writeOrd(HashMap<String, String> params) throws Throwable {
+		return sqlSession.insert("SH.writeOrd", params);
 	}
 
 	@Override

@@ -130,9 +130,10 @@ td{
 textarea:focus{
 	outline: none;
 }
-.list_btn{
-	margin-top:30px;
-	text-align:center;
+
+.btn_area, .list_btn_area{
+	text-align: center;
+	margin-top:60px;
 }
 
 .list_btn button, .apv_com, .send_com{
@@ -146,7 +147,7 @@ textarea:focus{
 .list_btn{
 	margin-top:100px;
 }
-.ord_cnl_btn, .ref_btn, .ref_cnl_btn, .stor_btn, .cnl_list_bnt, .ref_list_btn{
+.ord_cnl_btn, .ref_btn, .ref_cnl_btn, .stor_btn, .stor_com_btn, .cnl_list_bnt, .ref_list_btn, .list_btn{
 	width: 180px;
 	height: 50px;
 	background-color: #01a1dd;
@@ -163,23 +164,6 @@ textarea:focus{
 
 .ord_cnl_btn, .ref_cnl_btn{
 	background-color: #bf4040;
-}
-.btn_area{
-	text-align: center;
-}
-input[type=button]{
-	color: white;
-	width: 180px;
-	height: 50px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:22px;
-	margin:10px;
-	cursor: pointer;
-	background-color: #01a1dd;
-	outline:none;
-	font-weight: bold;
 }
 button:focus{outline:none;}
 /* 팝업 */
@@ -396,6 +380,7 @@ function closePopup() {
 
 <form action = # id = "goForm" method = "post">
 	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
+	<input type = "hidden" id = "bNo" name = "bNo" value="${sBRCHNo}"/>
 	<input type = "hidden" id = "erDate" name = "erDate" value="${data.ENROLL_DATE}"/>
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
@@ -484,7 +469,7 @@ function closePopup() {
 	<input type="button" class="stor_btn" value="입고"/>
 	</c:when>
 	<c:otherwise>
-	<input type="button" class="stor_com_btn" style="background-color: #b3b3b3;" value="입고"/>
+	<input type="button" class="stor_com_btn" style="background-color: #b3b3b3;" value="입고완료"/>
 	</c:otherwise>
 	</c:choose>
 </c:if>
@@ -557,8 +542,8 @@ function closePopup() {
 </c:when>
 </c:choose>
 <c:if test="${data.CODE_NAME ne '주문요청'}">
-<div class="list_btn">
-<input type="button" value="목록">
+<div class="list_btn_area">
+<input class="list_btn" type="button" value="목록">
 </div>
 </c:if>
 </div>
