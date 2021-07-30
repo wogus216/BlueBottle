@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdj35.bbps.common.bean.PagingBean;
 import com.gdj35.bbps.common.service.IPagingService;
 import com.gdj35.bbps.web.service.IsbService;
-import com.mysql.jdbc.interceptors.SessionAssociationInterceptor;
 
 @Controller
 public class sbController {

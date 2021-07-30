@@ -70,9 +70,9 @@
 	
 	<!-- 품목 상세보기 -->
 	<select id = "getPDetail" parameterType="hashmap" resultType="hashmap">
-	SELECT ITEM_NO,CATE_NAME,ITEM_NAME,PRICE,MIN_ORD_UNIT,COM_PROD_FLAG
+	SELECT ITEM_NO,CATE_NAME,ITEM_NAME,PRICE,MIN_ORD_UNIT,COM_PROD_FLAG,CATE_NO
 	FROM(
-	SELECT I.ITEM_NO,IC.CATE_NAME,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FLAG,ROW_NUMBER() OVER(ORDER BY IP.ENROLL_DATE DESC) AS RNK
+	SELECT I.ITEM_NO,IC.CATE_NAME,IC.CATE_NO,I.ITEM_NAME,IP.PRICE,I.MIN_ORD_UNIT,I.COM_PROD_FLAG,ROW_NUMBER() OVER(ORDER BY IP.ENROLL_DATE DESC) AS RNK
 			FROM ITEM I INNER JOIN ITEM_PRICE IP
     		 ON I.ITEM_NO = IP.ITEM_NO
 			AND I.ITEM_NO = #{itemNo}
@@ -760,6 +760,7 @@
 	FROM ORD O INNER JOIN ORD_ITEM OI
 	ON O.ORD_NO = OI.ORD_NO
 	AND O.ORD_NO = #{oNo}
+	AND O.BRCH_NO = #{bNo}
 	AND ITEM_NO = #{iNo}) A LEFT OUTER JOIN (SELECT R.ORD_NO, RI.ITEM_NO,RI.CNT
 	                                                FROM REF R INNER JOIN REF_ITEM RI
 	                                                ON R.REF_NO = RI.REF_NO
@@ -772,13 +773,13 @@
 	<select id="StorBSafeStock" parameterType="hashmap" resultType="Integer">
 	SELECT COUNT(*)
 	FROM ITEM_SAFE_STOCK
-	WHERE BRCH_NO = 2
+	WHERE BRCH_NO = #{bNo}
 	AND ITEM_NO = #{iNo}
 	</select>
 	
 	<!-- 안전재고 수량이 없는 품목이라면 안전재고 1로 인서트 --><!-- 지점번호 불러오는 것은 추후 처리 -->
 	<insert id="BSafeStock" parameterType="hashmap">
-	INSERT INTO ITEM_SAFE_STOCK VALUES (2,#{iNo},1)   
+	INSERT INTO ITEM_SAFE_STOCK VALUES (#{bNo},#{iNo},1)   
 	</insert>
 	
 	<!-- 지점 입고 처리 완료 시 입고 버튼 사라지도록 입고 플래그 변경 -->
