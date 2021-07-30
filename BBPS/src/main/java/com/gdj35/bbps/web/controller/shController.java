@@ -355,7 +355,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/Ord_Item_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String Ord_Item_List(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String Ord_Item_Lists(@RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
