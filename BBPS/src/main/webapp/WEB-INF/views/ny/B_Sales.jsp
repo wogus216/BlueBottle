@@ -308,7 +308,7 @@ function reloadList() {
 
 	console.log(params);
 	$.ajax({
-		url: "getSalesList",
+		url: "getSalesLists",
 		type: "post",
 		dataType: "json",
 		data: params,
