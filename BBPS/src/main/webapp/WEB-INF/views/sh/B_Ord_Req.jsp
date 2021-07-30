@@ -465,7 +465,7 @@ function buyList(){
 <body>
 <!--컨텐츠 -->
 <div class="content_area">
-	<h1>주문요청</h1>
+	<h1 style="margin-left:30px;">주문요청</h1>
 <div class="content_1">
 <div class="title_1">주문 가능 품목 리스트</div>
    <select class= "cate">
