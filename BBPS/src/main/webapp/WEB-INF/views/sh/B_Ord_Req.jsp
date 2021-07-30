@@ -408,7 +408,7 @@ function reloadItemList(){
    var params = $("#goForm").serialize();
       
    $.ajax({
-      url : "Ord_Item_Lists",
+      url : "Ord_Item_List",
       type : "post",  
       dataType :"json",
       data : params,
