@@ -257,7 +257,6 @@ $(document).ready(function(){
 					console.log(params);
 				 	if(res.resMsg == "success"){
 				 		if($("#hId").val() == "BLUEBOTTLE5" ){
-				 			alert("알려줘");
 				 			$("#loginForm").attr("action","Notice_Cate_Mang");
 							$("#loginForm").submit();
 				 		} else{

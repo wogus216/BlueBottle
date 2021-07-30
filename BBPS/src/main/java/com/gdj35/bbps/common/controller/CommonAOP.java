@@ -26,7 +26,7 @@ public class CommonAOP {
 	 */
 	@Pointcut("execution(* com.gdj35.bbps..*Controller.*(..))"
 			+ "&&!execution(* com.gdj35.bbps..*Controller.*Login(..))"
-			+ "&&!execution(* com.gdj35.bbps..*Controller.*Logins(..))"
+			+ "&&!execution(* com.gdj35.bbps..*Controller.*s(..))"
 			+ "&&!execution(* com.gdj35.bbps..*Controller.*LogOut(..))")
 	
 	public void bbpsAOP() {}
@@ -59,7 +59,7 @@ public class CommonAOP {
 			
 		
 		
-		System.out.println("------- testAOP 실행됨 ------");
+		System.out.println("------- bbpsAOP 실행됨 ------");
 		
 		return mav;
 	}
