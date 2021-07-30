@@ -68,7 +68,7 @@ input{
 	text-align: right;
 	margin-bottom: 10px;
 }
-.ref, .ord, #ck1, #ck7{
+.ref, .ord, #ordWholeCk, #refWholeCk{
 	margin: 0;
 	height: 20px;
 	width: 30px;
@@ -157,8 +157,8 @@ input[type=button]{
 	width : 280px;
 	outline:none;
 }
-.page_btn .on{
-	color: #01a1dd;
+.on{
+	font-weight: bold;
 }
 </style>
 <script type="text/javascript"
@@ -193,15 +193,15 @@ $(document).ready(function(){
 		$("#page").val($(this).attr("page"));
 		reloadList();
 	});
-	$("#ck1").on("click",function(){
-		if($("#ck1").prop("checked")){
+	$("#ordWholeCk").on("click",function(){
+		if($("#ordWholeCk").prop("checked")){
 			$(".ord").prop("checked", true);
 		}else{
 			$(".ord").prop("checked", false);
 		}
 	});
-	$("#ck7").on("click",function(){
-		if($("#ck7").prop("checked")){
+	$("#refWholeCk").on("click",function(){
+		if($("#refWholeCk").prop("checked")){
 			$(".ref").prop("checked", true);
 		}else{
 			$(".ref").prop("checked", false);
@@ -209,24 +209,31 @@ $(document).ready(function(){
 	});
 	$(".ord").click(function(){ 
 		   if($(".ord:checked").length==5){ 
-		       $("#ck1").prop("checked",true); 
+		       $("#ordWholeCk").prop("checked",true); 
 		    }else{ 
-		       $("#ck1").prop("checked",false); 
+		       $("#ordWholeCk").prop("checked",false); 
 		    }
 		});
 	$(".ref").click(function(){ 
 		   if($(".ref:checked").length==4){ 
-		       $("#ck7").prop("checked",true); 
+		       $("#refWholeCk").prop("checked",true); 
 		    }else{ 
-		       $("#ck7").prop("checked",false); 
+		       $("#refWholeCk").prop("checked",false); 
 		    }
 		});
 	$("input[type=checkbox]").click(function(){
-		for(var i=2; i<12; i++){
+		for(var i=0; i<5; i++){
 			if($("#ck"+i+"").is(":checked")==true){
-				$("#ordReq").prop("value", ""+i-2+"")
+				$("#ord"+i+"").prop("value", ""+i+"")
 			}if($("#ck"+i+"").is(":checked")==false){
-				$("#ordReq").prop("value", null)
+				$("#ord"+i+"").prop("value", null)
+			}
+		}
+		for(var i=5; i<8; i++){
+			if($("#ck"+i+"").is(":checked")==true){
+				$("#ref"+i+"").prop("value", ""+i+"")
+			}if($("#ck"+i+"").is(":checked")==false){
+				$("#ref"+i+"").prop("value", null)
 			}
 		}
 		$("#page").val(1);
@@ -356,21 +363,21 @@ function drawPaging(pb){
 </div>
 <fieldset style = "margin-right:10px;">
 		<legend>주문선택</legend>
-		<input type = "checkbox" id="ck1" checked="checked"/><label id="ck1" for="ck1">전체</label>
-		<input type = "checkbox" id="ck2" class="ord" checked="checked" value="0"/><label for="ck2">주문요청</label>
-		<input type = "checkbox" id="ck3" class="ord" checked="checked" value="1"/><label for="ck3">주문요청취소</label>
-		<input type = "checkbox" id="ck4" class="ord" checked="checked" value="2"/><label for="ck4">주문승인</label>
-		<input type = "checkbox" id="ck5" class="ord" checked="checked" value="3"/><label for="ck5">주문승인거부</label>
-		<input type = "checkbox" id="ck6" class="ord" checked="checked" value="4"/><label style = "margin-right:0px;" for="ck6">발송완료</label>
+		<input type = "checkbox" id="ordWholeCk" checked="checked"/><label for="ordWholeCk">전체</label>
+		<input type = "checkbox" id="ck0" class="ord" checked="checked" value="0"/><label for="ck0">주문요청</label>
+		<input type = "checkbox" id="ck1" class="ord" checked="checked" value="1"/><label for="ck1">주문요청취소</label>
+		<input type = "checkbox" id="ck2" class="ord" checked="checked" value="2"/><label for="ck2">주문승인</label>
+		<input type = "checkbox" id="ck3" class="ord" checked="checked" value="3"/><label for="ck3">주문승인거부</label>
+		<input type = "checkbox" id="ck4" class="ord" checked="checked" value="4"/><label style = "margin-right:0px;" for="ck4">발송완료</label>
 		
 	</fieldset>
 	<fieldset style =  "float:right; margin-bottom: 20px;">
 		<legend>환불선택</legend>
-		<input type = "checkbox" id="ck7" checked="checked"/><label id="ck6" for="ck7">전체</label>
-		<input type = "checkbox" id="ck8" class="ref" checked="checked" value="5"/><label for="ck8">환불요청</label>
-		<input type = "checkbox" id="ck9" class="ref" checked="checked" value="6"/><label for="ck9">환불요청취소</label>
-		<input type = "checkbox" id="ck10" class="ref" checked="checked" value="7"/><label for="ck10">환불승인</label>
-		<input type = "checkbox" id="ck11" class="ref" checked="checked" value="8"/><label style = "margin-right:0px;" for="ck11">환불승인거부</label>
+		<input type = "checkbox" id="refWholeCk" checked="checked"/><label for="refWholeCk">전체</label>
+		<input type = "checkbox" id="ck5" class="ref" checked="checked" value="5"/><label for="ck5">환불요청</label>
+		<input type = "checkbox" id="ck6" class="ref" checked="checked" value="6"/><label for="ck6">환불요청취소</label>
+		<input type = "checkbox" id="ck7" class="ref" checked="checked" value="7"/><label for="ck7">환불승인</label>
+		<input type = "checkbox" id="ck8" class="ref" checked="checked" value="8"/><label style = "margin-right:0px;" for="ck8">환불승인거부</label>
 	</fieldset>
 <table cellspacing="0">
 	<colgroup>
@@ -402,18 +409,18 @@ function drawPaging(pb){
 			<input type="text" name="search_input" id="search_input" value="${param.search_input}"/>
 			<input type="hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
 			<input type = "hidden" id = "bNo" name = "bNo"/>
-			<input type = "hidden" id = "menuNo" name = "menuNo" value="${params.menuNo}"/>
-			<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
-			<input type="hidden"  id="depNo" name="depNo" value="${params.sDEPNo}">
-			<input type = "hidden" id = "ordReq" name = "ordReq" value="0"/>
-			<input type = "hidden" id = "ordCnl" name = "ordCnl" value="1"/>
-			<input type = "hidden" id = "ordApv" name = "ordApv" value="2"/>
-			<input type = "hidden" id = "ordNonApv" name = "ordNonApv" value="3"/>
-			<input type = "hidden" id = "sendCom" name = "sendCom" value="4"/>
-			<input type = "hidden" id = "refReq" name = "refReq" value="5"/>
-			<input type = "hidden" id = "refCnl" name = "refCnl" value="6"/>
-			<input type = "hidden" id = "refApv" name = "refApv" value="7"/>
-			<input type = "hidden" id = "refNonApv" name = "refNonApv" value="8"/>
+			<input type = "hidden" id = "menuNo" name = "menuNo" value="1"/>
+			<input type = "hidden" id = "uNo" name = "uNo" value="${sUSERNo}"/>
+			<input type = "hidden"  id = "depNo" name="depNo" value="${sDEPNo}">
+			<input type = "hidden" id = "ord0" name = "ord0" value="0"/>
+			<input type = "hidden" id = "ord1" name = "ord1" value="1"/>
+			<input type = "hidden" id = "ord2" name = "ord2" value="2"/>
+			<input type = "hidden" id = "ord3" name = "ord3" value="3"/>
+			<input type = "hidden" id = "ord4" name = "ord4" value="4"/>
+			<input type = "hidden" id = "ref5" name = "ref5" value="5"/>
+			<input type = "hidden" id = "ref6" name = "ref6" value="6"/>
+			<input type = "hidden" id = "ref7" name = "ref7" value="7"/>
+			<input type = "hidden" id = "ref8" name = "ref8" value="8"/>
 			
 			<input type = "hidden" id = "start_date" name = "start_date"/>
 			<input type = "hidden" id = "end_date" name = "end_date"/>

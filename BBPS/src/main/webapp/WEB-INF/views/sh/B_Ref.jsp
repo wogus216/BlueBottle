@@ -11,7 +11,16 @@
 <title>지점환불요청</title>
 <style type="text/css">
 
+ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+  
+}
 
+li {
+   float: left;
+}
 /* 미들 부분 */
 .content_area{
 	width: 1250px;
@@ -95,18 +104,6 @@ input{
 	margin:10px;
 	
 }
-.ord_info ul, .tot_ref_price ul{
-	max-width: 1000px; 
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
 input:focus{
 	outline: none;
 }
@@ -115,6 +112,7 @@ button:focus{outline:none;}
 
 .btn_area{
 	text-align: center;
+	padding-top:60px;
 }
 .ref_req_btn{
 	width:180px;
@@ -201,7 +199,6 @@ $(document).ready(function(){
 					dataType :"json",
 					data : params,
 					success : function(res){
-						$("#goForm").submit();
 						alert("환불요청이 완료되었습니다.");
 						location.href="B_Ord_List";
 					},

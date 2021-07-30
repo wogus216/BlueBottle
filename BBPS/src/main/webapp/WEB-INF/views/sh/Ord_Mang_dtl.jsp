@@ -243,6 +243,9 @@ button:focus{outline:none;}
 	background-color: #01a1dd;
 	outline:none;
 }
+.cnl_btn{
+	background-color: #b3b3b3;
+}
 .apv_com, .send_com{
 	cursor : default;
 }
@@ -265,8 +268,7 @@ $(document).ready(function(){
 			dataType :"json",
 			data : params,
 			success : function(res){
-				makePopup("전체이력 조회", HistoryListDraw(res.OrdHistoryList), function(){
-				});
+				makePopup("전체이력 조회", HistoryListDraw(res.OrdHistoryList), null);
 			},
 			error : function(request,status,error){
 				console.log(error);
@@ -278,7 +280,9 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 	$(".apv_btn").on("click",function(){
-		if(confirm("주문을 승인하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("주문 승인", "해당 주문을 승인하시겠습니까?",null);
+		$(".submit_btn").on("click",function(){
+			
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
@@ -300,7 +304,7 @@ $(document).ready(function(){
 				console.log(error);
 			}
 		});
-		}
+		});
 	});
 	$(".non_apv_btn").on("click",function(){
 		if($.trim($("#oRsn").val())=="") {
@@ -318,7 +322,7 @@ $(document).ready(function(){
 			success : function(res){
 				if(res.msg == "success"){
 					alert("승인거부 처리되었습니다.");
-					$("#OrsnForm").submit();
+					$("#goForm").submit();
 				}else if (res.msg == "failed"){
 					alert("승인거부에 실패하였습니다.");
 				}else {
@@ -373,7 +377,7 @@ $(document).ready(function(){
 			success : function(res){
 				if(res.msg == "success"){
 					alert("승인거부 처리되었습니다.");
-					$("#RrsnForm").submit();
+					$("#goForm").submit();
 				}else if (res.msg == "failed"){
 					alert("승인거부에 실패하였습니다.");
 				}else {
@@ -409,7 +413,6 @@ $(document).ready(function(){
 			success : function(res){
 				if(res.msg == "success"){
 					alert("발송 처리되었습니다.");
-					$("#sendForm").submit();
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
 					alert("발송처리에 실패하였습니다.");
@@ -424,12 +427,14 @@ $(document).ready(function(){
 		}
 		}
 	});
-	if("${params.depNo}" != 0 || "${params.depNo}" != 2){
-		$("#expDate").prop("readonly", true);
+	if("${param.depNo}" != 0 && "${param.depNo}" != 2){
+		$(".expDate").prop("readonly", true);
+	}else{
+		$(".expDate").prop("readonly", false);
 	}
 }); //ready end
 
-function makePopup(title, contents, func){
+function makePopup1(title, contents, func){
 	var html ="";
 	
 	html+= "<div class=\"bg\"></div>";	
@@ -447,12 +452,37 @@ function makePopup(title, contents, func){
 	$(".popup_area").hide().show();
 	
 	$(".popup_btn, .close_btn").on("click",function(){
-		if(func !=null){
+		if(func != null){
 			func.call();
 		}
 		closePopup();
 		});
 	}
+function makePopup2(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 			"<button class=\"cnl_btn\">취소</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".cnl_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
 function HistoryListDraw(OrdHistoryList){
 	var html = "";
 	
@@ -500,8 +530,8 @@ function closePopup() {
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-	<input type = "hidden" id = "menuNo" name = "menuNo" value="${params.menuNo}"/>
-	<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
+	<input type = "hidden" id = "menuNo" name = "menuNo" value="${param.menuNo}"/>
+	<input type = "hidden" id = "uNo" name = "uNo" value="${sUSERNo}"/>
 </form>
 <div class="content_area">
 <div class="content">
@@ -568,7 +598,8 @@ function closePopup() {
 			</c:when>
 			<c:otherwise>
 				<c:choose>
-					<c:when test="${data1.EXPIRY_DATE ne '2999-01-01'}"><td>${data1.EXPIRY_DATE}</td>
+					<c:when test="${data1.EXPIRY_DATE ne '2999-01-01'}">
+					<td>${data1.EXPIRY_DATE}</td>
 				</c:when>
 				<c:otherwise>
 					<td></td>
@@ -592,6 +623,7 @@ function closePopup() {
 		<form action = "#" id = "OrsnForm" method = "post">
 		<textarea class="rsn_content" id = "oRsn" name="oRsn"></textarea>
 		<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
+		<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
 		</form>
 	</c:when>
 	<c:otherwise>
@@ -603,7 +635,7 @@ function closePopup() {
 <div class="btn_area">
 <c:if test="${auth eq 2}">
 	<c:if test="${data.CODE_NAME eq '주문요청'}">
-		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
 			<input type="button" class="apv_btn" value="승인"/>
 			<input type="button" class="non_apv_btn" value="승인거부"/>
 		</c:if>
@@ -611,10 +643,10 @@ function closePopup() {
 </c:if>
 <c:if test="${auth eq 2}">
 <c:if test="${data.CODE_NAME eq '주문승인'}">
-	<c:if test="${params.depNo ne 0 || params.depNo ne 2}">
+	<c:if test="${param.depNo ne 0 || param.depNo ne 2}">
 		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
 	</c:if>
-	<c:if test="${params.depNo eq 0 || params.depNo eq 2}">
+	<c:if test="${param.depNo eq 0 || param.depNo eq 2}">
 		<input type="button" class="send_btn" value="발송"/>
 	</c:if>
 </c:if>
@@ -691,7 +723,7 @@ function closePopup() {
 <div class="btn_area">
 <c:if test="${auth eq 2}">
 	<c:if test="${data2.CODE_NAME eq '환불요청'}">
-		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
 			<input type="button" class="ref_apv_btn" value="승인"/>
 			<input type="button" class="non_ref_apv_btn" value="승인거부"/>
 		</c:if>

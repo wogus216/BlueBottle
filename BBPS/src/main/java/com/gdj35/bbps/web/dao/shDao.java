@@ -164,7 +164,7 @@ public class shDao implements IshDao{
 
 	@Override
 	public int getAuth(HashMap<String, String> params) throws Throwable {
-		return sqlSession.selectOne("SH.getAuth");
+		return sqlSession.selectOne("SH.getAuth", params);
 	}
 }
 

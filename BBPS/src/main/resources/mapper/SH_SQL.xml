@@ -24,7 +24,7 @@
 			AND O.ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 		</if>
 		)
-		WHERE STAT_CODE IN (#{ordReq},#{ordCnl},#{ordApv},#{ordNonApv},#{sendCom},#{refReq},#{refCnl},#{refApv},#{refNonApv})
+		WHERE STAT_CODE IN (#{ord0},#{ord1},#{ord2},#{ord3},#{ord4},#{ref5},#{ref6},#{ref7},#{ref8})
 </select>
 
 <select id ="getOList" parameterType="hashmap" resultType="hashmap">
@@ -53,7 +53,7 @@
 	<if test = "start_date != null and start_date != '' and end_date != null and end_date != ''">
 			AND ENROLL_DATE BETWEEN TO_DATE(#{start_date},'YYYY-MM-DD') AND TO_DATE(#{end_date},'YYYY-MM-DD')
 		</if>
-		AND STAT_CODE IN (#{ordReq},#{ordCnl},#{ordApv},#{ordNonApv},#{sendCom},#{refReq},#{refCnl},#{refApv},#{refNonApv})
+		AND STAT_CODE IN (#{ord0},#{ord1},#{ord2},#{ord3},#{ord4},#{ref5},#{ref6},#{ref7},#{ref8})
 		)ORDD
 	WHERE ORDD.RNUM BETWEEN #{startCnt} AND #{endCnt}
 </select>

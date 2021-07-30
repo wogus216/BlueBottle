@@ -142,8 +142,8 @@ button:focus{outline:none;}
 	width : 280px;
 	outline:none;
 }
-.page_btn .on{
-	color: #01a1dd;
+.on{
+	font-weight: bold;
 }
 </style>
 <script type="text/javascript"
