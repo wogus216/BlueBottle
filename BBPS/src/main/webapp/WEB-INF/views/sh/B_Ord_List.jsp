@@ -130,6 +130,7 @@ button:focus{outline:none;}
 .page_btn button:focus{
 	outline:none;
 }
+input[type='button']:focus{outline:none;}
 
 #search_filter{
 	width : 120px;

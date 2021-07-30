@@ -130,6 +130,7 @@ td{
 textarea:focus{
 	outline: none;
 }
+input[type='button']:focus{outline:none;}
 
 .btn_area, .list_btn_area{
 	text-align: center;
@@ -258,7 +259,7 @@ $(document).ready(function(){
 		location.href="B_Ord_List";
 	});
 	$(".ord_cnl_btn").on("click",function(){
-		if(confirm("주문을 취소하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("주문취소", "주문을 취소하시겠습니까?", null);
 		$(".submit_btn").on("click",function(){
 		var params = $("#goForm").serialize();
 		
@@ -269,12 +270,11 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("주문이 취소되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("주문취소에 실패하였습니다.");
+					makePopup1("주문 취소 실패", "주문취소에 실패하였습니다.", null);
 				}else {
-					alert("주문취소 중 문제가 발생하였습니다.")
+					makePopup1("주문 취소 오류", "주문취소 중 문제가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
@@ -282,10 +282,11 @@ $(document).ready(function(){
 			}
 		});
 		});
-		}
+		});
 	});
 	$(".ref_cnl_btn").on("click",function(){
-		if(confirm("환불을 취소하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("환불 취소", "환불을 취소하시겠습니까?", null);
+		$(".submit_btn").on("click",function(){	
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
@@ -295,22 +296,22 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("환불이 취소되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("환불취소에 실패하였습니다.");
+					makePopup1("환불 취소 실패", "환불 취소에 실패하였습니다.", null);
 				}else {
-					alert("환불취소 중 문제가 발생하였습니다.")
+					makePopup1("환불 취소 오류", "환불 취소중 문제가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
 		});
-		}
+		});
 	});
 	$(".stor_btn").on("click",function(){
-		if(confirm("입고하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("입고", "입고하시겠습니까?", null);
+		$(".submit_btn").on("click",function(){	
 		var params = $("#sendForm").serialize();
 		
 		 $.ajax({
@@ -320,12 +321,11 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("입고가 완료되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("입고에 실패하였습니다.");
+					makePopup1("입고 실패", "입고에 실패하였습니다.", null);
 				}else {
-					alert("입고 중 문제가 발생하였습니다.")
+ 					makePopup1("입고 오류", "입고 중 문제가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
@@ -340,8 +340,7 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 }); //ready end
-
-function makePopup(title, contents, func){
+function makePopup2(title, contents, func){
 	var html ="";
 	
 	html+= "<div class=\"bg\"></div>";	
@@ -352,20 +351,44 @@ function makePopup(title, contents, func){
 	html+= "<div class=\"popup_content\">"+contents+"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
 	html+= 			"<button class=\"submit_btn\">확인</button>";	
-	html+= 			"<button class=\"cnl_btn\">취소</button>";		
+	html+= 			"<button style=\"background-color: #b3b3b3;\" class=\"cnl_btn\">취소</button>";	
 	html+= 	 	"</div>";	
 	html+= "</div>";	
 	
 	$("body").prepend(html);
 	$(".popup_area").hide().show();
 	
-	$(".cnl_btn, .close_btn").on("click",function(){
-		if(func !=null){
+	$(".submit_btn, .cnl_btn, .close_btn").on("click",function(){
+		if(func != null){
 			func.call();
 		}
 		closePopup();
 		});
-	}
+}
+function makePopup1(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
 function closePopup() {
 	$(".bg, .popup_area").fadeOut(function(){
 		$(".bg, .popup_area").remove();

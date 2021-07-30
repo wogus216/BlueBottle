@@ -267,6 +267,8 @@ input:focus{outline:none;}
    outline:none;
 }
 
+input[type='button']:focus{outline:none;}
+
 #search_filter{
    width : 120px;
    vertical-align: middle;
@@ -280,6 +282,76 @@ input:focus{outline:none;}
 }
 .search_info{
 	padding-top: 10px;
+}
+.popup_area body {
+	margin: 0px;
+}
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn button{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	background-color: rgb(41, 128, 185);
+}
+
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+.close_btn{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 0px;
+	font-size: 25px;
+	color: white;
+	text-align:center;
+	border:0;
+	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
 }
 </style>
 <script type="text/javascript"
@@ -362,9 +434,10 @@ $(document).ready(function(){
    });
 	$(".ord_req_btn").on("click", function(){
 		if(tdArr.length==0){
-			alert("주문할 물건을 선택해주세요.");
+			makePopup1("주문", "주문할 품목을 선택해주세요.", null);
 		}else{
-			if(confirm("주문하시겠습니까?")){
+			makePopup2("주문", "해당 품목을 주문하시겠습니까?", null);
+			$(".submit_btn").on("click",function(){	
 			var what;
 			var params = $("#actionForm").serialize();
 			
@@ -375,19 +448,18 @@ $(document).ready(function(){
 				data : params,
 				success : function(res){
 					if(res.msg == "success"){
-						alert("주문요청이 완료되었습니다.");
 						location.href="B_Ord_List";
 					}else if (res.msg == "failed"){
-	                    alert("주문에 실패하였습니다."); // 팝업 변경 필요
+						makePopup1("주문 실패", "주문에 실패하였습니다.", null);
 	                 }else {
-	                    alert("주문 중 문제가 발생하였습니다."); // 팝업 변경 필요
+	 					makePopup1("주문 오류", "주문 중 문제가 발생하였습니다.", null);
 	                 }
 				},
 				error : function(request,status,error){
 					console.log(error);
 				}
 			});
-		}
+		});
 	}
 });
 	$(document).on("click", ".itemCk, .ord_cnt, .del_btn", function(){
@@ -458,6 +530,60 @@ function buyList(){
 		}
 	}
 	$("#choose tbody").html(html);
+}
+function makePopup2(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 			"<button style=\"background-color: #b3b3b3;\" class=\"cnl_btn\">취소</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .cnl_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
+function makePopup1(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_Btn end
 }
 </script>
 <style type="text/css"></style>

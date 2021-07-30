@@ -122,6 +122,7 @@ input[type=button]{
 	background-color: #01a1dd;
 	outline:none;
 }
+input[type='button']:focus{outline:none;}
 /*검색영역*/
 .search_info,.page_area, .page_btn{
 	text-align: center;
@@ -229,7 +230,7 @@ $(document).ready(function(){
 				$("#ord"+i+"").prop("value", null)
 			}
 		}
-		for(var i=5; i<8; i++){
+		for(var i=5; i<9; i++){
 			if($("#ck"+i+"").is(":checked")==true){
 				$("#ref"+i+"").prop("value", ""+i+"")
 			}if($("#ck"+i+"").is(":checked")==false){
