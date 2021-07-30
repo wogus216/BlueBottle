@@ -28,6 +28,7 @@ public class CommonAOP {
 			+ "&&!execution(* com.gdj35.bbps..*Controller.*Login(..))"
 			+ "&&!execution(* com.gdj35.bbps..*Controller.*Logins(..))"
 			+ "&&!execution(* com.gdj35.bbps..*Controller.*Menus(..))"
+			+ "&&!execution(* com.gdj35.bbps..*Controller.*s(..))"
 			+ "&&!execution(* com.gdj35.bbps..*Controller.*LogOut(..))")
 	
 	public void bbpsAOP() {}
