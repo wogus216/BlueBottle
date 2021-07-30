@@ -416,18 +416,6 @@ function makePopup(title, contents, func) {
 				</div>
 			</div>
 		</div>
-		<div class="wrap">
-			<div class="left">
-				<div class="enroll_date">
-					<h3>등록일</h3>
-				</div>
-			</div>
-			<div class="right">
-				<div class="enroll_date">
-					${data.ENROLL}
-				</div>
-			</div>
-		</div>
 	</div>
 </form>
 <!-- 버튼 -->

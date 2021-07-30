@@ -755,7 +755,7 @@ public class jhController {
 	
 	@RequestMapping(value="/Pos")
 	
-	public ModelAndView Pos(
+	public ModelAndView Pos1(
 			HttpSession session,
 				ModelAndView mav) {
 		System.out.println("Pos에서 지점이름:"+session.getAttribute("sBRCHNm"));
@@ -791,7 +791,7 @@ public class jhController {
 			method = RequestMethod.POST,
 			produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String PosOrd(
+	public String PosOrds(
 		@RequestParam HashMap<String, String> params) throws Throwable{
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -815,7 +815,7 @@ public class jhController {
 		produces = "text/json;charset=UTF-8")
 		
 		@ResponseBody
-		public String makeOrdNo() throws Throwable{
+		public String makeOrdNos() throws Throwable{
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		

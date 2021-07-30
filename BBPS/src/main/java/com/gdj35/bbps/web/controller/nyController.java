@@ -324,9 +324,9 @@ public class nyController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/getSalesList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@RequestMapping(value="/getSalesLists", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getSalesList(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String getSalesLists(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String, Object>();
