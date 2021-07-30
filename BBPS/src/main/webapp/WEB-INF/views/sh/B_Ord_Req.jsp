@@ -377,7 +377,6 @@ $(document).ready(function(){
    	$(".cate").change(function(){
 		$("#cate").val($(".cate").val());
 		$(".search_input").val($("#Old_search_input").val());
-		$("#page").val(1);
 		reloadItemList();
  	});
    	
@@ -393,7 +392,7 @@ $(document).ready(function(){
    });
    $(document).on("click",".itemCk",function(){
 	   tdArr = [];
-		$(".itemCk:checked").each(function(i){
+	   		
 			var tr = $(this).parent().parent();
 			var td =tr.children();
 			
@@ -408,30 +407,26 @@ $(document).ready(function(){
 			tdArr.push(iName);
 			tdArr.push(price);
 			tdArr.push(min);
-			
-    	});
-		buyList();	
+			if($(this).is(":checked")==true){
+			buyList();
+			}else if($(this).is(":checked")==false){
+			discardList();
+			}
    });
-   $(document).on("click",".del_btn",function(){
-	   
-	   	var tr = $(this).parent().parent();
-		var td =tr.children();
-		var pickiNo;
-		
-		var left_tr = $(".item input").parent().parent();
-		var left_td =tr.children();
-		
-		pickiNo=td.eq(1).text();
-		
-		$(".itemCk:checked").each(function(i){
-			
-			if($(this).parent().parent().children().eq(1).text()==pickiNo){
-				$(this).parent().parent().children(6).children().prop("checked",false);
-				tr.remove();
+$(document).on("click",".del_btn",function(){
+	var delIno="";
+	var tr = $(this).parent().parent();
+	var td =tr.children();
+	delIno = td.eq(1).text();
+	tr.remove();
+	
+	$("#item td").each(function(i){
+		if($(this).parent().children().eq(1).text() == delIno){
+			$(this).parent().children().eq(5).children().prop("checked", false);
 		}
-   	});
+	});
+});
 		
-   });
 	$(".ord_req_btn").on("click", function(){
 		if(tdArr.length==0){
 			makePopup1("주문", "주문할 품목을 선택해주세요.", null);
@@ -494,6 +489,7 @@ function reloadItemList(){
 }
 function drawItemList(list){
    var html ="";
+   var a=1;
    for(var d of list){
             html += "<tr>";
             html += "<td>"+d.CATE_NAME+"</td>";
@@ -501,6 +497,11 @@ function drawItemList(list){
             html += "<td style=\"text-align:left;\">"+d.ITEM_NAME+"</td>";
             html += "<td>"+d.PRICE+"</td>";
             html += "<td>"+d.MIN_ORD_UNIT+"</td>";
+            $("#choose td").each(function(i){
+            	if($(this).parent().children().eq(1).text()==d.ITEM_NO){
+            		html += "<td><input class=\"itemCk\" checked type=\"checkbox\"></td>";
+            	}
+            });
             html += "<td><input class=\"itemCk\" type=\"checkbox\"></td>";
             html += "</tr>";
    }
@@ -511,25 +512,26 @@ function buyList(){
 		
 		var a=0;
 		var b=5;
-			if(tdArr.length==0){
-				html+="<tr>";
-	       	 	html += "<td colspan = \"7\" style = \"text-align: center;\">담은 상품이 없습니다.</td>";
-	       	 	html+="</tr>";
-			}else{
-				for(var i=0; i<(tdArr.length/5); i++){
-					html += "<tr>";
-				for(var j=a; j<b; j++){
-        			html += "<td>"+tdArr[j]+"</td>";
+			if(tdArr.length!=0){
+				html += "<tr>";
+				for(var i=0; i<tdArr.length; i++){
+        			html += "<td>"+tdArr[i]+"</td>";
 				}
-			
         	html += "<td style=\"padding:0;\"><input class=\"ord_cnt\" name=\"ord_cnt\" type=\"number\" value=\""+tdArr[b-1]+"\" min=\""+tdArr[b-1]+"\" maxlength=\"5\"/></td>";
        	 	html += "<td><input class=\"del_btn\" type=\"button\" value=\"X\" /><input name=\"iNo\" type = \"hidden\" value=\""+tdArr[b-4]+"\"/><input name=\"price\" type = \"hidden\" value=\""+tdArr[b-2]+"\"/></td>";
         	html += "</tr>";
         	a=a+5;
         	b=b+5;
-		}
-	}
-	$("#choose tbody").html(html);
+			}
+	$("#choose tbody").append(html);
+}
+function discardList(){
+	
+$("#choose td").each(function(i){
+	if($(this).parent().children().eq(1).text()==tdArr[1]){
+		$(this).parent().remove();
+}
+});
 }
 function makePopup2(title, contents, func){
 	var html ="";
@@ -658,9 +660,6 @@ function closePopup() {
    </tr>
    </thead>
    <tbody>
-   		<tr>
-	  		<td colspan = "7" style = "text-align: center;">담은 상품이 없습니다.</td>
-		</tr>
 	</tbody>
 </table>
 </form>
