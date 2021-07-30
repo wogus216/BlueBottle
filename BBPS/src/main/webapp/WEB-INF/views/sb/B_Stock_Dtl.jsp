@@ -438,7 +438,7 @@ $(document).ready(function(){
 		});
 		
 		if(cnt > 0){
-			 makePopup("재고폐기","폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력",function(){});
+			 makePopup("재고폐기","폐기수량을 입력해주세요. 폐기가 필요없는 경우 0입력",null);
 		   $(".discardCnt").focus;
 		   stockdiscardloadList();
 		  	$(".discard_btn").hide();
@@ -446,13 +446,13 @@ $(document).ready(function(){
 			$(".discard_submit_btn").show();
 			
 		}else if(cnt2 == $(".stock_tb tbody tr").size()){
-			makePopup("재고폐기","현재 폐기수량이 모두 0입니다.",function(){});
+			makePopup("재고폐기","현재 폐기수량이 모두 0입니다.",null);
 			stockdiscardloadList();
 		  	$(".discard_btn").hide();
 			$(".discard_cnl_btn").show();
 			$(".discard_submit_btn").show();
 		}else if($(".chkcnt").val() < $(".discardCnt").val()){ //폐기하려는 수량이 해당 재고 수량보다 큰 경우
-			makePopup("재고폐기","폐기하려는 재고 수량이 잔여한 재고수량보다 많습니다.",function(){});
+			makePopup("재고폐기","폐기하려는 재고 수량이 잔여한 재고수량보다 많습니다.",null);
 			stockdiscardloadList();
 		  	$(".discard_btn").hide();
 			$(".discard_cnl_btn").show();

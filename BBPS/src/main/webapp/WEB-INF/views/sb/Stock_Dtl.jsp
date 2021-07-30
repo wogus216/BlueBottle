@@ -390,11 +390,16 @@ $(document).ready(function(){
 	});
 	
 	$(".discard_btn").on("click",function(){
-		stockdiscardloadList();
-		$(".discard_btn").hide();
-		$(".stock_add_btn").hide();
-		$(".discard_cnl_btn").show();
-		$(".discard_submit_btn").show();
+		
+		if($(".stor_history_btn").size() > 0){ //입고이력 버튼이 1개라도 존재한다면, 재고가 있는 상태임
+			stockdiscardloadList();
+			$(".discard_btn").hide();
+			$(".stock_add_btn").hide();
+			$(".discard_cnl_btn").show();
+			$(".discard_submit_btn").show();
+		}else{
+			makePopup("재고폐기","폐기 가능한 재고가 존재하지 않습니다.",null);	
+		}
 	});
 	
 	$(".discard_cnl_btn").on("click",function(){
@@ -439,6 +444,13 @@ $(document).ready(function(){
 			makePopup("재고폐기","현재 폐기수량이 모두 0입니다.",function(){});
 			stockdiscardloadList();
 		  	$(".discard_btn").hide();
+			$(".stock_add_btn").hide();
+			$(".discard_cnl_btn").show();
+			$(".discard_submit_btn").show();
+		}else if($(".chkcnt").val() < $(".discardCnt").val()){ //폐기하려는 수량이 해당 재고 수량보다 큰 경우
+			makePopup("재고폐기","폐기하려는 재고 수량이 잔여한 재고수량보다 많습니다.",function(){});
+			stockdiscardloadList();
+			$(".discard_btn").hide();
 			$(".stock_add_btn").hide();
 			$(".discard_cnl_btn").show();
 			$(".discard_submit_btn").show();
@@ -576,7 +588,7 @@ function drawrelList(Rellist,result){
 	} else if (result > 0){
 		for(var d of Rellist){ //결과 행이 존재하는 경우
 			html += "<tr>";
-			html += "<td><a href = \"http://localhost:8090/bbps/Ord_Mang_dtl?oNo="+d.ORD_NO+"\">"+d.ORD_NO+"</a></td>";
+			html += "<td><a href = \"http://localhost:8090/bbps/Ord_Mang_dtl?oNo="+d.ORD_NO+"&uNo="+${sUSERNo}+"&menuNo=1\">"+d.ORD_NO+"</a></td>";
 			html += "<td>"+d.ITEM_NO+"</td>";
 			html += "<td>"+d.ITEM_NAME+"</th>";
 			html += "<td>"+d.CNT+"</td>";
@@ -626,7 +638,7 @@ function drawstockdiscardList(stockdiscardlist){
 	for(var d of stockdiscardlist){
 		html += "<tr itemNo = \""+${param.itemNo}+"\" expDate = \""+d.EXPIRY_DATE+"\">";
 		html += "<td>"+d.ITEM_NAME+"<input type = \"hidden\" name = \"itemNo\" value = \""+${param.itemNo}+"\"/></td>";
-		html += "<td>"+d.PPSUM+"</td>";
+		html += "<td>"+d.PPSUM+"<input type = \"hidden\" class = \"chkcnt\" id = \"chkcnt\" name = \"chkcnt\" value = \""+d.PPSUM+"\"/></td>";
 		html += "<td><input type = \"number\" min = 0 class = \"discardCnt\" id = \"discardCnt\" name = \"discardCnt\" value = \"0\"/></td>";
 		html += "<td><input type = \"text\" id = \"discardNote\" name = \"discardNote\"/></td>";
 		html += "<td>"+d.EXPIRY_DATE+"<input type = \"hidden\" id = \"expDate\" name = \"expDate\" value = \""+d.EXPIRY_DATE+"\" /></td>";

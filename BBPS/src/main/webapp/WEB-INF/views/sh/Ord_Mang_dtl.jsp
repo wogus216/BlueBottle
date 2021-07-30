@@ -500,8 +500,8 @@ function closePopup() {
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-	<input type = "hidden" id = "menuNo" name = "menuNo" value="${params.menuNo}"/>
-	<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
+	<input type = "hidden" id = "menuNo" name = "menuNo" value="${param.menuNo}"/>
+	<input type = "hidden" id = "uNo" name = "uNo" value="${sUSERNo}"/>
 </form>
 <div class="content_area">
 <div class="content">
@@ -603,7 +603,7 @@ function closePopup() {
 <div class="btn_area">
 <c:if test="${auth eq 2}">
 	<c:if test="${data.CODE_NAME eq '주문요청'}">
-		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
 			<input type="button" class="apv_btn" value="승인"/>
 			<input type="button" class="non_apv_btn" value="승인거부"/>
 		</c:if>
@@ -611,10 +611,10 @@ function closePopup() {
 </c:if>
 <c:if test="${auth eq 2}">
 <c:if test="${data.CODE_NAME eq '주문승인'}">
-	<c:if test="${params.depNo ne 0 || params.depNo ne 2}">
+	<c:if test="${param.depNo ne 0 || param.depNo ne 2}">
 		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
 	</c:if>
-	<c:if test="${params.depNo eq 0 || params.depNo eq 2}">
+	<c:if test="${param.depNo eq 0 || param.depNo eq 2}">
 		<input type="button" class="send_btn" value="발송"/>
 	</c:if>
 </c:if>
@@ -691,7 +691,7 @@ function closePopup() {
 <div class="btn_area">
 <c:if test="${auth eq 2}">
 	<c:if test="${data2.CODE_NAME eq '환불요청'}">
-		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
 			<input type="button" class="ref_apv_btn" value="승인"/>
 			<input type="button" class="non_ref_apv_btn" value="승인거부"/>
 		</c:if>
