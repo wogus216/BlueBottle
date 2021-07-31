@@ -30,7 +30,7 @@
 
 h1 {
  width: 90%;
- margin-bottom: 40px;
+ margin-bottom: 50px;
  margin-left: 30px;
  font-size: 30px;
 }
@@ -38,7 +38,7 @@ table {
     width: 90%;
     table-layout: fixed;
     background: #ffffff;
-	margin: 10px 0;
+	margin: 5px 0;
 	margin-left: 30px;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
@@ -53,7 +53,7 @@ th{
     border-left: 1px solid #ffffff;
 }
 td{
-	font-size:17px;
+    font-size: 15px;
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
@@ -110,11 +110,11 @@ input{
 	vertical-align: bottom;
 	color: white;
 	width: 100px;
-	height: 40px;
+	height: 38px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:17px;
 	margin:10px;
 	cursor: pointer;
 	outline:none;
@@ -139,6 +139,7 @@ input{
 input[type='date']{
 	font-size: 16px;
 	width: 140px;
+    height: 35px;
 	padding-left: 5px;
 }
 
@@ -306,14 +307,14 @@ function reloadList() {
 
 	var params = $("#actionForm").serialize();
 
-	console.log(params);
 	$.ajax({
-		url: "getSalesLists",
+		url: "getSalesList",
 		type: "post",
 		dataType: "json",
 		data: params,
 		success: function(res) {
-			drawList(res.list);
+			
+		    drawList(res.list, res.status);
 			drawPaging(res.pb);
 			
 			var today = new Date();
@@ -339,24 +340,32 @@ function reloadList() {
 	}); //ajax end
 }
 
-function drawList(list) {
-	var html = "";
-	console.log(list);
-	for(var d of list) {
+function drawList(list, status) {
+	
+	if(status == "null") {
+		makePopup("결과", "해당 기간의 매출 정보가 없습니다.");
+	} else {
 		
-		var S = addComma(d.SALES_PRICE);
-		var O = addComma(d.ORD_PRICE);
-		var N = addComma(d.NET_PRICE);
+		var html = "";
+		for(var d of list) {
+			
+			var S = addComma(d.SALES_PRICE);
+			var O = addComma(d.ORD_PRICE);
+			var N = addComma(d.NET_PRICE);
+			
+			html += "<tr date=\"" + d.ENROLL_DATE + "\">";
+			html += "<td>" + d.ENROLL_DATE + "</td>     ";
+			html += "<td id=\"sales\"><span>" + S + "</span></td>     ";
+			html += "<td id=\"expense\"><span>" + O + "</span></td>     ";
+			html += "<td>" + N + "</td>     ";
+			html += "</tr>                ";
+		}
 		
-		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
-		html += "<td>" + d.ENROLL_DATE + "</td>     ";
-		html += "<td id=\"sales\"><span>" + S + "</span></td>     ";
-		html += "<td id=\"expense\"><span>" + O + "</span></td>     ";
-		html += "<td>" + N + "</td>     ";
-		html += "</tr>                ";
+		$("tbody").html(html);
+		
 	}
 	
-	$("tbody").html(html);
+	
 }
 
 //총 매출,지출액 정보

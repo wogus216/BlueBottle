@@ -27,17 +27,15 @@
 /* 게시판 */
 
 h1 {
- width: 90%;
- margin-bottom: 40px;
- margin-left: 30px;
+ width: 100%;
+ margin-bottom: 50px;
  font-size: 30px;
 }
 table {
-    width: 90%;
+    width: 100%;
     table-layout: fixed;
     background: #ffffff;
-	margin: 10px 0;
-	margin-left: 30px;
+	margin: 5px 0;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
 }
@@ -52,7 +50,7 @@ th{
     border-left: 1px solid #ffffff;
 }
 td{
-	font-size: 17px;
+	font-size: 15px;
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
@@ -68,17 +66,18 @@ tbody td {
 tbody td:nth-child(1), tbody td:nth-child(2){
 	text-align: center;
 }
-input{
-	width:150px;
-	height:40px;
-	margin:10px 5px;
-}
+
 input:focus{
 	outline: none;
 }
+
 input[type='date']{
-	font-size: 15px;
+	font-size: 16px;
+	width: 140px;
+    height: 35px;
+	padding-left: 5px;
 }
+
 select{
 	width: 154px;
 	height: 44px;
@@ -91,10 +90,9 @@ select:focus {
 	outline: none;
 }
 .sales_info, .tot_sales{
-	width: 90%;
+	width: 100%;
 	float: center;
 	text-align: right;
-	margin-left: 30px;
 }
 
 .sales_info span {
@@ -114,14 +112,14 @@ select:focus {
 	font-size: 20px;
 }
 .search_btn, .graph_btn, .reset_btn{
-	height: 40px;
+	height: 38px;
 	vertical-align: bottom;
 	color: white;
 	width: 100px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
-	font-size:18px;
+	font-size:17px;
 	margin:10px;
 	cursor: pointer;
 	outline:none;

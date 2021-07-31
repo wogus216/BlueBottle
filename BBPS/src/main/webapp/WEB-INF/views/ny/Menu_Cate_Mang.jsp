@@ -28,15 +28,18 @@
 h1 {
  margin-bottom: 40px;
  font-size: 30px;
+ margin-left: 218px;
 }
 
 table {
+	visibility: hidden;
     width:800px;
     table-layout: fixed;
     background: #ffffff;
 	margin: 10px 0  0 220px;
 	border-top: 2px solid #01a1dd;
 	border-bottom: 2px solid #d9d9d9;
+	border-spacing: 0px;
 	text-align: center;
 }
 
@@ -54,9 +57,10 @@ td{
 	padding:10px;
 	border-top: 1px solid #eaeaea;
 	border-left: 1px solid #eaeaea;
+	text-align: center;
 }
 
- td:first-child{
+td:first-child, th:first-child{
 	border-left: none;
 }
 
@@ -73,9 +77,10 @@ input[type=text]:focus{
 
 /*카테고리 등록*/
 .cate_add{
+	visibility: hidden;
 	text-align: center;
 	vertical-align: top;
-	margin-bottom: 70px;
+	margin-top: 70px;
 	height: 55px;
 }
 
@@ -94,7 +99,7 @@ input[type=text]:focus{
     border: 0;
     border-radius: 3px;
     font-size: 16px;
-    margin: 10px;
+    margin: 0px 10px;
     cursor: pointer;
     background-color: #01a1dd;
     outline: none;
@@ -112,8 +117,10 @@ input[type=text]:focus{
 
 .add_btn{
 	width: 100px;
-	height: 47px;
-	font-size: 18px;
+    height: 40px;
+    font-size: 17px;
+    margin: 0px 5px;
+    vertical-align: bottom;
 }
 .edit_com_btn{
 	background-color: #01a1dd;
@@ -320,6 +327,13 @@ $(document).ready(function(){
 //리스트 데이터 불러오기
 function reloadList() {
 	
+	if(${sDEPNo} == 0 || ${sDEPNo} == 5 ){
+		$(".cate_add").css("visibility", "visible");
+	} else {
+		$(".cate_add").css("display", "none");
+	}
+	$("table").css("visibility", "visible");
+	
 	$.ajax({
 		url: "menuCateList",
 		type: "post",
@@ -335,13 +349,27 @@ function reloadList() {
 
 //불러온 리스트 출력
 function drawList(list) {
+	
 	var html = "";
 	
+	html += "<tr>            ";
+	html += "<th>NO.</th>    ";
+	html += "<th>카테고리명</th>";
+	if(${sDEPNo} == 0 || ${sDEPNo} == 5 ) {
+		html += "<th></th>       ";
+	}
+	html += "</tr>           ";
+	
+	$("table thead").html(html);
+	
+	html = "";
 	for(var d of list) {
 		html += "<tr class=\"view_tr\" cateNo=\"" + d.CATE_NO + "\"cateName=\"" + d.CATE_NAME + "\">";
 		html += "<td>" + d.RNUM + "</td>";
 		html += "<td><input type=\"text\" id=\"name\" value=\"" + d.CATE_NAME + "\" /></td>";
-		html += "<td><input class=\"edit_btn\" type=\"button\" value=\"수정\"><input class=\"del_btn\" type=\"button\" value=\"삭제\"></td>";   
+		if(${sDEPNo} == 0 || ${sDEPNo} == 5 ) {
+			html += "<td><input class=\"edit_btn\" type=\"button\" value=\"수정\"><input class=\"del_btn\" type=\"button\" value=\"삭제\"></td>";   
+		}
 		html += "</tr>";
 	}
 	
@@ -406,11 +434,6 @@ function closePopup() {
 </div>
 <table>
 	<thead>
-		<tr>
-			<th>NO.</th>
-			<th>카테고리명</th>
-			<th></th>
-		</tr>
 	</thead>
 	<tbody>
 	</tbody>

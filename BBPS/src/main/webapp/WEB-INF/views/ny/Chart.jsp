@@ -28,7 +28,7 @@
 }
 
 h1 {
- width: 90%;
+ width: 100%;
  display: inline-block;
  vertical-align: top;
  margin-bottom: 30px;
@@ -47,6 +47,7 @@ h1 {
 	margin: 10px 5px;
 	cursor: pointer;
 	outline:none;
+	vertical-align: bottom;
 }
 .list_btn{
 	width: 110px;
@@ -61,19 +62,7 @@ h1 {
 	cursor: pointer;
 	outline:none;
 }
-.graph_btn{
-    width: 100px;
-	background-color: #bf4040;
-	margin-right: 0px;
-	color: white;
-	height: 40px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	cursor: pointer;
-	outline:none;
-}
+
 .reset_btn {
     width: 100px;
 	background-color: #b3b3b3;
@@ -86,12 +75,13 @@ h1 {
 	margin: 10px 5px;
 	cursor: pointer;
 	outline:none;
+	vertical-align: bottom;
 }
 
 select{
 	width: 115px;
 	height:40px;
-	margin:10px 3px 16px;
+	margin:10px 3px;
 	font-size: 17px;
 	padding: 5px;
 }

@@ -37,7 +37,7 @@ public class nyController {
 	
 	@RequestMapping(value="/noticeCateList", method=RequestMethod.POST, produces ="text/json;charset=UTF-8")
 	@ResponseBody
-	public String noticeCateList() throws Throwable{
+	public String noticeCateLists() throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -53,7 +53,7 @@ public class nyController {
 	
 	@RequestMapping(value="noticeCateAdd", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String noticeCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String noticeCateAdds(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class nyController {
 	
 	@RequestMapping(value="/noticeCateUpdate", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String noticeCateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String noticeCateUpdates(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -101,7 +101,7 @@ public class nyController {
 	
 	@RequestMapping(value="/noticeCateDelete", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String noticeCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String noticeCateDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -133,7 +133,7 @@ public class nyController {
 	
 	@RequestMapping(value="/itemCateList", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String itemCateList() throws Throwable {
+	public String itemCateLists() throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -149,7 +149,7 @@ public class nyController {
 	
 	@RequestMapping(value="/itemCateAdd", method=RequestMethod.POST, produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String itemCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String itemCateAdds(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -173,7 +173,7 @@ public class nyController {
 	
 	@RequestMapping(value="/itemCateUpdate", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String itemCateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String itemCateUpdates(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -197,7 +197,7 @@ public class nyController {
 	
 	@RequestMapping(value="/itemCateDelete", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String itemCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String itemCateDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();		
@@ -227,7 +227,7 @@ public class nyController {
 	
 	@RequestMapping(value="/menuCateList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String menuCateList() throws Throwable {
+	public String menuCateLists() throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -241,7 +241,7 @@ public class nyController {
 
 	@RequestMapping(value="/menuCateAdd", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String menuCateAdd(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String menuCateAdds(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -265,7 +265,7 @@ public class nyController {
 	
 	@RequestMapping(value="/menuCateUpdate", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String menuCateUpdate(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String menuCateUpdates(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -289,7 +289,7 @@ public class nyController {
 	
 	@RequestMapping(value="/menuCateDelete", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String menuCateDelete(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String menuCateDeletes(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();		
@@ -311,7 +311,7 @@ public class nyController {
 	}
 	
 	@RequestMapping(value="/B_Sales")
-	public ModelAndView B_Sales(@RequestParam HashMap<String, String> params, ModelAndView mav) {
+	public ModelAndView B_Sales1(@RequestParam HashMap<String, String> params, ModelAndView mav) {
 		
 		int page = 1;
 		if(params.get("page") != null) {
@@ -324,7 +324,7 @@ public class nyController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/getSalesLists", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
+	@RequestMapping(value="/getSalesList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
 	public String getSalesLists(@RequestParam HashMap<String, String> params) throws Throwable {
 		
@@ -395,13 +395,20 @@ public class nyController {
 	
 	@RequestMapping(value="/getSalesDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getSalesDetail(@RequestParam HashMap<String,String> params)throws Throwable {
+	public String getSalesDetails(@RequestParam HashMap<String,String> params)throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>(); 
 		
 		try {
 			List<HashMap<String,String>> list = iNyService.getSalesDetail(params);
+			
+			if(list.size() == 0) {
+				modelMap.put("status","null");
+			} else {
+				modelMap.put("status","fine");
+			}
+			
 			modelMap.put("list", list);
 		}
 		catch(Throwable e) {
@@ -414,7 +421,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getSalesDetailAll", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getSalesDetailAll(@RequestParam HashMap<String,String> params)throws Throwable {
+	public String getSalesDetailAlls(@RequestParam HashMap<String,String> params)throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>(); 
@@ -434,7 +441,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getSalesDetailDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getSalesDetailDetail(@RequestParam HashMap<String,String> params)throws Throwable {
+	public String getSalesDetailDetails(@RequestParam HashMap<String,String> params)throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>(); 
@@ -495,7 +502,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getBrchList", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getBrchList() throws Throwable {
+	public String getBrchLists() throws Throwable {
 	
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -526,7 +533,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getDailyChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getDailyChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String getDailyChartDatas(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -536,7 +543,7 @@ public class nyController {
 		String[] dataName = {"SALES_PRICE", "ORD_PRICE", "NET_PRICE"};
 		
 		List<HashMap<String,String>> dataList = iNyService.getDailyChartData(params);
-		System.out.println(dataList.size());
+	
 		if(dataList.size() == 0) {
 			modelMap.put("status","null");
 		} else {
@@ -583,7 +590,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getMonthlyChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getMonthlyChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String getMonthlyChartDatas(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -593,6 +600,12 @@ public class nyController {
 		String[] dataName = {"SALES_PRICE", "ORD_PRICE", "NET_PRICE"};
 		
 		List<HashMap<String,String>> dataList = iNyService.getMonthlyChartData(params);
+		
+		if(dataList.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
 		
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		
@@ -611,11 +624,6 @@ public class nyController {
 			
 			list.add(data);
 			
-			if(y.size() == 0) {
-				modelMap.put("status","null");
-			} else {
-				modelMap.put("status","fine");
-			}
 		}
 		
 		HashMap<String,String> marker = new HashMap<String,String>();
@@ -631,12 +639,6 @@ public class nyController {
 			month.add(dataList.get(i).get("MONTH")+"월");
 		}
 		
-		if(list.size() == 0) {
-			modelMap.put("status","null");
-		} else {
-			modelMap.put("status","fine");
-		}
-		
 		modelMap.put("list", list);
 		modelMap.put("month", month);
 		
@@ -645,7 +647,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getMenuChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getMenuChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String getMenuChartDatas(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -654,6 +656,12 @@ public class nyController {
 		String[] name = {"음료", "제과", "굿즈", "원두"};
 		
 		List<HashMap<String,String>> dataList = iNyService.getMenuChartData(params);
+		
+		if(dataList.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
 		
 		ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 		
@@ -674,11 +682,6 @@ public class nyController {
 			
 			list.add(data);
 			
-			if(y.size() == 0) {
-				modelMap.put("status","null");
-			} else {
-				modelMap.put("status","fine");
-			}
 		}
 
 		List<String> month = new ArrayList<String>();
@@ -695,11 +698,7 @@ public class nyController {
 				}
 			}
 		}
-		
-		if(list.size() == 0) {
-			modelMap.put("status","null");
-		}
-		
+
 		modelMap.put("list", list);
 		modelMap.put("month", month);
 		
@@ -708,7 +707,7 @@ public class nyController {
 	
 	@RequestMapping(value="/getMenuCate", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getMenuCate() throws Throwable {
+	public String getMenuCates() throws Throwable {
 	
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -732,12 +731,18 @@ public class nyController {
 	
 	@RequestMapping(value="/getMenuChartDataDetail", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getMenuChartDataDetail(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String getMenuChartDataDetails(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
 		
 		List<HashMap<String,String>> dataList = iNyService.getMenuChartDataDetail(params);
+		
+		if(dataList.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
 		
 		List<Object> name = new ArrayList<Object>(); 
 		
@@ -764,11 +769,6 @@ public class nyController {
 			
 			list.add(data);
 			
-			if(y.size() == 0) {
-				modelMap.put("status","null");
-			} else {
-				modelMap.put("status","fine");
-			}
 		}
 		
 		if(params.get("menuCate").equals("0")) {
@@ -781,13 +781,10 @@ public class nyController {
 			String[] color = {"#142e39","#214d5f","#2e6c85","#3b8bab","#54a5c4","#7ab9d1","#a0cdde", "#c6e1eb" ,"#ecf5f8"};
 			modelMap.put("color", color);
 		} else {
-			String[] color = {"#7e2d01","#ca4802","#fc5a03","#fd6b1c","#54a5c4","#fd8c4e","#fead81", "#feceb3"};
+			String[] color = {"#7e2d01","#ca4802","#fc5a03","#fd6b1c","#fd8c4e","#fead81", "#feceb3"};
 			modelMap.put("color", color);
 		}
 		
-		if(list.size() == 0) {
-			modelMap.put("status","null");
-		}
 		modelMap.put("list", list);
 		modelMap.put("name", name);
 		
@@ -805,12 +802,18 @@ public class nyController {
 	
 	@RequestMapping(value="/getHeadMonthlyChartData", method=RequestMethod.POST, produces="text/json;charset=UTF-8")
 	@ResponseBody
-	public String getHeadMonthlyChartData(@RequestParam HashMap<String, String> params) throws Throwable {
+	public String getHeadMonthlyChartDatas(@RequestParam HashMap<String, String> params) throws Throwable {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
 		
 		List<HashMap<String,String>> dataList = iNyService.getHeadMonthlyChartData(params);
+		
+		if(dataList.size() == 0) {
+			modelMap.put("status","null");
+		} else {
+			modelMap.put("status","fine");
+		}
 		
 		List<Object> name = new ArrayList<Object>(); 
 		
@@ -838,12 +841,6 @@ public class nyController {
 			list.add(data);
 			
 			
-		}
-		
-		if(list.size() == 0) {
-			modelMap.put("status","null");
-		} else {
-			modelMap.put("status","fine");
 		}
 		
 		modelMap.put("list", list);

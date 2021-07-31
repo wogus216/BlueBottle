@@ -353,6 +353,7 @@
 	SELECT BRCH_NO, BRCH_NAME
 	FROM BRCH
 	WHERE DEL_FLAG = 1
+	AND BRCH_NO <![CDATA[ <]]> 100
 	</select>
 	
 	<select id="getDailyChartData" parameterType="hashmap" resultType="hashmap">
@@ -463,11 +464,11 @@
 	<choose>
         <when test="brch_choice != null and brch_choice != ''">
 	 		<if test="brch_choice != 9999" >
-	 		AND O.BRCH_NO = #{brch_choice}
+	 		AND S.BRCH_NO = #{brch_choice}
 	 		</if>
  		</when>
 	  	<when test="brchNo != null and brchNo != ''">
- 		AND O.BRCH_NO = #{brchNo}
+ 		AND S.BRCH_NO = #{brchNo}
 	  	</when>
     </choose>
 	GROUP BY TO_CHAR(S.ENROLL_DATE, 'YYYY-MM'),TO_CHAR(S.ENROLL_DATE, 'MM'), PC.CATE_NAME
@@ -490,11 +491,11 @@
 	   <choose>
             <when test="brch_choice != null and brch_choice != ''">
 	     		<if test="brch_choice != 9999" >
-	     		AND O.BRCH_NO = #{brch_choice}
+	     		AND S.BRCH_NO = #{brch_choice}
 	     		</if>
      		</when>
 	   	  	<when test="brchNo != null and brchNo != ''">
-	    	AND O.BRCH_NO = #{brchNo}
+	    	AND S.BRCH_NO = #{brchNo}
 	   	  	</when>
         </choose>
 	    <if test="menuCate != null and menuCate != ''">

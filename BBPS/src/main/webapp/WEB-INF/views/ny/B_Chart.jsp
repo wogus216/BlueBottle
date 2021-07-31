@@ -29,7 +29,7 @@
 }
 
 h1 {
- width: 90%;
+ width: 100%;
  display: inline-block;
  vertical-align: top;
  margin-bottom: 30px;
@@ -37,7 +37,7 @@ h1 {
  font-size: 30px;
  float: left;
 }
-.search_btn, .list_btn{
+.search_btn {
 	width: 100px;
 	background-color: #01a1dd;
 	color: white;
@@ -49,6 +49,7 @@ h1 {
 	margin: 10px 5px;
 	cursor: pointer;
 	outline:none;
+	vertical-align: bottom;
 }
 .list_btn{
 	width: 110px;
@@ -61,20 +62,9 @@ h1 {
 	margin: 10px 5px;
 	cursor: pointer;
 	outline:none;
+	vertical-align: bottom;
 }
-.graph_btn{
-    width: 100px;
-	background-color: #bf4040;
-	margin-right: 0px;
-	color: white;
-	height: 40px;
-	text-align:center;
-	border:0;
-	border-radius: 3px;
-	font-size:18px;
-	cursor: pointer;
-	outline:none;
-}
+
 .reset_btn {
     width: 100px;
 	background-color: #b3b3b3;
@@ -87,6 +77,7 @@ h1 {
 	margin: 10px 5px;
 	cursor: pointer;
 	outline:none;
+	vertical-align: bottom;
 }
 
 select{
@@ -319,9 +310,7 @@ function getData(btn) {
 	else{
 		urlName = "getMenuChartDataDetail";		
 	}
-	
-	console.log(urlName);
-	
+		
 	$.ajax({
 		type : "post",
 		url : urlName,
@@ -329,10 +318,8 @@ function getData(btn) {
 		data : params,
 		success : function(result) {
 			
-			console.log(result.status);
-			
 			if(result.status == "null"){
-				makePopup("결과", "해당 조건의 조회 결과가 없습니다.")
+				makePopup("결과", "해당 조건의 조회 결과가 없습니다.");
 			}
 			else {
 				if(urlName == "getDailyChartData") {
