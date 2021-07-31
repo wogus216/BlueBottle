@@ -27,6 +27,10 @@ ul:after {
 li {
    float: left;
 }
+.log_out{
+	margin:0px;
+}
+
 /* 미들 부분 */
 .content_area{
 	width: 1250px;

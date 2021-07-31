@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdj35.bbps.common.bean.PagingBean;
 import com.gdj35.bbps.common.service.IPagingService;
 import com.gdj35.bbps.web.service.IsbService;
-import com.mysql.jdbc.interceptors.SessionAssociationInterceptor;
 
 @Controller
 public class sbController {
@@ -219,7 +218,7 @@ public class sbController {
 	//품목삭제 (기능)
 	@RequestMapping(value = "/Item_Del",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HPDel(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String HPDels(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -257,7 +256,7 @@ public class sbController {
 	//재고상세 내 유통기한 별 재고리스트
 	@RequestMapping(value = "/Item_Stock_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSStockList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String HSStockLists(@RequestParam HashMap<String,String> params) throws Throwable{
 					
 			ObjectMapper mapper = new ObjectMapper();
 			Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -275,7 +274,7 @@ public class sbController {
 	//재고상세 내 출고재고 리스트 그리기
 	@RequestMapping(value = "/Item_Rel_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSRelList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String HSRelLists(@RequestParam HashMap<String,String> params) throws Throwable{
 				
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -294,7 +293,7 @@ public class sbController {
 	//재고상세 내 폐기 리스트 그리기(폐기목록x) >> 재고상세 내 폐기버튼 클릭 시 변경되는 폐기 가능 리스트 그리기
 	@RequestMapping(value = "/Item_Stock_Discard_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSDiscardList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String HSDiscardLists(@RequestParam HashMap<String,String> params) throws Throwable{
 					
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -309,7 +308,7 @@ public class sbController {
 	//재고상세 내 폐기 리스트 그리기(폐기목록!!!!)
 	@RequestMapping(value = "/Item_Discard_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HDiscardList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String HDiscardLists(@RequestParam HashMap<String,String> params) throws Throwable{
 						
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -339,7 +338,7 @@ public class sbController {
 	//본사 재고 추가  행 추가 시 카테고리 계속 불러오기
 	@RequestMapping(value = "/Stock_Addcate", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSAddcate() throws Throwable{
+	public String HSAddcates() throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -442,7 +441,7 @@ public class sbController {
 	//본사 재고입고이력 리스트 그리기
 	@RequestMapping(value = "/Stock_Stor_History", method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String HSHistory(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String HSHistorys(@RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -568,7 +567,7 @@ public class sbController {
 	//지점 재고상세 내 유통기한 별 재고리스트
 	@RequestMapping(value = "/B_Stock_ExpList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BStockExpList(HttpSession session,@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BStockExpLists(HttpSession session,@RequestParam HashMap<String,String> params) throws Throwable{
 						
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -588,7 +587,7 @@ public class sbController {
 	//지점 재고상세 내  재고 입고 리스트
 	@RequestMapping(value = "/B_Stock_StorList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BStockStorList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BStockStorLists(@RequestParam HashMap<String,String> params) throws Throwable{
 									
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -607,7 +606,7 @@ public class sbController {
 	//지점 재고상세 내  재고 사용 리스트
 	@RequestMapping(value = "/B_Stock_UseList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BStockUseList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BStockUseLists(@RequestParam HashMap<String,String> params) throws Throwable{
 							
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -625,7 +624,7 @@ public class sbController {
 	//지점 재고상세 내  재고 폐기 리스트
 	@RequestMapping(value = "/B_Stock_DiscardList",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BStockDiscardList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BStockDiscardLists(@RequestParam HashMap<String,String> params) throws Throwable{
 								
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -643,7 +642,7 @@ public class sbController {
 	//지점 재고상세 내  재고 폐기기능을 할 리스트 그리기
 	@RequestMapping(value = "/B_Stock_Discard",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSDiscard(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BSDiscards(@RequestParam HashMap<String,String> params) throws Throwable{
 										
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -713,7 +712,7 @@ public class sbController {
 	//지점안전재고수정 기능
 	@RequestMapping(value = "/B_Safe_Stock_edit",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSSEdit(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BSSEdits(@RequestParam HashMap<String,String> params) throws Throwable{
 						
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -771,7 +770,7 @@ public class sbController {
 	//지점 재고 수정 기능
 	@RequestMapping(value = "/B_Stock_edit",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSEdit(@RequestParam ArrayList<String> brchNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> editcurCnt,@RequestParam ArrayList<String> chkcurCnt,@RequestParam ArrayList<String> expDate) throws Throwable{
+	public String BSEdits(@RequestParam ArrayList<String> brchNo,@RequestParam ArrayList<String> itemNo,@RequestParam ArrayList<String> editcurCnt,@RequestParam ArrayList<String> chkcurCnt,@RequestParam ArrayList<String> expDate) throws Throwable{
 				//editcurCnt : 수정원하는 재고 수 	chkcurCnt : 수정 전 재고 수 (두 값의 차이를 보고 변동이 있는 항목만 쿼리가 진행되도록처리)
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -815,7 +814,7 @@ public class sbController {
 	//지점 재고수정 페이지 내 금일 판매목록 그리기
 	@RequestMapping(value = "/B_Stock_sell_List",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BSSellList(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String BSSellLists(@RequestParam HashMap<String,String> params) throws Throwable{
 									
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -1001,7 +1000,7 @@ public class sbController {
 	//지점 입고 기능(주문한 품목) >> 환불요청 건 제외해서 추가
 	@RequestMapping(value = "/ord_item_stor",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String BOIStor(@RequestParam ArrayList<String> oNo,@RequestParam ArrayList<String> iNo,@RequestParam ArrayList<String> expdate) throws Throwable{
+	public String BOIStors(@RequestParam ArrayList<String> bNo,@RequestParam ArrayList<String> oNo,@RequestParam ArrayList<String> iNo,@RequestParam ArrayList<String> expdate) throws Throwable{
 				
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -1013,6 +1012,7 @@ public class sbController {
 			for(int i = 0; i < iNo.size(); i++) {
 				
 				//지점 번호도 추가되어야함 추후 시훈이가 지점 번호 받을 수 있게 처리하면 변경 예정
+				insertMap.put("bNo", bNo.get(0));
 				insertMap.put("oNo", oNo.get(0));
 				insertMap.put("iNo", iNo.get(i));
 				insertMap.put("expdate", expdate.get(i));

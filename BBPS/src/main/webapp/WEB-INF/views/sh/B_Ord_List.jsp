@@ -130,6 +130,7 @@ button:focus{outline:none;}
 .page_btn button:focus{
 	outline:none;
 }
+input[type='button']:focus{outline:none;}
 
 #search_filter{
 	width : 120px;
@@ -142,8 +143,8 @@ button:focus{outline:none;}
 	width : 280px;
 	outline:none;
 }
-.page_btn .on{
-	color: #01a1dd;
+.on{
+	font-weight: bold;
 }
 </style>
 <script type="text/javascript"

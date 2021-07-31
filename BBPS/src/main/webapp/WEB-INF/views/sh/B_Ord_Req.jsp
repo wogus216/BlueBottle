@@ -267,6 +267,8 @@ input:focus{outline:none;}
    outline:none;
 }
 
+input[type='button']:focus{outline:none;}
+
 #search_filter{
    width : 120px;
    vertical-align: middle;
@@ -280,6 +282,76 @@ input:focus{outline:none;}
 }
 .search_info{
 	padding-top: 10px;
+}
+.popup_area body {
+	margin: 0px;
+}
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn button{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	background-color: rgb(41, 128, 185);
+}
+
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+.close_btn{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 0px;
+	font-size: 25px;
+	color: white;
+	text-align:center;
+	border:0;
+	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
 }
 </style>
 <script type="text/javascript"
@@ -305,7 +377,6 @@ $(document).ready(function(){
    	$(".cate").change(function(){
 		$("#cate").val($(".cate").val());
 		$(".search_input").val($("#Old_search_input").val());
-		$("#page").val(1);
 		reloadItemList();
  	});
    	
@@ -321,7 +392,7 @@ $(document).ready(function(){
    });
    $(document).on("click",".itemCk",function(){
 	   tdArr = [];
-		$(".itemCk:checked").each(function(i){
+	   		
 			var tr = $(this).parent().parent();
 			var td =tr.children();
 			
@@ -336,35 +407,32 @@ $(document).ready(function(){
 			tdArr.push(iName);
 			tdArr.push(price);
 			tdArr.push(min);
-			
-    	});
-		buyList();	
+			if($(this).is(":checked")==true){
+			buyList();
+			}else if($(this).is(":checked")==false){
+			discardList();
+			}
    });
-   $(document).on("click",".del_btn",function(){
-	   
-	   	var tr = $(this).parent().parent();
-		var td =tr.children();
-		var pickiNo;
-		
-		var left_tr = $(".item input").parent().parent();
-		var left_td =tr.children();
-		
-		pickiNo=td.eq(1).text();
-		
-		$(".itemCk:checked").each(function(i){
-			
-			if($(this).parent().parent().children().eq(1).text()==pickiNo){
-				$(this).parent().parent().children(6).children().prop("checked",false);
-				tr.remove();
+$(document).on("click",".del_btn",function(){
+	var delIno="";
+	var tr = $(this).parent().parent();
+	var td =tr.children();
+	delIno = td.eq(1).text();
+	tr.remove();
+	
+	$("#item td").each(function(i){
+		if($(this).parent().children().eq(1).text() == delIno){
+			$(this).parent().children().eq(5).children().prop("checked", false);
 		}
-   	});
+	});
+});
 		
-   });
 	$(".ord_req_btn").on("click", function(){
 		if(tdArr.length==0){
-			alert("주문할 물건을 선택해주세요.");
+			makePopup1("주문", "주문할 품목을 선택해주세요.", null);
 		}else{
-			if(confirm("주문하시겠습니까?")){
+			makePopup2("주문", "해당 품목을 주문하시겠습니까?", null);
+			$(".submit_btn").on("click",function(){	
 			var what;
 			var params = $("#actionForm").serialize();
 			
@@ -375,19 +443,18 @@ $(document).ready(function(){
 				data : params,
 				success : function(res){
 					if(res.msg == "success"){
-						alert("주문요청이 완료되었습니다.");
 						location.href="B_Ord_List";
 					}else if (res.msg == "failed"){
-	                    alert("주문에 실패하였습니다."); // 팝업 변경 필요
+						makePopup1("주문 실패", "주문에 실패하였습니다.", null);
 	                 }else {
-	                    alert("주문 중 문제가 발생하였습니다."); // 팝업 변경 필요
+	 					makePopup1("주문 오류", "주문 중 문제가 발생하였습니다.", null);
 	                 }
 				},
 				error : function(request,status,error){
 					console.log(error);
 				}
 			});
-		}
+		});
 	}
 });
 	$(document).on("click", ".itemCk, .ord_cnt, .del_btn", function(){
@@ -422,6 +489,7 @@ function reloadItemList(){
 }
 function drawItemList(list){
    var html ="";
+   var a=1;
    for(var d of list){
             html += "<tr>";
             html += "<td>"+d.CATE_NAME+"</td>";
@@ -429,6 +497,11 @@ function drawItemList(list){
             html += "<td style=\"text-align:left;\">"+d.ITEM_NAME+"</td>";
             html += "<td>"+d.PRICE+"</td>";
             html += "<td>"+d.MIN_ORD_UNIT+"</td>";
+            $("#choose td").each(function(i){
+            	if($(this).parent().children().eq(1).text()==d.ITEM_NO){
+            		html += "<td><input class=\"itemCk\" checked type=\"checkbox\"></td>";
+            	}
+            });
             html += "<td><input class=\"itemCk\" type=\"checkbox\"></td>";
             html += "</tr>";
    }
@@ -439,25 +512,80 @@ function buyList(){
 		
 		var a=0;
 		var b=5;
-			if(tdArr.length==0){
-				html+="<tr>";
-	       	 	html += "<td colspan = \"7\" style = \"text-align: center;\">담은 상품이 없습니다.</td>";
-	       	 	html+="</tr>";
-			}else{
-				for(var i=0; i<(tdArr.length/5); i++){
-					html += "<tr>";
-				for(var j=a; j<b; j++){
-        			html += "<td>"+tdArr[j]+"</td>";
+			if(tdArr.length!=0){
+				html += "<tr>";
+				for(var i=0; i<tdArr.length; i++){
+        			html += "<td>"+tdArr[i]+"</td>";
 				}
-			
         	html += "<td style=\"padding:0;\"><input class=\"ord_cnt\" name=\"ord_cnt\" type=\"number\" value=\""+tdArr[b-1]+"\" min=\""+tdArr[b-1]+"\" maxlength=\"5\"/></td>";
        	 	html += "<td><input class=\"del_btn\" type=\"button\" value=\"X\" /><input name=\"iNo\" type = \"hidden\" value=\""+tdArr[b-4]+"\"/><input name=\"price\" type = \"hidden\" value=\""+tdArr[b-2]+"\"/></td>";
         	html += "</tr>";
         	a=a+5;
         	b=b+5;
+			}
+	$("#choose tbody").append(html);
+}
+function discardList(){
+	
+$("#choose td").each(function(i){
+	if($(this).parent().children().eq(1).text()==tdArr[1]){
+		$(this).parent().remove();
+}
+});
+}
+function makePopup2(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 			"<button style=\"background-color: #b3b3b3;\" class=\"cnl_btn\">취소</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .cnl_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
 		}
-	}
-	$("#choose tbody").html(html);
+		closePopup();
+		});
+}
+function makePopup1(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_Btn end
 }
 </script>
 <style type="text/css"></style>
@@ -465,7 +593,7 @@ function buyList(){
 <body>
 <!--컨텐츠 -->
 <div class="content_area">
-	<h1>주문요청</h1>
+	<h1 style="margin-left:30px;">주문요청</h1>
 <div class="content_1">
 <div class="title_1">주문 가능 품목 리스트</div>
    <select class= "cate">
@@ -532,9 +660,6 @@ function buyList(){
    </tr>
    </thead>
    <tbody>
-   		<tr>
-	  		<td colspan = "7" style = "text-align: center;">담은 상품이 없습니다.</td>
-		</tr>
 	</tbody>
 </table>
 </form>

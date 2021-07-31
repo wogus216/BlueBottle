@@ -74,7 +74,7 @@ public class shController {
 		List<HashMap<String,String>> list = ishService.getODtlList(params);
 		HashMap<String,String> data2 = ishService.getRDtl(params);
 	    List<HashMap<String,String>> list2 = ishService.getRDtlList(params);
-	   int auth = ishService.getAuth(params);
+	    int auth = ishService.getAuth(params);
 	    mav.addObject("auth",auth);
 		mav.addObject("list",list);
 		mav.addObject("data",data);
@@ -85,7 +85,7 @@ public class shController {
 	   }
 	@RequestMapping(value = "/ord_history",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord_history(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ord_historys(@RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -96,7 +96,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ord_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ord_apvs(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -109,7 +109,6 @@ public class shController {
 				} else {
 					modelMap.put("msg", "failed");
 				}
-				
 		} catch (Throwable e) {
 			e.printStackTrace();
 				
@@ -120,7 +119,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ord_non_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord_non_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ord_non_apvs(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -144,7 +143,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ref_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ref_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ref_apvs(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -168,7 +167,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ref_non_apv",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ref_non_apv(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ref_non_apvs(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -192,7 +191,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ord_send",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord_send(@RequestParam ArrayList<String> expDate, @RequestParam ArrayList<String> oNo, @RequestParam ArrayList<String> iNo, @RequestParam HashMap<String,String> params) throws Throwable{
+	public String ord_sends(@RequestParam ArrayList<String> expDate, @RequestParam ArrayList<String> oNo, @RequestParam ArrayList<String> iNo, @RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -216,7 +215,6 @@ public class shController {
 	            
 	      } catch (Throwable e) {
 	         e.printStackTrace();
-	            
 	         modelMap.put("msg", "error");
 	      }
 			
@@ -277,7 +275,7 @@ public class shController {
 	   }
 	@RequestMapping(value = "/ord_cnl",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord_cnl(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ord_cnls(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -301,7 +299,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ref_cnl",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ref_cnl(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String ref_cnls(@RequestParam HashMap<String,String> params) throws Throwable{
 			
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -332,7 +330,7 @@ public class shController {
 	   }
 	@RequestMapping(value = "/RefItem",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String RefItem(@RequestParam HashMap<String,String> params) throws Throwable{
+	public String RefItems(@RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -368,7 +366,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ref",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ref(@RequestParam ArrayList<String> ref_cnt, @RequestParam ArrayList<String> rsn_note, @RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> oNo, @RequestParam HashMap<String,String> params) throws Throwable{
+	public String refs(@RequestParam ArrayList<String> ref_cnt, @RequestParam ArrayList<String> rsn_note, @RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> oNo, @RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -408,7 +406,7 @@ public class shController {
 	}
 	@RequestMapping(value = "/ord",method = RequestMethod.POST,produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String ord(@RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> ord_cnt, @RequestParam ArrayList<String> price, @RequestParam HashMap<String,String> params) throws Throwable{
+	public String ords(@RequestParam ArrayList<String> iNo, @RequestParam ArrayList<String> ord_cnt, @RequestParam ArrayList<String> price, @RequestParam HashMap<String,String> params) throws Throwable{
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String,Object> modelMap = new HashMap<String,Object>();
@@ -419,8 +417,10 @@ public class shController {
 				
 				if(cnt > 0) {
 					modelMap.put("msg", "success");
+					System.out.println(modelMap);
 				} else {
 					modelMap.put("msg", "failed");
+					System.out.println(modelMap);
 				}    
 				for(int i = 0; i < iNo.size(); i++) {
 		            insertMap.put("iNo", iNo.get(i));
@@ -431,9 +431,11 @@ public class shController {
 					 int cnt2 = ishService.writeOrdItem(insertMap);
 					 
 					 if(cnt2 > 0) { 
-						 modelMap.put("msg", "success"); 
+						 modelMap.put("msg", "success");
+						 System.out.println(modelMap);
 					 } else {
-					 modelMap.put("msg", "failed"); 
+					 modelMap.put("msg", "failed");
+					 System.out.println(modelMap);
 					 }
 		         }//for-end
 	

@@ -11,7 +11,16 @@
 <title>지점환불요청</title>
 <style type="text/css">
 
+ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+  
+}
 
+li {
+   float: left;
+}
 /* 미들 부분 */
 .content_area{
 	width: 1250px;
@@ -95,26 +104,15 @@ input{
 	margin:10px;
 	
 }
-.ord_info ul, .tot_ref_price ul{
-	max-width: 1000px; 
-}
-
-.log_out{
-	display:inline-block;
-	text-decoration: none;
-	color: gray;
-	padding:10px 20px;
-	line-height: 42px;
-}
-
 input:focus{
 	outline: none;
 }
-
+input[type='button']:focus{outline:none;}
 button:focus{outline:none;}
 
 .btn_area{
 	text-align: center;
+	padding-top:60px;
 }
 .ref_req_btn{
 	width:180px;
@@ -173,7 +171,7 @@ $(document).ready(function(){
      });
 	$(".ref_req_btn").on("click",function(){
 		if($(".ref").is(":checked")==false){
-			alert("환불할 물건을 선택해주세요.");
+			makePopup1("환불", "환불할 상품을 선택해주세요.", null);
 		}else{
 			var refCnt = 0;
 			var rsnCnt = 0;
@@ -189,11 +187,12 @@ $(document).ready(function(){
 				}
 			});
 			if(refCnt > 0){
-				alert("환불수량을 입력해주세요.");
+				makePopup1("환불", "환불할 수량을 입력해주세요.", null);
 			}else if(rsnCnt > 0){
-				alert("환불사유를 입력해주세요.");
+				makePopup1("환불", "환불 사유를 입력해주세요.", null);
 			}else{
-				if(confirm("환불 처리하시겠습니까?")){ //팝업 변경 필요
+				makePopup2("환불", "해당 품목을 환불하시겠습니까?", null);
+				$(".submit_btn").on("click",function(){	
 				var params = $("#tbForm").serialize();
 				$.ajax({
 					url : "ref",
@@ -201,15 +200,13 @@ $(document).ready(function(){
 					dataType :"json",
 					data : params,
 					success : function(res){
-						$("#goForm").submit();
-						alert("환불요청이 완료되었습니다.");
 						location.href="B_Ord_List";
 					},
 					error : function(request,status,error){
 						console.log(error);
 					}
 				});
-			}
+			});
 		}
 		}
 	});
@@ -279,6 +276,60 @@ function drawList(list){
 			html += "</tr>";
 	}
 	$("tbody").html(html);
+}
+function makePopup2(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 			"<button style=\"background-color: #b3b3b3;\" class=\"cnl_btn\">취소</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .cnl_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
+function makePopup1(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
+function closePopup() {
+	$(".bg, .popup_area").fadeOut(function(){
+		$(".bg, .popup_area").remove();
+	}); //popup_Btn end
 }
 </script>
 <style type="text/css"></style>

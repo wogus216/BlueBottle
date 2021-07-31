@@ -37,6 +37,7 @@ li {
 .history_btn{
 	float:right;
 	margin:0;
+
 }
 .ord_area, .ref_area{
 	margin-top:100px;
@@ -169,7 +170,7 @@ button:focus{outline:none;}
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_area{
+.h_popup_area{
 	display: inline-block;
 	width: 600px;
 	height: 360px;
@@ -178,6 +179,17 @@ button:focus{outline:none;}
 	position: absolute;
 	top: calc(50% - 180px); /*높이의 반만큼 뺌*/
 	left: calc(50% - 300px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
 .popup_head{
@@ -191,7 +203,7 @@ button:focus{outline:none;}
 .popup_btn{
 	text-align:center;
 }
-.popup_btn button{
+.h_popup_btn button{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -205,11 +217,31 @@ button:focus{outline:none;}
 	left:36.2%;
 	background-color: rgb(41, 128, 185);
 }
-.popup_content{
+.popup_btn button{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	background-color: rgb(41, 128, 185);
+}
+.h_popup_content{
 	margin:10px;
 	font-size:18px;
 }
-.popup_area table {
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+.h_popup_area table {
     width: 100%;
     table-layout: fixed;
     background: #ffffff;
@@ -219,15 +251,15 @@ button:focus{outline:none;}
 	margin: 0;
 }
 
-.popup_area th{
+.h_popup_area th{
     padding: 7px;
     font-size:15px;
 }
-.popup_area td{
+.h_popup_area td{
 	font-size:15px;
 	padding:7px;
 }
-.popup_area td:first-child{
+.h_popup_area td:first-child{
 	border-left: none;
 }
 .close_btn{
@@ -251,6 +283,7 @@ button:focus{outline:none;}
 	height: 50px;
 	font-size: 18px;
 }
+input[type='button']:focus{outline:none;}
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -265,8 +298,7 @@ $(document).ready(function(){
 			dataType :"json",
 			data : params,
 			success : function(res){
-				makePopup("전체이력 조회", HistoryListDraw(res.OrdHistoryList), function(){
-				});
+				historyPopup("전체이력 조회", HistoryListDraw(res.OrdHistoryList), null);
 			},
 			error : function(request,status,error){
 				console.log(error);
@@ -278,7 +310,8 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 	$(".apv_btn").on("click",function(){
-		if(confirm("주문을 승인하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("주문 승인", "해당 주문을 승인하시겠습니까?", null);
+		$(".submit_btn").on("click",function(){	
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
@@ -288,26 +321,26 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인에 실패하였습니다.");
+					makePopup1("주문 승인 실패", "승인에 실패하였습니다.", null);
 				}else {
-					alert("승인 중 문제가 발생하였습니다.")
+					makePopup1("주문 승인 오류", "승인중 문제가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
+			});
 		});
-		}
 	});
 	$(".non_apv_btn").on("click",function(){
 		if($.trim($("#oRsn").val())=="") {
-			alert("승인거부 이유를 입력해주세요.");
+			makePopup1("주문 승인거부", "주문 승인거부 사유를 입력해주세요.", null);
 			$("#oRsn").focus();
 		}else{
-		if(confirm("승인거부 처리하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("주문 승인거부", "해당 주문을 승인거부하시겠습니까?", null);
+		$(".submit_btn").on("click",function(){	
 			
 		var params = $("#OrsnForm").serialize();
 		$.ajax({
@@ -317,23 +350,23 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인거부 처리되었습니다.");
-					$("#OrsnForm").submit();
+					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인거부에 실패하였습니다.");
+					makePopup1("주문 승인거부 실패", "승인거부에 실패하였습니다.", null);
 				}else {
-					alert("승인거부 중 문제가 발생하였습니다.")
+					makePopup1("주문 승인거부 오류", "승인거부중 문제가 발생했습니다.", null);
 				}
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
 		});
-		}
+		});
 	}
 	});
 	$(".ref_apv_btn").on("click",function(){
-		if(confirm("환불을 승인하시겠습니까?")){ //팝업 변경 필요
+		makePopup2("환불 승인", "환불을 승인하시겠습니까?", null);
+		$(".submit_btn").on("click",function(){	
 		var params = $("#goForm").serialize();
 		
 		$.ajax({
@@ -343,26 +376,26 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인되었습니다.");
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인에 실패하였습니다.");
+					makePopup1("환불 승인 실패", "환불 승인에 실패하였습니다.", null);
 				}else {
-					alert("승인 중 문제가 발생하였습니다.")
+					makePopup1("환불 승인 실패", "환불 승인중 문제가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
 		});
-		}
+		});
 	});
 	$(".non_ref_apv_btn").on("click",function(){
 		if($.trim($("#rRsn").val())=="") {
-			alert("승인거부 이유를 입력해주세요.");
+			makePopup1("환불 승인 거부", "환불 승인거부 사유를 입력해주세요.", null);
 			$("#rRsn").focus();
 		}else{
-		if(confirm("승인거부 처리하시겠습니까?")){ //팝업 변경 필요
+			makePopup2("환불 승인 거부", "환불을 승인 거부하시겠습니까?", null);
+			$(".submit_btn").on("click",function(){	
 		var params = $("#RrsnForm").serialize();
 		
 		$.ajax({
@@ -372,19 +405,18 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("승인거부 처리되었습니다.");
-					$("#RrsnForm").submit();
+					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("승인거부에 실패하였습니다.");
+					makePopup1("환불 승인 거부 실패", "환불 승인 거부에 실패하였습니다.", null);
 				}else {
-					alert("승인거부 중 문제가 발생하였습니다.")
+					makePopup1("환불 승인 거부 실패", "환불 승인 거부 중 문제가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
 		});
-		}
+		});
 	}
 	});
 	$(".send_btn").on("click",function(){
@@ -396,10 +428,11 @@ $(document).ready(function(){
 		});
 		
 		if(expCnt > 0){
-			alert("유통기한을 입력해주세요.");
+			makePopup1("발송", "유통기한을 입력해주세요.", null);
 		   $(".expDate").focus;
 		}else{
-			if(confirm("발송 처리하시겠습니까?")){ //팝업 변경 필요
+			makePopup2("발송", "발송하시겠습니까?", null);
+			$(".submit_btn").on("click",function(){	
 				var params = $("#sendForm").serialize();
 		$.ajax({
 			url : "ord_send",
@@ -408,28 +441,77 @@ $(document).ready(function(){
 			data : params,
 			success : function(res){
 				if(res.msg == "success"){
-					alert("발송 처리되었습니다.");
-					$("#sendForm").submit();
 					$("#goForm").submit();
 				}else if (res.msg == "failed"){
-					alert("발송처리에 실패하였습니다.");
+					makePopup1("발송 실패", "발송 처리에 실패하였습니다.", null);
 				}else {
-					alert("발송처리 중 문제가 발생하였습니다.")
+					makePopup1("발송 오류", "발송 처리 중 오류가 발생하였습니다.", null);
 				}
 			},
 			error : function(request,status,error){
 				console.log(error);
 			}
 		});
-		}
+		});
 		}
 	});
-	if("${params.depNo}" != 0 || "${params.depNo}" != 2){
-		$("#expDate").prop("readonly", true);
+	if("${param.depNo}" != 0 && "${param.depNo}" != 2){
+		$(".expDate").prop("readonly", true);
+	}else{
+		$(".expDate").prop("readonly", false);
 	}
 }); //ready end
 
-function makePopup(title, contents, func){
+function historyPopup(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"h_popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"h_popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"h_popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".h_popup_area").hide().show();
+	
+	$(".submit_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+	}
+function makePopup2(title, contents, func){
+	var html ="";
+	
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+title +"";	
+	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+contents+"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<button class=\"submit_btn\">확인</button>";	
+	html+= 			"<button style=\"background-color: #b3b3b3;\" class=\"cnl_btn\">취소</button>";	
+	html+= 	 	"</div>";	
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".submit_btn, .cnl_btn, .close_btn").on("click",function(){
+		if(func != null){
+			func.call();
+		}
+		closePopup();
+		});
+}
+function makePopup1(title, contents, func){
 	var html ="";
 	
 	html+= "<div class=\"bg\"></div>";	
@@ -446,13 +528,13 @@ function makePopup(title, contents, func){
 	$("body").prepend(html);
 	$(".popup_area").hide().show();
 	
-	$(".popup_btn, .close_btn").on("click",function(){
-		if(func !=null){
+	$(".submit_btn, .close_btn").on("click",function(){
+		if(func != null){
 			func.call();
 		}
 		closePopup();
 		});
-	}
+}
 function HistoryListDraw(OrdHistoryList){
 	var html = "";
 	
@@ -486,8 +568,8 @@ function HistoryListDraw(OrdHistoryList){
 	return html;
 }
 function closePopup() {
-	$(".bg, .popup_area").fadeOut(function(){
-		$(".bg, .popup_area").remove();
+	$(".bg, .popup_area, .h_popup_area").fadeOut(function(){
+		$(".bg, .popup_area, .h_popup_area").remove();
 	}); //popup_Btn end
 }
 </script>
@@ -500,8 +582,8 @@ function closePopup() {
 	<input type = "hidden" id = "page" name = "page" value = "${param.page}"/>
 	<input type = "hidden" name = "search_filter" value = "${param.search_filter}"/>
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
-	<input type = "hidden" id = "menuNo" name = "menuNo" value="${params.menuNo}"/>
-	<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
+	<input type = "hidden" id = "menuNo" name = "menuNo" value="${param.menuNo}"/>
+	<input type = "hidden" id = "uNo" name = "uNo" value="${sUSERNo}"/>
 </form>
 <div class="content_area">
 <div class="content">
@@ -568,7 +650,8 @@ function closePopup() {
 			</c:when>
 			<c:otherwise>
 				<c:choose>
-					<c:when test="${data1.EXPIRY_DATE ne '2999-01-01'}"><td>${data1.EXPIRY_DATE}</td>
+					<c:when test="${data1.EXPIRY_DATE ne '2999-01-01'}">
+					<td>${data1.EXPIRY_DATE}</td>
 				</c:when>
 				<c:otherwise>
 					<td></td>
@@ -592,6 +675,7 @@ function closePopup() {
 		<form action = "#" id = "OrsnForm" method = "post">
 		<textarea class="rsn_content" id = "oRsn" name="oRsn"></textarea>
 		<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
+		<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
 		</form>
 	</c:when>
 	<c:otherwise>
@@ -603,24 +687,29 @@ function closePopup() {
 <div class="btn_area">
 <c:if test="${auth eq 2}">
 	<c:if test="${data.CODE_NAME eq '주문요청'}">
-		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
 			<input type="button" class="apv_btn" value="승인"/>
 			<input type="button" class="non_apv_btn" value="승인거부"/>
 		</c:if>
 	</c:if>
 </c:if>
 <c:if test="${auth eq 2}">
-<c:if test="${data.CODE_NAME eq '주문승인'}">
-	<c:if test="${params.depNo ne 0 || params.depNo ne 2}">
-		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	<c:if test="${data.CODE_NAME eq '주문승인'}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
+			<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+		</c:if>
+		<c:if test="${param.depNo eq 0 || param.depNo eq 2}">
+			<input type="button" class="send_btn" value="발송"/>
+		</c:if>
 	</c:if>
-	<c:if test="${params.depNo eq 0 || params.depNo eq 2}">
-		<input type="button" class="send_btn" value="발송"/>
-	</c:if>
-</c:if>
 </c:if>
 <c:if test="${data.CODE_NAME eq '발송완료'}">
-<input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
+	<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
+		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	</c:if>
+	<c:if test="${param.depNo eq 0 || param.depNo eq 2}">
+		<input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
+	</c:if>
 </c:if>
 </div>
 <c:choose>
@@ -691,14 +780,16 @@ function closePopup() {
 <div class="btn_area">
 <c:if test="${auth eq 2}">
 	<c:if test="${data2.CODE_NAME eq '환불요청'}">
-		<c:if test="${params.depNo eq 0 || params.depNo eq 1}">
+		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
 			<input type="button" class="ref_apv_btn" value="승인"/>
 			<input type="button" class="non_ref_apv_btn" value="승인거부"/>
 		</c:if>
 	</c:if>
 </c:if>
 <c:if test="${data2.CODE_NAME eq '환불승인'}">
-	<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
+		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
+	</c:if>
 </c:if>
 </div>
 </div>
