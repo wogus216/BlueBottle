@@ -187,7 +187,7 @@ $(document).ready(function(){
  	
  	//상세보기
  	$("tbody").on("click","tr",function(){
- 		$("#menuNo").val($(this).attr("mNo"));
+ 		$("#posMenuNo").val($(this).attr("mNo"));
  		$("#menu_form").attr("action","Menu_Dtl");
  		$("#menu_form").submit();
  	});
@@ -313,7 +313,7 @@ function drawPaging(pb){
 		</table>
 		<div class="search_Area" style = "margin-top : 30px;">
 			<form action="#" id="menu_form" method="post">
-				<input type="hidden" id="menuNo" name="menuNo" value="${param.menuNo}"/>
+				<input type="hidden" id="posMenuNo" name="posMenuNo" value="" />
 				<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/>
 				<input type="hidden" id="page" name="page" value="${page}"/>
 			<div class="search_Info">

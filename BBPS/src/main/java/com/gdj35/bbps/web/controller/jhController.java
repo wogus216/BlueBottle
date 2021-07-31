@@ -262,6 +262,8 @@ public class jhController {
 					
 				} else {
 					modelMap.put("msg", "failed");
+					System.out.println("왜 안되?");
+					
 				}
 				
 			} catch (Throwable e) {

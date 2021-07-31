@@ -273,11 +273,11 @@ $(document).ready(function(){
 					}
 				});
 			}else{
-		 			makePopup("", "파일 업로드 중 문제 발생",function(){});
+		 			makePopup("", "파일 업로드 중 문제 발생1",function(){});
 				} 
 			},		
 			error: function(){
-				makePopup("", "파일 업로드 중 문제 발생",function(){});
+				makePopup("", "파일 업로드 중 문제 발생2",function(){});
 			}
 		}); //ajaxForm end
 		
@@ -320,7 +320,7 @@ $(document).ready(function(){
 </head>
 <body>
 <form action="#" id="edit_form" method="post">
-	<input type="hidden" name="menuNo" value="${data.MNO}">
+	<input type="hidden" name="posMenuNo" value="${data.MNO}">
 	<input type="hidden" id="cateNo" name="cateNo"value="${param.cateNo}"/>
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
