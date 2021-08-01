@@ -153,6 +153,8 @@ WHERE TXT_NO = #{nNo}
 
 
 
+
+
 <select id="getUCnt" parameterType="hashmap" resultType="Integer">
 SELECT COUNT(*) AS CNT
 FROM(SELECT U.USER_NO AS USER_NO, D.DEP_NAME AS NAME, USER_NAME, ID 
