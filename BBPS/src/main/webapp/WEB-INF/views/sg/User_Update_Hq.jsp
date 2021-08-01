@@ -279,7 +279,7 @@ function closePopup() {
 <h1>사용자 수정</h1>
 
 <form action="#" id="updateForm" method="post">
-	<input type="hidden" id="No" name="No"  value="${param.USER_NO}"/>
+	<input type="hidden" id="No" name="No"  value="${param.No}"/>
 	<input type="hidden" name="page" value="${param.page}" />
 	<input type="hidden" name="searchGbn" value="${param.searchGbn}" />
 	<input type="hidden" name="searchTxt" value="${param.searchTxt}" />

@@ -142,13 +142,12 @@ WHERE TXT_NO = #{nNo}
 	WHERE DEL_FLAG = 1
 </select>
 
-<!-- 
+<!--
 <update id="countN">
 UPDATE NOTICE SET LOOK_CNT = LOOK_CNT + 1
 WHERE TXT_NO = #{nNo}
 </update>
  -->
-
 
 
 
@@ -276,9 +275,10 @@ WHERE BRCH_NO IN #{No}
 UPDATE HQ_USER SET AUTH_NO = #{hAuth}, DEP_NO = #{hDep}, ID = #{hId}, PW = #{hPw}, USER_NAME = #{hNm}, PHONE_NUM = #{hPhone}
 WHERE USER_NO IN #{No}
 </update>
+
 <update id="deleteH" parameterType="hashmap">
 UPDATE HQ_USER SET DEL_FLAG = 0, DEL_DATE = SYSDATE 
-    WHERE USER_NO = #{uNo}
+    WHERE USER_NO = #{No}
 </update>
 
 <update id="updateB"  parameterType="hashmap">
@@ -289,7 +289,7 @@ WHERE BRCH_NO IN #{No}
 </update>
 <update id="deleteB" parameterType="hashmap">
 UPDATE BRCH SET DEL_FLAG = 0
-WHERE BRCH_NO = #{uNo}
+WHERE BRCH_NO = #{No}
 </update>
 
 
