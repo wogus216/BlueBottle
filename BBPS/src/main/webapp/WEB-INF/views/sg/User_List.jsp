@@ -309,7 +309,7 @@ function drawPaging(pb) {
 	</colgroup>
 	<thead>
 		<tr>
-			<th>사용자번호</th>
+			<th style= "border-left: none;">사용자번호</th>
 			<th>지점/부서명</th>
 			<th>사용자명</th>
 			<th>ID</th>

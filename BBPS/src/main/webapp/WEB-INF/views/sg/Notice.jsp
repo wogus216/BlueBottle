@@ -354,7 +354,7 @@ function splitdate(resdate){
 	</colgroup>
 	<thead>
 		<tr>
-			<th>NO.</th>
+			<th style= "border-left: none;">NO.</th>
 			<th>제목</th>
 			<th>날짜</th>
 			<th>작성자</th>
