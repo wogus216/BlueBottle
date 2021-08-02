@@ -129,7 +129,7 @@ html,body{
     float: right;
     font-weight: bold;
     border-radius: 5px;
-    margin-top: 12px;
+    margin: 12px 0px 0px 0px;
 }
 
 </style>
@@ -242,7 +242,7 @@ function drawMenu(menu){
 							html +=		"<div class=\"menu2_title\">";
 							html +=			"<div class= \"menu_depth2_area \">";
 									if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() == "0"){
-							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j + 1].SITE_MENU_NO + "\" addr = \""+menu[j+1].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
+							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j + 1].SITE_MENU_NO + "\" addr = \""+menu[i].MADDR + "\">" + menu[j-1].SITE_MENU_NAME + "</div>";
 							html +=			"<div class=\"menu_depth2\" menuno=\"" + menu[j].SITE_MENU_NO + "\" addr = \""+menu[j].MADDR + "\">" + menu[j].SITE_MENU_NAME + "</div>";
 									}
 									else if(menu[i].SITE_MENU_NO == 2 && $("#Dt").val() != "0" ){
