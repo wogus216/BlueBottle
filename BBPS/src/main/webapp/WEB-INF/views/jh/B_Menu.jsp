@@ -128,7 +128,7 @@ html,body{
     float: right;
     font-weight: bold;
     border-radius: 5px;
-    margin-top: 12px;
+    margin: 12px 0px 0px 0px;
 }
 
 
