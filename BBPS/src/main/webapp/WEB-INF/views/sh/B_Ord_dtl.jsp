@@ -445,7 +445,7 @@ function today() { //오늘날짜 구하기
 		<td>${data1.CNT}</td>
 		<td>${data1.PRICE}</td>
 		<c:choose>
-			<c:when test="${data1.EXPIRY_DATE eq null}"><td></td></c:when>
+			<c:when test="${data1.EXPIRY_DATE eq null || data1.EXPIRY_DATE eq '2999-01-01'}"><td></td></c:when>
 			<c:otherwise>
 				<td>${data1.EXPIRY_DATE}<input type = "hidden" id = "expdate" name = "expdate" value="${data1.EXPIRY_DATE}"/></td>
 			</c:otherwise>
