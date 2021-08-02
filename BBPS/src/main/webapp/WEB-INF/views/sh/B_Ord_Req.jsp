@@ -517,7 +517,7 @@ function buyList(){
 				for(var i=0; i<tdArr.length; i++){
         			html += "<td>"+tdArr[i]+"</td>";
 				}
-        	html += "<td style=\"padding:0;\"><input class=\"ord_cnt\" name=\"ord_cnt\" type=\"number\" value=\""+tdArr[b-1]+"\" min=\""+tdArr[b-1]+"\" maxlength=\"5\"/></td>";
+        	html += "<td><input class=\"ord_cnt\" name=\"ord_cnt\" type=\"number\" value=\""+tdArr[b-1]+"\" min=\""+tdArr[b-1]+"\" maxlength=\"5\"/></td>";
        	 	html += "<td><input class=\"del_btn\" type=\"button\" value=\"X\" /><input name=\"iNo\" type = \"hidden\" value=\""+tdArr[b-4]+"\"/><input name=\"price\" type = \"hidden\" value=\""+tdArr[b-2]+"\"/></td>";
         	html += "</tr>";
         	a=a+5;
@@ -604,18 +604,10 @@ function closePopup() {
                   </c:forEach>
             </select>
 <table id="item" cellspacing="0">
-   <colgroup>
-      <col width="14%">
-      <col width="14%">
-      <col width="39%">
-      <col width="13%">
-      <col width="10%">
-      <col width="10%">
-   </colgroup>
    <thead>
    <tr>
       <th scope="col">카테고리</th>
-      <th scope="col">품목코드</th>
+      <th scope="col">품목</br>코드</th>
       <th scope="col">품목명</th>
       <th scope="col">가격(원)</th>
       <th scope="col">최소수량</th>
@@ -651,7 +643,7 @@ function closePopup() {
    <thead>
    <tr>
       <th scope="col">카테고리</th>
-      <th scope="col">품목코드</th>
+      <th scope="col">품목</br>코드</th>
       <th scope="col">품목명</th>
       <th scope="col">가격(원)</th>
       <th scope="col">최소수량</th>
@@ -659,8 +651,7 @@ function closePopup() {
       <th scope="col"></th>
    </tr>
    </thead>
-   <tbody>
-	</tbody>
+   <tbody></tbody>
 </table>
 </form>
 <ul id="tot_ref_price">

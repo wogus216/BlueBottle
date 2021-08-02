@@ -584,6 +584,8 @@ function closePopup() {
 	<input type = "hidden" name="search_old_txt" id="search_old_txt" value="${param.search_input}"/>
 	<input type = "hidden" id = "menuNo" name = "menuNo" value="${param.menuNo}"/>
 	<input type = "hidden" id = "uNo" name = "uNo" value="${sUSERNo}"/>
+	<input type = "hidden"  id = "depNo" name="depNo" value="${sDEPNo}">
+	
 </form>
 <div class="content_area">
 <div class="content">
