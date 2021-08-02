@@ -95,6 +95,7 @@ public class sgDao implements IsgDao {
 
 	@Override
 	public int deleteH(HashMap<String, String> params) throws Throwable {
+		System.out.println("제발");
 		return sqlSession.delete("SG.deleteH", params);
 	}
 

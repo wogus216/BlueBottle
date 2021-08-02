@@ -141,6 +141,11 @@ $(document).ready(function(){
 	//메뉴 그리기
 	reLoadMenu();
 	
+	//로고 클릭
+	$("body").on("click",".logo",function(){
+		location.href = "Ord_Mang";
+	});
+	
 	//1뎁스 클릭 시 효과
 	$("body").on("click",".menu1_wrap",function(){
 		

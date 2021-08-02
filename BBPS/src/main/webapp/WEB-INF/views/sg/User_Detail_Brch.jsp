@@ -184,33 +184,11 @@ $(document).ready(function(){
 		$("#goForm").submit();
 	});
 	
+	$("#delBtn").on("click", function(){
+		offPopup("비활성화","비활성화 하시겠습니까?.",function(){});
+	});
 	
-	
-	$("#delBtn").on("click",function(){
-		if(confirm("삭제하시겠습니까?")){
-			var params = $("#goForm").serialize();
-			
-			$.ajax({
-				url:"User_Delete_Brchs", //접속주소
-				type:"post", //전송방식 : get, post
-				dataType:"json",//받아올데이터형식
-				data:params, //보낼 데이터(문자열 형태)
-				success : function (res) {//성공 시 다음함수 실행
-				if(res.msg == "success"){
-					location.href = "User_List";
-				}else if(res.msg == "failed"){
-					makePopup("","삭제에 실패하였습니다.",function(){});
-				}else {
-					makePopup("","삭제 중 문제가 발생하였습니다.",function(){});
-				}
-				
-				},
-				error : function (request, status, error) { //실패 시 다음함수 실행
-					console.log(error);
-				}
-			});
-		}
-	}); //del Btn end
+
 }); //ready end
 
 
@@ -253,6 +231,68 @@ function makePopup(title, contents, func) {
 	$(".confirm_btn").on("click",function(){
 		closePopup();
 		});
+	}
+	
+	
+function offPopup(title, contents, func) {
+	
+	var html ="";
+	html+= "<div class=\"bg\"></div>";	
+	html+= "<div class=\"popup_area\">";	
+	html+= "<div class=\"popup_head\">"+ title +"";	
+	html+= 		"<input type=\"button\" value=\"X\" class=\"close_btn\">";	
+	html+= "</div>";	
+	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
+	html+= 		"<div class=\"popup_btn\">";	
+	html+= 			"<input type=\"button\" value=\"확인\"  class=\"o_confirm_btn\"style=\"background-color: rgb(41, 128, 185)\">";	
+	html+= 			"<input type=\"button\"  value=\"취소\" class=\"close_btn\" style=\"background-color: rgb(190, 190, 190)\">";	
+	html+= 	 	"</div>";
+	html+= "</div>";	
+	
+	$("body").prepend(html);
+	$(".popup_area").hide().show();
+	
+	$(".popup_btn .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+			closePopup();
+		});
+	
+	$(".popup_head .close_btn").on("click",function(){
+		if(func !=null){
+			func.call();
+		}
+			closePopup();
+	
+	});
+
+	$(".o_confirm_btn").on("click",function(){
+		
+		var params = $("#goForm").serialize();
+		
+		$.ajax({
+			url:"User_Delete_Brchs", //접속주소
+			type:"post", //전송방식 : get, post
+			dataType:"json",//받아올데이터형식
+			data:params, //보낼 데이터(문자열 형태)
+			success : function (res) {//성공 시 다음함수 실행
+			if(res.msg == "success"){
+				location.href = "User_List";
+			}else if(res.msg == "failed"){
+				makePopup("","삭제에 실패하였습니다.",function(){});
+			}else {
+				makePopup("","삭제 중 문제가 발생하였습니다.",function(){});
+			}
+			
+			},
+			error : function (request, status, error) { //실패 시 다음함수 실행
+				console.log(error);
+			}
+		});
+	
+}); //del Btn end
+
 	}
 
 function closePopup() {

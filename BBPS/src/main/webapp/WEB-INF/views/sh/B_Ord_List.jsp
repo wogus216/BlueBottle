@@ -22,7 +22,8 @@
 	max-width: 1250px;
     min-width: 700px;
     margin-left: 30px;
-     width: 1250px;
+    width: 1250px;
+    margin-top: 100px;
 }
 h1 {
  margin-bottom: 40px;
