@@ -97,6 +97,10 @@ select{
 	font-size: 15px;
 	height: 36px;
 }
+input[type='date']{
+width: 150px;
+height: 36px;
+}
 /* 일반버튼 */
 input[type='button']{
 	display : inline-block;
@@ -341,7 +345,7 @@ function splitdate(resdate){
 		</div>
 </form>		
 <div class="list_wrap">
-<table>
+<table  cellspacing="0">
 	<colgroup>
 		<col width="15%">
 		<col width="45%">
