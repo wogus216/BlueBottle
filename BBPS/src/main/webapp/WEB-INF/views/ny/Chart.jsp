@@ -496,7 +496,7 @@ function setDateBox() {
   var month;
   
   for (var i = 1; i <= 9; i++) {
-	  if( i == today_month){
+	  if( i == today_month - 1){
 		  $(".daily #month").append("<option value='0" + i + "' selected>" + i + " 월" + "</option>");
 		  $(".menu #month").append("<option value='0" + i + "' selected>" + i + " 월" + "</option>");
 		  $(".monthly #month").append("<option value='0" + i + "' selected>" + i + " 월" + "</option>");
@@ -507,7 +507,7 @@ function setDateBox() {
 	  } 
   }
   for (var i = 10; i <= 12; i++) {
-	  if( i == today_month){
+	  if( i == today_month - 1){
 		  $(".daily #month").append("<option value='" + i + "' selected>" + i + " 월" + "</option>");
 		  $(".menu #month").append("<option value='" + i + "' selected>" + i + " 월" + "</option>");
 		  $(".monthly #month").append("<option value='" + i + "' selected>" + i + " 월" + "</option>");
@@ -632,7 +632,7 @@ function closePopup() {
 		<div class="info">
 			<div class="monthly">
 				<form action="#" method="post" id="actionFormMonthly">
-					<input type="button" class="reset_btn" value="당월" />
+					<input type="button" class="reset_btn" value="초기화" />
 					<select name="year" id="year"></select>	
 					<select name="month" id="month"></select>
 					<input type="button" class="search_btn" value="조회" />
@@ -641,7 +641,7 @@ function closePopup() {
 			</div>
 			<div class="daily">
 				<form action="#" method="post" id="actionFormDaily">
-					<input type="button" class="reset_btn" value="당월" />
+					<input type="button" class="reset_btn" value="초기화" />
 					<select name="year" id="year"></select>
 					<select name="month" id="month"></select>	
 					<span><strong>지점</strong></span>
@@ -662,7 +662,7 @@ function closePopup() {
 			</div>
 			<div class="menu">
 				<form action="#" method="post" id="actionFormMenu">
-					<input type="button" class="reset_btn" value="당월" />
+					<input type="button" class="reset_btn" value="초기화" />
 					<select name="year" id="year"></select>	
 					<select name="month" id="month"></select>
 					<span><strong>지점</strong></span>
