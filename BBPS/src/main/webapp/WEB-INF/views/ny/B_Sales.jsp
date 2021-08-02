@@ -314,7 +314,7 @@ function reloadList() {
 		data: params,
 		success: function(res) {
 			
-		    drawList(res.list, res.status);
+			drawList(res.list, res.status);
 			drawPaging(res.pb);
 			
 			var today = new Date();
@@ -331,7 +331,7 @@ function reloadList() {
 			today = yyyy+'-'+mm+'-'+dd;
 			$("#start_date").attr("max", today);
 			$("#end_date").attr("max", today);
-			
+					
 		},
 		error: function(request, status, error) {
 			console.log(error);
@@ -504,7 +504,7 @@ function closePopup() {
 			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" min="1990-01-01" />
 			<span>종료일</span>
 			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" min="1990-01-01" />
-			<input type="button" class="search_btn" value="검색" />
+			<input type="button" class="search_btn" value="조회" />
 			<input type="button" class="graph_btn" value="그래프" />
 		</form>
 	</div>

@@ -237,6 +237,7 @@ $(document).ready(function(){
 	viewChange(".monthly_btn");
 	
 	$(".reset_btn").on("click", function() {
+		
 		setDateBox();
 	});
 	
@@ -461,14 +462,14 @@ function makeMenuChartDetail(list, color, name) {
 
 // select box 연도 , 월 표시
 function setDateBox() {
- 
-	$(".daily #year").html("");
-	$(".daily #month").html("");
-	$(".monthly #year").html("");
-	$(".monthly #year").html("");
-	$(".cate #year").html("");
-	$(".menu #year").html("");
-	$(".menu #month").html("");
+	
+	$(".daily #year").children('option').remove();
+	$(".daily #month").children('option').remove();
+	$(".monthly #year").children('option').remove();
+	$(".monthly #month").children('option').remove();
+	$(".cate #year").children('option').remove();
+	$(".menu #year").children('option').remove();
+	$(".menu #month").children('option').remove();
 	
   var dt = new Date();
   var year = "";

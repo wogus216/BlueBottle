@@ -328,7 +328,8 @@ function reloadList() {
 		dataType: "json",
 		data: params,
 		success: function(res) {
-			drawList(res.list);
+			
+			drawList(res.list, res.status);
 			drawPaging(res.pb);
 			
 			var today = new Date();
@@ -343,37 +344,47 @@ function reloadList() {
 			    } 
 
 			today = yyyy+'-'+mm+'-'+dd;
-			$("#start_date").attr("max", today);
-			$("#end_date").attr("max", today);
 			
+			
+			$("#end_date").attr("max", today);
+			$("#start_date").attr("max", today);
+			
+
 		},
 		error: function(request, status, error) {
 			console.log(error);
 		}
 		
 	}); //ajax end
+	
+	
 }
 
-function drawList(list) {
-	var html = "";
-
-	console.log(list);
-	for(var d of list) {
-		
-		var S = addComma(d.SALES_PRICE);
-		var O = addComma(d.ORD_PRICE);
-		var N = addComma(d.NET_PRICE);
-		
-		html += "<tr date=\"" + d.ENROLL_DATE + "\">";
-		html += "<td>" + d.BRCH_NAME + "</td>     ";
-		html += "<td>" + d.ENROLL_DATE + "</td>     ";
-		html += "<td id=\"sales\"><span>" + S + "</span></td>     ";
-		html += "<td id=\"expense\"><span>" + O + "</span></td>     ";
-		html += "<td>" + N + "</td>     ";
-		html += "</tr>                ";
-	}
+function drawList(list, status) {
 	
-	$("tbody").html(html);
+	if(status == "null") {
+		makePopup("결과", "해당 기간의 매출 정보가 없습니다.");
+	} else {
+		var html = "";
+
+		for(var d of list) {
+			
+			var S = addComma(d.SALES_PRICE);
+			var O = addComma(d.ORD_PRICE);
+			var N = addComma(d.NET_PRICE);
+			
+			html += "<tr date=\"" + d.ENROLL_DATE + "\">";
+			html += "<td>" + d.BRCH_NAME + "</td>     ";
+			html += "<td>" + d.ENROLL_DATE + "</td>     ";
+			html += "<td id=\"sales\"><span>" + S + "</span></td>     ";
+			html += "<td id=\"expense\"><span>" + O + "</span></td>     ";
+			html += "<td>" + N + "</td>     ";
+			html += "</tr>                ";
+		}
+		
+		$("tbody").html(html);
+	}
+
 }
 
 //총 매출,지출액 정보
@@ -470,7 +481,6 @@ function makePopup(title, contents, func) {
 	html+= "</div>";	
 	html+= "<div class=\"popup_content\">"+ contents +"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
-	html+= 			"<input type=\"button\"  value=\"취소\" class=\"cnl_btn\" style=\"background-color: rgb(190, 190, 190)\">";	
 	html+= 			"<input type=\"button\" value=\"확인\"  class=\"confirm_btn\" style=\"background-color: rgb(41, 128, 185)\">";	
 	html+= 	 	"</div>";
 	html+= "</div>";	
@@ -478,16 +488,15 @@ function makePopup(title, contents, func) {
 	$("body").prepend(html);
 	$(".popup_area").hide().show();
 	
-	$(".cnl_btn, .close_btn").on("click",function(){
+	$(".close_btn").on("click",function(){
 		closePopup();		
-	$(".confirm_btn").on("click",function(){
-		if(func !=null){
-			func.call();
-		}
-		closePopup();
-		});
 	});
-	}
+	$(".confirm_btn").on("click",function(){
+		
+		closePopup();
+    });
+
+}
 
 function closePopup() {
 	$(".bg, .popup_area").fadeOut(function(){
@@ -517,8 +526,8 @@ function closePopup() {
 			<span>시작일</span>
 			<input type = "date" id="start_date" name="start_date" value="${param.start_date}" min="1990-01-01"/>
 			<span>종료일</span>
-			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" min="1990-01-01"/>
-			<input type="button" class="search_btn" value="검색" />
+			<input type = "date" id="end_date" name="end_date" value="${param.end_date}" />
+			<input type="button" class="search_btn" value="조회" />
 			<input type="button" class="graph_btn" value="그래프" />
 		</form>
 	</div>

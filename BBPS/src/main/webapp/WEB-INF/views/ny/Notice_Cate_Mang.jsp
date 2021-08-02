@@ -206,8 +206,7 @@ $(document).ready(function(){
 	
 	$(".add_btn").on("click",function() {
 		if($.trim($("#inputTxt").val()) == "") {
-			alert("추가할 카테고리명을 입력하세요.");
-		}
+			makePopup("오류", "카테고리명을 입력하세요.", null);		}
 		else{
 			var params = $("#actionForm").serialize();
 			
