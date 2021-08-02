@@ -126,13 +126,13 @@
 	SELECT  PM.MENU_NO AS MNO, PM.MENU_NAME AS MNAME, PC.CATE_NAME AS CNAME, PM.MENU_PRICE AS MPRICE, PM.MENU_IMG AS MIMG, PM.NOTE
 	FROM POS_MENU PM INNER JOIN POS_CATE PC
                          ON PM.POS_CATE_NO = PC.CATE_NO
-	WHERE PM.MENU_NO = #{menuNo}	
+	WHERE PM.MENU_NO = #{posMenuNo}	
 	</select>
 	
 	<!-- 수정 -->
 	<update id="editM" parameterType="hashmap">
 		UPDATE POS_MENU SET MENU_NAME = #{m_name}, MENU_PRICE = #{m_price}, MENU_IMG = #{m_file}, NOTE = #{m_note}
-		WHERE MENU_NO = #{menuNo}
+		WHERE MENU_NO = #{posMenuNo}
 	</update>
 	
 	<!-- 등록  -->
@@ -144,7 +144,7 @@
 	<!-- 수정 -->
 	<update id="delM" parameterType="hashmap">
 		UPDATE POS_MENU SET DEL_FLAG = 0
-		WHERE MENU_NO = #{menuNo}
+		WHERE MENU_NO = #{posMenuNo}
 	</update>
 	
 	<!-- 지점메뉴 -->

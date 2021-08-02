@@ -24,12 +24,12 @@ public class CommonAOP {
 	 * .. -> 모든 경로
 	 * && -> 필터 추가
 	 */
-	@Pointcut("execution(* com.gdj35.bbps..*Controller.*(..))"
-			+ "&&!execution(* com.gdj35.bbps..*Controller.*Login(..))"
-			+ "&&!execution(* com.gdj35.bbps..*Controller.*Logins(..))"
-			+ "&&!execution(* com.gdj35.bbps..*Controller.*Menus(..))"
-			+ "&&!execution(* com.gdj35.bbps..*Controller.*s(..))"
-			+ "&&!execution(* com.gdj35.bbps..*Controller.*LogOut(..))")
+	@Pointcut("execution(* com.gdj35.bbps.web..*Controller.*(..))"
+			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*Login(..))"
+			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*Logins(..))"
+			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*Menus(..))"
+			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*s(..))"
+			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*LogOut(..))")
 	
 	public void bbpsAOP() {}
 	

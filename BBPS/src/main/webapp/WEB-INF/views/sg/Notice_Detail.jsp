@@ -336,11 +336,11 @@ function closePopup() {
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
 <td>${data.USER_NAME}</td>
 <td>&nbsp;</td>
 <td>${data.S_DT}</td>
-<td>&nbsp;</td>
-<td>조회수</td>
 <td></td>
 </tr>
 </tbody>

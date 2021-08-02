@@ -218,7 +218,7 @@ public class sgController {
 			method=RequestMethod.POST,
 			produces = "text/json;charset=UTF-8")
 	@ResponseBody
-	public String User_List(
+	public String User_Lists(
 			@RequestParam HashMap<String, String> params) throws Throwable{
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -275,7 +275,7 @@ public class sgController {
 		Map<String, Object> modelMap = new HashMap<String, Object>(); 
 		
 		try {
-			int cnt = isgService.updateH(params);
+			int cnt = isgService.addU(params);
 			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");

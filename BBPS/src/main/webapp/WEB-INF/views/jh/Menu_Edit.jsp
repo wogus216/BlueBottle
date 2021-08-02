@@ -239,11 +239,11 @@ $(document).ready(function(){
 					}
 				});
 			} else{
-		 			makePopup("", "파일 업로드 중 문제 발생",function(){});
+		 			makePopup("", "파일 업로드 중 문제 발생1",function(){});
 				} 
 			},		
 			error: function(){
-				makePopup("", "파일 업로드 중 문제 발생",function(){});
+				makePopup("", "파일 업로드 중 문제 발생2",function(){});
 			}
 		}); //ajaxForm end
 		
@@ -320,11 +320,11 @@ $(document).ready(function(){
 			}); //ajax end
 			
 			}else{
-				makePopup("", "파일 업로드 중 문제 발생",function(){});
+				makePopup("", "파일 업로드 중 문제 발생1",function(){});
 			 	}
 			},
 			error: function(){
-				makePopup("", "파일 업로드 중 문제 발생",function(){});
+				makePopup("", "파일 업로드 중 문제 발2생",function(){});
 			}
 		});//ajaxForm end
 		
@@ -373,7 +373,7 @@ $(document).ready(function(){
 		<input type="file" name="att" id="att"/>
 </form>
 <form action="#" id="edit_form" method="post">
-	<input type="hidden" name="menuNo" value="${data.MNO}">
+	<input type="hidden" name="posMenuNo" value="${param.posMenuNo}">
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
 	<input type="hidden" name="search_input" value="${param.search_input}">

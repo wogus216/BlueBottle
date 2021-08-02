@@ -63,6 +63,7 @@ public class sgDao implements IsgDao {
 
 	@Override
 	public int addU(HashMap<String, String> params) throws Throwable {
+		System.out.println("본사사용자등록");
 		return sqlSession.insert("SG.addU", params);
 	}
 

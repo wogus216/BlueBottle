@@ -380,9 +380,9 @@ function closePopup() {
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
+<td>&nbsp;</td>
 <td>${data.USER_NAME}</td>
 <td>${data.S_DT}</td>
-<td>597&nbsp;</td>
 </tr>
 </tbody>
 </table>

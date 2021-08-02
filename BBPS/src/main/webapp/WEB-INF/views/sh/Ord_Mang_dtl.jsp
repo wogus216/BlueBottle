@@ -671,7 +671,7 @@ function closePopup() {
 	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
 	<div class="rsn_content_area">
 	<c:choose>
-	<c:when test="${data.CODE_NAME eq '주문요청'}">
+<c:when test="${auth eq 2 && data.CODE_NAME eq '주문요청' && param.depNo eq 0 || param.depNo eq 1}">
 		<form action = "#" id = "OrsnForm" method = "post">
 		<textarea class="rsn_content" id = "oRsn" name="oRsn"></textarea>
 		<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
@@ -695,20 +695,10 @@ function closePopup() {
 </c:if>
 <c:if test="${auth eq 2}">
 	<c:if test="${data.CODE_NAME eq '주문승인'}">
-		<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
-			<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
-		</c:if>
 		<c:if test="${param.depNo eq 0 || param.depNo eq 2}">
 			<input type="button" class="send_btn" value="발송"/>
+			<input type="button" class="list_btn" value="목록"/>
 		</c:if>
-	</c:if>
-</c:if>
-<c:if test="${data.CODE_NAME eq '발송완료'}">
-	<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
-		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
-	</c:if>
-	<c:if test="${param.depNo eq 0 || param.depNo eq 2}">
-		<input type="button" class="send_com" style="background-color: #b3b3b3;" value="발송완료"/>
 	</c:if>
 </c:if>
 </div>
@@ -765,10 +755,11 @@ function closePopup() {
 	<div class="rsn_title">승인거부 시 사유 작성란(필수)</div>
 	<div class="rsn_content_area">
 	<c:choose>
-	<c:when test="${data2.CODE_NAME eq '환불요청'}">
+	<c:when test="${data2.CODE_NAME eq '환불요청' && auth eq 2 && param.depNo eq 0 || param.depNo eq 1}">
 	<form action = "#" id = "RrsnForm" method = "post">
 	<textarea class="rsn_content" id = "rRsn" name="rRsn"></textarea>
 	<input type = "hidden" id = "oNo" name = "oNo" value="${data.ORD_NO}"/>
+	<input type = "hidden" id = "uNo" name = "uNo" value="${params.sUSERNo}"/>
 	</form>
 	</c:when>
 	<c:otherwise>
@@ -786,18 +777,15 @@ function closePopup() {
 		</c:if>
 	</c:if>
 </c:if>
-<c:if test="${data2.CODE_NAME eq '환불승인'}">
-	<c:if test="${param.depNo eq 0 || param.depNo eq 1}">
-		<input type="button" class="apv_com" style="background-color: #b3b3b3;" value="승인완료"/>
-	</c:if>
-</c:if>
 </div>
 </div>
 </c:when>
 </c:choose>
+<c:if test="${data.CODE_NAME ne '주문승인' || param.depNo ne 0 && param.depNo ne 2}">
 <div class="list_btn_area">
 <input type="button" class="list_btn" value="목록"/>
 			</div>
+</c:if>
 		</div>
 	</div>
 </div>

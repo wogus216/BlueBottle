@@ -270,7 +270,7 @@ function closePopup() {
 </head>
 <body>
 <form action="#" id="send_form" method="post">
-	<input type="hidden" name="menuNo" value="${data.MNO}">
+	<input type="hidden" name="posMenuNo" value="${data.MNO}">
 	<input type="hidden" name="page" value="${param.page}">
 	<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/>
 	<input type="hidden" name="search_Filter" value="${param.search_Filter}">
