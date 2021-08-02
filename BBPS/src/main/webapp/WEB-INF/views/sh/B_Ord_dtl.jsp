@@ -445,7 +445,7 @@ function today() { //오늘날짜 구하기
 		<td>${data1.CNT}</td>
 		<td>${data1.PRICE}</td>
 		<c:choose>
-			<c:when test="${data1.EXPIRY_DATE eq null || data1.EXPIRY_DATE eq '2999-01-01'}"><td></td></c:when>
+			<c:when test="${data1.EXPIRY_DATE eq '2999-01-01'}"><td><input type = "hidden" id = "expdate" name = "expdate" value="${data1.EXPIRY_DATE}"/></td></c:when>
 			<c:otherwise>
 				<td>${data1.EXPIRY_DATE}<input type = "hidden" id = "expdate" name = "expdate" value="${data1.EXPIRY_DATE}"/></td>
 			</c:otherwise>
@@ -479,7 +479,9 @@ function today() { //오늘날짜 구하기
 <c:if test="${data.CODE_NAME eq '발송완료'}">
 	<c:if test="${data2.CODE_NAME eq null}">
 	<c:if test="${nowday-sendday <= 7}">
+	<c:if test="${data.STOR_FLAG eq 1}">
 		<input type="button" class="ref_btn" value="환불요청"/>
+	</c:if>
 	</c:if>
 	</c:if>
 	<c:choose>
@@ -493,6 +495,7 @@ function today() { //오늘날짜 구하기
 	</c:when>
 	<c:otherwise>
 	<input type="button" class="stor_com_btn" style="background-color: #b3b3b3;" value="입고완료"/>
+	<input class="list_btn" type="button" value="목록">
 	</c:otherwise>
 	</c:choose>
 </c:if>
@@ -563,7 +566,7 @@ function today() { //오늘날짜 구하기
 </c:when>
 </c:choose>
 <c:choose>
-<c:when test="${data.CODE_NAME eq '주문요청' || data2.CODE_NAME eq '환불요청' || data.CODE_NAME eq '발송완료' && data.STOR_FLAG eq 1 && nowday-sendday > 7 && data2.CODE_NAME eq null}">
+<c:when test="${data.STOR_FLAG eq 0 ||data.CODE_NAME eq '주문요청' || data2.CODE_NAME eq '환불요청' || data.CODE_NAME eq '발송완료' && data.STOR_FLAG eq 1 && nowday-sendday > 7 && data2.CODE_NAME eq null}">
 </c:when>
 <c:otherwise>
 <div class="list_btn_area">
