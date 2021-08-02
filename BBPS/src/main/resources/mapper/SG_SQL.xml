@@ -127,7 +127,7 @@ WHERE TXT_NO = #{nNo}
 </select>
 
 <update id="updateN" parameterType="hashmap">
-UPDATE NOTICE SET TITLE = #{nTitle}, CONTENT = #{nCon}
+UPDATE NOTICE SET TITLE = #{nTitle}, CONTENT = #{nCon}, ATT_FILE = #{nFile}
 WHERE TXT_NO = #{nNo}
 </update>
 

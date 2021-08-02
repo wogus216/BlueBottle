@@ -279,7 +279,7 @@ $(document).ready(function () {
 						success : function (res) {//성공 시 다음함수 실행
 							if (res.msg == "success") {
 								$("#updateForm").attr("action", "Notice_Detail");
-								$("#updateForm").submit(); 
+								$("#updateForm").submit();
 							} else if(res.msg == "failed") {
 								makePopup("","수정에 실패하였습니다.",function(){});
 							} else {
