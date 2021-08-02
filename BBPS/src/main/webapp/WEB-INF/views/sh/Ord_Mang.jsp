@@ -390,7 +390,7 @@ function drawPaging(pb){
 	</colgroup>
 	<thead>
 	<tr>
-		<th scope=col style= "border-left: none;" scope=col>주문번호</th>
+		<th scope=col style= "border-left: none;">주문번호</th>
 		<th scope=col>주문날짜</th>
 		<th scope=col>지점명</th>
 		<th scope=col>처리상태</th>
