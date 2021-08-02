@@ -80,7 +80,7 @@ input[type='date']{
 
 select{
 	width: 154px;
-	height: 44px;
+	height: 40px;
 	margin: 10px 5px;
 	font-size: 16px;
 	padding-left: 5px;

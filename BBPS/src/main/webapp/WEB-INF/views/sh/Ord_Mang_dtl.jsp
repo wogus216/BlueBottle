@@ -651,8 +651,8 @@ function closePopup() {
 			<c:otherwise>
 				<c:choose>
 					<c:when test="${data1.EXPIRY_DATE ne '2999-01-01'}">
-					<td>${data1.EXPIRY_DATE}</td>
-				</c:when>
+						<td>${data1.EXPIRY_DATE}</td>
+					</c:when>
 				<c:otherwise>
 					<td></td>
 				</c:otherwise>
