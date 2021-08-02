@@ -291,9 +291,8 @@ $(document).ready(function(){
 					data : params,
 					success : function(res){
 						if(res.msg == "success"){
-							makechkPopup("품목삭제","삭제에 성공하였습니다.",null);
-							$(".chk_confirm_Btn").on("click",function(){
-								location.href = "Item_List";
+							makechkPopup("품목삭제","삭제에 성공하였습니다.",function(){
+								$("#goForm").submit();
 							});
 						}else if (res.msg == "failed"){
 							makechkPopup("품목삭제","삭제에 실패하였습니다.",null);
@@ -389,7 +388,7 @@ function makechkPopup(title, contents, func) {
 	$("body").prepend(html);
 	$(".popup_Area").hide().show();
 	
-	$(".popup_Btn, .close_Btn").on("click",function(){
+	$(".chk_confirm_Btn, .close_Btn").on("click",function(){
 		if(func !=null){
 			func.call();
 		}
