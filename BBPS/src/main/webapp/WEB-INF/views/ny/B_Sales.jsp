@@ -77,10 +77,16 @@ tbody td:first-child{
 	text-align: center;
 }
 
-input{
-	width:150px;
-	height:40px;
-	margin:10px 5px;
+select{
+	width: 154px;
+	height: 40px;
+	margin: 10px 5px;
+	font-size: 16px;
+	padding-left: 5px;
+}
+
+select:focus {
+	outline: none;
 }
 
 .sales_info, .tot_sales{
@@ -107,10 +113,10 @@ input{
 	font-size: 20px;
 }
 .search_btn, .graph_btn, .reset_btn{
+	height: 38px;
 	vertical-align: bottom;
 	color: white;
 	width: 100px;
-	height: 38px;
 	text-align:center;
 	border:0;
 	border-radius: 3px;
@@ -124,10 +130,12 @@ input{
 }
 .graph_btn{
 	background-color: #bf4040;
+	margin-right: 0px;
 }
 .reset_btn {
 	background-color: #b3b3b3;
 }
+
 
 .graph_info{
 	width: 104%;
@@ -140,6 +148,7 @@ input[type='date']{
 	font-size: 16px;
 	width: 140px;
     height: 35px;
+    margin: 10px 5px;
 	padding-left: 5px;
 }
 

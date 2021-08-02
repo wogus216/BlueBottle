@@ -254,9 +254,9 @@
 	
 	</select>
 	
-	<!-- 지점 재고리스트 행 개수 -->
+	<!-- 지점 재고리스트 행 개수 --><!--중복제거  -->
 	<select id ="getBSLCnt" parameterType="hashmap" resultType="Integer">
-	SELECT COUNT(*)
+	SELECT COUNT(DISTINCT I.ITEM_NO)
     FROM (SELECT BS.ITEM_NO, BS.EXPIRY_DATE , SUM(BS.CNT) AS ISUM              
           FROM BRCH_STOR BS   INNER JOIN ORD O
                                 ON BS.ORD_NO = O.ORD_NO
