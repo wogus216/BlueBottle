@@ -114,7 +114,7 @@ button:focus{outline:none;}
 	text-align: center;
 	padding-top:60px;
 }
-.ref_req_btn{
+.ref_req_btn, .list_btn{
 	width:180px;
 	height:50px;
 	background-color: #01a1dd;
@@ -128,7 +128,75 @@ button:focus{outline:none;}
 	margin:10px;
 	cursor: pointer;
 }
-
+.popup_area body {
+	margin: 0px;
+}
+.bg{
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background-color: #000000;
+	z-index: 200;
+	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
+}
+.popup_area {
+	display: inline-block;
+	width: 400px;
+	height: 240px;
+	background-color: #ffffff;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	position: absolute;
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
+	z-index: 300;
+}
+.popup_head{
+	height: 30px;
+	font-size: 16pt;
+	background-color: #01a1dd;
+	color:white;
+	padding:10px;
+	font-weight:bold;
+}
+.popup_btn{
+	text-align:center;
+}
+.popup_btn button{
+	color: white;
+	width: 150px;
+	height: 40px;
+	text-align:center;
+	border:0;
+	border-radius: 3px;
+	font-size:18px;
+	margin:10px;
+	cursor: pointer;
+	background-color: rgb(41, 128, 185);
+}
+.popup_content{
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
+	text-align:center;
+	font-size:18px;
+	color: black
+}
+.close_btn{
+	width: 25px;
+	height: 25px;
+	float: right;
+	margin: 0px;
+	font-size: 25px;
+	color: white;
+	text-align:center;
+	border:0;
+	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
+}
 </style>
 <script type="text/javascript"
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
@@ -150,6 +218,9 @@ $(document).ready(function(){
 		}
 		checkBox_check();
 		});
+	$(".list_btn").on("click",function(){
+		history.back();
+	});
 	$("#ck1").on("click",function(){
 		if($("#ck1").is(":checked") == true){
 			$(".rsn_note").prop("disabled",false);
@@ -271,7 +342,7 @@ function drawList(list){
 			}else{
 			html += "<td>"+d.EXPIRY_DATE+"</td>";
 			}
-			html += "<td><input class=\"ref_cnt\" disabled type=\"number\" value=\"0\" name=\"ref_cnt\" maxlength=\"5\" min=\"0\" max=\""+d.CNT+"\"/></td>";
+			html += "<td><input class=\"ref_cnt\" disabled type=\"number\" min=\"1\" value=\"0\" name=\"ref_cnt\" maxlength=\"5\" min=\"0\" max=\""+d.CNT+"\"/></td>";
 			html += "<td><input class=\"rsn_note\" disabled name=\"rsn_note\" value=\"환불사유를 입력해주세요.\" type=\"text\" /></td>";
 			html += "</tr>";
 	}
@@ -381,6 +452,7 @@ function closePopup() {
 </ul>
 <div class="btn_area">
 	<input type="button" class="ref_req_btn" value="환불요청"/>
+	<input type="button" class="list_btn" value="목록"/>
 </div>
 </div>
 </div>

@@ -212,10 +212,12 @@ $(document).ready(function(){
 	
 	$(".add_btn").on("click",function() {
 		if($.trim($("#inputTxt").val()) == "") {
-			alert("추가할 카테고리명을 입력하세요.");
+			makePopup("오류", "카테고리명을 입력하세요.", null);
 		}
 		else{
 			var params = $("#actionForm").serialize();
+			
+			console.log(params);
 			
 			$.ajax({
 				url: "itemCateAdd",
@@ -429,8 +431,6 @@ function closePopup() {
 		<input type="button" class="add_btn" value="등록" />
 		<input type="hidden" id="cateNo" name="cateNo" />
 		<input type="hidden" id="cateName" name="cateName" />
-		<input type="hidden" id="uNo" name="uNo" value="${sUSERNo}"/>
-        <input type="hidden"  id="Dt" name="Dt" value="${sDEPNo}">
 	</form> 
 </div>
 <table>

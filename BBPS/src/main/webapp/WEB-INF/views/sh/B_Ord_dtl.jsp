@@ -36,10 +36,6 @@ li {
     margin-left: 30px;
     width: 1250px;
 }
-.history_btn{
-	float:right;
-	margin:0;
-}
 .ord_area, .ref_area{
 	margin-top:100px;
 }
@@ -182,15 +178,15 @@ button:focus{outline:none;}
 	z-index: 200;
 	opacity: 0.6; /* 0.0(투명)~1.0(불투명)*/
 }
-.popup_area{
+.popup_area {
 	display: inline-block;
-	width: 600px;
-	height: 360px;
+	width: 400px;
+	height: 240px;
 	background-color: #ffffff;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	position: absolute;
-	top: calc(50% - 180px); /*높이의 반만큼 뺌*/
-	left: calc(50% - 300px); /*너비의 반만큼 뺌*/
+	top: calc(50% - 120px); /*높이의 반만큼 뺌*/
+	left: calc(50% - 200px); /*너비의 반만큼 뺌*/
 	z-index: 300;
 }
 .popup_head{
@@ -204,7 +200,7 @@ button:focus{outline:none;}
 .popup_btn{
 	text-align:center;
 }
-.popup_btn input{
+.popup_btn button{
 	color: white;
 	width: 150px;
 	height: 40px;
@@ -214,31 +210,28 @@ button:focus{outline:none;}
 	font-size:18px;
 	margin:10px;
 	cursor: pointer;
+	background-color: rgb(41, 128, 185);
 }
 .popup_content{
-	margin:20px;
-	font-size:18px;
-}
-.popup_area table {
-    width: 100%;
-    table-layout: fixed;
-    background: #ffffff;
-	border-top: 2px solid;
-	border-bottom: 2px solid;
+	margin-bottom:80px;
+	margin-top:20px;
+	margin-left:20px;
 	text-align:center;
-}
-
-.popup_area td:first-child{
-	border-left: none;
+	font-size:18px;
+	color: black
 }
 .close_btn{
 	width: 25px;
 	height: 25px;
-	background-color: #01a1dd;
 	float: right;
 	margin: 0px;
 	font-size: 25px;
+	color: white;
+	text-align:center;
+	border:0;
 	cursor: pointer;
+	background-color: #01a1dd;
+	outline:none;
 }
 .ord_cnl_com_btn, .ref_cnl_com_btn, .stor_com_btn{
 	cursor : default;
@@ -248,7 +241,6 @@ button:focus{outline:none;}
 	src="resources/script/jquery/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
 	$(".list_btn").on("click",function(){
 		location.href="B_Ord_List";
 	});
@@ -280,7 +272,6 @@ $(document).ready(function(){
 			error : function(request,status,error){
 				console.log(error);
 			}
-		});
 		});
 		});
 	});
@@ -332,7 +323,7 @@ $(document).ready(function(){
 				console.log(error);
 			}
 		}); 
-		}
+		});
 	});
 	$(".ref_btn").on("click",function(){
 		$("#search_input").val($("#search_old_txt").val());
@@ -346,7 +337,7 @@ function makePopup2(title, contents, func){
 	html+= "<div class=\"bg\"></div>";	
 	html+= "<div class=\"popup_area\">";	
 	html+= "<div class=\"popup_head\">"+title +"";	
-	html+= 		"<button class=\"close_btn\" >X</button>";	
+	html+= 		"<button class=\"close_btn\">X</button>";	
 	html+= "</div>";	
 	html+= "<div class=\"popup_content\">"+contents+"</div>";	
 	html+= 		"<div class=\"popup_btn\">";	
@@ -394,6 +385,11 @@ function closePopup() {
 		$(".bg, .popup_area").remove();
 	}); //popup_Btn end
 }
+function today() { //오늘날짜 구하기
+	
+	  var d = new Date();
+	  return splitdate(d);
+}
 </script>
 <style type="text/css"></style>
 </head>
@@ -420,6 +416,7 @@ function closePopup() {
 </c:choose>
 </ul>
 <form action = "#" id = "sendForm" method = "post">
+<input type = "hidden" id = "bNo" name = "bNo" value="${sBRCHNo}"/>
 <input type = "hidden" id = "oNo" name = "oNo" value = "${data.ORD_NO}"/>
 <table cellspacing="0">
 	<colgroup>
@@ -488,6 +485,11 @@ function closePopup() {
 	<c:choose>
 	<c:when test="${data.STOR_FLAG eq 1}">
 	<input type="button" class="stor_btn" value="입고"/>
+	<c:if test="${nowday-sendday > 7}">
+	<c:if test="${data2.CODE_NAME eq null}">
+	<input class="list_btn" type="button" value="목록">
+	</c:if>
+	</c:if>
 	</c:when>
 	<c:otherwise>
 	<input type="button" class="stor_com_btn" style="background-color: #b3b3b3;" value="입고완료"/>
@@ -552,21 +554,23 @@ function closePopup() {
 </div>
 </c:if>
 <div class="btn_area">
-   <c:if test="${data.CODE_NAME eq '환불요청'}">
-   <input type="button" class="ref_cnl_btn" style="background-color: #b3b3b3;" value="환불요청취소"/>
-   </c:if>
-   <c:if test="${data.CODE_NAME eq '환불요청취소'}">
-   <input type="button" class="ref_cnl_com_btn" style="background-color: #b3b3b3;" value="환불요청취소완료">
+   <c:if test="${data2.CODE_NAME eq '환불요청'}">
+   <input type="button" class="ref_cnl_btn" value="환불취소"/>
+   <input class="list_btn" type="button" value="목록">
    </c:if>
 </div>
 </div>
 </c:when>
 </c:choose>
-<c:if test="${data.CODE_NAME ne '주문요청'}">
+<c:choose>
+<c:when test="${data.CODE_NAME eq '주문요청' || data2.CODE_NAME eq '환불요청' || data.CODE_NAME eq '발송완료' && data.STOR_FLAG eq 1 && nowday-sendday > 7 && data2.CODE_NAME eq null}">
+</c:when>
+<c:otherwise>
 <div class="list_btn_area">
-<input class="list_btn" type="button" value="목록">
+<input class="list_btn" id="list_btn" type="button" value="목록">
 </div>
-</c:if>
+</c:otherwise>
+</c:choose>
 </div>
 </div>
 </body>

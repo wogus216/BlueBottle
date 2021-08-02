@@ -370,7 +370,7 @@ GROUP BY ORD_NO, REF_NO, ENROLL_DATE, CODE_NAME, NON_APV_RSN
 	WHERE ORD_NO = #{oNo}
 </update>
 <update id="cnlRef" parameterType="hashmap">
-	UPDATE REF SET STAT_CODE = 6, SEND_DATE=SYSDATE
+	UPDATE REF SET STAT_CODE = 6, PROCESS_DATE=SYSDATE
 	WHERE ORD_NO = #{oNo}
 </update>
 <select id="getRefItem" parameterType="hashmap" resultType="hashmap">

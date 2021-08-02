@@ -53,6 +53,7 @@ h1 {
 }
 .list_btn{
 	width: 110px;
+	background-color: #01a1dd;
 	color: white;
 	height: 40px;
 	text-align:center;
@@ -455,6 +456,13 @@ function makeMenuChartDetail(list, color, name) {
 // select box 연도 , 월 표시
 function setDateBox() {
  
+	$(".daily #year").children('option').remove();
+	$(".daily #month").children('option').remove();
+	$(".monthly #year").children('option').remove();
+	$(".cate #year").children('option').remove();
+	$(".menu #year").children('option').remove();
+	$(".menu #month").children('option').remove();	
+	
   var dt = new Date();
   var year = "";
   var today_year = dt.getFullYear();

@@ -62,6 +62,7 @@ public class shController {
 		List<HashMap<String,String>> list = ishService.getOList(params);
 		
 		modelMap.put("list", list);
+		modelMap.put("cnt", cnt);
 		modelMap.put("pb", pb);
 		
 		return mapper.writeValueAsString(modelMap);
@@ -254,6 +255,7 @@ public class shController {
 		
 		modelMap.put("list", list);
 		modelMap.put("pb", pb);
+		modelMap.put("cnt", cnt);
 		
 		return mapper.writeValueAsString(modelMap);
 	}

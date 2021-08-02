@@ -157,6 +157,8 @@ public class nyController {
 		try {
 			int cnt = iNyService.addItemCate(params);
 			
+			System.out.println(cnt);
+			
 			if(cnt > 0) {
 				modelMap.put("msg", "success");
 			} else {
@@ -342,6 +344,12 @@ public class nyController {
 			params.put("endCnt", Integer.toString(pb.getEndCount()));
 			
 			List<HashMap<String, String>> list = iNyService.getSalesList(params);
+		
+			if(list.size() == 0) {
+				modelMap.put("status","null");
+			} else {
+				modelMap.put("status","fine");
+			}
 			
 			modelMap.put("list", list);
 			modelMap.put("pb", pb);
