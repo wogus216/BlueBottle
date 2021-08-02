@@ -416,6 +416,7 @@ function today() { //오늘날짜 구하기
 </c:choose>
 </ul>
 <form action = "#" id = "sendForm" method = "post">
+<input type = "hidden" id = "bNo" name = "bNo" value="${sBRCHNo}"/>
 <input type = "hidden" id = "oNo" name = "oNo" value = "${data.ORD_NO}"/>
 <table cellspacing="0">
 	<colgroup>
