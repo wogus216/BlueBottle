@@ -72,7 +72,7 @@ input:focus{
 }
 
 input[type='date']{
-	font-size: 16px;
+	font-size: 14px;
 	width: 140px;
     height: 35px;
 	padding-left: 5px;
@@ -140,12 +140,6 @@ select:focus {
 	text-align: right;
 	color: red;
 	visibility: hidden;
-}
-
-input[type='date']{
-	font-size: 16px;
-	width: 140px;
-	padding-left: 5px;
 }
 
 .page_area, .page_btn{

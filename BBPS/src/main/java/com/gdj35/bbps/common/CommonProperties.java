@@ -19,7 +19,7 @@ public class CommonProperties {
 	/**
 	 * 파일 업로드
 	 */
-	//파일 업로드 경로  //공통용
+	//파일 업로드 경로  /서버용
 	public static final String FILE_UPLOAD_PATH = "C:\\MyWork\\GoodiWorkspace\\.metadata\\.plugins"
 													+ "\\org.eclipse.wst.server.core\\tmp0"
 													+ "\\wtpwebapps\\BBPS"
