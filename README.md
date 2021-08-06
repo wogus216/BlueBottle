@@ -24,6 +24,5 @@
  - jQuery
  
  ## 3. ERD 설계
-![캡처](https://user-images.githubusercontent.com/71995287/128498411-7da78946-7a60-414c-b282-833d21ca98c4.PNG)
-![캡처2](https://user-images.githubusercontent.com/71995287/128498458-32a917aa-cb8b-45b7-8fee-426a7e09c202.PNG)
+![진짜 2](https://user-images.githubusercontent.com/71995287/128503997-8f2e9668-ef1d-477e-93bf-14e77ee1c07c.PNG)
 
