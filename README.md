@@ -49,9 +49,18 @@
  
 * 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)
 * 조건문을 통해 권한에 맞게 그립니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
+ 
+#### 더욱 자세한 정리는 블로그에 있습니다.
+* [메뉴 블로그글](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
 
-![메뉴 블로그글](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
 
+### 4-3 포스
+ ![포스](https://user-images.githubusercontent.com/71995287/128507995-b7fa61ec-8ece-486b-b4e5-39eac57dfe83.PNG)
+ ![포스2](https://user-images.githubusercontent.com/71995287/128514547-30eb37a0-3f45-4b4f-8af9-59dcd496db62.PNG)
+ 
+ 
+
+ 
 </div>
 </details>
 
