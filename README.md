@@ -8,6 +8,7 @@
 - 팀프로젝트 (5명)
 
 
+
 <br/>
 
 ## 2. 사용 기술
@@ -25,4 +26,15 @@
  
  ## 3. ERD 설계
 ![진짜 2](https://user-images.githubusercontent.com/71995287/128503997-8f2e9668-ef1d-477e-93bf-14e77ee1c07c.PNG)
+
+
+## 4. 담당 파트
+제가 맡은 부분은 로그인 페이지, 상단메뉴바, 포스, 포스메뉴관리, 마이페이지 입니다.
+
+<details>
+<summary>{담당파트 설명 펼치기}</summary>
+<div markdown="1">       
+ ### 4.1 로그인 페이지
+</div>
+</details>
 
