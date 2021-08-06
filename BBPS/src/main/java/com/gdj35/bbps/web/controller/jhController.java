@@ -84,6 +84,7 @@ public class jhController {
 		
 		
 		modelMap.put("resMsg", "success");
+		
 	} else { // 사용자 정보가 없음
 		modelMap.put("resMsg", "failed");
 		

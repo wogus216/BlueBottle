@@ -47,7 +47,7 @@ body {
 
 /* 탑부분 */
 
-.now_ord, .date,.brch,.pos_uesr{
+.now_ord, .ord_no, .date,.brch,.pos_uesr{
 	display: inline-block;
 	font-size: 22px;
 	line-height: 35px;
@@ -55,8 +55,12 @@ body {
 	float: left;
 }
 .now_ord{
-	width: 40%;
+	width: 10%;
 	
+}
+
+.ord_no{
+	width: 30%;
 }
 .date,.brch{
 	width: 15%;
@@ -119,9 +123,9 @@ body {
 
 .choice_cnl{
 	font-size: 20px;
-    width: 75px;
+    width: 65px;
     height: 60px;
-    background-color: #b3b3b3;
+    background-color: #b2b2b2;
     color: black;
     line-height: 20px;
 }
@@ -491,7 +495,9 @@ $(document).ready(function(){
 	
 	//주문 번호 생성
 	makeOrdNo(ordNum);
-
+	
+	
+	
 	
 	//오늘 날짜
 	$(".date").html(year+"년"+month+"월"+date+"일");
@@ -788,6 +794,7 @@ function makeOrdNo(){
 		dataType: "json",
 		success : function(res) {
 				ordNo(res.ordNum);
+				$(".ord_no").html("주문번호: "+$("#ordNo").val());
 		},
 		error: function(request, status, error){ 
 			console.log(error);
@@ -1190,6 +1197,7 @@ function drawPaging(pb){
 <body>
 	<div class="top">
 		<div class="now_ord">현재주문</div>
+		<div class="ord_no"></div>
 		<div class="date"></div>
 		<div class="brch">${sBRCHNm}</div>
 		<div class="pos_uesr">사용자: ${sMGRNm}</div>
