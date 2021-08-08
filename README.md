@@ -1,7 +1,7 @@
 # ☕BlueBottle
->블루보틀 재고관리, POS 웹사이트
-
+>블루보틀 재고관리, POS 웹사이트<BR/>
 <br/>
+<a href="http://stackoverflow.com" target="_blank">Go</a>
 
 ## 1.제작기간 & 참여인원
 - 2021년 3월 30일 ~ 8월 1일
@@ -52,7 +52,7 @@
 * 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)
 * 조건문을 통해 권한에 맞게 그립니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
  
-**자세한 정리는 블로그에 있습니다.**
+**자세한 내용은 블로그에 있습니다.**
  <br/>
 * [상단메뉴](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
 
@@ -119,7 +119,7 @@
  * 해결책 : focus를 통해 변경 전 값을 담아서 처리했고, 변경 후 값을 change를 통해서 해결했다.
    * 갯수 변경 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L533)
  
-**자세한 정리를 블로그에 있습니다.**
+**자세한 내용은 블로그에 있습니다.**
  <br/>
  *  [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
  *  [갯수 변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
