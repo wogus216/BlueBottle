@@ -376,8 +376,9 @@ function inputOrd(ord){
 
 </div>
 </details>
- 
-**트러블 슈팅 **
+	
+ **트러블 슈팅모음**
+	
   >  [트러블 슈팅](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
 	
 <br/>
