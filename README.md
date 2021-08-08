@@ -133,16 +133,18 @@
   
  ### 5-1 주문번호 생성
  ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
- * 문제점: 매출금액,매출품목은 부모자식 관계이면서, 동일한 주문번호가 필요했다.
- * 해결책: 주문번호를 먼저 생성한 후 jsp에서 히든 값으로 담은 뒤 form를 통해서 매출금액,매출품목의 주문번호로 넣어주었다.
+ * 문제점: 매출금액,매출품목은 부모자식 관계이면서, 동일한 주문번호가 필요했습니다.
+ * 해결책: 주문번호를 먼저 생성 후 히든 값으로 담은 뒤 form를 통해 매출금액,매출품목의 주문번호로 넣어주었습니다.
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L214)
      * 주문번호 생성 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L789)
 <br/>
  
  ### 5-2 포스메뉴 갯수 변경 시 적용
+ <br/>
+ 
  * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경이 안됐다.
- * 해결책 : focus를 통해 변경 전 값을 담아서 처리했고, 변경 후 값을 change를 통해서 해결했다.
+ * 해결책 : focus를 통해 변경 전 값을 담았고, 변경 후 값은 change를 통해서 해결했다.
    * 갯수 변경 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L533)
  
 **자세한 내용은 블로그에 있습니다.**
@@ -375,7 +377,7 @@ function inputOrd(ord){
 </div>
 </details>
  
-**트러블 슈팅 자세한 정리**
+**트러블 슈팅 **
   >  [트러블 슈팅](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
 	
 <br/>
