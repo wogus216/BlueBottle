@@ -1,7 +1,7 @@
 # ☕BlueBottle
 >블루보틀 재고관리, POS 웹사이트<BR/>
 <br/>
-<a href="http://stackoverflow.com" target="_blank">Go</a>
+
 
 ## 1.제작기간 & 참여인원
 - 2021년 3월 30일 ~ 8월 1일
@@ -104,6 +104,8 @@
   * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L404)
   * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L228)
  
+ </div>
+</details>
  ##  5. 🌋핵심 트러블 슈팅
  
  ### 5-1 주문번호 생성
@@ -123,6 +125,224 @@
  <br/>
  *  [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
  *  [갯수 변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
+
+  
+
+  ##  6. 💣각종 트러블 슈팅들
+ 
+ <details>
+<summary>테이블 연결 오류</summary>
+<div markdown="1">
+<br/>
+*  jdbc.properties 설정을 안해놨다.
+![Untitled (5)](https://user-images.githubusercontent.com/71995287/128625178-7c049d80-22d8-4e28-9725-6c31305a7b8d.png)
+
 </div>
 </details>
+
+ <details>
+<summary>form id 중복</summary>
+<div markdown="1">
+<br/>
+* jsp 파일 안에서 form id 중복으로 인해 오류가 발생했다.
+
+ ** 수정 전 코드**
+ 
+ ```javascript
+ <form action="#" id="actionForm" method="post">
+   <input type="hidden"  id="hUserNo" name="hUserNo" value="${hUserNo}">
+   <input type="hidden"  id="hDt" name="hDt" value="${hDt}">
+ </form>
+ 
+<form action="#" id="actionForm" method="post">
+			<input type="hidden" id="menuNo" name="menuNo"/>
+			<input type="hidden" id="cateNo" name="cateNo"/>
+			<input type="hidden" id="page" name="page" value="${page}"/>
+			<div class="search_info">
+				<select class="search_filter">
+					<option value="0" selected="selected">메뉴이름</option>
+					<option value="1">카테고리</option>
+					<option value="2">가격</option>
+				</select>
+				<input type="text" class="search_input" value="${param.search_input}"/>
+				<button class="search_btn">검색</button>
+			</div>
+		</form>
+ ```
+ ** 수정 후 코드**
+ 
+ ```javascript
+ <form action="#" id="hMenuForm" method="post">
+		<input type="hidden"  id="hUserNo" name="hUserNo" value="${hUserNo}">
+		<input type="hidden"  id="hDt" name="hDt" value="${hDt}">
+</form>
+ 
+<form action="#" id="menuForm" method="post">
+			<input type="hidden" id="menuNo" name="menuNo"/>
+			<input type="hidden" id="cateNo" name="cateNo"/>
+			<input type="hidden" id="page" name="page" value="${page}"/>
+			<div class="search_info">
+				<select class="search_filter">
+					<option value="0" selected="selected">메뉴이름</option>
+					<option value="1">카테고리</option>
+					<option value="2">가격</option>
+				</select>
+				<input type="text" class="search_input" value="${param.search_input}"/>
+				<button class="search_btn">검색</button>
+			</div>
+		</form>
+ ```
+
+</div>
+</details>
+
+<details>
+<summary>주문 중첩 오류</summary>
+<div markdown="1">
+<br/>
+![Untitled (6)](https://user-images.githubusercontent.com/71995287/128625376-0964a20d-7d68-4dd8-8aad-f4feae88e06e.png)
+ * ul 태그 중복으로 인해서 중첩 오류
+ 
+ ```javascript
+ <form action="#" id="menu_form" method="post">
+		<input type="hidden" id="cateNo" name="cateNo" value="${param.cateNo}"/> 
+		<input type="hidden" id="menuCnt" name="menuCnt" /> 
+			<div class="left">
+					<div class="ord_area">
+						<ul class="table_ord" cellspacing="0">
+							
+						</ul>
+					</div>
+   ```  
+  **수정 전 코드**  
+    
+  ```javascript
+    function inputOrd(ord){
+	var order ="";
+	// "+ + "
+	
+	order+= "<ul mNo=\""+ ord.MNO +"\" class=\"table_ord\" cellspacing=\"0\">";                                                         
+	order+= 		"<li mNo=\""+ ord.MNO +"\">";
+	order+= 			"<img src=\"resources/upload/"+ord.MIMG+"\" class=\"choice_img\">";
+	order+= 		"</li>";
+	order+= 		"<li>";
+	order+= 			"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\">";
+	order+= 		"</li>";
+	order+= 		"<li>";
+	order+= 			"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
+	order+= 		"</li>";
+	order+= 		"<li>";
+	order+= 			"<input type=\"text\" value=1 class=\"choice_num\">";
+	order+= 		"</li>";
+	order+= 		"<li>";
+	order+= 			"<input type=\"button\" value=\"+\" class=\"choice_plus\">";
+	order+=		 "<br/>";
+	order+= 			"<input type=\"button\" value=\"-\" class=\"choice_minus\">";
+	order+= 		"</li>";
+	order+= "</ul>";
+	
+	
+	
+	$(".table_ord").append(order);
+ ```
+   **수정 후 코드**  
+    
+```javascript
+  //현재 주문 넣기
+function inputOrd(ord){
+	var order ="";
+	
+	// "+ + "
+	order+= 		"<div class=\"ord_stat\">";
+	order+= 			"<div class=\"ord_img\" mNo=\""+ ord.MNO +"\">";
+	order+= 				"<img src=\"resources/upload/"+ord.MIMG+"\" class=\"choice_img\">";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\">";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
+	order+= 			"</div >";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<select id=\"ord_cnt\" name=\"ord_cnt\">";
+	order+= 					"<option value=\"1\" selected=\"selected\">1</option>";
+	order+= 					"<option value=\"2\">2</option>";
+	order+= 					"<option value=\"3\">3</option>";
+	order+= 					"<option value=\"4\">4</option>";
+	order+= 					"<option value=\"5\">5</option>";
+	order+= 					"<option value=\"6\">6</option>";
+	order+= 					"<option value=\"7\">7</option>";
+	order+= 					"<option value=\"8\">8</option>";
+	order+= 					"<option value=\"9\">9</option>";
+	order+= 					"<option value=\"10\">10</option>";
+	order+= 				"</select>";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"button\" value=\"취소\" class=\"choice_cnl\">";
+	order+= 			"</div >";
+	order+= 		"</div>";
+	
+	$(".ord_area").append(order);
+	ordCnt();
+} 
+```
+
+</div>
+</details>
+
+<details>
+<summary>name 값 전달 오류</summary>
+<div markdown="1">
+<br/>
+* input타입이 아닌 태그들은 form에 의해서 `name값`으로 전달이 불가능해 값을 담아줘서 보내야한다.
+* @RequestParam 변수명과 값을 던져주는 jsp에 있는 네임값과 일치해야한다.
+
+#### Controller
+```java
+ @ResponseBody
+		public String input_Menus(
+				@RequestParam ArrayList<String> menuNo, //jsp에 있는 네임값과 일치해야한다
+				@RequestParam ArrayList<String> oMCnt,
+				@RequestParam ArrayList<String> ordNo) throws Throwable{
+```
+#### Pos.jsp
+```javascript
+ 	order+= 		"<div class=\"ord_stat\" mNo=\""+ ord.MNO +"\">";
+	order+= 			"<div class=\"ord_img\" mNo=\""+ ord.MNO +"\" >";
+	order+= 				"<img src=\"resources/upload/"+ord.MIMG+"\" class=\"choice_img\">";
+	order+=" <input type=\"hidden\" id=\"menuNo\" name=\"menuNo\" value=\""+ ord.MNO + "\"/>";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MNAME + "\" class=\"choice_menu\" >";
+	order+= 			"</div>";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<input type=\"text\" value=\""+ ord.MPRICE + "\" class=\"choice_price\">";
+	order+= 			"</div >";
+	order+= 			"<div class=\"ord_div\">";
+	order+= 				"<select class=\"ord_cnt\" name=\"oMCnt\" mNo=\""+ ord.MNO +"\" value=\"\">";
+```
+
+</div>
+</details>
+
+<details>
+<summary>ORA-00923: FROM 키워드가 필요한 위치에 없습니다.</summary>
+<div markdown="1">
+<br/>
+* 대부분 콤마(,) 띄어쓰기 세미콜론(;) 등 의 오타나 문법에 의해 발생한 오류였다.
+* 나의 경우 `콤마`실수로 콤마를 추가해 문제를 해결했다.
+```sql
+ <!-- 지점 마이페이지 -->
+	<select id="getBUser" parameterType="hashmap" resultType="hashmap">
+		SELECT BRCH_NO AS BNO, ID, `PW 오류지점` BRCH_NAME AS BNM, POST_NUM AS PNUM, DFT_ADDRESS AS DFADDR, DTL_ADDRESS AS DTADDR, CALL_NUM AS CNUM, MGR_NAME AS MNM, MGR_PHONE_NUM AS MGPNUM
+		FROM BRCH
+		WHERE BRCH_NO = #{brchNo}
+	</select> 
+```
+
+</div>
+</details>
+ 
+**트러블 슈팅 정리**
+  *  [트러블 슈팅 노션](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
 
