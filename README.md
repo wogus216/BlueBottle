@@ -35,11 +35,14 @@
 ## 4. 담당 파트
 제가 맡은 부분은 `로그인 페이지, 상단메뉴바, 포스, 포스메뉴관리, 마이페이지` 입니다.
 <br/>
-> 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. target 속성이 안되서 새창으로 못띄웁니다.
-> 참고 : [https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
+
 <details>
  <summary><b>담당파트 설명 펼치기</b></summary>
 <div markdown="1">
+<br/>
+	
+> 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. target 속성이 안되서 새창으로 못해요ㅠㅠ
+<br/>참고 : [https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
 <br/>
  
 ### 4-1 로그인 페이지
@@ -82,13 +85,14 @@
  #### 1. 주문
  * 카테고리 클릭 시 카테고리 번호를 히든값으로 form에 담아 전송 후 비동시 방식으로 그려줍니다.
  
-   - Javascript🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L705)
-   - mybatis🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/resources/mapper/JH_SQL.xml#L165)
+   * 카테고리선택🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L705)
+   * Query🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/resources/mapper/JH_SQL.xml#L165)
 
  * 메뉴 클릭 시 중복 체크 후 주문상황에 넣어줍니다.🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/d2a9229a0ac32a7ae24598bcf1ff559ba9141bfc/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L512)
  
  #### 2. 결제
- * 현금, 카드 결제 클릭 시 숫자 키보드가 출력되고 받은 금액을 입력 후 확인 클릭 시 받은금액 과 결제금액을 비교 후 문제없을 시 결제 성공합니다.
+ * 받은 금액을 입력 후 확인 클릭 시 받은금액 과 결제금액을 비교 후 조건 통과 시 결제 성공합니다.
+	
    * 현금, 카드결제 코드🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/d2a9229a0ac32a7ae24598bcf1ff559ba9141bfc/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L616)
    * 받은 금액, 결제금액 비교 코드🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L679)
  
@@ -104,7 +108,8 @@
  ![포스관리1](https://user-images.githubusercontent.com/71995287/128507876-cd28d39b-a3dc-49a2-a677-28160f97e018.PNG)
  ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)
  
- 비동기 방식으로 메뉴 목록, 페이징 취득
+ * 비동기 방식으로 메뉴 목록, 페이징 취득
+	
 * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
 * ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L204)
 * 메뉴 이미지 변경 후 이미지 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
@@ -128,8 +133,8 @@
   
  ### 5-1 주문번호 생성
  ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
- * 문제점 :매출번호는 매출금액, 매출품목에 필요하다. 그리고 두 테이블의 매출번호는 같은 번호가 필요했고, 그래서 `시퀀스.NEXTVAL`를 사용할 수 없었다.
- * 해결책 : 주문번호를 먼저 생성한 후 jsp에서 히든 값으로 담은 뒤 form를 통해서 매출금액,매출품목의 주문번호로 넣어주었다.
+ * 문제점: 매출금액,매출품목은 부모자식 관계이면서, 동일한 주문번호가 필요했다.
+ * 해결책: 주문번호를 먼저 생성한 후 jsp에서 히든 값으로 담은 뒤 form를 통해서 매출금액,매출품목의 주문번호로 넣어주었다.
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L214)
      * 주문번호 생성 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L789)
