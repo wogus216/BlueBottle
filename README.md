@@ -23,13 +23,18 @@
  - CSS
  - Javascript
  - jQuery
- 
+
+
+<br/>
+
 ## 3. ERD 설계
 ![진짜3](https://user-images.githubusercontent.com/71995287/128507795-107c7f19-6c83-42c6-9521-10a36298dd25.PNG)
 
+<br/>
 
 ## 4. 담당 파트
-제가 맡은 부분은 로그인 페이지, 상단메뉴바, 포스, 포스메뉴관리, 마이페이지 입니다.
+제가 맡은 부분은 `로그인 페이지, 상단메뉴바, 포스, 포스메뉴관리, 마이페이지` 입니다.
+<br/>
 
 <details>
  <summary><b>담당파트 설명 펼치기</b></summary>
@@ -37,23 +42,31 @@
 <br/>
  
 ### 4-1 로그인 페이지
- 
+ <br/>
  ![로그인](https://user-images.githubusercontent.com/71995287/128507816-03641424-20de-41aa-b688-97abb2fc0893.PNG)
- 
+ <br/>
+	
  * ID와 PW 입력 후  로그인 시 비동기로 확인합니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L58){:target="_blank"}
  * ID 또는 PW가 틀릴 시에 로그인 실패하고 팝업창이 나옵니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Login.jsp#L235)
  * 세션을 통해 로그인과 비로그인 상태에 따른 다른 페이지 출력 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L45)
- 
+ <br/>
+	
  ### 4-2 상단 메뉴바
+<br/>
+	
  * 권한에 따라 메뉴가 구성됩니다.
  ![메뉴바 1](https://user-images.githubusercontent.com/71995287/128507825-85ac1abe-164d-47fd-b24c-e0b82df04b43.PNG)
  ![메뉴바2](https://user-images.githubusercontent.com/71995287/128507839-6131d386-f361-4825-bd35-ba43ea932acb.PNG)
- 
+<br/> 
+	
 * 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)
+<br/>
+	
 * 조건문을 통해 권한에 맞게 그립니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
  
 **자세한 내용은 블로그에 있습니다.**
  <br/>
+	
 * [상단메뉴](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
 
 
@@ -106,6 +119,8 @@
  
  </div>
 </details>
+<br/>
+
  ##  5. 🌋핵심 트러블 슈팅
  
  ### 5-1 주문번호 생성
@@ -134,7 +149,10 @@
 <summary>테이블 연결 오류</summary>
 <div markdown="1">
 <br/>
+	
 *  jdbc.properties 설정을 안해놨다.
+<br/>
+	
 ![Untitled (5)](https://user-images.githubusercontent.com/71995287/128625178-7c049d80-22d8-4e28-9725-6c31305a7b8d.png)
 
 </div>
@@ -144,6 +162,7 @@
 <summary>form id 중복</summary>
 <div markdown="1">
 <br/>
+	
 * jsp 파일 안에서 form id 중복으로 인해 오류가 발생했다.
 
  ** 수정 전 코드**
@@ -200,6 +219,7 @@
 <summary>주문 중첩 오류</summary>
 <div markdown="1">
 <br/>
+	
 ![Untitled (6)](https://user-images.githubusercontent.com/71995287/128625376-0964a20d-7d68-4dd8-8aad-f4feae88e06e.png)
  * ul 태그 중복으로 인해서 중첩 오류
  
@@ -294,6 +314,7 @@ function inputOrd(ord){
 <summary>name 값 전달 오류</summary>
 <div markdown="1">
 <br/>
+	
 * input타입이 아닌 태그들은 form에 의해서 `name값`으로 전달이 불가능해 값을 담아줘서 보내야한다.
 * @RequestParam 변수명과 값을 던져주는 jsp에 있는 네임값과 일치해야한다.
 
@@ -329,6 +350,7 @@ function inputOrd(ord){
 <summary>ORA-00923: FROM 키워드가 필요한 위치에 없습니다.</summary>
 <div markdown="1">
 <br/>
+	
 * 대부분 콤마(,) 띄어쓰기 세미콜론(;) 등 의 오타나 문법에 의해 발생한 오류였다.
 * 나의 경우 `콤마`실수로 콤마를 추가해 문제를 해결했다.
 ```sql
@@ -343,6 +365,15 @@ function inputOrd(ord){
 </div>
 </details>
  
-**트러블 슈팅 정리**
-  *  [트러블 슈팅 노션](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
+**트러블 슈팅 자세한 정리**
+  *  [트러블 슈팅](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
+	
+<br/>
+	
+  ##  7. 회고
+<br/>
+	
+* [프로젝트 회고](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
+	
+	
 
