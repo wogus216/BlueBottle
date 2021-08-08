@@ -418,11 +418,6 @@ public class jhController {
 	
 	params.put("sUSERNo", String.valueOf(session.getAttribute("sUSERNo")));
 	
-	//암호화
-	//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
-	
-	//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
-	
 	HashMap<String, String> data = ijhService.getHPw(params);
 	
 	System.out.println("비밀번호data :"+ data);
