@@ -206,7 +206,7 @@ public class jhController {
 		
 		HashMap<String, String> data = ijhService.getMd(params);
 			
-		/*
+		/* 이미지 주소 직접 붙여주는 경우.
 		 * if(Integer.parseInt(String.valueOf(data.get("EFLAG"))) == 1) {
 		 * 
 		 * String path = "resources/upload/"+data.get("MIMG"); data.put("MIMG", path); }

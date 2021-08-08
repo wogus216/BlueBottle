@@ -676,7 +676,7 @@ $(document).ready(function(){
 			ordPopup("", "메뉴 주문을 먼저 해주세요.",function(){});
 			
 		} else{
-			
+				//받은금액이 결제금액보다 크거나 같을 때
 			if(recMoney >= ordResPay ){
 				//주문금액 넣기
 				inputOrdMoney();
@@ -691,6 +691,7 @@ $(document).ready(function(){
 				
 				ordPopup("", "결제완료되었습니다.",function(){});
 				location.reload();
+				//받은금액이 결제금액보다 작을 때
 			}else{
 				recMoney = (0 * 1); //받은 금액 초기화
 				changeMoney = (0 * 1); //거스름돈 초기화
