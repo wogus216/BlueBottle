@@ -1,4 +1,4 @@
-# ☕BlueBottle
+# ☕Blue Bottle
 >블루보틀 재고관리, POS 웹사이트<BR/>
 <br/>
 
@@ -67,10 +67,10 @@
 * 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)	
 * 조건문을 통해 권한에 맞게 그립니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
  
-**자세한 내용은 블로그에 있습니다.**
+**자세한 정리는 블로그에 있습니다.**
  <br/>
 	
-* [상단메뉴](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
+> [상단메뉴](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
  <br/>
 
 ### 4-3 포스
@@ -110,9 +110,9 @@
  
  * 비동기 방식으로 메뉴 목록, 페이징 취득
 	
-* Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
-* ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L204)
-* 메뉴 이미지 변경 후 이미지 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
+     * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
+     *  ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L204)
+     *  메뉴 이미지 변경 후 이미지 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
 <br/>
 	
 ### 4-4 마이페이지
@@ -121,8 +121,8 @@
  ![마이페이지 수정](https://user-images.githubusercontent.com/71995287/128507973-ddec089f-4df4-499b-9369-0c1a490d64d7.PNG)
 
  * 수정 클릭 후 비밀번호로 한번 더 개인정보를 확인합니다.
-  * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L404)
-  * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L228)
+     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L404)
+     * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L228)
  
  </div>
 </details>
@@ -148,8 +148,8 @@
 **자세한 내용은 블로그에 있습니다.**
  <br/>
  
- *  [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
- *  [갯수 변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
+ > [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
+ <br/>[변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
 
   
 ##  6. 💣각종 트러블 슈팅들
@@ -376,14 +376,14 @@ function inputOrd(ord){
 </details>
  
 **트러블 슈팅 자세한 정리**
-  *  [트러블 슈팅](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
+  >  [트러블 슈팅](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
 	
 <br/>
 	
   ##  7. 회고 및 느낀 점
 <br/>
 	
-* [프로젝트 회고](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
+> [프로젝트 회고](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
 	
 	
 
