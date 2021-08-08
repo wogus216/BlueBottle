@@ -35,7 +35,8 @@
 ## 4. 담당 파트
 제가 맡은 부분은 `로그인 페이지, 상단메뉴바, 포스, 포스메뉴관리, 마이페이지` 입니다.
 <br/>
-
+> 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. target 속성이 안되서 새창으로 못띄웁니다.
+> 참고 : [https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
 <details>
  <summary><b>담당파트 설명 펼치기</b></summary>
 <div markdown="1">
