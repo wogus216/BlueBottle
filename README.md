@@ -374,7 +374,7 @@ function inputOrd(ord){
 	
 <br/>
 	
-  ##  7. 회고
+  ##  7. 회고 및 느낀 점
 <br/>
 	
 * [프로젝트 회고](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
