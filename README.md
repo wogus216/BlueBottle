@@ -43,6 +43,7 @@
  
 ### 4-1 로그인 페이지
  <br/>
+	
  ![로그인](https://user-images.githubusercontent.com/71995287/128507816-03641424-20de-41aa-b688-97abb2fc0893.PNG)
  <br/>
 	
@@ -59,16 +60,14 @@
  ![메뉴바2](https://user-images.githubusercontent.com/71995287/128507839-6131d386-f361-4825-bd35-ba43ea932acb.PNG)
 <br/> 
 	
-* 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)
-<br/>
-	
+* 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)	
 * 조건문을 통해 권한에 맞게 그립니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
  
 **자세한 내용은 블로그에 있습니다.**
  <br/>
 	
 * [상단메뉴](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)
-
+ <br/>
 
 ### 4-3 포스
  * 기능 : 주문, 결제, 환불
@@ -98,7 +97,8 @@
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L911)
     * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L292)
  
- 
+ <br/>
+	
  ### 4-4 포스메뉴 관리
  ![포스관리1](https://user-images.githubusercontent.com/71995287/128507876-cd28d39b-a3dc-49a2-a677-28160f97e018.PNG)
  ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)
@@ -107,7 +107,8 @@
 * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
 * ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L204)
 * 메뉴 이미지 변경 후 이미지 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
- 
+<br/>
+	
 ### 4-4 마이페이지
  ![마이페이지](https://user-images.githubusercontent.com/71995287/128619039-4cf6200a-954a-47ca-9561-86f62f2fc9ad.PNG)
  ![마이페이지 개인정보확인](https://user-images.githubusercontent.com/71995287/128507951-b4889786-fdc1-4264-950a-073c622f512f.PNG)
@@ -122,7 +123,8 @@
 <br/>
 
  ##  5. 🌋핵심 트러블 슈팅
- 
+ <br/>
+  
  ### 5-1 주문번호 생성
  ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
  * 문제점 :매출번호는 매출금액, 매출품목에 필요하다. 그리고 두 테이블의 매출번호는 같은 번호가 필요했고, 그래서 `시퀀스.NEXTVAL`를 사용할 수 없었다.
@@ -130,7 +132,8 @@
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L214)
      * 주문번호 생성 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L789)
-
+<br/>
+ 
  ### 5-2 포스메뉴 갯수 변경 시 적용
  * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경이 안됐다.
  * 해결책 : focus를 통해 변경 전 값을 담아서 처리했고, 변경 후 값을 change를 통해서 해결했다.
@@ -138,13 +141,14 @@
  
 **자세한 내용은 블로그에 있습니다.**
  <br/>
+ 
  *  [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
  *  [갯수 변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
 
   
-
-  ##  6. 💣각종 트러블 슈팅들
- 
+##  6. 💣각종 트러블 슈팅들
+<br/>
+  
  <details>
 <summary>테이블 연결 오류</summary>
 <div markdown="1">
