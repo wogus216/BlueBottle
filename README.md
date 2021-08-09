@@ -54,7 +54,7 @@ target 속성이 안되서 새창으로 안됩니다.
 	
  * ID와 PW 입력 후  로그인 시 비동기로 확인합니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L58)
  * ID 또는 PW가 틀릴 시에 로그인 실패하고 팝업창이 나옵니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Login.jsp#L235)
- * 세션을 통해 로그인과 비로그인 상태에 따른 다른 페이지 출력 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L45)
+ * 세션을 통해 로그인과 비로그인 상태에 따른 다른 페이지 출력됩니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L45)
  <br/>
 	
  ### 4-2 상단 메뉴바
@@ -109,11 +109,11 @@ target 속성이 안되서 새창으로 안됩니다.
  ![포스관리1](https://user-images.githubusercontent.com/71995287/128507876-cd28d39b-a3dc-49a2-a677-28160f97e018.PNG)
  ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)
  
- * 비동기 방식으로 메뉴 목록, 페이징 취득
+ * 비동기 방식으로 메뉴 목록, 페이징 취득합니다.
 	
      * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
      *  ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L204)
-     *  메뉴 이미지 변경 후 이미지 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
+     *  메뉴 이미지 변경 후 이미지 적용 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
 <br/>
 	
 ### 4-4 마이페이지
@@ -144,8 +144,8 @@ target 속성이 안되서 새창으로 안됩니다.
  ### 5-2 포스메뉴 갯수 변경 시 적용
  <br/>
  
- * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경이 안됐다.
- * 해결책 : focus를 통해 변경 전 값을 담았고, 변경 후 값은 change를 통해서 해결했다.
+ * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경이 안됐습니다.
+ * 해결책 : focus를 통해 변경 전 값을 담았고, 변경 후 값은 change를 통해서 해결했습니다.
    * 갯수 변경 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L533)
  
 **자세한 내용은 블로그에 있습니다.**
@@ -163,7 +163,7 @@ target 속성이 안되서 새창으로 안됩니다.
 <div markdown="1">
 <br/>
 	
-*  jdbc.properties 설정을 안해놨다.
+*  jdbc.properties 설정을 안해놨습니다.
 <br/>
 	
 ![Untitled (5)](https://user-images.githubusercontent.com/71995287/128625178-7c049d80-22d8-4e28-9725-6c31305a7b8d.png)
@@ -176,7 +176,7 @@ target 속성이 안되서 새창으로 안됩니다.
 <div markdown="1">
 <br/>
 	
-* jsp 파일 안에서 form id 중복으로 인해 오류가 발생했다.
+* jsp 파일 안에서 form id 중복으로 인해 오류가 발생했습니다.
 
  ** 수정 전 코드**
  
@@ -328,14 +328,14 @@ function inputOrd(ord){
 <div markdown="1">
 <br/>
 	
-* input타입이 아닌 태그들은 form에 의해서 `name값`으로 전달이 불가능해 값을 담아줘서 보내야한다.
-* @RequestParam 변수명과 값을 던져주는 jsp에 있는 네임값과 일치해야한다.
+* input타입이 아닌 태그들은 form에 의해서 `name값`으로 전달이 불가능해 값을 담아줘서 보내야합니다.
+* @RequestParam 변수명과 값을 던져주는 jsp에 있는 네임값과 일치해야합니다.
 
 #### Controller
 ```java
  @ResponseBody
 		public String input_Menus(
-				@RequestParam ArrayList<String> menuNo, //jsp에 있는 네임값과 일치해야한다
+				@RequestParam ArrayList<String> menuNo, 
 				@RequestParam ArrayList<String> oMCnt,
 				@RequestParam ArrayList<String> ordNo) throws Throwable{
 ```
