@@ -1,5 +1,5 @@
 # ☕Blue Bottle 통합재고관리 웹사이트
-![프로젝트개요](https://user-images.githubusercontent.com/71995287/128666094-4b628bd0-30d8-4945-89b5-ae09bdf0722a.PNG)
+![프로젝트개요](https://user-images.githubusercontent.com/71995287/128670411-152ffcf4-e057-4375-8fe7-3327ee45366e.PNG)
 <br/>
 
 
