@@ -41,7 +41,8 @@
 <div markdown="1">
 <br/>
 	
-> 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. target 속성이 안되서 새창으로 못해요ㅠㅠ
+> 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. <br/>
+target 속성이 안되서 새창으로 안됩니다.
 <br/>참고 : [https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
 <br/>
  
