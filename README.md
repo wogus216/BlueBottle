@@ -1,5 +1,5 @@
-# ☕Blue Bottle
->제안배경 :<br/>
+# ☕Blue Bottle 통합재고관리 웹사이트
+![프로젝트개요](https://user-images.githubusercontent.com/71995287/128666094-4b628bd0-30d8-4945-89b5-ae09bdf0722a.PNG)
 <br/>
 
 
