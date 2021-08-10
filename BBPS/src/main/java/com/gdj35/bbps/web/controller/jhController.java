@@ -688,7 +688,7 @@ public class jhController {
 					
 					}
 		
-		
+			//***********************************포스***********************************************			
 	//포스 로그인
 		
 		@RequestMapping(value="/Pos_Login")
@@ -955,4 +955,77 @@ public class jhController {
 		return mapper.writeValueAsString(modelMap);
 			
 		}
+		//***********************************모바일 포스***********************************************	
+		
+	//모바일 포스 로그인
+		
+		@RequestMapping(value="/MPos_Login")
+		public ModelAndView MPos_Login(HttpSession session, ModelAndView mav) {
+				if(session.getAttribute("sBRCHNo") != null	) { //로그인상태
+					mav.setViewName("redirect:MPos");
+				} else { // 비 로그인 상태
+					mav.setViewName("jh/MPos_Login");
+				}
+				
+				return mav;
+		}
+		@RequestMapping(value="/MPos_Logins",
+				method = RequestMethod.POST,
+				produces = "text/json;charset=UTF-8")
+		@ResponseBody
+		public String MPos_Logins(
+			HttpSession session,
+			@RequestParam HashMap<String, String> params) throws Throwable{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> modelMap = new HashMap<String, Object>();
+		
+		//암호화
+		//params.put("bPw", Utils.encryptAES128(params.get("bPw")));
+		
+		//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
+		
+		HashMap<String, String> data = ijhService.getB(params);
+		
+		System.out.println("data :"+ data);
+		if(data != null) { //사용자 정보가 있음
+			session.setAttribute("sBRCHNo", data.get("BRCH_NO"));
+			session.setAttribute("sId", data.get("ID"));
+			session.setAttribute("sBRCHNm", data.get("BRCH_NAME"));
+			session.setAttribute("sMGRNm", data.get("MGR_NAME"));
+			System.out.println(session.getAttribute("sBRCHNm"));
+			
+			modelMap.put("resMsg", "success");
+		} else { // 사용자 정보가 없음
+			modelMap.put("resMsg", "failed");
+			
+		}
+		return mapper.writeValueAsString(modelMap);
+		
+		}
+		
+	//로그아웃
+		@RequestMapping(value="/MPos_LogOut")
+		public ModelAndView MPos_LogOut(HttpSession session,
+				ModelAndView mav) {
+			System.out.println(session.getAttribute("sBRCHNm"));
+			session.invalidate();
+				
+			mav.setViewName("redirect:MPos_Login");
+			return mav;
+		}	
+			
+		//포스
+		
+		@RequestMapping(value="/MPos")
+		
+		public ModelAndView MPos1(
+				HttpSession session,
+					ModelAndView mav) {
+			System.out.println("Pos에서 지점이름:"+session.getAttribute("sBRCHNm"));
+			
+			mav.setViewName("jh/MPos");
+					
+				return mav;
+		}
+		
 }
