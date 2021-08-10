@@ -381,7 +381,7 @@ function inputOrd(ord){
 	
  **트러블 슈팅모음**
 	
-  >  [노션](https://www.notion.so/c5e52f2274324ee198a381671a780d26)
+  >  [노션](https://steel-mitten-08e.notion.site/c5e52f2274324ee198a381671a780d26)
 	
 <br/>
 	
