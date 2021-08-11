@@ -52,9 +52,19 @@ target 속성이 안되서 새창으로 안됩니다.
  ![로그인](https://user-images.githubusercontent.com/71995287/128507816-03641424-20de-41aa-b688-97abb2fc0893.PNG)
  <br/>
 	
- * ID와 PW 입력 후  로그인 시 비동기로 확인합니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L58)
- * ID 또는 PW가 틀릴 시에 로그인 실패하고 팝업창이 나옵니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Login.jsp#L235)
- * 세션을 통해 로그인과 비로그인 상태에 따른 다른 페이지 출력됩니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L45)
+ * ID와 PW 입력 후  로그인 버튼 클릭시 비동기방식으로 데이터활용 가능. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L58)
+ * IF문 활용 해 ID 또는 PW가 틀릴 시에 로그인 실패하고 팝업창이 나옵니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Login.jsp#L235)
+	
+<details>
+<summary>팝업창 이미지</summary>
+<div markdown="1">       
+
+![아이디 불일치](https://user-images.githubusercontent.com/71995287/128990048-034b7261-e4dc-4c00-8eac-50603d0f80ea.PNG)
+
+</div>
+</details>
+	
+ *IF문으로 세션 값을 확인 후 값에 따라서 페이지 출력됩니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L45)
  <br/>
 	
  ### 4-2 상단 메뉴바
@@ -63,10 +73,12 @@ target 속성이 안되서 새창으로 안됩니다.
  * 권한에 따라 메뉴가 구성됩니다.
  ![메뉴바 1](https://user-images.githubusercontent.com/71995287/128507825-85ac1abe-164d-47fd-b24c-e0b82df04b43.PNG)
  ![메뉴바2](https://user-images.githubusercontent.com/71995287/128507839-6131d386-f361-4825-bd35-ba43ea932acb.PNG)
+ ![메뉴바 3](https://user-images.githubusercontent.com/71995287/128991239-e27a7830-f779-43ff-9454-934cc1277349.PNG)
+
 <br/> 
 	
 * 상위메뉴와 하위 메뉴가 존재해 계층형 쿼리를 사용했습니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)	
-* 조건문을 통해 권한에 맞게 그립니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
+*IF문을 통해 가져온 데이터를 권한에 맞게 그려줍니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
  
 **자세한 정리는 블로그에 있습니다.**
  <br/>
@@ -84,21 +96,21 @@ target 속성이 안되서 새창으로 안됩니다.
  ![결제흐름](https://user-images.githubusercontent.com/71995287/128618372-e4c753c1-883c-4dfc-a186-8a697d7ed47b.PNG)
 
  #### 1. 주문
- * 카테고리 클릭 시 카테고리 번호를 히든값으로 form에 담아 전송 후 비동시 방식으로 그려줍니다.
+ * 카테고리 클릭 시 카테고리 번호를 히든값으로 form에 담아 전송 후 비동기 방식으로 넣어줍니다.
  
    * 카테고리선택🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L705)
    * Query🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/resources/mapper/JH_SQL.xml#L165)
 
- * 메뉴 클릭 시 중복 체크 후 주문상황에 넣어줍니다.🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/d2a9229a0ac32a7ae24598bcf1ff559ba9141bfc/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L512)
+ * 메뉴 클릭 시 셀렉터를 활용해 중복 체크 후 비동기 방식으로 그려줍니다.🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/d2a9229a0ac32a7ae24598bcf1ff559ba9141bfc/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L512)
  
  #### 2. 결제
  * 받은 금액을 입력 후 확인 클릭 시 받은금액 과 결제금액을 비교 후 조건 통과 시 결제 성공합니다.
 	
-   * 현금, 카드결제 코드🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/d2a9229a0ac32a7ae24598bcf1ff559ba9141bfc/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L616)
-   * 받은 금액, 결제금액 비교 코드🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L679)
+   * 현금, 카드결제 클릭 시 form에 넣어서 보낼 값을 넣어줍니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/d2a9229a0ac32a7ae24598bcf1ff559ba9141bfc/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L616)
+   * IF문을 통해 받은 금액 결제금액 비교를 해서 비동기 방식으로 값을 전달 합니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L679)
  
 #### 3. 환불
-  * 환불 클릭 시 매출 날짜를 출력합니다.
+  * 환불 클릭 시 비동기 방식으로 매출 데이터를 받아옵니다.
  
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L911)
     * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L292)
@@ -109,11 +121,11 @@ target 속성이 안되서 새창으로 안됩니다.
  ![포스관리1](https://user-images.githubusercontent.com/71995287/128507876-cd28d39b-a3dc-49a2-a677-28160f97e018.PNG)
  ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)
  
- * 비동기 방식으로 메뉴 목록, 페이징 취득합니다.
+ * 비동기 방식으로 메뉴 목록, 페이징 데이터를 받아옵니다.
 	
      * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
      *  ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L204)
-     *  메뉴 이미지 변경 후 이미지 적용 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L196)
+     *  Fileform를 통해 이미지를 업로드 합니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L267)
 <br/>
 	
 ### 4-4 마이페이지
@@ -121,8 +133,9 @@ target 속성이 안되서 새창으로 안됩니다.
  ![마이페이지 개인정보확인](https://user-images.githubusercontent.com/71995287/128507951-b4889786-fdc1-4264-950a-073c622f512f.PNG)
  ![마이페이지 수정](https://user-images.githubusercontent.com/71995287/128507973-ddec089f-4df4-499b-9369-0c1a490d64d7.PNG)
 
- * 수정 클릭 후 비밀번호로 한번 더 개인정보를 확인합니다.
-     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L404)
+ * 수정 하기 위해 입력한 비밀번호는 비동기 방식으로 전송해서 확인합니다.
+* Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L404)
+  *  ajax 실행 코드 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/My_Page.jsp#L193)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L228)
  
  </div>
