@@ -99,7 +99,7 @@ target 속성이 안되서 새창으로 안됩니다.
  ![결제흐름](https://user-images.githubusercontent.com/71995287/128618372-e4c753c1-883c-4dfc-a186-8a697d7ed47b.PNG)
 
  #### 1. 주문
- * 카테고리 클릭 시 if문을 활용한 동적쿼리
+ * 카테고리 클릭 시 if,choose, when, otherwise을 활용한 동적쿼리
  
    * 카테고리선택🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L705)
    * Query🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/resources/mapper/JH_SQL.xml#L165)
