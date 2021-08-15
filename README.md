@@ -52,7 +52,7 @@ target 속성이 안되서 새창으로 안됩니다.
  ![로그인](https://user-images.githubusercontent.com/71995287/128507816-03641424-20de-41aa-b688-97abb2fc0893.PNG)
  <br/>
 	
- * ID와 PW 입력 후  로그인 버튼 클릭시 비동기방식으로 데이터활용 가능. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L58)
+ * ID와 PW 입력 후  로그인 버튼 클릭시 비동기방식으로 데이터를 전송합니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L58)
  * IF문 활용 해 ID 또는 PW가 틀릴 시에 로그인 실패하고 팝업창이 나옵니다. 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Login.jsp#L235)
 	
 <details>
@@ -150,6 +150,7 @@ target 속성이 안되서 새창으로 안됩니다.
  ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
  * 문제점: 매출금액,매출품목은 부모자식 관계이면서, 동일한 주문번호가 필요했습니다.
  * 해결책: 주문번호를  생성 후 비동기 방식으로 히든 값으로 담은 뒤 form를 통해 매출금액,매출품목의 주문번호로 넣어주었습니다.
+
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L214)
      * 주문번호 생성 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L789)
