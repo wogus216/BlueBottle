@@ -3,7 +3,7 @@
 <br/>
 
 
-## 1.제작기간 & 참여인원
+## 1.개발기간 & 참여인원
 - 2021년 6월 30일 ~ 8월 1일
 - 팀프로젝트 (5명)
 
@@ -23,27 +23,193 @@
  - CSS
  - Javascript
  - jQuery
+#### `Tools`
+- Eclipse
+- SQL Developer
 
 
 <br/>
 
-## 3. ERD 설계
+## 3. 디자인 기획
+
+* 카카오 오븐 활용
+
+![오븐](https://user-images.githubusercontent.com/71995287/129475873-46659033-6a22-419e-b99b-adcab3a25c27.PNG)
+
+<br/>
+
+## 4. DB 설계
+
+* diagrams 활용
 ![진짜3](https://user-images.githubusercontent.com/71995287/128507795-107c7f19-6c83-42c6-9521-10a36298dd25.PNG)
 
 <br/>
 
+* 데이터를 기준으로 테이블 정의서 작성
+![테이블 정의서](https://user-images.githubusercontent.com/71995287/129476034-c6a4ee4c-dadf-44d7-bdaf-3c4921669408.PNG)
+
+<br/>
+
+* 메뉴 권한 별 데이터 작성
+![메뉴 별 권한 정리](https://user-images.githubusercontent.com/71995287/129476119-8918abd4-b8b3-4062-91c4-aded1450ac49.PNG)
+
+
+<br/>
+
 ## 4. 개발
-구현 파트는 `로그인 페이지, 상단메뉴바, 포스, 포스메뉴관리, 마이페이지` 입니다.
+
+> 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. <br/>
+target 속성이 안되서 새창으로 안됩니다.<br/>
+[출처](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
+<br/>
+
+
+
+<details>
+ <summary><b> HttpSession을 활용해 로그인 구현 </b></summary>
+<div markdown="1">
+<br/>
+	
+ ![로그인](https://user-images.githubusercontent.com/71995287/128507816-03641424-20de-41aa-b688-97abb2fc0893.PNG)
+* 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L46)
+</div>
+</details>
 <br/>
 
 <details>
- <summary><b>담당파트 설명 </b></summary>
+<summary><b> RequestParam 활용해 값 저장 </b></summary>
+<div markdown="1">
+<br/>
+	
+ ![메뉴바 1](https://user-images.githubusercontent.com/71995287/128507825-85ac1abe-164d-47fd-b24c-e0b82df04b43.PNG)
+* 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L107)
+</div>
+</details>
+<br/>
+
+<details>
+<summary><b> Ajax를 활용해 비동기 전송방식 구현 </b></summary>
+<div markdown="1">
+<br/>
+	
+![지점 메뉴](https://user-images.githubusercontent.com/71995287/129477301-67483bb9-49f8-4ef9-8e2c-44c6a4622d13.PNG)
+
+* Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L564)
+* Ajax🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/B_Menu.jsp#L183)
+</div>
+</details>
+<br/>
+
+<details>
+<summary><b> c:import,c:param 활용해 출력 및 값 전송  </b></summary>
+<div markdown="1">
+<br/>
+	
+ ![메뉴바2](https://user-images.githubusercontent.com/71995287/128507839-6131d386-f361-4825-bd35-ba43ea932acb.PNG)
+* 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_List.jsp#L4)
+</div>
+</details>
+<br/>
+
+<details>
+<summary><b> CommonsMultipartResolver 와 Fileform 활용해 이미지 업로드  </b></summary>
+<div markdown="1">
+<br/>
+	
+ ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)	
+	
+  *  CommonsMultipartResolver  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml#L30)	
+  *  Fileform 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L267)
+</div>
+</details>
+<br/>
+
+<details>
+<summary><b> Paging </b></summary>
+<div markdown="1">
+<br/>
+	
+![포스관리1](https://user-images.githubusercontent.com/71995287/128507876-cd28d39b-a3dc-49a2-a677-28160f97e018.PNG)	
+	
+     * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
+     *  PagingBean 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/bean/PagingBean.java#L3)
+     *  PagingService 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/service/PagingService.java#L9)
+</div>
+</details>
+<br/>
+
+<details>
+<summary><b> AOP @Aspect를 활용 </b></summary>
+<div markdown="1">
+<br/>
+> 비 로그인시 로그인 페이지 제외 페이지 이동 시 로그인페이지로 이동	
+
+		
+   *  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/controller/CommonAOP.java#L14)
+ 	
+</div>
+</details>
+<br/>
+	
+
+<details>
+<summary><b> AES 방식 암호화 활용 </b></summary>
+<div markdown="1">
+<br/>
+> 비 로그인시 로그인 페이지 제외 페이지 이동 시 로그인페이지로 이동	
+
+		
+   *Controller  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L68)
+
+*AES  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/util/Utils.java#L30)
+ 	
+</div>
+</details>
+
+<details>
+<summary><b> 계층형 쿼리 활용 </b></summary>
+<div markdown="1">
+<br/>
+	
+![블루보틀 1](https://user-images.githubusercontent.com/71995287/129477637-2636e8a4-a0de-4337-998e-c10519c2eb7b.PNG)
+		
+  * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)
+  * jsp 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
+ 
+ ####  블로그 정리
+ <br/>
+	
+> [블로그](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%A9%94%EB%89%B4%EB%B0%94)	
+</div>
+</details>
+<br/>
+
+
+<details>
+<summary><b> 동적 쿼리 활용 </b></summary>
+<div markdown="1">
+<br/>
+	
+![주문번호 추가](https://user-images.githubusercontent.com/71995287/128585747-2f5b2f00-e730-41c3-b4e8-1fdd7c550ebb.PNG)
+		
+  * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/resources/mapper/JH_SQL.xml#L165)
+  * jsp 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L706)
+ 	
+</div>
+</details>
+<br/>
+	
+<br/>
+
+<details>
+ <summary><b> 담당파트 설명 </b></summary>
 <div markdown="1">
 <br/>
 	
 > 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. <br/>
 target 속성이 안되서 새창으로 안됩니다.
-<br/>참고 : [https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
+<br/>
+ [출처](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank](https://stackoverflow.com/questions/41915571/open-link-in-new-tab-with-github-markdown-using-target-blank)
 <br/>
  
 ### 4-1 로그인 페이지
@@ -92,7 +258,7 @@ target 속성이 안되서 새창으로 안됩니다.
 ### 4-3 포스
  * 기능 : 주문, 결제, 환불
  
-![주문번호  추가](https://user-images.githubusercontent.com/71995287/128585747-2f5b2f00-e730-41c3-b4e8-1fdd7c550ebb.PNG)
+![주문번호 추가](https://user-images.githubusercontent.com/71995287/128585747-2f5b2f00-e730-41c3-b4e8-1fdd7c550ebb.PNG)
 ![주문번호 추가2](https://user-images.githubusercontent.com/71995287/128585756-d2dfe76d-ae14-40ed-a483-b34805879375.PNG)
  
  ### 포스결제흐름
@@ -160,8 +326,8 @@ target 속성이 안되서 새창으로 안됩니다.
 ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
   <br/>
   
- * 문제점: 매출금액,매출품목은 부모자식 관계이면서, 동일한 주문번호가 필요했습니다.
- * 해결책: 주문번호를  생성 후 비동기 방식으로 히든 값으로 담은 뒤 form를 통해 매출금액,매출품목의 주문번호로 넣어주었습니다.
+ * 문제점: 주문번호로 인해 무결성 제약조건 위배 발생
+ * 해결책: 주문번호를  생성 후 비동기 방식으로 히든 값으로 담은 뒤 form를 통해 매출금액,매출품목의 주문번호로 삽입
 
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L214)
@@ -171,24 +337,24 @@ target 속성이 안되서 새창으로 안됩니다.
  ### 5-2 포스메뉴 갯수 변경 시 적용
  <br/>
  
- * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경이 안됐습니다.
- * 해결책 : 함수 focus를 통해 변경 전 값을 담았고, 변경 후 값은 함수 change를 통해서 해결했습니다.
+ * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경 오류 발생
+ * 해결책 : 함수 focus를 통해 변경 전 값을 담았고, 변경 후 값은 함수 change를 통해 해결
  * 
    * 갯수 변경 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L533)
  <br/>
  
  
-**자세한 내용은 블로그에 있습니다.**
+#### 블로그 정리
  <br/>
  
  > [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
  <br/>[변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
  
-  ### 5-3 AOP 처리
+  ### 5-3 AOP 활용
  <br/>
  
  * 문제점 : 비 로그인시 로그인 페이지를 제외한 주소 입력 시 로그인페이지로 넘어가게 해야했습니다. 
- * 해결책 : AOP를 통해서 해결했습니다.
+ * 해결책 : AOP @Aspect 활용해 해결
 
    * AOP 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/controller/CommonAOP.java#L44)
  <br/>
