@@ -471,6 +471,7 @@ function inputOrd(ord){
 
 </div>
 </details>
+ <br/>	
 	
  **트러블 슈팅모음**
 	
