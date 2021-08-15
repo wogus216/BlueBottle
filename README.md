@@ -3,7 +3,7 @@
 <br/>
 
 
-## 1.개발기간 & 참여인원
+## 1. 🗓개발기간 & 참여인원
 - 2021년 6월 30일 ~ 8월 1일
 - 팀프로젝트 (5명)
 
@@ -11,7 +11,7 @@
 
 <br/>
 
-## 2. 사용 기술
+## 2. ⛏사용 기술
 #### `Back - end`
  - Java 8
  - Spring 4.3.4
@@ -30,7 +30,7 @@
 
 <br/>
 
-## 3. 디자인 기획
+## 3. 🖌디자인 기획
 
 * 카카오 오븐 활용
 
@@ -38,7 +38,7 @@
 
 <br/>
 
-## 4. DB 설계
+## 4. ⚒DB 설계
 
 * diagrams 활용
 ![진짜3](https://user-images.githubusercontent.com/71995287/128507795-107c7f19-6c83-42c6-9521-10a36298dd25.PNG)
@@ -56,7 +56,7 @@
 
 <br/>
 
-## 4. 개발
+## 5. 📌개발
 
 > 코드 확인 하실 때 windows 분들은 ctrl + 클릭, mac 분들은 cmd + 클릭 부탁드립니다. <br/>
 target 속성이 안되서 새창으로 안됩니다.<br/>
@@ -212,10 +212,10 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 	
 
 
- ##  5. 🌋핵심 트러블 슈팅
+ ##  6. 🌋핵심 트러블 슈팅
  <br/>
  
- ### 5-1 주문번호 생성
+ ### 6-1 주문번호 생성
   <br/>
 
 ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
@@ -229,7 +229,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
      * 주문번호 생성 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L789)
 <br/>
  
- ### 5-2 포스메뉴 갯수 변경 시 적용
+ ### 6-2 포스메뉴 갯수 변경 시 적용
  <br/>
  
  * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경 오류 발생
@@ -244,20 +244,10 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
  
  > [주문번호 생성](https://velog.io/@wogus216/%EC%A3%BC%EB%AC%B8%EB%B2%88%ED%98%B8-%EC%83%9D%EC%84%B1%EA%B3%BC-DB%EC%97%90-%EB%84%A3%EA%B8%B0)
  <br/>[변경 적용](https://velog.io/@wogus216/%ED%8F%AC%EC%8A%A4%EB%A9%94%EB%89%B4-%EA%B0%9C%EC%88%98-%EB%B3%80%EA%B2%BD)
- 
-  ### 5-3 AOP 활용
+  
  <br/>
  
- * 문제점 : 비 로그인시 로그인 페이지를 제외한 주소 입력 시 로그인페이지로 넘어가게 해야했습니다. 
- * 해결책 : AOP @Aspect 활용해 해결
-
-   * AOP 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/controller/CommonAOP.java#L44)
- <br/>
- 
- 
- <br/>
- 
-##  6. 💣각종 트러블 슈팅들
+##  7. 💣각종 트러블 슈팅들
 <br/>
   
  <details>
@@ -486,7 +476,7 @@ function inputOrd(ord){
 	
 <br/>
 	
-  ##  7. 회고 및 느낀 점
+  ##  8. 🎞회고 및 느낀 점
 <br/>
 	
 > [프로젝트 회고](https://velog.io/@wogus216/%EB%B8%94%EB%A3%A8%EB%B3%B4%ED%8B%80-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0)
