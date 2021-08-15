@@ -43,11 +43,13 @@
 * diagrams 활용
 ![진짜3](https://user-images.githubusercontent.com/71995287/128507795-107c7f19-6c83-42c6-9521-10a36298dd25.PNG)
 
+---
 <br/>
 
 * 데이터를 기준으로 테이블 정의서 작성
 ![테이블 정의서](https://user-images.githubusercontent.com/71995287/129476034-c6a4ee4c-dadf-44d7-bdaf-3c4921669408.PNG)
 
+---
 <br/>
 
 * 메뉴 권한 별 데이터 작성
