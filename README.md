@@ -234,7 +234,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
  
  * 문제점 : 갯수 변경 시 변경 전,후 값에 맞춰서 주문 개수와 결제금액이 변경 오류 발생
  * 해결책 : 함수 focus를 통해 변경 전 값을 담았고, 변경 후 값은 함수 change를 통해 해결
- * 
+ 
    * 갯수 변경 적용 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L533)
  <br/>
  
