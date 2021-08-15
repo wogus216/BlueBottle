@@ -270,7 +270,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 	
 * jsp 파일 안에서 form id 중복으로 인해 오류가 발생했습니다.
 
- ** 수정 전 코드**
+**수정 전 코드**
  
  ```javascript
  <form action="#" id="actionForm" method="post">
@@ -293,7 +293,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 			</div>
 		</form>
  ```
- ** 수정 후 코드**
+**수정 후 코드**
  
  ```javascript
  <form action="#" id="hMenuForm" method="post">
