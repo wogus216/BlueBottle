@@ -221,8 +221,8 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
   <br/>
   
- * 문제점: 주문번호로 인해 무결성 제약조건 위배 발생
- * 해결책: 주문번호를  생성 후 비동기 방식으로 히든 값으로 담은 뒤 form를 통해 매출금액,매출품목의 주문번호로 삽입
+ * 문제점: 주문번호로 인해 매출금액, 매출 품목무결성 제약조건 위배 발생
+ * 해결책: 주문번호를 생성 후 매출금액,매출품목의 주문번호로 삽입
 
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
      * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/resources/mapper/JH_SQL.xml#L214)
@@ -255,7 +255,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <div markdown="1">
 <br/>
 	
-*  jdbc.properties에서 설정을 안해서 생긴 오류였습니다.
+*  jdbc.properties에서 설정을 안해서 오류가 발생했습니다.
 <br/>
 	
 ![Untitled (5)](https://user-images.githubusercontent.com/71995287/128625178-7c049d80-22d8-4e28-9725-6c31305a7b8d.png)
@@ -326,7 +326,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <br/>
 	
 ![Untitled (6)](https://user-images.githubusercontent.com/71995287/128625376-0964a20d-7d68-4dd8-8aad-f4feae88e06e.png)
- * ul 태그 중복으로 인해서 중첩 오류가 생겼습니다.
+ * ul 태그 중복으로 인해서 중첩 오류가 발생했습니다.
  
  ```javascript
  <form action="#" id="menu_form" method="post">
@@ -456,7 +456,7 @@ function inputOrd(ord){
 <div markdown="1">
 <br/>
 	
-* 대부분 콤마(,) 띄어쓰기 세미콜론(;) 등 의 오타나 문법에 의해 발생한 오류였습니다.
+* 대부분 콤마(,) 띄어쓰기 세미콜론(;) 등 의 오타나 문법에 의해 발생한 오류입니다.
 * 나의 경우 `콤마`실수로 콤마를 추가해 문제를 해결했다.
 ```sql
  <!-- 지점 마이페이지 -->
