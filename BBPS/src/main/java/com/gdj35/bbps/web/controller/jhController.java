@@ -66,9 +66,9 @@ public class jhController {
 	Map<String, Object> modelMap = new HashMap<String, Object>();
 	
 	//암호화
-	//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
+	params.put("hPw", Utils.encryptAES128(params.get("hPw")));
 	
-	//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
+	System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
 	
 	
 	HashMap<String, String> data = ijhService.getHQ(params);
@@ -411,10 +411,11 @@ public class jhController {
 		@RequestParam HashMap<String, String> params) throws Throwable{
 	ObjectMapper mapper = new ObjectMapper();
 	Map<String, Object> modelMap = new HashMap<String, Object>();
-	//암호화
-	//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
 	
-	//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
+	//암호화
+	params.put("hPw", Utils.encryptAES128(params.get("hPw")));
+	
+	System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
 	
 	params.put("sUSERNo", String.valueOf(session.getAttribute("sUSERNo")));
 	
@@ -461,9 +462,9 @@ public class jhController {
 			
 			try {
 				//암호화
-				//params.put("hPw", Utils.encryptAES128(params.get("hPw")));
+				params.put("hPw", Utils.encryptAES128(params.get("hPw")));
 				
-				//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
+				System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("hPw")));
 				
 				int cnt = ijhService.editHU(params);
 				
@@ -509,9 +510,9 @@ public class jhController {
 	Map<String, Object> modelMap = new HashMap<String, Object>();
 
 	//암호화
-	//params.put("bPw", Utils.encryptAES128(params.get("bPw")));
+	params.put("bPw", Utils.encryptAES128(params.get("bPw")));
 	
-	//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
+	System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
 	
 	HashMap<String, String> data = ijhService.getB(params);
 	
@@ -623,9 +624,9 @@ public class jhController {
 			Map<String, Object> modelMap = new HashMap<String, Object>();
 			
 			//암호화
-			//params.put("bPw", Utils.encryptAES128(params.get("bPw")));
+			params.put("bPw", Utils.encryptAES128(params.get("bPw")));
 			
-			//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
+			System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
 			
 			HashMap<String, String> data = ijhService.getBPw(params);
 			
@@ -667,9 +668,9 @@ public class jhController {
 					
 					try {
 						//암호화
-						//params.put("bPw", Utils.encryptAES128(params.get("bPw")));
+						params.put("bPw", Utils.encryptAES128(params.get("bPw")));
 						
-						//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
+						System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
 						
 						int cnt = ijhService.editBU(params);
 						
@@ -712,9 +713,9 @@ public class jhController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		//암호화
-		//params.put("bPw", Utils.encryptAES128(params.get("bPw")));
+		params.put("bPw", Utils.encryptAES128(params.get("bPw")));
 		
-		//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
+		System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
 		
 		HashMap<String, String> data = ijhService.getB(params);
 		
@@ -980,9 +981,9 @@ public class jhController {
 		Map<String, Object> modelMap = new HashMap<String, Object>();
 		
 		//암호화
-		//params.put("bPw", Utils.encryptAES128(params.get("bPw")));
+		params.put("bPw", Utils.encryptAES128(params.get("bPw")));
 		
-		//System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
+		System.out.println("비밀번호:"+ Utils.decryptAES128(params.get("bPw")));
 		
 		HashMap<String, String> data = ijhService.getB(params);
 		
