@@ -33,7 +33,7 @@
 ##  🖌 디자인 기획
 
 * 카카오 오븐 활용
-
+* Blue Bottle 색깔에 맞춰 제작
 ![오븐](https://user-images.githubusercontent.com/71995287/129475873-46659033-6a22-419e-b99b-adcab3a25c27.PNG)
 
 <br/>
@@ -53,6 +53,7 @@
 <br/>
 
 * 메뉴 권한 별 데이터 작성
+* 부서별로 메뉴 권한 지정해 작성
 ![메뉴 별 권한 정리](https://user-images.githubusercontent.com/71995287/129476119-8918abd4-b8b3-4062-91c4-aded1450ac49.PNG)
 
 
@@ -174,6 +175,20 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 * Controller  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L68)
 
 * AES  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/util/Utils.java#L30)
+ 	
+</div>
+</details>
+<br/>
+
+<details>
+<summary><b> serialize을 활용한 데이터 가공 </b></summary>
+<div markdown="1">
+<br/>
+	
+![주문번호 추가](https://user-images.githubusercontent.com/71995287/128585747-2f5b2f00-e730-41c3-b4e8-1fdd7c550ebb.PNG)
+		
+  * serialize 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L756)
+  * form 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L1209)
  	
 </div>
 </details>
