@@ -79,7 +79,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <br/>
 
 <details>
-<summary><b> RequestParam 활용해 값 저장 </b></summary>
+<summary><b> RequestParam 활용해 값 전달 </b></summary>
 <div markdown="1">
 <br/>
 	
