@@ -144,7 +144,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 ![포스관리1](https://user-images.githubusercontent.com/71995287/128507876-cd28d39b-a3dc-49a2-a677-28160f97e018.PNG)	
 	
 	
- * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L166)
+ * Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L183)
  *  PagingBean 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/bean/PagingBean.java#L3)
  *  PagingService 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/java/com/gdj35/bbps/common/service/PagingService.java#L9)
 
