@@ -15,15 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CommonAOP {
 	//Pointcut -> 적용범위
 	//@Pointcut(범위설정)
-	/*
-	 * 범위
-	 * execution -> include필터
-	 * !execution -> exclude필터
-	 * * -> 모든것
-	 * *(..) -> 모든 메소드
-	 * .. -> 모든 경로
-	 * && -> 필터 추가
-	 */
+	
 	@Pointcut("execution(* com.gdj35.bbps.web..*Controller.*(..))"
 			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*Login(..))"
 			+ "&&!execution(* com.gdj35.bbps.web..*Controller.*Logins(..))"
@@ -34,13 +26,7 @@ public class CommonAOP {
 	public void bbpsAOP() {}
 	
 	//ProceedingJoinPoint -> 대상 적용 이벤트 필터
-	/*
-	 * @Before -> 메소드 실행 전
-	 * @After -> 메소드 실행 후
-	 * @After-returning -> 메소드 정상실행 후
-	 * @After-throwing -> 메소드 예외 발생 후
-	 * @Around -> 모든 동작시점
-	 */
+
 	@Around("bbpsAOP()")
 	public ModelAndView bbpsAOP(ProceedingJoinPoint joinPoint)
 														throws Throwable {
