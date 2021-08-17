@@ -126,14 +126,14 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <br/>
 
 <details>
-<summary><b> CommonsMultipartResolver 와 Fileform 활용해 이미지 업로드  </b></summary>
+<summary><b> fileupload를 활용해 이미지 업로드  </b></summary>
 <div markdown="1">
 <br/>
 	
  ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)	
 	
-  *  CommonsMultipartResolver  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml#L30)	
-  *  Fileform 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L267)
+  *  fileupload  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/pom.xml#L145)	
+  *  fileform 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L371)
 </div>
 </details>
 <br/>
