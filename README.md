@@ -81,7 +81,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <br/>
 
 <details>
-<summary><b> RequestParam 활용해 값 전달 </b></summary>
+<summary><b> @RequestParam 활용해 값 전달 </b></summary>
 <div markdown="1">
 <br/>
 	
@@ -106,10 +106,10 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <div markdown="1">
 <br/>
 	
-![지점 메뉴](https://user-images.githubusercontent.com/71995287/129477301-67483bb9-49f8-4ef9-8e2c-44c6a4622d13.PNG)
+![ajax](https://user-images.githubusercontent.com/71995287/129647049-9824af0a-d76d-46f0-89ff-cb79d12ee244.PNG)
 
-* Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L564)
-* Ajax🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/B_Menu.jsp#L183)
+* Controller 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L792)
+* Ajax🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L749)
 </div>
 </details>
 <br/>
@@ -126,14 +126,14 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 <br/>
 
 <details>
-<summary><b> CommonsMultipartResolver 와 Fileform 활용해 이미지 업로드  </b></summary>
+<summary><b> fileupload를 활용해 이미지 업로드  </b></summary>
 <div markdown="1">
 <br/>
 	
  ![포스관리2](https://user-images.githubusercontent.com/71995287/128507900-34bf8a2a-3cb5-42e8-a963-0ce818176336.PNG)	
 	
-  *  CommonsMultipartResolver  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/6bda7a26da6a00f5857362bf4e260ac0a4b31ab0/BBPS/src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml#L30)	
-  *  Fileform 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L267)
+  *  fileupload  🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/pom.xml#L145)	
+  *  fileform 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Menu_Edit.jsp#L371)
 </div>
 </details>
 <br/>
@@ -203,7 +203,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 ![블루보틀 1](https://user-images.githubusercontent.com/71995287/129477637-2636e8a4-a0de-4337-998e-c10519c2eb7b.PNG)
 		
   * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/resources/mapper/JH_SQL.xml#L22)
-  * jsp 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
+  * Jsp 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/2e3f4c6608c94cf9924c29fccb64f6c86f473ed3/BBPS/src/main/webapp/WEB-INF/views/jh/H_Menu.jsp#L210)
  
  ####  블로그 정리
  <br/>
@@ -222,7 +222,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 ![주문번호 추가](https://user-images.githubusercontent.com/71995287/128585747-2f5b2f00-e730-41c3-b4e8-1fdd7c550ebb.PNG)
 		
   * Query 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/0b7bc5e66d6db3f1d32f923f93e12a8610cf8709/BBPS/src/main/resources/mapper/JH_SQL.xml#L165)
-  * jsp 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L706)
+  * Jsp 🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/c047965aa2c761c827926f25914b5d4515d1342b/BBPS/src/main/webapp/WEB-INF/views/jh/Pos.jsp#L706)
  	
 </div>
 </details>
