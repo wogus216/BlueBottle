@@ -70,7 +70,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 
 
 <details>
- <summary><b> HttpSession을 활용해 로그인 구현 </b></summary>
+ <summary><b> HttpSession을 활용해 사용자 정보 저장 </b></summary>
 <div markdown="1">
 <br/>
 	
