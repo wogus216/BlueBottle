@@ -239,7 +239,7 @@ target 속성이 안되서 새창으로 안됩니다.<br/>
 ![매출테이블](https://user-images.githubusercontent.com/71995287/128622355-ce342a8c-c8f5-4860-af16-f4c6db64edf7.PNG)
   <br/>
   
- * 문제점: 주문번호로 인해 매출금액, 매출 품목무결성 제약조건 위배 발생
+ * 문제점: 주문번호로 인해 매출금액, 매출 품목이 무결성 제약조건 위배 발생
  * 해결책: 주문번호를 생성 후 매출금액,매출품목의 주문번호로 삽입
 
     * Controller🔎[코드확인](https://github.com/wogus216/BlueBottle/blob/689a8a5b87e0c6ef5eb1faba60d34281a55afe9f/BBPS/src/main/java/com/gdj35/bbps/web/controller/jhController.java#L809)
